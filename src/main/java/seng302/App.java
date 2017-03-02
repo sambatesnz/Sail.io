@@ -10,5 +10,6 @@ public class App
         americasCup.addBoat(b1);
         americasCup.addBoat(b2);
         americasCup.displayNames();
+        americasCup.returnFinishOrder(americasCup);
     }
 }

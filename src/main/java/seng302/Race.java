@@ -1,6 +1,8 @@
 package seng302;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 /**
  * Created by tjg73 on 2/03/17.
@@ -14,7 +16,7 @@ public class Race {
      */
     public void displayNames() {
         if (currentBoats.size() > 0) {
-            System.out.println("Starting boats in the race:");
+            System.out.println("#############################################" + "\n" + "\n" + "Starting boats in the race:");
             for (Boat boat : currentBoats) {
                 System.out.println(boat.getBoatName());
             }
@@ -30,4 +32,26 @@ public class Race {
     public void addBoat(Boat newBoat){
         this.currentBoats.add(newBoat);
     }
+
+
+    /**
+     * Randomly selects a race winner
+     */
+    public int generateRandomWinnerIndex() {
+        Random winner = new Random();
+        int winnerIndex = winner.nextInt(2);
+        return winnerIndex;
+    }
+
+    /**
+     * Randomly selects a race winner
+     */
+    public void returnFinishOrder(Race race) {
+        Collections.shuffle(race.currentBoats);
+        System.out.println("\n" + "#############################################" + "\n" + "\n" + "The race finish order is:");
+        for (Boat boat : currentBoats) {
+            System.out.println(boat.getBoatName());
+        }
+    }
+
 }
