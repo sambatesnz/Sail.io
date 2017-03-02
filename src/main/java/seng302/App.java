@@ -8,7 +8,7 @@ public class App
         Regatta americasCup = new Regatta();
         americasCup.isAC35();
 
-        //
+        // Doing the important stuff
         Race americasCupRace = new Race();
         americasCupRace.addRacingBoats(2, americasCup.getCompetitors());
         americasCupRace.addEvents(americasCup.getEventList());
