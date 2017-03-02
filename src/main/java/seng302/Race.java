@@ -49,8 +49,8 @@ public class Race {
     public void returnFinishOrder() {
         Collections.shuffle(currentBoats);
         System.out.println("\n" + "#############################################" + "\n" + "\n" + "The race finish order is:");
-        for (Boat boat : currentBoats) {
-            System.out.println(boat.getBoatName());
+        for (int i = 0; i < currentBoats.size(); i++) {
+            System.out.println(i + 1 + ": " + currentBoats.get(i).getBoatName());
         }
     }
 
