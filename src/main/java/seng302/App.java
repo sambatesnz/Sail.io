@@ -10,6 +10,7 @@ public class App
 
         //
         Race americasCupRace = new Race();
+        americasCupRace.addRacingBoats(2, americasCup.getCompetitors());
         americasCupRace.displayStarters();
         americasCupRace.returnFinishOrder();
     }

@@ -9,6 +9,10 @@ public class Regatta {
 
     ArrayList<Boat> competitors = new ArrayList<>();
 
+
+    /**
+     * If the Regatta is the America's Cup, add the correct boats.
+     */
     public void isAC35() {
         Boat b1 = new Boat("ORACLE TEAM USA");
         Boat b2 = new Boat("Artemis Racing");
@@ -25,8 +29,8 @@ public class Regatta {
     }
 
     /**
-     * Adds a boat to the race
-     * @param newBoat Boat to add to race
+     * Adds a competitor to the competitor list.
+     * @param newBoat Boat to add to regatta
      */
     public void addCompetitor(Boat newBoat){
         this.competitors.add(newBoat);

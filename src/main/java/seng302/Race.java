@@ -43,7 +43,7 @@ public class Race {
 
 
     /**
-     * Randomly selects a race winner
+     * Randomly selects a race winner, from the boats competing in the race.
      */
     public void returnFinishOrder() {
         // Clone it, so we don't change the underlying original Boat list.
