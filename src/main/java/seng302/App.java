@@ -13,6 +13,6 @@ public class App
         americasCupRace.addRacingBoats(2, americasCup.getCompetitors());
         americasCupRace.addEvents(americasCup.getEventList());
         americasCupRace.displayStarters();
-        americasCupRace.returnFinishOrder();
+        americasCupRace.reportEventPositions();
     }
 }

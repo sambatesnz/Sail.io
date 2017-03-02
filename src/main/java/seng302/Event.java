@@ -13,4 +13,7 @@ public class Event {
         this.eventOrder = eventOrder;
     }
 
+    public String getEventName() {
+        return eventName;
+    }
 }

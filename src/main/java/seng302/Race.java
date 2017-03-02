@@ -42,29 +42,23 @@ public class Race {
         }
     }
 
-    /**
-     * Randomly selects a race winner, from the boats competing in the race.
-     */
-    public void returnFinishOrder() {
-        // Clone it, so we don't change the underlying original Boat list.
-        ArrayList<Boat> clonedBoats = new ArrayList<>(racingBoats);
-        Collections.shuffle(clonedBoats);
-        System.out.println("\n" + "#############################################" + "\n" + "\n" + "The race finish order is:");
-        for (int i = 0; i < clonedBoats.size(); i++) {
-            System.out.println(i + 1 + ": " + clonedBoats.get(i).getBoatName());
-        }
-    }
 
     /**
      * Randomly selects a race winner, from the boats competing in the race.
      */
     public void reportEventPositions() {
         // Clone it, so we don't change the underlying original Boat list.
-        ArrayList<Boat> clonedBoats = new ArrayList<>(racingBoats);
-        Collections.shuffle(clonedBoats);
-        System.out.println("\n" + "#############################################" + "\n" + "\n" + "The race finish order is:");
-        for (int i = 0; i < clonedBoats.size(); i++) {
-            System.out.println(i + 1 + ": " + clonedBoats.get(i).getBoatName());
+
+        System.out.println("\n" + "#############################################" + "\n");
+
+        for (Event event : raceEvents) {
+            ArrayList<Boat> clonedBoats = new ArrayList<>(racingBoats);
+            Collections.shuffle(clonedBoats);
+            System.out.println(event.getEventName() + ":" );
+            for (int i = 0; i < clonedBoats.size(); i++) {
+                System.out.println(i + 1 + ": " + clonedBoats.get(i).getBoatName());
+            }
+            System.out.println("");
         }
     }
 
