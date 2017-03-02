@@ -4,6 +4,11 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Welcome to SENG302, Tim!" );
+        Boat b1 = new Boat("Team Tim");
+        Boat b2 = new Boat("Team Ollie");
+        Race americasCup = new Race();
+        americasCup.addBoat(b1);
+        americasCup.addBoat(b2);
+        americasCup.displayNames();
     }
 }

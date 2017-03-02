@@ -7,13 +7,14 @@ import java.util.ArrayList;
  */
 public class Race {
 
-    private ArrayList<Boat> currentBoats;
+    private ArrayList<Boat> currentBoats = new ArrayList<>();
 
     /**
      * Display the current Boats names that are in the race to std output
      */
     public void displayNames() {
         if (currentBoats.size() > 0) {
+            System.out.println("Starting boats in the race:");
             for (Boat boat : currentBoats) {
                 System.out.println(boat.getBoatName());
             }
