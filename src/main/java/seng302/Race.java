@@ -10,6 +10,7 @@ import java.util.Random;
 public class Race {
 
     private ArrayList<Boat> racingBoats = new ArrayList<>();
+    private ArrayList<Event> raceEvents = new ArrayList<>();
 
     /**
      * Display the current Boats names that are in the race to std output
@@ -41,7 +42,6 @@ public class Race {
         }
     }
 
-
     /**
      * Randomly selects a race winner, from the boats competing in the race.
      */
@@ -54,5 +54,9 @@ public class Race {
             System.out.println(i + 1 + ": " + clonedBoats.get(i).getBoatName());
         }
     }
+
+//    public void () {
+//
+//    }
 
 }
