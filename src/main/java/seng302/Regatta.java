@@ -31,4 +31,8 @@ public class Regatta {
     public void addCompetitor(Boat newBoat){
         this.competitors.add(newBoat);
     }
+
+    public ArrayList<Boat> getCompetitors() {
+        return competitors;
+    }
 }

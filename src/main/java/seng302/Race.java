@@ -26,11 +26,19 @@ public class Race {
     }
 
     /**
-     * Adds a boat to the race
-     * @param newBoat Boat to add to race
+     * Adds the boats in the current race from the regatta
+     * @param numberOfBoats Number of boats to be added from the current regatta to the race
+     * @param competitors List of current boats in the regatta
      */
-    public void getRacingBoats(Boat newBoat){
-        this.racingBoats.add(newBoat);
+    public void addRacingBoats(int numberOfBoats, ArrayList<Boat> competitors){
+        Random random = new Random();
+        if (numberOfBoats <= competitors.size()){
+            for (int i = 0; i < numberOfBoats; i++){
+                int nextBoatToAdd = random.nextInt(competitors.size());
+                racingBoats.add(competitors.get(nextBoatToAdd));
+                competitors.remove(nextBoatToAdd);
+            }
+        }
     }
 
 
