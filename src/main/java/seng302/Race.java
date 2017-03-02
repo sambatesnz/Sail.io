@@ -29,7 +29,7 @@ public class Race {
      * Adds a boat to the race
      * @param newBoat Boat to add to race
      */
-    public void getRacingBoats(Regatta regatta){
+    public void getRacingBoats(Boat newBoat){
         this.racingBoats.add(newBoat);
     }
 
