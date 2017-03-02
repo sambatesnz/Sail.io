@@ -55,8 +55,21 @@ public class Race {
         }
     }
 
-//    public void () {
-//
-//    }
+    /**
+     * Randomly selects a race winner, from the boats competing in the race.
+     */
+    public void reportEventPositions() {
+        // Clone it, so we don't change the underlying original Boat list.
+        ArrayList<Boat> clonedBoats = new ArrayList<>(racingBoats);
+        Collections.shuffle(clonedBoats);
+        System.out.println("\n" + "#############################################" + "\n" + "\n" + "The race finish order is:");
+        for (int i = 0; i < clonedBoats.size(); i++) {
+            System.out.println(i + 1 + ": " + clonedBoats.get(i).getBoatName());
+        }
+    }
+
+    public void addEvents(ArrayList<Event> events) {
+        this.raceEvents = events;
+    }
 
 }
