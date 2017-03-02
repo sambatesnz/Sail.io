@@ -5,6 +5,7 @@ package seng302;
  */
 public class Boat {
     private String boatName;
+    private int raceEvent = 0;
 
     public Boat(String name) {
         this.boatName = name;
@@ -14,7 +15,15 @@ public class Boat {
         return boatName;
     }
 
-    public void setBoatName(String boatName) {
-        this.boatName = boatName;
+    public void iterateEvent() {
+        this.raceEvent++;
+    }
+
+    public int getRaceEvent() {
+        return raceEvent;
+    }
+
+    public void setRaceEvent(int raceEvent) {
+        this.raceEvent = raceEvent;
     }
 }
