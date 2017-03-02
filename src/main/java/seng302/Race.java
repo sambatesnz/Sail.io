@@ -9,15 +9,15 @@ import java.util.Random;
  */
 public class Race {
 
-    private ArrayList<Boat> currentBoats = new ArrayList<>();
+    private ArrayList<Boat> racingBoats = new ArrayList<>();
 
     /**
      * Display the current Boats names that are in the race to std output
      */
-    public void displayNames() {
-        if (currentBoats.size() > 0) {
+    public void displayStarters() {
+        if (racingBoats.size() > 0) {
             System.out.println("#############################################" + "\n" + "\n" + "Starting boats in the race:");
-            for (Boat boat : currentBoats) {
+            for (Boat boat : racingBoats) {
                 System.out.println(boat.getBoatName());
             }
         }else {
@@ -29,26 +29,17 @@ public class Race {
      * Adds a boat to the race
      * @param newBoat Boat to add to race
      */
-    public void addBoat(Boat newBoat){
-        this.currentBoats.add(newBoat);
+    public void getRacingBoats(Regatta regatta){
+        this.racingBoats.add(newBoat);
     }
 
-
-    /**
-     * Randomly selects a race winner
-     */
-    public int generateRandomWinnerIndex() {
-        Random winner = new Random();
-        int winnerIndex = winner.nextInt(2);
-        return winnerIndex;
-    }
 
     /**
      * Randomly selects a race winner
      */
     public void returnFinishOrder() {
         // Clone it, so we don't change the underlying original Boat list.
-        ArrayList<Boat> clonedBoats = new ArrayList<Boat>(currentBoats);
+        ArrayList<Boat> clonedBoats = new ArrayList<>(racingBoats);
         Collections.shuffle(clonedBoats);
         System.out.println("\n" + "#############################################" + "\n" + "\n" + "The race finish order is:");
         for (int i = 0; i < clonedBoats.size(); i++) {
