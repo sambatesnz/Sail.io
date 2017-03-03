@@ -6,7 +6,7 @@ package seng302;
 public class Event {
 
     private String eventName;
-    private int eventOrder;
+    public int eventOrder;
     public float distToPrevEvent;
 
     public Event(String eventName, int eventOrder, float dist) {
