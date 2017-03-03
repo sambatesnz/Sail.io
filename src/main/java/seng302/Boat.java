@@ -8,7 +8,7 @@ public class Boat {
     private int raceEvent = 0;
 
     public Boat(String name) {
-        this.boatName = name;
+        boatName = name;
     }
 
     public String getBoatName() {

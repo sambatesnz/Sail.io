@@ -1,8 +1,6 @@
 package seng302;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by tjg73 on 2/03/17.
@@ -11,6 +9,7 @@ public class Race {
 
     private ArrayList<Boat> racingBoats = new ArrayList<>();
     private ArrayList<Event> raceEvents = new ArrayList<>();
+    private int racePlaybackDuration = -1;
 
     /**
      * Display the current Boats names that are in the race to std output
@@ -42,7 +41,6 @@ public class Race {
         }
     }
 
-
     /**
      * Randomly selects a race winner, from the boats competing in the race.
      */
@@ -59,6 +57,27 @@ public class Race {
                 System.out.println(i + 1 + ": " + clonedBoats.get(i).getBoatName());
             }
             System.out.println("");
+        }
+    }
+
+    /**
+     * Gets a playback duration from std input,
+     * must be either 0, 1 or 5 minutes.
+     */
+    public void setRacePlaybackDuration(){
+        HashSet<Integer> validRaceLength = new HashSet<>(Arrays.asList(0, 1, 5));
+        Scanner input = new Scanner(System.in);
+        System.out.println("What duration do you want the race to be in minutes?");
+        while (!(validRaceLength.contains(racePlaybackDuration))){
+            try {
+                racePlaybackDuration = input.nextInt();
+            }catch (InputMismatchException ex){
+                System.out.println("Input must be a whole number.");
+                input.next();
+            }
+            if(!(validRaceLength.contains(racePlaybackDuration))){
+                System.out.println("Please ensure that the number is a valid race duration (0, 1 or 5 minutes long).");
+            }
         }
     }
 
