@@ -7,7 +7,7 @@ public class Event {
 
     private String eventName;
     private int eventOrder;
-    private float distToPrevEvent;
+    public float distToPrevEvent;
 
     public Event(String eventName, int eventOrder, float dist) {
         this.eventName = eventName;

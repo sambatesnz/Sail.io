@@ -9,6 +9,7 @@ public class Regatta {
 
     ArrayList<Boat> competitors = new ArrayList<>();
     ArrayList<Event> eventList = new ArrayList<>();
+    private float totalRaceDistance;
 
 
     /**
@@ -28,6 +29,10 @@ public class Regatta {
         eventList.add(new Event("Gate 2, Windward", 3, 3));
         eventList.add(new Event("Gate 3, Leeward", 4, 3));
         eventList.add(new Event("Finish", 5, 1));
+
+        for (Event event : eventList) {
+            totalRaceDistance += event.distToPrevEvent;
+        }
     }
 
     /**
