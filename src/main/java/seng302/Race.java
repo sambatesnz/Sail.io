@@ -61,7 +61,7 @@ public class Race {
                 }
             }
 
-            // output some stuff
+            // output some stuff.
             System.out.println(event.getEventName() + ":" );
             for (int i = 0; i < clonedBoats.size(); i++) {
                 System.out.println(i + 1 + ": " + clonedBoats.get(i).getBoatName());
