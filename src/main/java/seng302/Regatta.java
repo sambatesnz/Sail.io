@@ -12,7 +12,7 @@ public class Regatta {
 
 
     /**
-     * If the Regatta is the America's Cup, add the correct boats.
+     * If the Regatta is the America's Cup, add the correct boats/events.
      */
     public void isAC35() {
         addCompetitor(new Boat("ORACLE TEAM USA"));
@@ -22,12 +22,12 @@ public class Regatta {
         addCompetitor(new Boat("Land Rover BAR"));
         addCompetitor(new Boat("SoftBank Team Japan"));
 
-        eventList.add(new Event("Start", 0));
-        eventList.add(new Event("Mark 1", 1));
-        eventList.add(new Event("Gate 1, Leeward", 2));
-        eventList.add(new Event("Gate 2, Windward", 3));
-        eventList.add(new Event("Gate 3, Leeward", 4));
-        eventList.add(new Event("Finish", 5));
+        eventList.add(new Event("Start", 0, 0));
+        eventList.add(new Event("Mark 1", 1, 1));
+        eventList.add(new Event("Gate 1, Leeward", 2, 2));
+        eventList.add(new Event("Gate 2, Windward", 3, 3));
+        eventList.add(new Event("Gate 3, Leeward", 4, 3));
+        eventList.add(new Event("Finish", 5, 1));
     }
 
     /**
