@@ -53,7 +53,7 @@ public class Race {
 
             //delay
             if (event.eventOrder > 0) {
-                long delay = 60000 * racePlaybackDuration/raceEvents.size()-1;
+                long delay = 60000 * racePlaybackDuration/(raceEvents.size()-1);
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException ie) {
