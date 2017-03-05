@@ -133,19 +133,23 @@ public class Race {
         this.raceEvents = events;
     }
 
-    private void generateEventQueue(){
-
+    private ArrayList<EventStorage> generateEventQueue(){
 
         // Need to create an arraylist that can take the Event.name, boat.name, time, and event.nextHeading.
+        ArrayList<EventStorage> events = new ArrayList<>();
+
         float cumulativeRaceDist = 0;
         for (Event event : raceEvents) {
             for (Boat boat: racingBoats) {
                 float eventTime = cumulativeRaceDist/boat.getBoatSpeed();
+                events.add(new EventStorage(boat.getBoatName(), event.getEventName(), eventTime, event.nextHeading));
             }
             cumulativeRaceDist += event.distToPrevEvent;
         }
 
+        // Need to sort events here.
 
+        return events;
     }
 
     public float getPlaybackSpeedMultiplier() {
