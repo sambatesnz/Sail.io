@@ -10,6 +10,7 @@ public class Race {
     private ArrayList<Boat> racingBoats = new ArrayList<>();
     private ArrayList<Event> raceEvents = new ArrayList<>();
     private int racePlaybackDuration = -1;
+    private float playbackSpeedMultiplier = 0;
 
     /**
      * Display the current Boats names that are in the race to std output
@@ -41,6 +42,36 @@ public class Race {
         }
     }
 
+//    /**
+//     * Randomly selects a race winner from the boats competing in the race.
+//     *
+//     * Currently DEPRECATED.
+//     */
+//    public void reportEventPositions() {
+//        System.out.println("\n" + "#############################################" + "\n");
+//
+//        for (Event event : raceEvents) {
+//            ArrayList<Boat> clonedBoats = new ArrayList<>(racingBoats);
+//            Collections.shuffle(clonedBoats);
+//
+//            //delay
+//            if (event.eventOrder > 0) {
+//                long delay = 60000 * racePlaybackDuration/(raceEvents.size()-1);
+//                try {
+//                    Thread.sleep(delay);
+//                } catch (InterruptedException ie) {
+//                    ie.printStackTrace();
+//                }
+//            }
+//            System.out.println(event.getEventName() + ":" );
+//            for (int i = 0; i < clonedBoats.size(); i++) {
+//                System.out.println(i + 1 + ": " + clonedBoats.get(i).getBoatName());
+//            }
+//            System.out.println("");
+//        }
+//    }
+
+
     /**
      * Randomly selects a race winner, from the boats competing in the race.
      */
@@ -48,6 +79,8 @@ public class Race {
         System.out.println("\n" + "#############################################" + "\n");
 
         for (Event event : raceEvents) {
+
+            // randomises boat order at each event
             ArrayList<Boat> clonedBoats = new ArrayList<>(racingBoats);
             Collections.shuffle(clonedBoats);
 
@@ -60,6 +93,8 @@ public class Race {
                     ie.printStackTrace();
                 }
             }
+
+            // report the event
             System.out.println(event.getEventName() + ":" );
             for (int i = 0; i < clonedBoats.size(); i++) {
                 System.out.println(i + 1 + ": " + clonedBoats.get(i).getBoatName());
@@ -91,6 +126,17 @@ public class Race {
 
     public void addEvents(ArrayList<Event> events) {
         this.raceEvents = events;
+    }
+
+    private void generateEventQueue(){
+        ArrayList<(Event, Boat, int)>
+        float cumulativeRaceDist = 0;
+        for (Event event : raceEvents) {
+            for (Boat boat: racingBoats) {
+
+            }
+
+        }
     }
 
 }

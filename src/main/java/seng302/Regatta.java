@@ -31,7 +31,7 @@ public class Regatta {
         eventList.add(new Event("Finish", 5, 1, 0));
 
         for (Event event : eventList) {
-            totalRaceDistance += event.distToPrevEvent;
+            this.totalRaceDistance += event.distToPrevEvent;
         }
     }
 
