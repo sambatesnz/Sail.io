@@ -23,12 +23,12 @@ public class Regatta {
         addCompetitor(new Boat("Land Rover BAR", 70));
         addCompetitor(new Boat("SoftBank Team Japan", 75));
 
-        eventList.add(new Event("Start", 0, 0));
-        eventList.add(new Event("Mark 1", 1, 1));
-        eventList.add(new Event("Gate 1, Leeward", 2, 2));
-        eventList.add(new Event("Gate 2, Windward", 3, 3));
-        eventList.add(new Event("Gate 3, Leeward", 4, 3));
-        eventList.add(new Event("Finish", 5, 1));
+        eventList.add(new Event("Start", 0, 0, 100));
+        eventList.add(new Event("Mark 1", 1, 1,25));
+        eventList.add(new Event("Gate 1, Leeward", 2, 2, 205));
+        eventList.add(new Event("Gate 2, Windward", 3, 3, 25));
+        eventList.add(new Event("Gate 3, Leeward", 4, 3, 310));
+        eventList.add(new Event("Finish", 5, 1, 0));
 
         for (Event event : eventList) {
             totalRaceDistance += event.distToPrevEvent;
