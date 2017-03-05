@@ -91,9 +91,12 @@ public class Race {
             // Delay the requisite time.
             if (event.eventTime > 0){
                 float delayLength = event.eventTime - prevEventTime;
-                long delay = 60000 * racePlaybackDuration * (long) delayLength * 60;
+//                System.out.println(delayLength);
+//                System.out.println(playbackSpeedMultiplier);
+                float delay = 60000 * playbackSpeedMultiplier * delayLength/15;
+//                System.out.println(delay);
                 try {
-                    Thread.sleep(delay);
+                    Thread.sleep((long) delay);
                 } catch (InterruptedException ie) {
                     ie.printStackTrace();
                 }
@@ -102,9 +105,12 @@ public class Race {
 
             // Report the event.
             if (event.eventName == "Finish"){
-                System.out.println(event.boatName + " has rounded " + event.eventName + ".");
-            }else {
-                System.out.println(event.boatName + " has rounded " + event.eventName + ". The boat now has a heading of: " +
+                System.out.println(event.boatName + " has crossed the " + event.eventName + " Line!");
+            } else if (event.eventName == "Start") {
+                System.out.println(event.boatName + " has crossed the " + event.eventName + " Line! The boat has a heading of: " +
+                        event.nextHeading + "degrees.");
+            } else {
+                System.out.println(event.boatName + " has rounded " + event.eventName + ". The boat has a heading of: " +
                         event.nextHeading + "degrees.");
             }
             System.out.println();
@@ -130,7 +136,7 @@ public class Race {
                 System.out.println("Please ensure that the number is a valid race duration (0, 1 or 5 minutes long).");
             }
         }
-        playbackSpeedMultiplier = (60*(Regatta.totalRaceDistance / slowestBoatSpeed))/racePlaybackDuration;
+        playbackSpeedMultiplier = (60*(Regatta.totalRaceDistance / slowestBoatSpeed)) * racePlaybackDuration;
     }
 
     public void addEvents(ArrayList<Event> events) {
@@ -144,11 +150,11 @@ public class Race {
 
         float cumulativeRaceDist = 0;
         for (Event event : raceEvents) {
+            cumulativeRaceDist += event.distToPrevEvent;
             for (Boat boat: racingBoats) {
                 float eventTime = cumulativeRaceDist/boat.getBoatSpeed();
                 events.add(new EventStorage(boat.getBoatName(), event.getEventName(), eventTime, event.nextHeading));
             }
-            cumulativeRaceDist += event.distToPrevEvent;
         }
         Collections.sort(events, (e1, e2) -> String.valueOf(e1.getEventTime()).compareTo(String.valueOf(e2.getEventTime())));
         return events;
