@@ -9,7 +9,7 @@ public class Regatta {
 
     ArrayList<Boat> competitors = new ArrayList<>();
     ArrayList<Event> eventList = new ArrayList<>();
-    private float totalRaceDistance;
+    public static float totalRaceDistance = 0;
 
 
     /**
@@ -31,7 +31,7 @@ public class Regatta {
         eventList.add(new Event("Finish", 5, 1, 0));
 
         for (Event event : eventList) {
-            this.totalRaceDistance += event.distToPrevEvent;
+            totalRaceDistance += event.distToPrevEvent;
         }
     }
 

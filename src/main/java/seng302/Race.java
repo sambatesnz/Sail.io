@@ -11,6 +11,7 @@ public class Race {
     private ArrayList<Event> raceEvents = new ArrayList<>();
     private int racePlaybackDuration = -1;
     private float playbackSpeedMultiplier = 0;
+    private float slowestBoatSpeed = Integer.MAX_VALUE;
 
     /**
      * Display the current Boats names that are in the race to std output
@@ -37,6 +38,9 @@ public class Race {
             for (int i = 0; i < numberOfBoats; i++){
                 int nextBoatToAdd = random.nextInt(competitors.size());
                 racingBoats.add(competitors.get(nextBoatToAdd));
+                if (competitors.get(nextBoatToAdd).getBoatSpeed() < slowestBoatSpeed){
+                    slowestBoatSpeed = competitors.get(nextBoatToAdd).getBoatSpeed();
+                }
                 competitors.remove(nextBoatToAdd);
             }
         }
@@ -122,6 +126,7 @@ public class Race {
                 System.out.println("Please ensure that the number is a valid race duration (0, 1 or 5 minutes long).");
             }
         }
+        playbackSpeedMultiplier = (60*(Regatta.totalRaceDistance / slowestBoatSpeed))/racePlaybackDuration;
     }
 
     public void addEvents(ArrayList<Event> events) {
@@ -141,6 +146,10 @@ public class Race {
         }
 
 
+    }
+
+    public float getPlaybackSpeedMultiplier() {
+        return playbackSpeedMultiplier;
     }
 
 }
