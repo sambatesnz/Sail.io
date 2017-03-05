@@ -129,14 +129,18 @@ public class Race {
     }
 
     private void generateEventQueue(){
-        ArrayList<(Event, Boat, int)>
+
+
+        // Need to create an arraylist that can take the Event.name, boat.name, time, and event.nextHeading.
         float cumulativeRaceDist = 0;
         for (Event event : raceEvents) {
             for (Boat boat: racingBoats) {
-
+                float eventTime = cumulativeRaceDist/boat.getBoatSpeed();
             }
-
+            cumulativeRaceDist += event.distToPrevEvent;
         }
+
+
     }
 
 }

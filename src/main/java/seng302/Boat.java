@@ -9,6 +9,10 @@ public class Boat {
     private float boatSpeed = 0;
 
 
+    public float getBoatSpeed() {
+        return boatSpeed;
+    }
+
     public Boat(String name, float speed) {
         this.boatName = name;
         this.boatSpeed = speed;
