@@ -82,27 +82,27 @@ public class Race {
     public void reportEventPositions() {
         System.out.println("\n" + "#############################################" + "\n");
 
-        for (Event event : raceEvents) {
+        // ArrayList of events in sorted form.
+        ArrayList<EventStorage> orderedRaceEvents = generateEventQueue();
+        float prevEventTime = 0;
 
-            // randomises boat order at each event
-            ArrayList<Boat> clonedBoats = new ArrayList<>(racingBoats);
-            Collections.shuffle(clonedBoats);
+        for (EventStorage event : orderedRaceEvents){
 
-            //delay
-            if (event.eventOrder > 0) {
-                long delay = 60000 * racePlaybackDuration/(raceEvents.size()-1);
+            // Delay the requisite time.
+            if (event.eventTime > 0){
+                float delayLength = event.eventTime - prevEventTime;
+                long delay = 60000 * racePlaybackDuration * (long) delayLength * 60;
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException ie) {
                     ie.printStackTrace();
                 }
             }
+            prevEventTime = event.eventTime;
 
-            // report the event
-            System.out.println(event.getEventName() + ":" );
-            for (int i = 0; i < clonedBoats.size(); i++) {
-                System.out.println(i + 1 + ": " + clonedBoats.get(i).getBoatName());
-            }
+            // Report the event.
+            System.out.println(event.boatName + " has rounded " + event.eventName + ". The boat now has a heading of: " +
+                    event.nextHeading + "degrees.");
             System.out.println("");
         }
     }
@@ -146,9 +146,7 @@ public class Race {
             }
             cumulativeRaceDist += event.distToPrevEvent;
         }
-
         Collections.sort(events, (e1, e2) -> String.valueOf(e1.getEventTime()).compareTo(String.valueOf(e2.getEventTime())));
-
         return events;
     }
 
