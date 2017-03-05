@@ -6,9 +6,13 @@ package seng302;
 public class Boat {
     private String boatName;
     private int raceEvent = 0;
+    private float boatSpeed = 0;
 
-    public Boat(String name) {
-        boatName = name;
+
+    public Boat(String name, float speed) {
+        this.boatName = name;
+        this.boatSpeed = speed;
+
     }
 
     public String getBoatName() {

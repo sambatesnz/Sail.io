@@ -16,12 +16,12 @@ public class Regatta {
      * If the Regatta is the America's Cup, add the correct boats/events.
      */
     public void isAC35() {
-        addCompetitor(new Boat("ORACLE TEAM USA"));
-        addCompetitor(new Boat("Artemis Racing"));
-        addCompetitor(new Boat("Emirates Team New Zealand"));
-        addCompetitor(new Boat("Groupama Team France"));
-        addCompetitor(new Boat("Land Rover BAR"));
-        addCompetitor(new Boat("SoftBank Team Japan"));
+        addCompetitor(new Boat("ORACLE TEAM USA", 50));
+        addCompetitor(new Boat("Artemis Racing", 55));
+        addCompetitor(new Boat("Emirates Team New Zealand", 60));
+        addCompetitor(new Boat("Groupama Team France", 65));
+        addCompetitor(new Boat("Land Rover BAR", 70));
+        addCompetitor(new Boat("SoftBank Team Japan", 75));
 
         eventList.add(new Event("Start", 0, 0));
         eventList.add(new Event("Mark 1", 1, 1));
