@@ -147,7 +147,7 @@ public class Race {
             cumulativeRaceDist += event.distToPrevEvent;
         }
 
-        // Need to sort events here.
+        Collections.sort(events, (e1, e2) -> String.valueOf(e1.getEventTime()).compareTo(String.valueOf(e2.getEventTime())));
 
         return events;
     }
