@@ -101,9 +101,13 @@ public class Race {
             prevEventTime = event.eventTime;
 
             // Report the event.
-            System.out.println(event.boatName + " has rounded " + event.eventName + ". The boat now has a heading of: " +
-                    event.nextHeading + "degrees.");
-            System.out.println("");
+            if (event.eventName == "Finish"){
+                System.out.println(event.boatName + " has rounded " + event.eventName + ".");
+            }else {
+                System.out.println(event.boatName + " has rounded " + event.eventName + ". The boat now has a heading of: " +
+                        event.nextHeading + "degrees.");
+            }
+            System.out.println();
         }
     }
 
