@@ -91,10 +91,9 @@ public class Race {
             // Delay the requisite time.
             if (event.eventTime > 0){
                 float delayLength = event.eventTime - prevEventTime;
-//                System.out.println(delayLength);
-//                System.out.println(playbackSpeedMultiplier);
-                float delay = 60000 * playbackSpeedMultiplier * delayLength/15;
-//                System.out.println(delay);
+
+                float delay = 60000 * playbackSpeedMultiplier * delayLength * 60;
+
                 try {
                     Thread.sleep((long) delay);
                 } catch (InterruptedException ie) {
@@ -136,7 +135,9 @@ public class Race {
                 System.out.println("Please ensure that the number is a valid race duration (0, 1 or 5 minutes long).");
             }
         }
-        playbackSpeedMultiplier = (60*(Regatta.totalRaceDistance / slowestBoatSpeed)) * racePlaybackDuration;
+        playbackSpeedMultiplier = racePlaybackDuration / (60*(Regatta.totalRaceDistance / slowestBoatSpeed));
+//        System.out.println("racePlaybackDuration = " + racePlaybackDuration);
+//        System.out.println("playbackSpeedMultiplier = " + playbackSpeedMultiplier);
     }
 
     public void addEvents(ArrayList<Event> events) {

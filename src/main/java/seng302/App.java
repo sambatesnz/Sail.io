@@ -11,7 +11,7 @@ public class App
 
         // Doing the important stuff.
         Race americasCupRace = new Race();
-        americasCupRace.addRacingBoats(2, americasCup.getCompetitors());
+        americasCupRace.addRacingBoats(6, americasCup.getCompetitors());
         americasCupRace.addEvents(americasCup.getEventList());
         americasCupRace.setRacePlaybackDuration();
         americasCupRace.displayStarters();
