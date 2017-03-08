@@ -9,6 +9,7 @@ public class Race {
 
     private ArrayList<Boat> racingBoats = new ArrayList<>();
     private ArrayList<Event> raceEvents = new ArrayList<>();
+    private ArrayList<String> finishingOrder = new ArrayList<>();
     private int racePlaybackDuration = -1;
     private float playbackSpeedMultiplier = 0;
     private float slowestBoatSpeed = Integer.MAX_VALUE;
@@ -24,6 +25,19 @@ public class Race {
             }
         }else {
             System.out.println("No boats in race");
+        }
+    }
+
+    /**
+     * Display the the finishing order of boats in the current race to std output
+     */
+    public void displayFinishers() {
+        if (racingBoats.size() > 0) {
+            System.out.println("#############################################" + "\n" + "\n" + "Finishing Order:");
+            for (int i = 0; i < finishingOrder.size(); i++) {
+                System.out.printf("%d. %s\n", i+1, finishingOrder.get(i));
+            }
+            System.out.println("\n#############################################");
         }
     }
 
@@ -105,6 +119,7 @@ public class Race {
             // Report the event.
             if (event.eventName == "Finish"){
                 System.out.println(event.boatName + " has crossed the " + event.eventName + " Line!");
+                finishingOrder.add(event.boatName);
             } else if (event.eventName == "Start") {
                 System.out.println(event.boatName + " has crossed the " + event.eventName + " Line! The boat has a heading of: " +
                         event.nextHeading + "degrees.");

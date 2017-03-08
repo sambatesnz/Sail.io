@@ -16,5 +16,6 @@ public class App
         americasCupRace.setRacePlaybackDuration();
         americasCupRace.displayStarters();
         americasCupRace.reportEventPositions();
+        americasCupRace.displayFinishers();
     }
 }
