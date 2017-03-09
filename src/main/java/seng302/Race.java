@@ -33,6 +33,7 @@ public class Race {
      */
     public void displayFinishers() {
         if (racingBoats.size() > 0) {
+            System.out.println();
             System.out.println("#############################################" + "\n" + "\n" + "Finishing Order:");
             for (int i = 0; i < finishingOrder.size(); i++) {
                 System.out.printf("%d. %s\n", i+1, finishingOrder.get(i));
@@ -121,8 +122,6 @@ public class Race {
             }
         }
         playbackSpeedMultiplier = racePlaybackDuration / (60*(Regatta.totalRaceDistance / slowestBoatSpeed));
-//        System.out.println("racePlaybackDuration = " + racePlaybackDuration);
-//        System.out.println("playbackSpeedMultiplier = " + playbackSpeedMultiplier);
     }
 
     public void addEvents(ArrayList<Event> events) {
@@ -144,10 +143,6 @@ public class Race {
         }
         Collections.sort(events, (e1, e2) -> String.valueOf(e1.getEventTime()).compareTo(String.valueOf(e2.getEventTime())));
         return events;
-    }
-
-    public float getPlaybackSpeedMultiplier() {
-        return playbackSpeedMultiplier;
     }
 
 }

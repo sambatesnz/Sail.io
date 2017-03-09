@@ -23,15 +23,4 @@ public class Boat {
         return boatSpeed;
     }
 
-    public void iterateEvent() {
-        this.raceEvent++;
-    }
-
-    public int getRaceEvent() {
-        return raceEvent;
-    }
-
-    public void setRaceEvent(int raceEvent) {
-        this.raceEvent = raceEvent;
-    }
 }
