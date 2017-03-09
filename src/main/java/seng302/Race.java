@@ -19,9 +19,9 @@ public class Race {
      */
     public void displayStarters() {
         if (racingBoats.size() > 0) {
-            System.out.println("#############################################" + "\n" + "\n" + "Starting boats in the race:");
+            System.out.println("############################################# \n\nStarting boats in the race:");
             for (Boat boat : racingBoats) {
-                System.out.println(boat.getBoatName() + ", with a speed of: " + boat.getBoatSpeed() + " kmph.");
+                System.out.println(String.format("%s, with a speed of: %f kmph.", boat.getBoatName(), boat.getBoatSpeed()));
             }
         }else {
             System.out.println("No boats in race");
@@ -34,7 +34,7 @@ public class Race {
     public void displayFinishers() {
         if (racingBoats.size() > 0) {
             System.out.println();
-            System.out.println("#############################################" + "\n" + "\n" + "Finishing Order:");
+            System.out.println("############################################# \n\nFinishing Order:");
             for (int i = 0; i < finishingOrder.size(); i++) {
                 System.out.printf("%d. %s\n", i+1, finishingOrder.get(i));
             }
@@ -65,7 +65,7 @@ public class Race {
      * Randomly selects a race winner, from the boats competing in the race.
      */
     public void reportEventPositions() {
-        System.out.println("\n" + "#############################################" + "\n");
+        System.out.println("\n#############################################\n");
 
         // ArrayList of events in sorted form.
         ArrayList<EventStorage> orderedRaceEvents = generateEventQueue();
@@ -89,14 +89,14 @@ public class Race {
 
             // Report the event.
             if (event.eventName == "Finish"){
-                System.out.println(event.boatName + " has crossed the " + event.eventName + " Line!");
+                System.out.println(String.format("%s has crossed the %s Line!", event.boatName, event.eventName));
                 finishingOrder.add(event.boatName);
             } else if (event.eventName == "Start") {
-                System.out.println(event.boatName + " has crossed the " + event.eventName + " Line! The boat has a heading of: " +
-                        event.nextHeading + "degrees.");
+                System.out.println(String.format("%s has crossed the %s Line! The boat has a heading of: %d degrees.", event.boatName,
+                        event.eventName, event.nextHeading));
             } else {
-                System.out.println(event.boatName + " has rounded " + event.eventName + ". The boat has a heading of: " +
-                        event.nextHeading + "degrees.");
+                System.out.println(String.format("%s has has rounded %s. The boat has a heading of: %d degrees.", event.boatName,
+                        event.eventName, event.nextHeading));
             }
             System.out.println();
         }
