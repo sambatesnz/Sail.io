@@ -29,6 +29,7 @@ public class RegattaTest {
         assertTrue(events.get(0).equals(kevinsEvent));
     }
 
+
     @Test
     public void testAC35Boats() {
         Regatta kevinsRegatta = new Regatta();
@@ -36,12 +37,7 @@ public class RegattaTest {
         assertTrue(kevinsRegatta.getCompetitors().get(0).getBoatName().equals("ORACLE TEAM USA"));
     }
 
-    @Test
-    public void testAC35RaceLength() {
-        Regatta kevinsRegatta = new Regatta();
-        kevinsRegatta.isAC35();
-        assertTrue(kevinsRegatta.totalRaceDistance == 10);
-    }
+
 
     @Test
     public void testAC35Events() {
