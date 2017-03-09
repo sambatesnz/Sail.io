@@ -10,14 +10,14 @@ public class EventStorage {
     public float eventTime;
     public int nextHeading;
 
-    public float getEventTime() {
-        return eventTime;
-    }
-
     public EventStorage(String boatName, String eventName, float eventTime, int nextHeading) {
         this.boatName = boatName;
         this.eventName = eventName;
         this.eventTime = eventTime;
         this.nextHeading = nextHeading;
+    }
+
+    public float getEventTime() {
+        return eventTime;
     }
 }
