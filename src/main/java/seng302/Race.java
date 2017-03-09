@@ -60,36 +60,6 @@ public class Race {
         }
     }
 
-//    /**
-//     * Randomly selects a race winner from the boats competing in the race.
-//     *
-//     * Currently DEPRECATED.
-//     */
-//    public void reportEventPositions() {
-//        System.out.println("\n" + "#############################################" + "\n");
-//
-//        for (Event event : raceEvents) {
-//            ArrayList<Boat> clonedBoats = new ArrayList<>(racingBoats);
-//            Collections.shuffle(clonedBoats);
-//
-//            //delay
-//            if (event.eventOrder > 0) {
-//                long delay = 60000 * racePlaybackDuration/(raceEvents.size()-1);
-//                try {
-//                    Thread.sleep(delay);
-//                } catch (InterruptedException ie) {
-//                    ie.printStackTrace();
-//                }
-//            }
-//            System.out.println(event.getEventName() + ":" );
-//            for (int i = 0; i < clonedBoats.size(); i++) {
-//                System.out.println(i + 1 + ": " + clonedBoats.get(i).getBoatName());
-//            }
-//            System.out.println("");
-//        }
-//    }
-
-
     /**
      * Randomly selects a race winner, from the boats competing in the race.
      */
