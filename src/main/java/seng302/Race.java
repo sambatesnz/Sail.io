@@ -62,7 +62,8 @@ public class Race {
     }
 
     /**
-     * Randomly selects a race winner, from the boats competing in the race.
+     * Reports the events that occur in a race, and then output them in order.
+     * Events are reported with scaled time separations based on the user-inputted racePlaybackSpeed.
      */
     public void reportEventPositions() {
         System.out.println("\n#############################################\n");
@@ -126,6 +127,10 @@ public class Race {
 
     public void addEvents(ArrayList<Event> events) {
         this.raceEvents = events;
+    }
+
+    public ArrayList<Event> getRaceEvents() {
+        return raceEvents;
     }
 
     private ArrayList<EventStorage> generateEventQueue(){

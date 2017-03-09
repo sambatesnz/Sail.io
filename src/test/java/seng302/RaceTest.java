@@ -42,4 +42,14 @@ public class RaceTest {
         assertEquals(50, testRace.getSlowestBoatSpeed(), 1e-9);
     }
 
+    @Test
+    public void testAC35RaceLength() {
+        Race kevinsRace = new Race();
+        Event kevinsEvent = new Event("KevEvent", 1, 2,3);
+        ArrayList<Event> kevsEvents = new ArrayList<>();
+        kevsEvents.add(kevinsEvent);
+        kevinsRace.addEvents(kevsEvents);
+        assertTrue(kevinsRace.getRaceEvents().get(0).equals(kevinsEvent));
+    }
+
 }
