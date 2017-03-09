@@ -145,4 +145,11 @@ public class Race {
         return events;
     }
 
+    public float getSlowestBoatSpeed() {
+        return slowestBoatSpeed;
+    }
+
+    public ArrayList<Boat> getRacingBoats() {
+        return racingBoats;
+    }
 }
