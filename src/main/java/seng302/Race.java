@@ -157,4 +157,12 @@ public class Race {
     public ArrayList<Boat> getRacingBoats() {
         return racingBoats;
     }
+
+    public ArrayList<String> getFinishingOrder() {
+        return finishingOrder;
+    }
+
+    public void setRacePlaybackDuration(int racePlaybackDuration) {
+        this.racePlaybackDuration = racePlaybackDuration;
+    }
 }

@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -43,13 +44,37 @@ public class RaceTest {
     }
 
     @Test
-    public void testAC35RaceLength() {
+    public void testRaceAddEvent() {
         Race kevinsRace = new Race();
         Event kevinsEvent = new Event("KevEvent", 1, 2,3);
         ArrayList<Event> kevsEvents = new ArrayList<>();
         kevsEvents.add(kevinsEvent);
         kevinsRace.addEvents(kevsEvents);
         assertTrue(kevinsRace.getRaceEvents().get(0).equals(kevinsEvent));
+    }
+
+    @Test
+    public void testFinishOrder() {
+        Race testRace = new Race();
+        Regatta testRegatta = new Regatta();
+
+        ArrayList<String> finishOrder = new ArrayList<>();
+
+        finishOrder.add("SoftBank Team Japan");
+        finishOrder.add("Land Rover BAR");
+        finishOrder.add("Groupama Team France");
+        finishOrder.add("Emirates Team New Zealand");
+        finishOrder.add("Artemis Racing");
+        finishOrder.add("ORACLE TEAM USA");
+
+        testRegatta.isAC35();
+
+        testRace.addRacingBoats(6, testRegatta.getCompetitors());
+        testRace.addEvents(testRegatta.getEventList());
+        testRace.setRacePlaybackDuration(1);
+        testRace.reportEventPositions();
+
+        assertArrayEquals(finishOrder.toArray(), testRace.getFinishingOrder().toArray());
     }
 
 }
