@@ -21,11 +21,32 @@ public class RegattaTest {
     }
 
     @Test
-    public void testBoatName() {
+    public void testAddEventToRegatta() {
         Regatta kevinsRegatta = new Regatta();
         Event kevinsEvent = new Event("KevinsMark", 5353, 123, 2332);
         kevinsRegatta.eventList.add(kevinsEvent);
         ArrayList<Event> events = kevinsRegatta.getEventList();
-        assertTrue(events.get(0).equals(kevinsEvent));;
+        assertTrue(events.get(0).equals(kevinsEvent));
+    }
+
+    @Test
+    public void testAC35Boats() {
+        Regatta kevinsRegatta = new Regatta();
+        kevinsRegatta.isAC35();
+        assertTrue(kevinsRegatta.getCompetitors().get(0).getBoatName().equals("ORACLE TEAM USA"));
+    }
+
+    @Test
+    public void testAC35RaceLength() {
+        Regatta kevinsRegatta = new Regatta();
+        kevinsRegatta.isAC35();
+        assertTrue(kevinsRegatta.totalRaceDistance == 10);
+    }
+
+    @Test
+    public void testAC35Events() {
+        Regatta kevinsRegatta = new Regatta();
+        kevinsRegatta.isAC35();
+        assertTrue(kevinsRegatta.getEventList().get(kevinsRegatta.eventList.size()-1).getEventName().equals("Finish"));
     }
 }
