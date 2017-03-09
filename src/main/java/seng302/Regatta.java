@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Regatta {
 
     private ArrayList<Boat> competitors = new ArrayList<>();
-    private ArrayList<Event> eventList = new ArrayList<>();
+    public ArrayList<Event> eventList = new ArrayList<>();
     public static float totalRaceDistance = 0;
 
 

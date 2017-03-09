@@ -17,7 +17,6 @@ public class EventStorage {
     public EventStorage(String boatName, String eventName, float eventTime, int nextHeading) {
         this.boatName = boatName;
         this.eventName = eventName;
-
         this.eventTime = eventTime;
         this.nextHeading = nextHeading;
     }
