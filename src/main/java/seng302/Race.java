@@ -95,8 +95,13 @@ public class Race {
             } else if (event.eventName == "Start") {
                 System.out.println(String.format("%s has crossed the %s Line! The boat has a heading of: %d degrees.", event.boatName,
                         event.eventName, event.nextHeading));
-            } else {
-                System.out.println(String.format("%s has has rounded %s. The boat has a heading of: %d degrees.", event.boatName,
+            } else if (event.eventName.contains("Gate")) {
+                System.out.println(String.format("%s has rounded the %s. The boat has a heading of: %d degrees.", event.boatName,
+                        event.eventName, event.nextHeading));
+            }
+
+            else {
+                System.out.println(String.format("%s has rounded %s. The boat has a heading of: %d degrees.", event.boatName,
                         event.eventName, event.nextHeading));
             }
             System.out.println();
