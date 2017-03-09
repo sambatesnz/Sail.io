@@ -21,7 +21,7 @@ public class Race {
         if (racingBoats.size() > 0) {
             System.out.println("############################################# \n\nStarting boats in the race:");
             for (Boat boat : racingBoats) {
-                System.out.println(String.format("%s, with a speed of: %f kmph.", boat.getBoatName(), boat.getBoatSpeed()));
+                System.out.println(String.format("%s, with a speed of: %.0f kmph.", boat.getBoatName(), boat.getBoatSpeed()));
             }
         }else {
             System.out.println("No boats in race");
