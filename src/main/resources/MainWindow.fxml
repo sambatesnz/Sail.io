@@ -20,7 +20,7 @@
   </rowConstraints>
    <children>
       <Canvas height="724.0" width="461.0" GridPane.columnIndex="2" />
-      <ScrollPane prefHeight="720.0" prefWidth="200.0" GridPane.columnIndex="1">
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="720.0" prefWidth="200.0" GridPane.columnIndex="1">
          <content>
             <Accordion prefHeight="720.0" prefWidth="275.0">
               <panes>

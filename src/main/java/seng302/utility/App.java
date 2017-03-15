@@ -21,9 +21,11 @@ package seng302.utility;
 //}
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -47,8 +49,13 @@ public class App extends Application {
         primaryStage.setTitle("SailFast - Sprint 2 - Team 4");
         //primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("icon.png")));
         primaryStage.setScene(new Scene(root, 1280, 720));
-        primaryStage.setMinHeight(720);
-        primaryStage.setMinWidth(1280);
+
+        // Gets the screen resolution of the primary screen.
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+        // Sets the primaryStage size as that of the primary screen.
+        primaryStage.setHeight(primaryScreenBounds.getHeight());
+        primaryStage.setWidth(primaryScreenBounds.getWidth());
         primaryStage.show();
     }
 
