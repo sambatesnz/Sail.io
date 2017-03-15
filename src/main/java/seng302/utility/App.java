@@ -1,4 +1,4 @@
-package seng302;
+package seng302.utility;
 
 //public class App
 //{
@@ -46,8 +46,8 @@ public class App extends Application {
 
         primaryStage.setTitle("SailFast - Sprint 2 - Team 4");
         //primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("icon.png")));
-        primaryStage.setScene(new Scene(root, 1280, 750));
-        primaryStage.setMinHeight(750);
+        primaryStage.setScene(new Scene(root, 1280, 720));
+        primaryStage.setMinHeight(720);
         primaryStage.setMinWidth(1280);
         primaryStage.show();
     }
