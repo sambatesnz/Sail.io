@@ -41,7 +41,7 @@ public class MainController {
                 x += 1;
                 y += 2;
 
-                if (x > canvasWidth || y > canvasHeight){
+                if (x > canvasWidth){
                     x = 0;
                     y = 0;
                 }

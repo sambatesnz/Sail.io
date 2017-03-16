@@ -1,7 +1,7 @@
 package seng302;
 
 import org.junit.Test;
-import seng302.utility.EventStorage;
+import seng302.objects.EventStorage;
 
 import static org.junit.Assert.assertTrue;
 

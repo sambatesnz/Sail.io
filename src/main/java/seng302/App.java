@@ -51,7 +51,7 @@ public class App extends Application {
         primaryStage.setScene(new Scene(root, 1280, 720));
 
         // Gets the screen resolution of the primary screen.
-        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getBounds();
 
         // Sets the primaryStage size as that of the primary screen.
         primaryStage.setHeight(primaryScreenBounds.getHeight());
