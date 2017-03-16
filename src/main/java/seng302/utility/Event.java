@@ -1,4 +1,4 @@
-package seng302;
+package seng302.utility;
 
 /**
  * Created by osr13 on 3/03/17.
