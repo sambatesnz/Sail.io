@@ -1,4 +1,4 @@
-package seng302.utility;
+package seng302;
 
 //public class App
 //{
@@ -60,6 +60,10 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+        try {
+            launch(args);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }
