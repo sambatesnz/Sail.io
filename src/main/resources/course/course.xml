@@ -1,0 +1,14 @@
+<config>
+    <compoundMarks>
+        <mark>
+            <type>Gate</type>
+            <latitude>123.45</latitude>
+            <longitude>456.78</longitude>
+        </mark>
+        <mark>
+            <type>Gate</type>
+            <latitude>789.45</latitude>
+            <longitude>1900.78</longitude>
+        </mark>
+    </compoundMarks>
+</config>

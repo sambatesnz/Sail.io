@@ -30,6 +30,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import seng302.controller.MainController;
+import seng302.objects.AppConfig;
+import seng302.objects.CourseCreator;
 
 /**
  * The main class, start everything up and runs it
@@ -60,10 +62,19 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        try {
-            launch(args);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+
+        AppConfig appconfig = new AppConfig();
+        CourseCreator courseCreator = new CourseCreator(appconfig.getProperty(AppConfig.COURSE_FILE_LOCATION));
+
+
+//        CourseCreator courseCreator = new CourseCreator(filname);
+//        ArrayList<CompoundMark> =  courseCreator.comp
+
+
+//        try {
+//            launch(args);
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
     }
 }
