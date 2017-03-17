@@ -10,6 +10,7 @@ public class CompoundMark {
 
     private ArrayList<Point> compoundMarks = new ArrayList<>();
     private String name;
+    int id;
 
 
     class Point{
@@ -28,11 +29,17 @@ public class CompoundMark {
         public double getLongitude() {
             return longitude;
         }
+
+        @Override
+        public String toString() {
+            return "(" + latitude + ", " + longitude + ")";
+        }
     }
 
 
-    private CompoundMark(String name){
+    CompoundMark(String name, int id){
         this.name = name;
+        this.id = id;
     }
 
     private CompoundMark(String name, ArrayList<Point> points){
@@ -44,6 +51,10 @@ public class CompoundMark {
         }
     }
 
+    ArrayList<Point> getPoints(){
+        return this.compoundMarks;
+    }
+
 
     public void addMark(double latitude, double longitude){
         if (this.compoundMarks.size() > 2){
@@ -52,6 +63,16 @@ public class CompoundMark {
             Point point = new Point(latitude, longitude);
             this.compoundMarks.add(point);
         }
+    }
+
+    public String toString(){
+        String out = "";
+        out += "Name: " + this.name + ", ID: " + this.id + " Points: ";
+        for (int i=0; i<this.compoundMarks.size(); i++ ){
+            Point currentPoint = this.compoundMarks.get(i);
+            out += "(" + currentPoint.latitude + ", " + currentPoint.longitude + ")";
+        }
+        return out;
     }
 
 

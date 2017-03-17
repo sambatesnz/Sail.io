@@ -1,14 +1,34 @@
-<config>
+<course>
     <compoundMarks>
-        <mark>
-            <type>Gate</type>
-            <latitude>123.45</latitude>
-            <longitude>456.78</longitude>
-        </mark>
-        <mark>
-            <type>Gate</type>
-            <latitude>789.45</latitude>
-            <longitude>1900.78</longitude>
-        </mark>
+        <compoundMark type="Mark" name="Start" id="1">
+            <mark>
+                <latitude>32.293039</latitude>
+                <longitude>-64.843983</longitude>
+            </mark>
+        </compoundMark>
+        <compoundMark type="Gate" name="Southern Gate" id="2">
+            <mark>
+                <latitude>32.284680</latitude>
+                <longitude>-64.850045</longitude>
+            </mark>
+            <mark>
+                <latitude>32.280164</latitude>
+                <longitude>-64.847591</longitude>
+            </mark>
+        </compoundMark>
+        <compoundMark type="Gate" name="Northern Gate" id="3">
+            <mark>
+                <latitude>32.309693</latitude>
+                <longitude>-64.835249</longitude>
+            </mark>
+            <mark>
+                <latitude>32.308046</latitude>
+                <longitude>-64.831785</longitude>
+            </mark>
+        </compoundMark>
     </compoundMarks>
-</config>
+    <gateOrder>
+        1,2,3,2,3,2,3,2,4
+    </gateOrder>
+</course>
+

@@ -24,13 +24,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import seng302.controller.MainController;
 import seng302.objects.AppConfig;
+import seng302.objects.CompoundMark;
 import seng302.objects.CourseCreator;
 
 /**
@@ -64,7 +66,13 @@ public class App extends Application {
     public static void main(String[] args) {
 
         AppConfig appconfig = new AppConfig();
-        CourseCreator courseCreator = new CourseCreator(appconfig.getProperty(AppConfig.COURSE_FILE_LOCATION));
+        String fileLocation = appconfig.getProperty(AppConfig.COURSE_FILE_LOCATION);
+        CourseCreator courseCreator = new CourseCreator(fileLocation);
+        ArrayList<CompoundMark> myMarks = courseCreator.getCompoundMarks();
+
+        System.out.println(myMarks);
+        System.out.println(courseCreator.getGateOrderForRace());
+
 
 
 //        CourseCreator courseCreator = new CourseCreator(filname);
