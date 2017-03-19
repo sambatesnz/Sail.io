@@ -1,19 +1,19 @@
 <course>
     <compoundMarks>
-        <compoundMark type="Mark" name="Start" id="1">
+        <compoundMark type="Gate" name="Start" id="1">
+            <mark>
+                <latitude>32.296577</latitude>
+                <longitude>-64.854304</longitude>
+            </mark>
+            <mark>
+                <latitude>32.293771</latitude>
+                <longitude>-64.855242</longitude>
+            </mark>
+        </compoundMark>
+        <compoundMark type="Mark" name="Mark" id="2">
             <mark>
                 <latitude>32.293039</latitude>
                 <longitude>-64.843983</longitude>
-            </mark>
-        </compoundMark>
-        <compoundMark type="Gate" name="Southern Gate" id="2">
-            <mark>
-                <latitude>32.284680</latitude>
-                <longitude>-64.850045</longitude>
-            </mark>
-            <mark>
-                <latitude>32.280164</latitude>
-                <longitude>-64.847591</longitude>
             </mark>
         </compoundMark>
         <compoundMark type="Gate" name="Northern Gate" id="3">
@@ -26,9 +26,35 @@
                 <longitude>-64.831785</longitude>
             </mark>
         </compoundMark>
+        <compoundMark type="Gate" name="Southern Gate" id="4">
+            <mark>
+                <latitude>32.284680</latitude>
+                <longitude>-64.850045</longitude>
+            </mark>
+            <mark>
+                <latitude>32.280164</latitude>
+                <longitude>-64.847591</longitude>
+            </mark>
+        </compoundMark>
+        <compoundMark type="Gate" name="Finish" id="5">
+            <mark>
+                <latitude>32.317379</latitude>
+                <longitude>-64.839291</longitude>
+            </mark>
+            <mark>
+                <latitude>32.317257</latitude>
+                <longitude>-64.836260</longitude>
+            </mark>
+        </compoundMark>
     </compoundMarks>
     <gateOrder>
-        1,2,3,2,3,2,3,2,4
+        1,2,3,4,3,5
     </gateOrder>
 </course>
+
+<!--Things that will eventually be added:
+        - Wind (str/direction)
+        - Boats ( i.e. who is competing.)
+        - Boat Speeds, Names, etc.
+        - Other?-->
 

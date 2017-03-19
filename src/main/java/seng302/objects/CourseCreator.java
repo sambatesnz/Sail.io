@@ -94,11 +94,11 @@ public class CourseCreator {
         String formattedGateOrders = gateOrders.replaceAll("\\s+", "");
         List<String> gateOrdersAsStrings = Arrays.asList(formattedGateOrders.split(","));
 
-        ArrayList<Integer> kevin = new ArrayList<>(); //Ollie was here
+        ArrayList<Integer> courseOrder = new ArrayList<>(); //Ollie was here, but he has now changed as a person.
         for (String s: gateOrdersAsStrings){
-            kevin.add(Integer.parseInt(s));
+            courseOrder.add(Integer.parseInt(s));
         }
-        return kevin;
+        return courseOrder;
     }
 
     /**
@@ -130,8 +130,8 @@ public class CourseCreator {
         String name = markElement.getAttribute(MARK_NAME);
         String type = markElement.getAttribute(MARK_TYPE);
         int id = Integer.parseInt(markElement.getAttribute(MARK_ID));
-        double latitude=0;
-        double longitude=0;
+        double latitude;
+        double longitude;
         CompoundMark mark = new CompoundMark(name, id);
 
         //We know a mark is always going to have a lat and long
@@ -145,12 +145,5 @@ public class CourseCreator {
             mark.addMark(latitude, longitude);
         }
         return mark;
-    }
-
-
-
-    String doStuff(){
-        System.out.println("nice !");
-        return "WOW ";
     }
 }

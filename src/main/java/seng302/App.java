@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import seng302.controller.MainController;
 import seng302.objects.AppConfig;
 import seng302.objects.CompoundMark;
+import seng302.objects.Course;
 import seng302.objects.CourseCreator;
 
 /**
@@ -69,20 +70,14 @@ public class App extends Application {
         String fileLocation = appconfig.getProperty(AppConfig.COURSE_FILE_LOCATION);
         CourseCreator courseCreator = new CourseCreator(fileLocation);
         ArrayList<CompoundMark> myMarks = courseCreator.getCompoundMarks();
+        Course raceCourse = new Course("Kevin", myMarks);
 
-        System.out.println(myMarks);
-        System.out.println(courseCreator.getGateOrderForRace());
+        for (CompoundMark mark : raceCourse.getCourseCompoundMarks()) {
+            System.out.println(mark);
+        }
 
+        float raceDist = raceCourse.generateTotalCourseLength(myMarks, courseCreator.getGateOrderForRace());
 
-
-//        CourseCreator courseCreator = new CourseCreator(filname);
-//        ArrayList<CompoundMark> =  courseCreator.comp
-
-
-//        try {
-//            launch(args);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
+        System.out.printf("Total Race Dist = %.2fkm.", raceDist);
     }
 }
