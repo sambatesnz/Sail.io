@@ -18,8 +18,6 @@ public class Race {
     public Race (ArrayList<CompoundMark> compoundMarks) {
         this.raceCompoundMarks =  compoundMarks;
         GenerateBoats(6);
-        System.out.println(racingBoats);
-        System.out.println(slowestBoatSpeed);
     }
 
     public void GenerateBoats(int numBoats){
@@ -44,33 +42,6 @@ public class Race {
         }
     }
 
-//    /**
-//     * Display the current Boats names that are in the race to std output
-//     */
-//    public void displayStarters() {
-//        if (racingBoats.size() > 0) {
-//            System.out.println("############################################# \n\nStarting boats in the race:");
-//            for (Boat boat : racingBoats) {
-//                System.out.println(String.format("%s, with a speed of: %.0f kmph.", boat.getBoatName(), boat.getBoatSpeed()));
-//            }
-//        }else {
-//            System.out.println("No boats in race");
-//        }
-//    }
-//
-//    /**
-//     * Display the the finishing order of boats in the current race to std output
-//     */
-//    public void displayFinishers() {
-//        if (racingBoats.size() > 0) {
-//            System.out.println();
-//            System.out.println("############################################# \n\nFinishing Order:");
-//            for (int i = 0; i < finishingOrder.size(); i++) {
-//                System.out.printf("%d. %s\n", i+1, finishingOrder.get(i));
-//            }
-//            System.out.println("\n#############################################");
-//        }
-//    }
 
     /**
      * Adds the boats in the current race from the regatta
@@ -91,52 +62,6 @@ public class Race {
         }
     }
 
-//    /**
-//     * Reports the events that occur in a race, and then output them in order.
-//     * Events are reported with scaled time separations based on the user-inputted racePlaybackSpeed.
-//     */
-//    public void reportEventPositions() {
-//        System.out.println("\n#############################################\n");
-//
-//        // ArrayList of events in sorted form.
-//        ArrayList<EventStorage> orderedRaceEvents = generateEventQueue();
-//        float prevEventTime = 0;
-//
-//        for (EventStorage event : orderedRaceEvents){
-//
-//            // Delay the requisite time.
-//            if (event.eventTime > 0){
-//                float delayLength = event.eventTime - prevEventTime;
-//
-//                float delay = 60000 * playbackSpeedMultiplier * delayLength * 60;
-//
-//                try {
-//                    Thread.sleep((long) delay);
-//                } catch (InterruptedException ie) {
-//                    ie.printStackTrace();
-//                }
-//            }
-//            prevEventTime = event.eventTime;
-//
-//            // Report the event.
-//            if (event.eventName == "Finish"){
-//                System.out.println(String.format("%s has crossed the %s Line!", event.boatName, event.eventName));
-//                finishingOrder.add(event.boatName);
-//            } else if (event.eventName == "Start") {
-//                System.out.println(String.format("%s has crossed the %s Line! The boat has a heading of: %d degrees.", event.boatName,
-//                        event.eventName, event.nextHeading));
-//            } else if (event.eventName.contains("Gate")) {
-//                System.out.println(String.format("%s has rounded the %s. The boat has a heading of: %d degrees.", event.boatName,
-//                        event.eventName, event.nextHeading));
-//            }
-//
-//            else {
-//                System.out.println(String.format("%s has rounded %s. The boat has a heading of: %d degrees.", event.boatName,
-//                        event.eventName, event.nextHeading));
-//            }
-//            System.out.println();
-//        }
-//    }
 
     /**
      * Gets a playback duration from std input,
@@ -160,32 +85,10 @@ public class Race {
         }
         playbackSpeedMultiplier = racePlaybackDuration / (60*(totalRaceDistance / slowestBoatSpeed));
     }
-//
-//    public void addEvents(ArrayList<Event> events) {
-//        this.raceEvents = events;
-//    }
-
 
     public ArrayList<CompoundMark> getRaceCompoundMarks() {
         return raceCompoundMarks;
     }
-
-//    private ArrayList<EventStorage> generateEventQueue(){
-//
-//        // Need to create an arraylist that can take the Event.name, boat.name, time, and event.nextHeading.
-//        ArrayList<EventStorage> events = new ArrayList<>();
-//
-//        float cumulativeRaceDist = 0;
-//        for (Event event : raceEvents) {
-//            cumulativeRaceDist += event.distToPrevEvent;
-//            for (Boat boat: racingBoats) {
-//                float eventTime = cumulativeRaceDist/boat.getBoatSpeed();
-//                events.add(new EventStorage(boat.getBoatName(), event.getEventName(), eventTime, event.nextHeading));
-//            }
-//        }
-//        Collections.sort(events, (e1, e2) -> String.valueOf(e1.getEventTime()).compareTo(String.valueOf(e2.getEventTime())));
-//        return events;
-//    }
 
 
     public ArrayList<Boat> getRacingBoats() {
