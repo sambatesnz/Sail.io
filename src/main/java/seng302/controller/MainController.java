@@ -3,7 +3,7 @@ package seng302.controller;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
-import seng302.objects.RaceAnimationTimer;
+import seng302.Model.RaceAnimationTimer;
 
 /**
  * Created by Justin on 15-Mar-17.
