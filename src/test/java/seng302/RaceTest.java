@@ -1,10 +1,10 @@
 package seng302;
 
 import org.junit.Test;
-import seng302.utility.Boat;
-import seng302.utility.Event;
-import seng302.utility.Race;
-import seng302.utility.Regatta;
+import seng302.objects.Boat;
+import seng302.objects.Event;
+import seng302.objects.Race;
+import seng302.objects.Regatta;
 
 import java.util.ArrayList;
 
