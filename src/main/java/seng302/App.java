@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 import seng302.Model.*;
 import seng302.controller.MainController;
-import seng302.objects.*;
+import seng302.Model.*;
 
 /**
  * The main class, start everything up and runs it

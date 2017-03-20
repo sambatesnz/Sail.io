@@ -12,7 +12,7 @@ public class CompoundMark {
     int id;
 
 
-    class Point{
+    public class Point{
         double latitude;
         double longitude;
 
