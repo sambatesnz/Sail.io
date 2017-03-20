@@ -1,4 +1,4 @@
-package seng302.objects;
+package seng302.Model;
 
 /**
  * Created by osr13 on 2/03/17.

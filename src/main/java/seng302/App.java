@@ -31,6 +31,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import seng302.Model.*;
 import seng302.controller.MainController;
 import seng302.objects.*;
 

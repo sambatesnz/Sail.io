@@ -1,7 +1,6 @@
-package seng302.objects;
+package seng302.Model;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * Created by osr13 on 17/03/17.
