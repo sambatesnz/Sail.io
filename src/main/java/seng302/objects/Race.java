@@ -1,6 +1,10 @@
 package seng302.objects;
 
+import javafx.scene.paint.Color;
+
 import java.util.*;
+
+import static java.util.Arrays.asList;
 
 /**
  * Created by tjg73 on 2/03/17.
@@ -14,6 +18,7 @@ public class Race {
     private float playbackSpeedMultiplier = -1;
     private float slowestBoatSpeed = Integer.MAX_VALUE;
     private float totalRaceDistance;
+    private ArrayList<Color> boatColors = new ArrayList<>(asList(Color.CHOCOLATE, Color.GREEN, Color.CYAN, Color.GOLD, Color.DARKGREY, Color.PURPLE));
 
     public Race (ArrayList<CompoundMark> compoundMarks) {
         this.raceCompoundMarks =  compoundMarks;

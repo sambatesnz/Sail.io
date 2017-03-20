@@ -2,6 +2,7 @@ package seng302.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.Pane;
 import seng302.objects.RaceAnimationTimer;
 
 /**
@@ -10,11 +11,13 @@ import seng302.objects.RaceAnimationTimer;
 public class MainController {
 
     @FXML private Canvas mainCanvas;
-    final long startNanoTime = System.nanoTime();
+    @FXML private Pane boatPane;
+
 
     public void initialize(){
 
-        RaceAnimationTimer animation = new RaceAnimationTimer(mainCanvas);
+
+        RaceAnimationTimer animation = new RaceAnimationTimer();
         animation.start();
 
     }
