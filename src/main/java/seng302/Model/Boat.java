@@ -8,6 +8,11 @@ public class Boat {
     private float boatSpeed = 0;
 
 
+    /**
+     * Basic Constructor for Boat objects.
+     * @param name
+     * @param speed
+     */
     public Boat(String name, float speed) {
         this.boatName = name;
         this.boatSpeed = speed;

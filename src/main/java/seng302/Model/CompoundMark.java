@@ -9,9 +9,22 @@ public class CompoundMark {
 
     private ArrayList<Point> compoundMarks = new ArrayList<>();
     private String name;
-    int id;
+    private int id;
 
+    private CompoundMark(String name, ArrayList<Point> points, Integer id){
+        this.name = name;
+        this.id = id;
+        if (this.compoundMarks.size() > 2){
+            throw new Error("cannot construct A compound mark with more than 2 points");
+        } else {
+            this.compoundMarks = points;
+        }
+    }
 
+    /**
+     * Points, which should possibly be named Coordinates, are the point at which a Compounds Marks is found
+     * on a race course. Compound Marks can have one or two Points.
+     */
     public class Point{
         double latitude;
         double longitude;
@@ -28,38 +41,17 @@ public class CompoundMark {
         public double getLongitude() {
             return longitude;
         }
-
         @Override
         public String toString() {
             return "(" + latitude + ", " + longitude + ")";
         }
     }
 
-
-    public ArrayList<Point> getCompoundMarks() {
-        return compoundMarks;
-    }
-
-    CompoundMark(String name, int id){
-        this.name = name;
-        this.id = id;
-
-    }
-
-    private CompoundMark(String name, ArrayList<Point> points){
-        this.name = name;
-        if (this.compoundMarks.size() > 2){
-            throw new Error("cannot construct A compound mark with more than 2 points");
-        } else {
-            this.compoundMarks = points;
-        }
-    }
-
-    public ArrayList<Point> getPoints(){
-        return this.compoundMarks;
-    }
-
-
+    /**
+     * Adds a new point to a Compound Mark.
+     * @param latitude
+     * @param longitude
+     */
     public void addMark(double latitude, double longitude){
         if (this.compoundMarks.size() > 2){
             throw new Error("cannot add a compound mark as there is already 2 points");
@@ -69,16 +61,12 @@ public class CompoundMark {
         }
     }
 
-    public String toString(){
-        String out = "";
-        out += "Name: " + this.name + ", ID: " + this.id + " Points: ";
-        for (int i=0; i<this.compoundMarks.size(); i++ ){
-            Point currentPoint = this.compoundMarks.get(i);
-            out += "(" + currentPoint.latitude + ", " + currentPoint.longitude + ")";
-        }
-        return out;
-    }
-
+    /**
+     * Because Gates have a mark at either end, we average these points to provide a single target location for
+     * Boats to get to.
+     * @param gate
+     * @return
+     */
     public CompoundMark findAverageGate(CompoundMark gate){
         CompoundMark outputGate = gate;
         if (gate.compoundMarks.size() == 2) {
@@ -89,9 +77,34 @@ public class CompoundMark {
             Point meanPoint = new Point(meanLat, meanLong);
             ArrayList<Point> averagePoint = new ArrayList<>();
             averagePoint.add(meanPoint);
-            outputGate = new CompoundMark(gate.name, averagePoint);
+            outputGate = new CompoundMark(gate.name, averagePoint, gate.id);
         }
         return outputGate;
     }
 
+
+    public ArrayList<Point> getCompoundMarks() {
+        return compoundMarks;
+    }
+
+    /**
+     * Lighter Constructor, for creating compound marks on the fly and adding their points later.
+     * @param name
+     * @param id
+     */
+    public CompoundMark(String name, int id){
+        this.name = name;
+        this.id = id;
+    }
+
+
+    public String toString(){
+        String out = "";
+        out += "Name: " + this.name + ", ID: " + this.id + " Points: ";
+        for (int i=0; i<this.compoundMarks.size(); i++ ){
+            Point currentPoint = this.compoundMarks.get(i);
+            out += "(" + currentPoint.latitude + ", " + currentPoint.longitude + ")";
+        }
+        return out;
+    }
 }

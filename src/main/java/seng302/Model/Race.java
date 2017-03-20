@@ -15,11 +15,19 @@ public class Race {
     private float slowestBoatSpeed = Integer.MAX_VALUE;
     private float totalRaceDistance;
 
+    /**
+     * Basic constructor for the Race. this may be subject to change at some point.
+     * @param compoundMarks
+     */
     public Race (ArrayList<CompoundMark> compoundMarks) {
         this.raceCompoundMarks =  compoundMarks;
         generateBoats(6);
     }
 
+    /**
+     * Given a number of boats, generate a number of random boats to participate in the race.
+     * @param numBoats
+     */
     public void generateBoats(int numBoats){
         racingBoats.clear();
         ArrayList<Boat> allBoats = new ArrayList<>();
@@ -108,7 +116,7 @@ public class Race {
         return slowestBoatSpeed;
     }
 
-    public void setSlowestBoatSpeed(float slowestBoatSpeed) {
+    private void setSlowestBoatSpeed(float slowestBoatSpeed) {
         this.slowestBoatSpeed = slowestBoatSpeed;
     }
 }
