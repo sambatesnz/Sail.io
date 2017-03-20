@@ -1,7 +1,7 @@
 //package seng302;
 //
 //import org.junit.Test;
-//import seng302.objects.Boat;
+//import Boat;
 //
 //import static org.junit.Assert.assertTrue;
 //

@@ -1,7 +1,8 @@
 package seng302.objects;
 
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import seng302.Model.CompoundMark;
+import seng302.Model.CourseCreator;
 
 import java.util.ArrayList;
 

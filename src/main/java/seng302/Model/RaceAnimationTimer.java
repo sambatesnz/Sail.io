@@ -1,4 +1,4 @@
-package seng302.objects;
+package seng302.Model;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
