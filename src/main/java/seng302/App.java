@@ -72,12 +72,7 @@ public class App extends Application {
         ArrayList<CompoundMark> myMarks = courseCreator.getCompoundMarks();
         Course raceCourse = new Course("Kevin", myMarks);
 
-        for (CompoundMark mark : raceCourse.getCourseCompoundMarks()) {
-            System.out.println(mark);
-        }
-
         float raceDist = raceCourse.generateTotalCourseLength(myMarks, courseCreator.getGateOrderForRace());
-
         System.out.printf("Total Race Dist = %.2fkm.", raceDist);
     }
 }

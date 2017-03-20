@@ -5,7 +5,6 @@ package seng302.objects;
  */
 public class Boat {
     private String boatName;
-    private int raceEvent = 0;
     private float boatSpeed = 0;
 
 

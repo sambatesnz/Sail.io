@@ -1,4 +1,7 @@
 <course>
+    <name>
+        America's Cup 35
+    </name>
     <compoundMarks>
         <compoundMark type="Gate" name="Start" id="1">
             <mark>
