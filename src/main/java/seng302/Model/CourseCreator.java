@@ -44,6 +44,7 @@ public class CourseCreator {
      */
     private Document loadCourseXmlFile(String relativeFilePath) {
         String basePath = new File("").getAbsolutePath();
+
         File configFile = new File(basePath + relativeFilePath);
 
 

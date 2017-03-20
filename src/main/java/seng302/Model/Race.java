@@ -17,10 +17,10 @@ public class Race {
 
     public Race (ArrayList<CompoundMark> compoundMarks) {
         this.raceCompoundMarks =  compoundMarks;
-        GenerateBoats(6);
+        generateBoats(6);
     }
 
-    public void GenerateBoats(int numBoats){
+    public void generateBoats(int numBoats){
         racingBoats.clear();
         ArrayList<Boat> allBoats = new ArrayList<>();
         allBoats.add(new Boat("ORACLE TEAM USA", 50));
@@ -30,18 +30,18 @@ public class Race {
         allBoats.add(new Boat("Land Rover BAR", 70));
         allBoats.add(new Boat("SoftBank Team Japan", 75));
 
-        slowestBoatSpeed = Integer.MAX_VALUE;
+        setSlowestBoatSpeed(Integer.MAX_VALUE);
 
         Collections.shuffle(allBoats);
         for (int i=0; i< numBoats; i++){
             racingBoats.add(allBoats.get(i));
+
             float boatSpeed = allBoats.get(i).getBoatSpeed();
-            if (slowestBoatSpeed > boatSpeed) {
-                slowestBoatSpeed = boatSpeed;
+            if (getSlowestBoatSpeed() > boatSpeed) {
+                setSlowestBoatSpeed(boatSpeed);
             }
         }
     }
-
 
     /**
      * Adds the boats in the current race from the regatta
@@ -54,14 +54,13 @@ public class Race {
             for (int i = 0; i < numberOfBoats; i++){
                 int nextBoatToAdd = random.nextInt(competitors.size());
                 racingBoats.add(competitors.get(nextBoatToAdd));
-                if (competitors.get(nextBoatToAdd).getBoatSpeed() < slowestBoatSpeed){
-                    slowestBoatSpeed = competitors.get(nextBoatToAdd).getBoatSpeed();
+                if (competitors.get(nextBoatToAdd).getBoatSpeed() < getSlowestBoatSpeed()){
+                    setSlowestBoatSpeed(competitors.get(nextBoatToAdd).getBoatSpeed());
                 }
                 competitors.remove(nextBoatToAdd);
             }
         }
     }
-
 
     /**
      * Gets a playback duration from std input,
@@ -83,8 +82,9 @@ public class Race {
                 System.out.println("Please ensure that the number is a valid race duration (0, 1 or 5 minutes long).");
             }
         }
-        playbackSpeedMultiplier = racePlaybackDuration / (60*(totalRaceDistance / slowestBoatSpeed));
+        playbackSpeedMultiplier = racePlaybackDuration / (60*(totalRaceDistance / getSlowestBoatSpeed()));
     }
+
 
     public ArrayList<CompoundMark> getRaceCompoundMarks() {
         return raceCompoundMarks;
@@ -99,7 +99,16 @@ public class Race {
         return finishingOrder;
     }
 
+
     public void setRacePlaybackDuration(int racePlaybackDuration) {
         this.racePlaybackDuration = racePlaybackDuration;
+    }
+
+    public float getSlowestBoatSpeed() {
+        return slowestBoatSpeed;
+    }
+
+    public void setSlowestBoatSpeed(float slowestBoatSpeed) {
+        this.slowestBoatSpeed = slowestBoatSpeed;
     }
 }
