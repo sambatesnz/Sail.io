@@ -37,8 +37,6 @@ public class CourseCreatorTest {
         ArrayList<CompoundMark> marks = courseCreator.getCompoundMarks();
         assertEquals("There should only be one mark on this course" ,marks.size(), 1);
         CompoundMark mark1 = marks.get(0);
-        System.out.println(mark1);
-        System.out.println(mark1.getPoints());
         ArrayList<CompoundMark.Point> points = mark1.getPoints();
         CompoundMark.Point point = points.get(0);
         assertTrue(point.getLatitude() == 32.293039);
