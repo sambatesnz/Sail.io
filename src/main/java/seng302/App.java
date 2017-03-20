@@ -24,12 +24,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import seng302.controller.MainController;
+import seng302.objects.AppConfig;
+import seng302.objects.CompoundMark;
+import seng302.objects.Course;
+import seng302.objects.CourseCreator;
 
 /**
  * The main class, start everything up and runs it
@@ -51,7 +56,7 @@ public class App extends Application {
         primaryStage.setScene(new Scene(root, 1280, 720));
 
         // Gets the screen resolution of the primary screen.
-        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getBounds();
 
         // Sets the primaryStage size as that of the primary screen.
         primaryStage.setHeight(primaryScreenBounds.getHeight());
@@ -60,10 +65,14 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        try {
-            launch(args);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+
+        AppConfig appconfig = new AppConfig();
+        String fileLocation = appconfig.getProperty(AppConfig.COURSE_FILE_LOCATION);
+        CourseCreator courseCreator = new CourseCreator(fileLocation);
+        ArrayList<CompoundMark> myMarks = courseCreator.getCompoundMarks();
+        Course raceCourse = new Course("Kevin", myMarks);
+
+        float raceDist = raceCourse.generateTotalCourseLength(myMarks, courseCreator.getGateOrderForRace());
+        System.out.printf("Total Race Dist = %.2fkm.", raceDist);
     }
 }
