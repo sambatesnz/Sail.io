@@ -22,4 +22,8 @@ public class Boat {
         return boatSpeed;
     }
 
+    public String toString(){
+        return this.boatName;
+    }
+
 }
