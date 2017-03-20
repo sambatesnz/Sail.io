@@ -12,7 +12,7 @@ import static java.util.Arrays.asList;
 /**
  * Created by tjg73 on 17/03/17.
  */
-public class BoatAnimation extends AnimationTimer {
+public class RaceAnimationTimer extends AnimationTimer {
 
     private double x = 0;
     private double y = 0;
@@ -22,7 +22,7 @@ public class BoatAnimation extends AnimationTimer {
     private GraphicsContext gc;
     private ArrayList<Color> boatColors = new ArrayList<>(asList(Color.CHOCOLATE, Color.GREEN, Color.CYAN, Color.GOLD, Color.DARKGREY, Color.PURPLE));
 
-    public BoatAnimation(Canvas canvas){
+    public RaceAnimationTimer(Canvas canvas){
         currentCanvas = canvas;
         gc = currentCanvas.getGraphicsContext2D();
         canvasHeight = gc.getCanvas().getHeight();

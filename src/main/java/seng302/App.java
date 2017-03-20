@@ -74,5 +74,11 @@ public class App extends Application {
 
         float raceDist = raceCourse.generateTotalCourseLength(myMarks, courseCreator.getGateOrderForRace());
         System.out.printf("Total Race Dist = %.2fkm.", raceDist);
+
+        try {
+            launch(args);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

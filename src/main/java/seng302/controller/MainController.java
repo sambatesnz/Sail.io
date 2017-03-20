@@ -1,9 +1,8 @@
 package seng302.controller;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
-import seng302.objects.BoatAnimation;
+import seng302.objects.RaceAnimationTimer;
 
 /**
  * Created by Justin on 15-Mar-17.
@@ -15,7 +14,7 @@ public class MainController {
 
     public void initialize(){
 
-        BoatAnimation animation = new BoatAnimation(mainCanvas);
+        RaceAnimationTimer animation = new RaceAnimationTimer(mainCanvas);
         animation.start();
 
     }
