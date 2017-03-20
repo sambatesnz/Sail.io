@@ -14,6 +14,7 @@ package seng302;
 //        americasCupRace.addRacingBoats(6, americasCup.getCompetitors());
 //        americasCupRace.addEvents(americasCup.getEventList());
 //        americasCupRace.setRacePlaybackDuration();
+
 //        americasCupRace.displayStarters();
 //        americasCupRace.reportEventPositions();
 //        americasCupRace.displayFinishers();
@@ -30,11 +31,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import seng302.Model.*;
 import seng302.controller.MainController;
-import seng302.objects.AppConfig;
-import seng302.objects.CompoundMark;
-import seng302.objects.Course;
-import seng302.objects.CourseCreator;
+import seng302.Model.*;
 
 /**
  * The main class, start everything up and runs it
@@ -73,6 +72,9 @@ public class App extends Application {
         Course raceCourse = new Course("Kevin", myMarks);
 
         float raceDist = raceCourse.generateTotalCourseLength(myMarks, courseCreator.getGateOrderForRace());
+
+        Race race = new Race(myMarks);
+
         System.out.printf("Total Race Dist = %.2fkm.", raceDist);
 
         try {

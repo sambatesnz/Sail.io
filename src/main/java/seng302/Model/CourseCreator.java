@@ -1,7 +1,6 @@
-package seng302.objects;
+package seng302.Model;
 
 
-import com.sun.deploy.security.ValidationState;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -12,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
 public class CourseCreator {
@@ -46,6 +44,7 @@ public class CourseCreator {
      */
     private Document loadCourseXmlFile(String relativeFilePath) {
         String basePath = new File("").getAbsolutePath();
+
         File configFile = new File(basePath + relativeFilePath);
 
 
