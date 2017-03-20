@@ -3,25 +3,29 @@ package seng302.Model;
 import java.util.ArrayList;
 
 /**
- * Created by osr13 on 20/03/17.
+ * Holds all the points that Boats must visit on a course, and the order in which they must do so. Also contains many
+ * Math-based
  */
 public class Course {
     private String courseName;
     private ArrayList<CompoundMark> courseCompoundMarks = new ArrayList<>();
 
+    /**
+     * Constructor.
+     * @param courseName
+     * @param courseCompoundMarks
+     */
     public Course(String courseName, ArrayList<CompoundMark> courseCompoundMarks) {
         this.courseCompoundMarks = courseCompoundMarks;
         this.courseName = courseName;
     }
 
-    public String getCourseName() {
-        return courseName;
-    }
-
-    public ArrayList<CompoundMark> getCourseCompoundMarks() {
-        return courseCompoundMarks;
-    }
-
+    /**
+     * Calculates the distance between two marks.
+     * @param mark1
+     * @param mark2
+     * @return
+     */
     private double findDistBetweenCompoundMarks(CompoundMark mark1, CompoundMark mark2) {
         if (mark1.getCompoundMarks().size() == 2) {
             mark1 = mark1.findAverageGate(mark1);
@@ -37,6 +41,15 @@ public class Course {
         return distance(lat1, long1, lat2, long2, "K");
     }
 
+    /**
+     * Calculates the distance between two Compound Marks.
+     * @param lat1
+     * @param lon1
+     * @param lat2
+     * @param lon2
+     * @param unit
+     * @return
+     */
     private static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
@@ -51,14 +64,30 @@ public class Course {
         return (dist);
     }
 
+    /**
+     * Converts degrees to radians.
+     * @param deg
+     * @return degrees in their equivalent radians.
+     */
     private static double deg2rad(double deg) {
         return (deg * Math.PI / 180.0);
     }
 
+    /**
+     * Converts radians to degrees.
+     * @param rad
+     * @return
+     */
     private static double rad2deg(double rad) {
         return (rad * 180 / Math.PI);
     }
 
+    /**
+     * Generates a heading based on the the new direction that the boat is heading.
+     * @param start
+     * @param dest
+     * @return
+     */
     private double findHeading(CompoundMark start, CompoundMark dest) {
         double bearing = 0;
         if (start.getCompoundMarks().size() > 1) {
@@ -77,6 +106,12 @@ public class Course {
         return Math.atan2(varx, vary);
     }
 
+    /**
+     * Iterates through the entire course to find the total length of the race.
+     * @param courseCompoundMarks
+     * @param courseOrder
+     * @return
+     */
     public float generateTotalCourseLength(ArrayList<CompoundMark> courseCompoundMarks, ArrayList<Integer> courseOrder){
         float cumulativeCourseLengthDistance = 0;
 
@@ -84,6 +119,14 @@ public class Course {
             cumulativeCourseLengthDistance += findDistBetweenCompoundMarks(courseCompoundMarks.get(i - 1), courseCompoundMarks.get(i));
         }
         return cumulativeCourseLengthDistance;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public ArrayList<CompoundMark> getCourseCompoundMarks() {
+        return courseCompoundMarks;
     }
 
 }
