@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import java.lang.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
@@ -60,10 +61,17 @@
             </Accordion>
          </content>
       </ScrollPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+      <AnchorPane GridPane.columnIndex="1">
          <children>
-            <Canvas fx:id="mainCanvas" height="724.0" width="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.fillHeight="" GridPane.fillWidth=""/>
+            <Canvas fx:id="mainCanvas" height="652.0" width="703.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.columnIndex="1">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+            </Canvas>
          </children>
+         <cursor>
+            <Cursor fx:constant="CROSSHAIR" />
+         </cursor>
       </AnchorPane>
    </children>
 </GridPane>

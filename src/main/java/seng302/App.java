@@ -39,11 +39,24 @@ import seng302.controller.MainController;
  */
 public class App extends Application {
 
+    private static Stage primaryStage; // **Declare static Stage**
+
+    private void setPrimaryStage(Stage stage) {
+        App.primaryStage = stage;
+    }
+
+    static public Stage getPrimaryStage() {
+        return App.primaryStage;
+    }
+
     /**
      * Loads and starts the GUI main window
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
+
+        setPrimaryStage(primaryStage);
+
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("MainWindow.fxml"));
         Parent root = loader.load(); // throws IOException
 
@@ -55,6 +68,8 @@ public class App extends Application {
 
         // Gets the screen resolution of the primary screen.
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getBounds();
+
+
 
         // Sets the primaryStage size as that of the primary screen.
         primaryStage.setHeight(primaryScreenBounds.getHeight());
