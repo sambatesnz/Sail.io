@@ -71,7 +71,7 @@ public class App extends Application {
         Parent root = loader.load(); // throws IOException
 
         MainController mainWindowController = loader.getController();
-        primaryStage.setScene(new Scene(root, 1280, 720));
+        primaryStage.setScene(new Scene(root, primaryStage.getWidth(), primaryStage.getHeight()));
 
         mainWindowController.displayDots();
 

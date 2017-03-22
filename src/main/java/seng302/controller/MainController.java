@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
@@ -26,25 +27,16 @@ import static java.util.Arrays.asList;
 public class MainController {
 
     @FXML private Canvas mainCanvas;
-    @FXML private AnchorPane boatAnchorPane;
+//    @FXML private AnchorPane boatAnchorPane;
     @FXML private GridPane boatGridPane;
-    @FXML private Pane coursePane;
-
 
     public void initialize(){
 
         RaceAnimationTimer animation = new RaceAnimationTimer();
         animation.start();
 
-        Stage primaryStage = App.getPrimaryStage();
-
-        Rectangle2D primaryScreenBounds = Screen.getPrimary().getBounds();
-        System.out.println("\nPrimary Screen Bounds: " + Screen.getPrimary().getBounds());
-
-        //The solution is to bind the dimensions of the canvas to the dimensions of the primary stage
-        mainCanvas.widthProperty().bind(primaryStage.widthProperty());
-        mainCanvas.heightProperty().bind(primaryStage.heightProperty());
-
+        mainCanvas.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
+        mainCanvas.setWidth(Screen.getPrimary().getVisualBounds().getWidth() * 0.8);
     }
 
     public void displayDots() {
@@ -53,31 +45,42 @@ public class MainController {
 
         GraphicsContext gc= mainCanvas.getGraphicsContext2D();
 
+        gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+
         System.out.println("BoatGridPaneWidth: " + boatGridPane.getWidth());
-        System.out.println("AnchorPaneWidth: " + boatAnchorPane.widthProperty());
+//        System.out.println("AnchorPaneWidth: " + boatAnchorPane.widthProperty());
         System.out.println("canvasWidth: " + gc.getCanvas().getWidth());
+
 
         new AnimationTimer() {
             double x = 0;
             double y = 0;
 
             double canvasWidth = gc.getCanvas().getWidth();
+
             double canvasHeight = gc.getCanvas().getHeight();
 
             public void handle(long currentNanoTime) {
                 gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+                gc.setFill(Color.LIGHTCYAN);
+                gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+                gc.setFill(Color.GREEN);
+                gc.fillRect(0, 0, 16, 16);
 
-                x += 1;
-                y += 2;
 
-                if (x > canvasWidth) {
+                x += 2;
+                y += 1;
+
+                if (x > canvasWidth || y > canvasHeight || y > canvasWidth || x > canvasHeight) {
                     x = 0;
                     y = 0;
                 }
                 gc.setFill(boatColors.get(3));
-                gc.fillOval(x, y, 15, 15);
-                gc.setFill(boatColors.get(2));
                 gc.fillOval(y, x, 15, 15);
+                gc.setFill(boatColors.get(2));
+                gc.fillOval(x, y, 15, 15);
+
+
 
 
             }
