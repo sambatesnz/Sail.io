@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
@@ -25,7 +26,8 @@ import static java.util.Arrays.asList;
 public class MainController {
 
     @FXML private Canvas mainCanvas;
-    @FXML private Pane boatPane;
+    @FXML private AnchorPane boatAnchorPane;
+    @FXML private GridPane boatGridPane;
     @FXML private Pane coursePane;
 
 
@@ -34,33 +36,26 @@ public class MainController {
         RaceAnimationTimer animation = new RaceAnimationTimer();
         animation.start();
 
-
-
         Stage primaryStage = App.getPrimaryStage();
 
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getBounds();
+        System.out.println("\nPrimary Screen Bounds: " + Screen.getPrimary().getBounds());
 
-        //The solution is to bind the dimensions of the canvas to the canvas of the primary stage
+        //The solution is to bind the dimensions of the canvas to the dimensions of the primary stage
         mainCanvas.widthProperty().bind(primaryStage.widthProperty());
         mainCanvas.heightProperty().bind(primaryStage.heightProperty());
 
+    }
 
-        /**
-         * Tried to set the rect color here.
-         */
-//        GraphicsContext gc= mainCanvas.getGraphicsContext2D();
-//        gc.setFill(Color.AQUA);
-//        gc.fillRect(0,0, mainCanvas.getWidth(), mainCanvas.getHeight());
-//
-//        System.out.println(mainCanvas.widthProperty());
+    public void displayDots() {
 
-
-        /**
-         * Using dots to explore the size of it all.
-         */
         ArrayList<Color> boatColors = new ArrayList<>(asList(Color.CHOCOLATE, Color.GREEN, Color.CYAN, Color.GOLD, Color.DARKGREY, Color.PURPLE));
 
         GraphicsContext gc= mainCanvas.getGraphicsContext2D();
+
+        System.out.println("BoatGridPaneWidth: " + boatGridPane.getWidth());
+        System.out.println("AnchorPaneWidth: " + boatAnchorPane.widthProperty());
+        System.out.println("canvasWidth: " + gc.getCanvas().getWidth());
 
         new AnimationTimer() {
             double x = 0;
@@ -75,14 +70,13 @@ public class MainController {
                 x += 1;
                 y += 2;
 
-                if (x > canvasWidth || y > canvasHeight) {
-                    System.out.printf("canvasWidth: %d, canvasHeight: %d.", x, y);
+                if (x > canvasWidth) {
                     x = 0;
                     y = 0;
                 }
-                gc.setFill(boatColors.get(0));
+                gc.setFill(boatColors.get(3));
                 gc.fillOval(x, y, 15, 15);
-                gc.setFill(boatColors.get(1));
+                gc.setFill(boatColors.get(2));
                 gc.fillOval(y, x, 15, 15);
 
 

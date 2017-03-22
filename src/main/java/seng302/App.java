@@ -57,24 +57,24 @@ public class App extends Application {
 
         setPrimaryStage(primaryStage);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("MainWindow.fxml"));
-        Parent root = loader.load(); // throws IOException
-
-        MainController mainWindowController = loader.getController();
-
         primaryStage.setTitle("SailFast - Sprint 2 - Team 4");
         //primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("icon.png")));
-        primaryStage.setScene(new Scene(root, 1280, 720));
 
         // Gets the screen resolution of the primary screen.
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getBounds();
-
-
 
         // Sets the primaryStage size as that of the primary screen.
         primaryStage.setHeight(primaryScreenBounds.getHeight());
         primaryStage.setWidth(primaryScreenBounds.getWidth());
         primaryStage.show();
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("MainWindow.fxml"));
+        Parent root = loader.load(); // throws IOException
+
+        MainController mainWindowController = loader.getController();
+        primaryStage.setScene(new Scene(root, 1280, 720));
+
+        mainWindowController.displayDots();
+
     }
 
     public static void main(String[] args) {
