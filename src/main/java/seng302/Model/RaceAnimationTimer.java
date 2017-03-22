@@ -16,16 +16,17 @@ import static java.util.Arrays.asList;
 public class RaceAnimationTimer extends AnimationTimer {
 
     private double previousTime = 0;
+    private Race mainRace;
 
 
-    public RaceAnimationTimer(){
-
+    public RaceAnimationTimer(Race mainRace){
+        this.mainRace = mainRace;
     }
 
     public void handle(long currentNanoTime)
     {
         double currentTime = ((double) currentNanoTime) / 1E9; //to convert from nano-seconds to seconds
-
+        mainRace.updatePositions(currentTime - previousTime);
 
 
 

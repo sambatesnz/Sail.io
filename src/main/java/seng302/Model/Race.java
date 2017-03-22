@@ -1,6 +1,8 @@
 package seng302.Model;
 
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 import java.util.*;
 
@@ -18,6 +20,8 @@ public class Race {
     private float playbackSpeedMultiplier = -1;
     private float slowestBoatSpeed = Integer.MAX_VALUE;
     private float totalRaceDistance;
+    private Group raceGroup;
+    private HashMap<String, Circle> boatCircles = new HashMap<>();
     private ArrayList<Color> boatColors = new ArrayList<>(asList(Color.CHOCOLATE, Color.GREEN, Color.CYAN, Color.GOLD, Color.DARKGREY, Color.PURPLE));
 
     /**
@@ -27,6 +31,50 @@ public class Race {
     public Race (ArrayList<CompoundMark> compoundMarks) {
         this.raceCompoundMarks =  compoundMarks;
         generateBoats(6);
+    }
+
+    /**
+     * Creates the boats and assigns the race its node group
+     * @param raceGroup javafx Group node
+     */
+    public Race(Group raceGroup){
+        this.raceGroup = raceGroup;
+    }
+
+    /**
+     * For setting up initial race conditions
+     */
+    public void raceSetup(){
+        generateBoats(6);
+        for(int i = 0; i < racingBoats.size(); i++){
+            //TODO center x and y need to be center of start mark
+            Circle c = new Circle(50, 50, 7.5, boatColors.get(i));
+            raceGroup.getChildren().add(c);
+            boatCircles.put(racingBoats.get(i).getBoatName(), c);
+        }
+        //TODO create course
+    }
+
+    public void updatePositions(double timeDifference){
+        for(int i = 0; i < racingBoats.size(); i++){
+            Boat b = racingBoats.get(i);
+            double distanceTravelled = timeDifference * b.getBoatSpeed();
+            ///TODO cord to pixle math needed
+            //b.setLatCord(newLatval);
+            //b.setLongCord(newLongval);
+
+            Circle c = boatCircles.get(b.getBoatName());
+            //TODO update circles to new x y positions, this automatically updates them in group
+            //c.setCenterX(newXval);
+            //c.setCenterY(newYval);
+            //207
+            //153
+        }
+    }
+
+
+    public void updateBoat(double time){
+
     }
 
     /**

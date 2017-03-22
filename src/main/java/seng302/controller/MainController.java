@@ -6,6 +6,7 @@ import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -16,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seng302.App;
+import seng302.Model.Race;
 import seng302.Model.RaceAnimationTimer;
 
 import java.util.ArrayList;
@@ -29,14 +31,20 @@ public class MainController {
     @FXML private Canvas mainCanvas;
 //    @FXML private AnchorPane boatAnchorPane;
     @FXML private GridPane boatGridPane;
+    @FXML private Group raceGroup;
+
 
     public void initialize(){
 
-        RaceAnimationTimer animation = new RaceAnimationTimer();
-        animation.start();
+        Race mainRace = new Race(raceGroup);
+        mainRace.raceSetup();
+
 
         mainCanvas.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
         mainCanvas.setWidth(Screen.getPrimary().getVisualBounds().getWidth() * 0.8);
+
+        RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
+        animation.start();
     }
 
     public void displayDots() {
@@ -50,6 +58,7 @@ public class MainController {
         System.out.println("BoatGridPaneWidth: " + boatGridPane.getWidth());
 //        System.out.println("AnchorPaneWidth: " + boatAnchorPane.widthProperty());
         System.out.println("canvasWidth: " + gc.getCanvas().getWidth());
+        System.out.println("canvasHeight: " + gc.getCanvas().getHeight());
 
 
         new AnimationTimer() {

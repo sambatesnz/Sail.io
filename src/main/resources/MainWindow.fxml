@@ -65,8 +65,12 @@
       </ScrollPane>
       <AnchorPane GridPane.columnIndex="1">
          <children>
-            <Canvas fx:id="mainCanvas" AnchorPane.topAnchor="25.0" GridPane.columnIndex="1">
-            </Canvas>
+            <Group fx:id="raceGroup" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                   <Canvas fx:id="mainCanvas" AnchorPane.topAnchor="25.0" GridPane.columnIndex="1">
+                   </Canvas>
+               </children>
+            </Group>
          </children>
       </AnchorPane>
    </children>
