@@ -73,8 +73,6 @@ public class App extends Application {
         MainController mainWindowController = loader.getController();
         primaryStage.setScene(new Scene(root, primaryStage.getWidth(), primaryStage.getHeight()));
 
-        mainWindowController.displayDots();
-
     }
 
     public static void main(String[] args) {

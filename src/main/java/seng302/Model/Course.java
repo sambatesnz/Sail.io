@@ -1,6 +1,8 @@
 package seng302.Model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Holds all the points that Boats must visit on a course, and the order in which they must do so. Also contains many
@@ -166,7 +168,6 @@ public class Course {
                 cumulativeCourseLengthDistance += findDistBetweenCompoundMarks(firstMark, secondMark);
              }
         }
-
         return cumulativeCourseLengthDistance;
     }
 
@@ -178,7 +179,8 @@ public class Course {
         return courseCompoundMarks;
     }
 
-    public void setCanvasAspectZoom(){
+    public ArrayList<Double> findMaxMinLatLong(){
+
         double minLat;
         double minLong;
         double maxLat;
@@ -209,7 +211,12 @@ public class Course {
                 }
             }
         }
-        System.out.printf("minLat: %f, maxLat: %f, minLong: %f, maxLong: %f.", minLat, maxLat, minLong, maxLong);
+        ArrayList<Double> maxCoords = new ArrayList<>();
+        maxCoords.add(minLat);
+        maxCoords.add(maxLat);
+        maxCoords.add(minLong);
+        maxCoords.add(maxLong);
+        return maxCoords;
     }
 
     public void overloadCourseOrder(ArrayList<Integer> newCourseOrder) {
