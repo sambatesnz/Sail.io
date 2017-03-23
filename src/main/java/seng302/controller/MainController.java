@@ -14,6 +14,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seng302.App;
@@ -38,7 +40,7 @@ public class MainController {
 
     public void initialize(){
 
-        Course raceCourse = new Course("Kevin");
+        raceCourse = new Course("Kevin");
 
         Race mainRace = new Race(raceGroup, raceCourse);
         mainRace.raceSetup();
@@ -46,8 +48,21 @@ public class MainController {
         mainCanvas.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
         mainCanvas.setWidth(Screen.getPrimary().getVisualBounds().getWidth() * 0.8);
 
+        ArrayList<XYPoint> courseXY = convertLatLongtoXY();
+        displayMarks(courseXY);
+
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
         animation.start();
+    }
+
+    public void displayMarks(ArrayList<XYPoint> courseXY) {
+
+        for (XYPoint point : courseXY) {
+            Rectangle r = new Rectangle(point.x, point.y, 5, 5);
+            r.setFill(Color.BLACK);
+            raceGroup.getChildren().add(r);
+        }
+
     }
 
     public void displayDots() {
@@ -95,6 +110,7 @@ public class MainController {
         }.start();
 
     }
+
     public double convertLatitudeToX(double lat) {
         double x =  ((mainCanvas.getWidth()/360.0) * (180 + lat));
         return x;
@@ -130,19 +146,25 @@ public class MainController {
     }
 
 
-    public ArrayList<MainController.XYPoint> convertLatLongtoXY(ArrayList<CompoundMark> raceMarks) {
-        ArrayList<MainController.XYPoint> compoundMarksXY = new ArrayList<>();
-        ArrayList<Double> bounds = raceCourse.findMaxMinLatLong();
+    public ArrayList<XYPoint> convertLatLongtoXY() {
+        ArrayList<XYPoint> compoundMarksXY = new ArrayList<>();
+        ArrayList<Double> latLongBounds = raceCourse.findMaxMinLatLong();
+        ArrayList<Double> canvasBounds = getCanvasBounds();
+        double deltaLat = Math.abs((latLongBounds.get(1) - latLongBounds.get(0)));
+        double deltaLong = Math.abs((latLongBounds.get(3) - latLongBounds.get(2)));
 
-        for (CompoundMark mark : raceMarks) {
-            for (int i = 0; i < mark.getCompoundMarks().size(); i++) {
-                double x = convertLatitudeToX(mark.getCompoundMarks().get(i).getLatitude());
-                double y = convertLongitudeToY(mark.getCompoundMarks().get(i).getLongitude());
 
-                compoundMarksXY.add(new MainController.XYPoint(x, y));
+        for (CompoundMark mark : raceCourse.getCourseCompoundMarks()) {
+            for (int i = 0; i < mark.getCompoundMarks().size(); i++){
+                double markLat = mark.getCompoundMarks().get(i).getLatitude();
+                double markLong = mark.getCompoundMarks().get(i).getLongitude();
+
+                double x = (canvasBounds.get(1)-50)*(markLat - latLongBounds.get(0)) / deltaLat;
+                double y = (canvasBounds.get(3)-50)*(markLong - latLongBounds.get(2)) / deltaLong;
+                XYPoint newPoint = new XYPoint(x+50, y+50);
+                compoundMarksXY.add(newPoint);
             }
         }
-        System.out.println(compoundMarksXY);
         return compoundMarksXY;
     }
 }

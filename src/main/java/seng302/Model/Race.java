@@ -22,7 +22,7 @@ public class Race {
     private float totalRaceDistance;
     private Group raceGroup;
     private HashMap<String, Circle> boatCircles = new HashMap<>();
-    private ArrayList<Color> boatColors = new ArrayList<>(asList(Color.CHOCOLATE, Color.GREEN, Color.CYAN, Color.GOLD, Color.DARKGREY, Color.PURPLE));
+    private ArrayList<Color> boatColors = new ArrayList<>(asList(Color.CHOCOLATE, Color.GREEN, Color.CYAN,Color.DARKGREY, Color.GOLD,  Color.MINTCREAM));
 
     /**
      * Basic constructor for the Race. this may be subject to change at some point.
@@ -130,7 +130,7 @@ public class Race {
      * must be either 0, 1 or 5 minutes.
      */
     public void setRacePlaybackDuration(){
-        // TODO: REMOVE THIS BEFORE SUBMISSION.
+        // TODO: REMOVE THIS 0 BEFORE SUBMISSION.
         HashSet<Integer> validRaceLength = new HashSet<>(asList(0, 1, 5));
         Scanner input = new Scanner(System.in);
         System.out.println("What duration do you want the race to be in minutes?");
