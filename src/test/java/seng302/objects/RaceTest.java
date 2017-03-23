@@ -19,9 +19,7 @@ public class RaceTest {
     @Before
     public void initialize(){
         String fileLocation = "/src/test/test-resources/course-creator-test-course.xml";
-        CourseCreator courseCreator = new CourseCreator(fileLocation);
-        this.marks = courseCreator.getCompoundMarks();
-        this.raceCourse = new Course("Test Course");
+        this.raceCourse = new Course("Test Course", fileLocation);
         myRace = new Race(raceCourse);
     }
 
@@ -49,13 +47,8 @@ public class RaceTest {
     @Test
     public void updateLatAndLong(){
         String fileLocation = "/src/test/test-resources/linear-course.xml";
-        CourseCreator courseCreator = new CourseCreator(fileLocation);
-        ArrayList<CompoundMark> marks = courseCreator.getCompoundMarks();
-        Course raceCourse = new Course("test");
-        Race myRace = new Race(raceCourse);
-        myRace.raceSetup();
-        System.out.println(myRace);
 
+        assertTrue(false); //This should fail as is hasnt been implemented
     }
 
 

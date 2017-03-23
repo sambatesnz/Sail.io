@@ -86,16 +86,22 @@ public class CourseCreator {
      * @return Arraylist containing the gate order
      */
     public ArrayList<Integer> getGateOrderForRace(){
+
         NodeList nodes = this.configDoc.getElementsByTagName(GATE_ORDER);
-        Element gateorder = (Element) nodes.item(0);
-        String gateOrders = gateorder.getTextContent();
+        String gateOrders = null;
+        ArrayList<Integer> courseOrder;
 
-        String formattedGateOrders = gateOrders.replaceAll("\\s+", "");
-        List<String> gateOrdersAsStrings = Arrays.asList(formattedGateOrders.split(","));
-
-        ArrayList<Integer> courseOrder = new ArrayList<>(); //Ollie was here, but he has now changed as a person.
-        for (String s: gateOrdersAsStrings){
-            courseOrder.add(Integer.parseInt(s));
+        try {
+            Element gateorder = (Element) nodes.item(0);
+            gateOrders = gateorder.getTextContent();
+            String formattedGateOrders = gateOrders.replaceAll("\\s+", "");
+            List<String> gateOrdersAsStrings = Arrays.asList(formattedGateOrders.split(","));
+            courseOrder = new ArrayList<>(); //Ollie was here, but he has now changed as a person.
+            for (String s: gateOrdersAsStrings){
+                courseOrder.add(Integer.parseInt(s));
+            }
+        } catch (NullPointerException unluggy) {
+            throw new Error("Gate order tag not found!");
         }
         return courseOrder;
     }
@@ -145,4 +151,5 @@ public class CourseCreator {
         }
         return mark;
     }
+
 }

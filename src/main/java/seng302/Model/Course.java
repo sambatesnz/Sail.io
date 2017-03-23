@@ -129,26 +129,44 @@ public class Course {
     }
 
     /**
+     * Gets a compound mark by its id
+     * @param id the id you want
+     * @return The compound mark which has your expected id
+     * @throws Error if it doesn't find a mark with your id
+     */
+    private CompoundMark getCompoundMarkById(int id){
+        for (CompoundMark mark: courseCompoundMarks){
+            if (mark.getId() == id ){
+                return mark;
+            }
+        }
+        throw new Error("Could not find id for mark, Something is probably wrong in the course file");
+    }
+
+    /**
      * Iterates through the entire course to find the total length of the race.
      * @return float the course length
      */
-    public float generateTotalCourseLength(){
-        float cumulativeCourseLengthDistance = 0;
+    double generateTotalCourseLength(){
+        double cumulativeCourseLengthDistance = 0;
 
 
         if (courseOrder.size() == 2 ){
-
-            //cumulativeCourseLengthDistance = findDistBetweenCompoundMarks(courseCompoundMarks.get(courseOrder.get(1)), courseCompoundMarks.get(courseOrder.get(0)))
+            int firstMarkId = courseOrder.get(1);
+            int secondMarkId = courseOrder.get(0);
+            CompoundMark firstMark = getCompoundMarkById(firstMarkId);
+            CompoundMark secondMark = getCompoundMarkById(secondMarkId);
+            cumulativeCourseLengthDistance = findDistBetweenCompoundMarks(firstMark, secondMark);
+        } else{
+            for (int i=1; i<courseOrder.size()-1; i++){
+                int firstMarkId = courseOrder.get(i-1);
+                int secondMarkId = courseOrder.get(i);
+                CompoundMark firstMark = getCompoundMarkById(firstMarkId);
+                CompoundMark secondMark = getCompoundMarkById(secondMarkId);
+                cumulativeCourseLengthDistance += findDistBetweenCompoundMarks(firstMark, secondMark);
+             }
         }
 
-        for (int i=1; i<courseOrder.size()-1; i++){
-            int firstPointIndex = courseOrder.get(i-1) -1; //Offset because arrays are 0 based index
-            int secondPointIndex = courseOrder.get(i) -1;
-            CompoundMark firstPoint = courseCompoundMarks.get(firstPointIndex);
-            CompoundMark secondPoint = courseCompoundMarks.get(secondPointIndex);
-
-            cumulativeCourseLengthDistance += findDistBetweenCompoundMarks(firstPoint, secondPoint);
-        }
         return cumulativeCourseLengthDistance;
     }
 
@@ -192,6 +210,15 @@ public class Course {
             }
         }
         System.out.printf("minLat: %f, maxLat: %f, minLong: %f, maxLong: %f.", minLat, maxLat, minLong, maxLong);
+    }
+
+    public void overloadCourseOrder(ArrayList<Integer> newCourseOrder) {
+        for (int i=0; i< newCourseOrder.size(); i++) {
+            //This will throw an error if the course has a gate with an id that doesnt exists
+            getCompoundMarkById(newCourseOrder.get(i));
+        }
+        this.courseOrder = newCourseOrder;
+
     }
 
 }

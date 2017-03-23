@@ -12,33 +12,38 @@ import static org.junit.Assert.*;
  */
 public class CourseTest {
 
+    Integer RANGE = 2;
+
+    private boolean isNumInRange(double actual, double expected, int range){
+        return (expected < actual + range) && (expected > actual - range);
+    }
+
     @Test
-    public void generateTotalCourseLength(){
+    public void generateTotalCourseLengthWithTwoMarks(){
+        //Linear course is a course with mark(0,0) and mark(0,10)
         String fileLocation = "/src/test/test-resources/linear-course.xml";
         Course myCourse = new Course("Test course", fileLocation);
 
-        System.out.println(myCourse.generateTotalCourseLength());
+        double courseLength = myCourse.generateTotalCourseLength();
+        double expectedCourseLength = 1112;
+
+        //check whether the course length is in an acceptable range of +-2km
+        assertTrue(isNumInRange(courseLength, expectedCourseLength, RANGE));
+    }
 
 
+    @Test
+    public void generateTotalCourseLengthWithFourMarks(){
+        //Linear course is a course with mark(0,0) and mark(0,10)
+        String fileLocation = "/src/test/test-resources/linear-course.xml";
+        Course myCourse = new Course("Test course", fileLocation);
 
-//        CompoundMark markA = new CompoundMark("Mark 1", 1);
-//        markA.addMark(0 , 0);
-//
-//        CompoundMark markB = new CompoundMark("Mark 2", 2);
-//        markA.addMark(0 , 10);
-//
-//        ArrayList<CompoundMark> compoundMarks = new ArrayList<>();
-//        compoundMarks.add(markA);
-//        compoundMarks.add(markB);
-//
-//        ArrayList<Integer> courseOrder = new ArrayList<>(Arrays.asList(1,2));
+        ArrayList<Integer> newCourseOrder = new ArrayList<>(Arrays.asList(1,2,1,2));
+        myCourse.overloadCourseOrder(newCourseOrder);
 
-//        Course myCourse = new Course("Test Course", compoundMarks, courseOrder);
-//
-//        Course.
+        double courseLength = myCourse.generateTotalCourseLength();
+        double expectedCourseLength = 2224;
 
-
-
-
+        assertTrue(isNumInRange(courseLength, expectedCourseLength, RANGE));
     }
 }
