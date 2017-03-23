@@ -88,8 +88,9 @@ public class App extends Application {
         float raceDist = raceCourse.generateTotalCourseLength(myMarks, courseCreator.getGateOrderForRace());
 
         Race race = new Race(raceCourse);
+        raceCourse.setCanvasAspectZoom();
 
-        System.out.printf("Total Race Dist = %.2fkm.", raceDist);
+        System.out.printf("Total Race Dist = %.2fkm.\n", raceDist);
 
         try {
             launch(args);

@@ -82,7 +82,6 @@ public class MainController {
                 gc.setFill(Color.GREEN);
                 gc.fillRect(0, 0, 16, 16);
 
-
                 x += 2;
                 y += 1;
 
@@ -95,29 +94,8 @@ public class MainController {
                 gc.setFill(boatColors.get(2));
                 gc.fillOval(x, y, 15, 15);
 
-
-
-
             }
         }.start();
 
     }
-
-//    InvalidationListener listener = new InvalidationListener(){
-//        @Override
-//        public void invalidated(Observable o) {
-//            redraw();
-//        }
-//
-//        private void redraw() {
-//            System.out.println("FUCK YEAH");
-//            //g.setFill(Color.BLACK);
-//            //g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-//        }
-//
-//
-//    };
-//
-//    mainCanvas.widthProperty().addListener(listener);
-//    mainCanvas.heightProperty().addListener(listener);
 }
