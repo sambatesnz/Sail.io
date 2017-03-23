@@ -129,4 +129,38 @@ public class Course {
         return courseCompoundMarks;
     }
 
+    public void setCanvasAspectZoom(){
+        double minLat;
+        double minLong;
+        double maxLat;
+        double maxLong;
+
+        maxLat = courseCompoundMarks.get(0).getCompoundMarks().get(0).getLatitude();
+        minLat = courseCompoundMarks.get(0).getCompoundMarks().get(0).getLatitude();
+        maxLong = courseCompoundMarks.get(0).getCompoundMarks().get(0).getLongitude();
+        minLong = courseCompoundMarks.get(0).getCompoundMarks().get(0).getLongitude();
+
+        for(CompoundMark courseMark : courseCompoundMarks) {
+
+
+            for (int i = 0; i < courseMark.getCompoundMarks().size(); i++) {
+
+                if (courseMark.getCompoundMarks().get(i).getLatitude() > maxLat) {
+                    maxLat = courseMark.getCompoundMarks().get(i).getLatitude();
+                }
+                if (courseMark.getCompoundMarks().get(i).getLatitude() < minLat){
+                    minLat = courseMark.getCompoundMarks().get(i).getLatitude();
+                }
+                if (courseMark.getCompoundMarks().get(i).getLongitude() > maxLong) {
+                    maxLong = courseMark.getCompoundMarks().get(i).getLongitude();
+                }
+                if (courseMark.getCompoundMarks().get(i).getLongitude() < minLong) {
+                    System.out.println(minLong);
+                    minLong = courseMark.getCompoundMarks().get(i).getLongitude();
+                }
+            }
+        }
+        System.out.printf("minLat: %f, maxLat: %f, minLong: %f, maxLong: %f.", minLat, maxLat, minLong, maxLong);
+    }
+
 }
