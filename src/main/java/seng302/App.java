@@ -90,7 +90,7 @@ public class App extends Application {
         Race race = new Race(myMarks);
         raceCourse.setCanvasAspectZoom();
 
-        System.out.printf("Total Race Dist = %.2fkm.", raceDist);
+        System.out.printf("Total Race Dist = %.2fkm.\n", raceDist);
 
         try {
             launch(args);
