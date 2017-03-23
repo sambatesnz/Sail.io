@@ -1,11 +1,9 @@
 package seng302.objects;
 
+import javafx.scene.Group;
 import org.junit.Before;
 import org.junit.Test;
-import seng302.Model.Boat;
-import seng302.Model.CompoundMark;
-import seng302.Model.CourseCreator;
-import seng302.Model.Race;
+import seng302.Model.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,13 +14,15 @@ import static org.junit.Assert.*;
 public class RaceTest {
     ArrayList<CompoundMark> marks;
     Race myRace;
+    Course raceCourse;
 
     @Before
     public void initialize(){
         String fileLocation = "/src/test/test-resources/course-creator-test-course.xml";
         CourseCreator courseCreator = new CourseCreator(fileLocation);
         this.marks = courseCreator.getCompoundMarks();
-        myRace = new Race(marks);
+        this.raceCourse = new Course("Test Course", this.marks);
+        myRace = new Race(raceCourse);
     }
 
     @Test
@@ -44,6 +44,18 @@ public class RaceTest {
             }
         }
         assertTrue(slowestBoatSpeed == myRace.getSlowestBoatSpeed());
+    }
+
+    @Test
+    public void updateLatAndLong(){
+        String fileLocation = "/src/test/test-resources/linear-course.xml";
+        CourseCreator courseCreator = new CourseCreator(fileLocation);
+        ArrayList<CompoundMark> marks = courseCreator.getCompoundMarks();
+        Course raceCourse = new Course("test", marks);
+        Race myRace = new Race(raceCourse);
+        myRace.raceSetup();
+        System.out.println(myRace);
+
     }
 
 

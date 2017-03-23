@@ -115,8 +115,14 @@ public class Course {
     public float generateTotalCourseLength(ArrayList<CompoundMark> courseCompoundMarks, ArrayList<Integer> courseOrder){
         float cumulativeCourseLengthDistance = 0;
 
-        for (int i = 1; i < courseOrder.size()-1; i++) {
-            cumulativeCourseLengthDistance += findDistBetweenCompoundMarks(courseCompoundMarks.get(i - 1), courseCompoundMarks.get(i));
+
+        for (int i=1; i<courseOrder.size()-1; i++){
+            int firstPointIndex = courseOrder.get(i-1) -1; //Offset because arrays are 0 based index
+            int secondPointIndex = courseOrder.get(i) -1;
+            CompoundMark firstPoint = courseCompoundMarks.get(firstPointIndex);
+            CompoundMark secondPoint = courseCompoundMarks.get(secondPointIndex);
+
+            cumulativeCourseLengthDistance += findDistBetweenCompoundMarks(firstPoint, secondPoint);
         }
         return cumulativeCourseLengthDistance;
     }

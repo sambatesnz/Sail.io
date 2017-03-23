@@ -17,8 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seng302.App;
-import seng302.Model.Race;
-import seng302.Model.RaceAnimationTimer;
+import seng302.Model.*;
 
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
@@ -36,7 +35,14 @@ public class MainController {
 
     public void initialize(){
 
-        Race mainRace = new Race(raceGroup);
+        AppConfig appconfig = new AppConfig();
+        String fileLocation = appconfig.getProperty(AppConfig.COURSE_FILE_LOCATION);
+        CourseCreator courseCreator = new CourseCreator(fileLocation);
+        ArrayList<CompoundMark> myMarks = courseCreator.getCompoundMarks();
+        Course raceCourse = new Course("Kevin", myMarks);
+
+
+        Race mainRace = new Race(raceGroup, raceCourse);
         mainRace.raceSetup();
 
 

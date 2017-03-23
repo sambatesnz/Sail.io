@@ -14,7 +14,7 @@ import static java.util.Arrays.asList;
 public class Race {
 
     private ArrayList<Boat> racingBoats = new ArrayList<>();
-    private ArrayList<CompoundMark> raceCompoundMarks = new ArrayList<>();
+    private Course raceCourse;
     private ArrayList<String> finishingOrder = new ArrayList<>();
     private int racePlaybackDuration = -1;
     private float playbackSpeedMultiplier = -1;
@@ -26,18 +26,20 @@ public class Race {
 
     /**
      * Basic constructor for the Race. this may be subject to change at some point.
-     * @param compoundMarks
+     * @param raceCourse
      */
-    public Race (ArrayList<CompoundMark> compoundMarks) {
-        this.raceCompoundMarks =  compoundMarks;
+    public Race (Course raceCourse) {
+        this.raceCourse = raceCourse;
         generateBoats(6);
     }
 
     /**
      * Creates the boats and assigns the race its node group
      * @param raceGroup javafx Group node
+     * @param raceCourse
      */
-    public Race(Group raceGroup){
+    public Race(Group raceGroup, Course raceCourse){
+        this.raceCourse = raceCourse;
         this.raceGroup = raceGroup;
     }
 
@@ -147,9 +149,6 @@ public class Race {
     }
 
 
-    public ArrayList<CompoundMark> getRaceCompoundMarks() {
-        return raceCompoundMarks;
-    }
 
 
     public ArrayList<Boat> getRacingBoats() {
