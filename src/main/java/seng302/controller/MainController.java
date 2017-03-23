@@ -39,7 +39,7 @@ public class MainController {
         String fileLocation = appconfig.getProperty(AppConfig.COURSE_FILE_LOCATION);
         CourseCreator courseCreator = new CourseCreator(fileLocation);
         ArrayList<CompoundMark> myMarks = courseCreator.getCompoundMarks();
-        Course raceCourse = new Course("Kevin", myMarks);
+        Course raceCourse = new Course("Kevin");
 
 
         Race mainRace = new Race(raceGroup, raceCourse);

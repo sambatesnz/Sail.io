@@ -21,7 +21,7 @@ public class RaceTest {
         String fileLocation = "/src/test/test-resources/course-creator-test-course.xml";
         CourseCreator courseCreator = new CourseCreator(fileLocation);
         this.marks = courseCreator.getCompoundMarks();
-        this.raceCourse = new Course("Test Course", this.marks);
+        this.raceCourse = new Course("Test Course");
         myRace = new Race(raceCourse);
     }
 
@@ -51,7 +51,7 @@ public class RaceTest {
         String fileLocation = "/src/test/test-resources/linear-course.xml";
         CourseCreator courseCreator = new CourseCreator(fileLocation);
         ArrayList<CompoundMark> marks = courseCreator.getCompoundMarks();
-        Course raceCourse = new Course("test", marks);
+        Course raceCourse = new Course("test");
         Race myRace = new Race(raceCourse);
         myRace.raceSetup();
         System.out.println(myRace);

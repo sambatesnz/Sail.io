@@ -4,20 +4,42 @@ import java.util.ArrayList;
 
 /**
  * Holds all the points that Boats must visit on a course, and the order in which they must do so. Also contains many
- * Math-based
+ * Math-based functions
  */
 public class Course {
     private String courseName;
     private ArrayList<CompoundMark> courseCompoundMarks = new ArrayList<>();
+    private ArrayList<Integer> courseOrder;
+    private CourseCreator courseCreator;
 
     /**
      * Constructor.
      * @param courseName
-     * @param courseCompoundMarks
      */
-    public Course(String courseName, ArrayList<CompoundMark> courseCompoundMarks) {
-        this.courseCompoundMarks = courseCompoundMarks;
+    public Course(String courseName) {
         this.courseName = courseName;
+        //this.courseCompoundMarks = courseCompoundMarks;
+        //this.courseOrder = courseOrder;
+        this.courseCreator = loadCoarseCreator();
+        this.courseCompoundMarks = courseCreator.getCompoundMarks();
+        this.courseOrder = courseCreator.getGateOrderForRace();
+    }
+
+    public Course(String courseName, String fileLocation){
+        this.courseName = courseName;
+        this.courseCreator = loadCoarseCreator(fileLocation);
+        this.courseCompoundMarks = courseCreator.getCompoundMarks();
+        this.courseOrder = courseCreator.getGateOrderForRace();
+    }
+
+    private CourseCreator loadCoarseCreator() {
+        AppConfig appConfig = new AppConfig();
+        String fileLocation = appConfig.getProperty(AppConfig.COURSE_FILE_LOCATION);
+        return new CourseCreator(fileLocation);
+    }
+
+    private CourseCreator loadCoarseCreator(String fileLocation){
+        return new CourseCreator(fileLocation);
     }
 
     /**
@@ -108,13 +130,16 @@ public class Course {
 
     /**
      * Iterates through the entire course to find the total length of the race.
-     * @param courseCompoundMarks
-     * @param courseOrder
-     * @return
+     * @return float the course length
      */
-    public float generateTotalCourseLength(ArrayList<CompoundMark> courseCompoundMarks, ArrayList<Integer> courseOrder){
+    public float generateTotalCourseLength(){
         float cumulativeCourseLengthDistance = 0;
 
+
+        if (courseOrder.size() == 2 ){
+
+            //cumulativeCourseLengthDistance = findDistBetweenCompoundMarks(courseCompoundMarks.get(courseOrder.get(1)), courseCompoundMarks.get(courseOrder.get(0)))
+        }
 
         for (int i=1; i<courseOrder.size()-1; i++){
             int firstPointIndex = courseOrder.get(i-1) -1; //Offset because arrays are 0 based index

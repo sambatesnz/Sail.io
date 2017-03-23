@@ -79,18 +79,7 @@ public class App extends Application {
 
     public static void main(String[] args) {
 
-        AppConfig appconfig = new AppConfig();
-        String fileLocation = appconfig.getProperty(AppConfig.COURSE_FILE_LOCATION);
-        CourseCreator courseCreator = new CourseCreator(fileLocation);
-        ArrayList<CompoundMark> myMarks = courseCreator.getCompoundMarks();
-        Course raceCourse = new Course("Kevin", myMarks);
-
-        float raceDist = raceCourse.generateTotalCourseLength(myMarks, courseCreator.getGateOrderForRace());
-
-        Race race = new Race(raceCourse);
-        raceCourse.setCanvasAspectZoom();
-
-        System.out.printf("Total Race Dist = %.2fkm.\n", raceDist);
+        Course myCourse =  new Course("Americas Cup");
 
         try {
             launch(args);
