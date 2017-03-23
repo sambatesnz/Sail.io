@@ -75,6 +75,7 @@ public class App extends Application {
 
         mainWindowController.displayDots();
 
+
     }
 
     public static void main(String[] args) {
