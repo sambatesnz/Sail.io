@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Line;
 import javafx.stage.Screen;
 import seng302.Model.*;
 
@@ -51,9 +52,10 @@ public class MainController {
         XYPoint gateStart = null;
         XYPoint gateEnd;
         boolean flag = false;
+        Line line = null;
 
         GraphicsContext gc = mainCanvas.getGraphicsContext2D();
-        gc.setLineWidth(3);
+
 
 
         for (XYPoint point : courseXY) {
@@ -64,19 +66,24 @@ public class MainController {
         try {
             for (XYPoint point : courseXY) {
                 if (point.name.startsWith("Start") || point.name.startsWith("Finish") || point.name.endsWith("Gate")) {
-                    if (point.name.startsWith("Start")) {
-                        gc.setStroke(Color.GREEN);
-                    } else if (point.name.startsWith("Finish")) {
-                        gc.setStroke(Color.RED);
-                    } else if (point.name.endsWith("Gate")) {
-                        gc.setStroke(Color.BLUE);
-                    }
+
                     if (flag == false) {
                         gateStart = point;
                         flag = true;
                     } else if (flag == true) {
                         gateEnd = point;
-                        gc.strokeLine(gateStart.x, gateStart.y, gateEnd.x, gateEnd.y);
+                        //gc.strokeLine(gateStart.x, gateStart.y, gateEnd.x, gateEnd.y);
+                        line = new Line(gateStart.x, gateStart.y, gateEnd.x, gateEnd.y);
+                        line.getStrokeDashArray().add(10d);
+                        line.setStrokeWidth(3);
+                        if (point.name.startsWith("Start")) {
+                            line.setStroke(Color.GREEN);
+                        } else if (point.name.startsWith("Finish")) {
+                            line.setStroke(Color.RED);
+                        } else if (point.name.endsWith("Gate")) {
+                            line.setStroke(Color.BLUE);
+                        }
+                        raceGroup.getChildren().add(line);
                         flag = false;
                     }
                 }
