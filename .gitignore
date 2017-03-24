@@ -90,6 +90,7 @@ nbactions.xml
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
 app.iml
+.idea/*
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids

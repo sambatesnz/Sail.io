@@ -1,13 +1,16 @@
 package seng302.Model;
 
+import java.util.ArrayList;
+
 /**
  * Created by osr13 on 2/03/17.
  */
 public class Boat {
     private String boatName;
     private float boatSpeed = 0;
-    private double latCord = 20.0;
-    private double longCord = 20.0;
+    private int currentLeg = 0;
+    private CompoundMark currentPosition;
+    private CompoundMark destinationMark;
 
 
     /**
@@ -18,7 +21,8 @@ public class Boat {
     public Boat(String name, float speed) {
         this.boatName = name;
         this.boatSpeed = speed;
-
+        this.currentPosition = new CompoundMark("currentPosition", -1);
+        this.currentPosition.addMark(0,0);
     }
 
     public String getBoatName() {
@@ -33,19 +37,27 @@ public class Boat {
         return this.boatName;
     }
 
-    public double getLatCord() {
-        return latCord;
+    public int getCurrentLeg() {
+        return currentLeg;
     }
 
-    public void setLatCord(double latCord) {
-        this.latCord = latCord;
+    public void setCurrentLeg(int currentLeg) {
+        this.currentLeg = currentLeg;
     }
 
-    public double getLongCord() {
-        return longCord;
+    public CompoundMark getCurrentPosition() {
+        return currentPosition;
     }
 
-    public void setLongCord(double longCord) {
-        this.longCord = longCord;
+    public void setCurrentPosition(CompoundMark currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+    public CompoundMark getDestinationMark() {
+        return destinationMark;
+    }
+
+    public void setDestinationMark(CompoundMark destinationMark) {
+        this.destinationMark = destinationMark;
     }
 }

@@ -1,8 +1,10 @@
 package seng302.Model;
 
 import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import seng302.controller.XYPoint;
 
 import java.util.*;
 
@@ -19,10 +21,11 @@ public class Race {
     private int racePlaybackDuration = -1;
     private float playbackSpeedMultiplier = -1;
     private float slowestBoatSpeed = Integer.MAX_VALUE;
-    private float totalRaceDistance;
+    private double totalRaceDistance;
     private Group raceGroup;
+    private Canvas canvas;
     private HashMap<String, Circle> boatCircles = new HashMap<>();
-    private ArrayList<Color> boatColors = new ArrayList<>(asList(Color.CHOCOLATE, Color.GREEN, Color.CYAN,Color.DARKGREY, Color.GOLD,  Color.MINTCREAM));
+    private ArrayList<Color> boatColors = new ArrayList<>(asList(Color.CHOCOLATE, Color.GREEN, Color.CYAN,Color.DARKGREY, Color.GOLD,  Color.PURPLE));
 
     /**
      * Basic constructor for the Race. this may be subject to change at some point.
@@ -41,6 +44,13 @@ public class Race {
     public Race(Group raceGroup, Course raceCourse){
         this.raceCourse = raceCourse;
         this.raceGroup = raceGroup;
+        this.canvas = (Canvas)raceGroup.getChildren().get(0);
+    }
+
+    public Race(Group raceGroup, Course raceCourse, Canvas mainCanvas){
+        this.raceCourse = raceCourse;
+        this.raceGroup = raceGroup;
+        this.canvas = mainCanvas;
     }
 
     /**
@@ -49,12 +59,14 @@ public class Race {
     public void raceSetup(){
         generateBoats(6);
         for(int i = 0; i < racingBoats.size(); i++){
-            //TODO center x and y need to be center of start mark
-            Circle c = new Circle(500, 250, 7.5, boatColors.get(i));
+            CompoundMark start = raceCourse.getCourseCompoundMarks().get(0);
+            start = start.findAverageGate(start);
+            XYPoint convertedMark = convertCompoundMarkToXYPoint(start);
+            System.out.println(String.format("%f, %f",convertedMark.x, convertedMark.y));
+            Circle c = new Circle(convertedMark.x, convertedMark.y, 7.5, boatColors.get(i));
             raceGroup.getChildren().add(c);
             boatCircles.put(racingBoats.get(i).getBoatName(), c);
         }
-        //TODO create course
     }
 
     public void updatePositions(double timeDifference){
@@ -69,8 +81,7 @@ public class Race {
             //TODO update circles to new x y positions, this automatically updates them in group
             //c.setCenterX(newXval);
             //c.setCenterY(newYval);
-            //207
-            //153
+
         }
     }
 
@@ -105,6 +116,26 @@ public class Race {
             }
         }
     }
+
+    private XYPoint convertCompoundMarkToXYPoint(CompoundMark mark){
+        XYPoint convertedMark = new XYPoint();
+        double minCanvasBoundsXY = 50;
+        double maxXBound = canvas.getWidth() - 100;
+        double maxYBound = canvas.getHeight() - 100;
+        ArrayList<Double> latLongBounds = raceCourse.findMaxMinLatLong();
+
+        double deltaLat = Math.abs((latLongBounds.get(1) - latLongBounds.get(0)));
+        double deltaLong = Math.abs((latLongBounds.get(3) - latLongBounds.get(2)));
+
+        double markLat = mark.getCompoundMarks().get(0).getLatitude();
+        double markLong = mark.getCompoundMarks().get(0).getLongitude();
+
+        convertedMark.x = (maxXBound*(markLong - latLongBounds.get(2)) / deltaLong) + minCanvasBoundsXY;
+        convertedMark.y = maxYBound - (maxYBound*(markLat - latLongBounds.get(0)) / deltaLat) + minCanvasBoundsXY;
+
+        return convertedMark;
+    }
+
 
     /**
      * Adds the boats in the current race from the regatta
@@ -145,7 +176,7 @@ public class Race {
                 System.out.println("Please ensure that the number is a valid race duration (0, 1 or 5 minutes long).");
             }
         }
-        playbackSpeedMultiplier = racePlaybackDuration / (60*(totalRaceDistance / getSlowestBoatSpeed()));
+        playbackSpeedMultiplier = racePlaybackDuration / (60*((float)totalRaceDistance / getSlowestBoatSpeed()));
     }
 
 
