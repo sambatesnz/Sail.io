@@ -147,7 +147,7 @@ public class MainController {
                 double minLong = latLongBounds.get(2);
 
                 double x = maxWidth*(markLong - minLong)/deltaLong;
-                double y = maxHeight*(markLat - minLat)/deltaLat;
+                double y = maxHeight - (maxHeight*(markLat - minLat)/deltaLat);
 
                 XYPoint newPoint = new XYPoint(x+50, y+50);
                 compoundMarksXY.add(newPoint);
