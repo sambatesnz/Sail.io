@@ -53,17 +53,24 @@ public class MainController {
         boolean flag = false;
 
         GraphicsContext gc = mainCanvas.getGraphicsContext2D();
+        gc.setLineWidth(3);
 
 
         for (XYPoint point : courseXY) {
-            Rectangle r = new Rectangle(point.x, point.y, 5, 5);
+            Rectangle r = new Rectangle(point.x-2.5, point.y-2.5, 5, 5);
             r.setFill(Color.BLACK);
             raceGroup.getChildren().add(r);
         }
         try {
             for (XYPoint point : courseXY) {
-                if (point.name.startsWith("Start") || point.name.startsWith("Finish")) {
-                    //draw line
+                if (point.name.startsWith("Start") || point.name.startsWith("Finish") || point.name.endsWith("Gate")) {
+                    if (point.name.startsWith("Start")) {
+                        gc.setStroke(Color.GREEN);
+                    } else if (point.name.startsWith("Finish")) {
+                        gc.setStroke(Color.RED);
+                    } else if (point.name.endsWith("Gate")) {
+                        gc.setStroke(Color.BLUE);
+                    }
                     if (flag == false) {
                         gateStart = point;
                         flag = true;
@@ -72,16 +79,11 @@ public class MainController {
                         gc.strokeLine(gateStart.x, gateStart.y, gateEnd.x, gateEnd.y);
                         flag = false;
                     }
-
                 }
-
-
             }
         } catch (Exception e) {
             System.out.println("fuck");
         }
-
-
     }
 
     public void displayDots() {
