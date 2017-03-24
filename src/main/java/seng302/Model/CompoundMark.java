@@ -19,7 +19,7 @@ public class CompoundMark {
         return id;
     }
 
-    private CompoundMark(String name, ArrayList<Point> points, Integer id){
+    public CompoundMark(String name, ArrayList<Point> points, Integer id){
         this.name = name;
         this.id = id;
         if (this.compoundMarks.size() > 2){

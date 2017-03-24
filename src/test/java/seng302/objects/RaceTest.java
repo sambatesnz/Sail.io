@@ -12,9 +12,9 @@ import java.util.IntSummaryStatistics;
 import static org.junit.Assert.*;
 
 public class RaceTest {
-    ArrayList<CompoundMark> marks;
-    Race myRace;
-    Course raceCourse;
+    private ArrayList<CompoundMark> marks;
+    private Race myRace;
+    private Course raceCourse;
 
     @Before
     public void initialize(){

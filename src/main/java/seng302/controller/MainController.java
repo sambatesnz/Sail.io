@@ -30,12 +30,13 @@ public class MainController {
 
 
         raceCourse = new Course("Kevin");
-
-        Race mainRace = new Race(raceGroup, raceCourse);
-        mainRace.raceSetup();
-
         mainCanvas.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
         mainCanvas.setWidth(Screen.getPrimary().getVisualBounds().getWidth() * 0.8);
+
+        Race mainRace = new Race(raceGroup, raceCourse, mainCanvas);
+        mainRace.raceSetup();
+
+
 
         ArrayList<XYPoint> courseXY = convertLatLongToXY();
         displayMarks(courseXY);
