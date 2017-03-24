@@ -1,29 +1,17 @@
 package seng302.controller;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
-import javafx.stage.Stage;
-import seng302.App;
 import seng302.Model.*;
-import sun.applet.Main;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static java.util.Arrays.asList;
 
@@ -48,7 +36,7 @@ public class MainController {
         mainCanvas.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
         mainCanvas.setWidth(Screen.getPrimary().getVisualBounds().getWidth() * 0.8);
 
-        ArrayList<XYPoint> courseXY = convertLatLongtoXY();
+        ArrayList<XYPoint> courseXY = convertLatLongToXY();
         displayMarks(courseXY);
 
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
@@ -146,21 +134,23 @@ public class MainController {
     }
 
 
-    public ArrayList<XYPoint> convertLatLongtoXY() {
+    public ArrayList<XYPoint> convertLatLongToXY() {
         ArrayList<XYPoint> compoundMarksXY = new ArrayList<>();
         ArrayList<Double> latLongBounds = raceCourse.findMaxMinLatLong();
         ArrayList<Double> canvasBounds = getCanvasBounds();
         double deltaLat = Math.abs((latLongBounds.get(1) - latLongBounds.get(0)));
         double deltaLong = Math.abs((latLongBounds.get(3) - latLongBounds.get(2)));
 
-
         for (CompoundMark mark : raceCourse.getCourseCompoundMarks()) {
             for (int i = 0; i < mark.getCompoundMarks().size(); i++){
                 double markLat = mark.getCompoundMarks().get(i).getLatitude();
                 double markLong = mark.getCompoundMarks().get(i).getLongitude();
 
-                double x = (canvasBounds.get(1)-50)*(markLat - latLongBounds.get(0)) / deltaLat;
-                double y = (canvasBounds.get(3)-50)*(markLong - latLongBounds.get(2)) / deltaLong;
+                double maxWidth = canvasBounds.get(1) - 50;
+                double maxHeight = canvasBounds.get(3) - 50;
+
+                double x = maxWidth*(markLat - latLongBounds.get(0)) / deltaLat;
+                double y = maxHeight*(markLong - latLongBounds.get(2)) / deltaLong;
                 XYPoint newPoint = new XYPoint(x+50, y+50);
                 compoundMarksXY.add(newPoint);
             }

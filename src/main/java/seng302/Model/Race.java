@@ -50,7 +50,7 @@ public class Race {
         generateBoats(6);
         for(int i = 0; i < racingBoats.size(); i++){
             //TODO center x and y need to be center of start mark
-            Circle c = new Circle(50, 50, 7.5, boatColors.get(i));
+            Circle c = new Circle(500, 250, 7.5, boatColors.get(i));
             raceGroup.getChildren().add(c);
             boatCircles.put(racingBoats.get(i).getBoatName(), c);
         }
