@@ -206,7 +206,6 @@ public class Course {
                     maxLong = courseMark.getCompoundMarks().get(i).getLongitude();
                 }
                 if (courseMark.getCompoundMarks().get(i).getLongitude() < minLong) {
-                    System.out.println(minLong);
                     minLong = courseMark.getCompoundMarks().get(i).getLongitude();
                 }
             }

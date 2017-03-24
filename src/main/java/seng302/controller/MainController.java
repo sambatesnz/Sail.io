@@ -38,6 +38,9 @@ public class MainController {
 
         ArrayList<XYPoint> courseXY = convertLatLongToXY();
         displayMarks(courseXY);
+        for (XYPoint pt : courseXY){
+            System.out.printf("(%f, %f) ", pt.x, pt.y);
+        }
 
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
         animation.start();
@@ -99,15 +102,6 @@ public class MainController {
 
     }
 
-    public double convertLatitudeToX(double lat) {
-        double x =  ((mainCanvas.getWidth()/360.0) * (180 + lat));
-        return x;
-    }
-
-    public double convertLongitudeToY(double longitude) {
-        double y = ((mainCanvas.getHeight()/180.0) * (90 - longitude));
-        return y;
-    }
 
     public class XYPoint {
         public double x;
@@ -122,8 +116,8 @@ public class MainController {
     private ArrayList<Double> getCanvasBounds(){
         double minXBound = 50;
         double minYBound = 50;
-        double maxXBound = mainCanvas.getWidth() - 50;
-        double maxYBound = mainCanvas.getHeight() - 50;
+        double maxXBound = mainCanvas.getWidth() - 100;
+        double maxYBound = mainCanvas.getHeight() - 100;
 
         ArrayList<Double> canvasBounds = new ArrayList<>();
         canvasBounds.add(minXBound);
@@ -146,11 +140,15 @@ public class MainController {
                 double markLat = mark.getCompoundMarks().get(i).getLatitude();
                 double markLong = mark.getCompoundMarks().get(i).getLongitude();
 
-                double maxWidth = canvasBounds.get(1) - 50;
-                double maxHeight = canvasBounds.get(3) - 50;
+                double maxWidth = canvasBounds.get(1);
+                double maxHeight = canvasBounds.get(3);
 
-                double x = maxWidth*(markLat - latLongBounds.get(0)) / deltaLat;
-                double y = maxHeight*(markLong - latLongBounds.get(2)) / deltaLong;
+                double minLat = latLongBounds.get(0);
+                double minLong = latLongBounds.get(2);
+
+                double x = maxWidth*(markLong - minLong)/deltaLong;
+                double y = maxHeight*(markLat - minLat)/deltaLat;
+
                 XYPoint newPoint = new XYPoint(x+50, y+50);
                 compoundMarksXY.add(newPoint);
             }
