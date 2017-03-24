@@ -28,6 +28,7 @@ public class MainController {
 
     public void initialize(){
 
+
         raceCourse = new Course("Kevin");
 
         Race mainRace = new Race(raceGroup, raceCourse);
@@ -47,12 +48,39 @@ public class MainController {
     }
 
     public void displayMarks(ArrayList<XYPoint> courseXY) {
+        XYPoint gateStart = null;
+        XYPoint gateEnd;
+        boolean flag = false;
+
+        GraphicsContext gc = mainCanvas.getGraphicsContext2D();
+
 
         for (XYPoint point : courseXY) {
             Rectangle r = new Rectangle(point.x, point.y, 5, 5);
             r.setFill(Color.BLACK);
             raceGroup.getChildren().add(r);
         }
+        try {
+            for (XYPoint point : courseXY) {
+                if (point.name.startsWith("Start") || point.name.startsWith("Finish")) {
+                    //draw line
+                    if (flag == false) {
+                        gateStart = point;
+                        flag = true;
+                    } else if (flag == true) {
+                        gateEnd = point;
+                        gc.strokeLine(gateStart.x, gateStart.y, gateEnd.x, gateEnd.y);
+                        flag = false;
+                    }
+
+                }
+
+
+            }
+        } catch (Exception e) {
+            System.out.println("fuck");
+        }
+
 
     }
 
@@ -102,17 +130,6 @@ public class MainController {
 
     }
 
-
-    public class XYPoint {
-        public double x;
-        public double y;
-
-        public XYPoint(double x, double y){
-            this.x = x;
-            this.y = y;
-        }
-    }
-
     private ArrayList<Double> getCanvasBounds(){
         double minXBound = 50;
         double minYBound = 50;
@@ -149,7 +166,7 @@ public class MainController {
                 double x = maxWidth*(markLong - minLong)/deltaLong;
                 double y = maxHeight - (maxHeight*(markLat - minLat)/deltaLat);
 
-                XYPoint newPoint = new XYPoint(x+50, y+50);
+                XYPoint newPoint = new XYPoint(x+50, y+50, mark.getName());
                 compoundMarksXY.add(newPoint);
             }
         }
