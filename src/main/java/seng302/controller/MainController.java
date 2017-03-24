@@ -34,13 +34,12 @@ public class MainController {
         mainCanvas.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
         mainCanvas.setWidth(Screen.getPrimary().getVisualBounds().getWidth() * 0.8);
 
-        Race mainRace = new Race(raceGroup, raceCourse, mainCanvas);
-        mainRace.raceSetup();
-
-
-
         ArrayList<XYPoint> courseXY = convertLatLongToXY();
         displayMarks(courseXY);
+
+        Race mainRace = new Race(raceGroup, raceCourse, mainCanvas);
+        mainRace.raceSetup();
+        
         for (XYPoint pt : courseXY){
             System.out.printf("(%f, %f) ", pt.x, pt.y);
         }
