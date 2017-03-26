@@ -39,7 +39,7 @@ public class MainController {
 
         Race mainRace = new Race(raceGroup, raceCourse, mainCanvas);
         mainRace.raceSetup();
-        
+
         for (XYPoint pt : courseXY){
             System.out.printf("(%f, %f) ", pt.x, pt.y);
         }
@@ -59,7 +59,7 @@ public class MainController {
 
 
         for (XYPoint point : courseXY) {
-            Rectangle r = new Rectangle(point.x-2.5, point.y-2.5, 5, 5);
+            Rectangle r = new Rectangle(point.x-7.5, point.y-7.5, 15, 15);
             r.setFill(Color.BLACK);
             raceGroup.getChildren().add(r);
         }
