@@ -152,7 +152,6 @@ public class Course {
     double generateTotalCourseLength(){
         double cumulativeCourseLengthDistance = 0;
 
-
         if (courseOrder.size() == 2 ){
             int firstMarkId = courseOrder.get(1);
             int secondMarkId = courseOrder.get(0);
