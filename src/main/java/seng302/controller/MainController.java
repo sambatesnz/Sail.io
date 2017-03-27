@@ -11,7 +11,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
@@ -51,15 +53,8 @@ public class MainController {
         mainRace = new Race(raceGroup, raceCourse, mainCanvas);
         mainRace.raceSetup();
 
-        mainRace.getRacingBoats();
-
         ArrayList<Text> AnnoText = setUpAnno();
         updateAnnoPos("ORACLE TEAM USA", 500, 500, AnnoText);
-
-
-        for (XYPoint pt : courseXY){
-            System.out.printf("(%f, %f) ", pt.x, pt.y);
-        }
 
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
         animation.start();
@@ -67,15 +62,14 @@ public class MainController {
 
     public ArrayList<Text> setUpAnno() {
         ArrayList<Text> AnnoText = new ArrayList<>();
-        for (Boat boat : mainRace.getRacingBoats()) {
+         for (Boat boat : mainRace.getRacingBoats()) {
             Text boatText = new Text(400, 400, boat.getBoatName());
-            //boatText.setText(boat.getBoatName());
-            System.out.println(boat.getBoatName());
-            //boatText.setX(400);
-            //boatText.setY(400);
-            boatText.setVisible(true);
-            boatText.toFront();
+            boatText.setDisable(false);
+//            boatText.setVisible(true);
+//            boatText.toFront();
             AnnoText.add(boatText);
+            raceGroup.getChildren().add(boatText);
+
         }
         return AnnoText;
     }
@@ -116,8 +110,6 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
-    private final int ARR_SIZE = 8;
 
     public void displayMarks(ArrayList<XYPoint> courseXY) {
         XYPoint gateStart = null;

@@ -62,7 +62,6 @@ public class Race {
             CompoundMark start = raceCourse.getCourseCompoundMarks().get(0);
             start = start.findAverageGate(start);
             XYPoint convertedMark = convertCompoundMarkToXYPoint(start);
-            System.out.println(String.format("%f, %f",convertedMark.x, convertedMark.y));
             Circle c = new Circle(convertedMark.x, convertedMark.y, 7.5, boatColors.get(i));
             raceGroup.getChildren().add(c);
             boatCircles.put(racingBoats.get(i).getBoatName(), c);
