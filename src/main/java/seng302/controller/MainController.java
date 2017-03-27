@@ -65,8 +65,6 @@ public class MainController {
 
         windDirText.setText("Wind Direction\nBearing: " + windDir);
 
-        windDir += 180;
-
         try {
             fis = new FileInputStream(file);
 
