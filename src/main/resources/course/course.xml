@@ -2,6 +2,9 @@
     <name>
         America's Cup 35
     </name>
+    <windDirection>
+        121
+    </windDirection>
     <compoundMarks>
         <compoundMark type="Gate" name="Start" id="1">
             <mark>
