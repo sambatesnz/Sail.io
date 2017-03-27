@@ -179,6 +179,10 @@ public class Course {
         return courseCompoundMarks;
     }
 
+    public int getCourseOrder(int legNumber) {
+        return courseOrder.get(legNumber);
+    }
+
     public ArrayList<Double> findMaxMinLatLong(){
 
         double minLat;

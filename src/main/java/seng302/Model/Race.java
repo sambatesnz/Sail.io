@@ -59,13 +59,19 @@ public class Race {
     public void raceSetup(){
         generateBoats(6);
         for(int i = 0; i < racingBoats.size(); i++){
+            Boat boat = racingBoats.get(i);
+            int markIndex = raceCourse.getCourseOrder(boat.getCurrentLeg());
             CompoundMark start = raceCourse.getCourseCompoundMarks().get(0);
             start = start.findAverageGate(start);
+
+            boat.setDestinationMark(raceCourse.getCourseCompoundMarks().get(markIndex));
+            boat.setCurrentPosition(start);
+            boat.updateHeading();
+
             XYPoint convertedMark = convertCompoundMarkToXYPoint(start);
-            System.out.println(String.format("%f, %f",convertedMark.x, convertedMark.y));
-            Circle c = new Circle(convertedMark.x, convertedMark.y, 7.5, boatColors.get(i));
-            raceGroup.getChildren().add(c);
-            boatCircles.put(racingBoats.get(i).getBoatName(), c);
+            Circle boatCircle = new Circle(convertedMark.x, convertedMark.y, 6, boatColors.get(i));
+            raceGroup.getChildren().add(boatCircle);
+            boatCircles.put(boat.getBoatName(), boatCircle);
         }
     }
 
@@ -73,6 +79,7 @@ public class Race {
         for(int i = 0; i < racingBoats.size(); i++){
             Boat b = racingBoats.get(i);
             double distanceTravelled = timeDifference * b.getBoatSpeed();
+            updateBoat(distanceTravelled, b);
             ///TODO cord to pixle math needed
             //b.setLatCord(newLatval);
             //b.setLongCord(newLongval);
@@ -86,8 +93,10 @@ public class Race {
     }
 
 
-    public void updateBoat(double time){
+    private void updateBoat(double distanceTravelled, Boat boat){
+        Circle boatCircle = boatCircles.get(boat.getBoatName());
 
+        //System.out.println();
     }
 
     /**
