@@ -46,7 +46,7 @@ public class MainController {
         ArrayList<XYPoint> courseXY = convertLatLongToXY();
         displayMarks(courseXY);
 
-        displayWindDir(0);
+        displayWindDir(raceCourse.getWindDirection());
 
         Race mainRace = new Race(raceGroup, raceCourse, mainCanvas);
         mainRace.raceSetup();
@@ -65,7 +65,7 @@ public class MainController {
 
         windDirText.setText("Wind Direction\nBearing: " + windDir);
 
-        windDir =+ 180;
+        windDir += 180;
 
         try {
             fis = new FileInputStream(file);

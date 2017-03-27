@@ -16,6 +16,7 @@ import java.util.List;
 public class CourseCreator {
 
     private Document configDoc;
+    private String WINDDIRECTION = "windDirection";
     private String LATITUDE = "latitude";
     private String LONGITUDE = "longitude";
     private String COMPOUND_MARK = "compoundMark";
@@ -125,6 +126,24 @@ public class CourseCreator {
 
         }
         return compoundMarks;
+    }
+
+
+    public int getWindDirection() {
+        NodeList nodes = this.configDoc.getElementsByTagName(WINDDIRECTION);
+        int windDir = 0;
+
+        try
+        {
+            for (int i=0; i< nodes.getLength(); i++){
+                String strippedNode = nodes.item(i).getTextContent().replaceAll("\\s+", "");
+                windDir = Integer.parseInt(strippedNode);
+            }
+        } catch (Exception e) {
+            System.out.println("Could not parse the windspeed.");
+            throw e;
+        }
+        return windDir;
     }
 
     /** Takes a xml mark and converts it into compound mark

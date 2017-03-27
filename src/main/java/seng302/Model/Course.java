@@ -13,6 +13,7 @@ public class Course {
     private ArrayList<CompoundMark> courseCompoundMarks = new ArrayList<>();
     private ArrayList<Integer> courseOrder;
     private CourseCreator courseCreator;
+    private int windDirection = 0;
 
     /**
      * Constructor.
@@ -25,6 +26,7 @@ public class Course {
         this.courseCreator = loadCoarseCreator();
         this.courseCompoundMarks = courseCreator.getCompoundMarks();
         this.courseOrder = courseCreator.getGateOrderForRace();
+        this.windDirection = courseCreator.getWindDirection();
     }
 
     public Course(String courseName, String fileLocation){
@@ -224,6 +226,10 @@ public class Course {
         }
         this.courseOrder = newCourseOrder;
 
+    }
+
+    public int getWindDirection() {
+        return windDirection;
     }
 
 }
