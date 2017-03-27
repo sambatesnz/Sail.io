@@ -93,7 +93,6 @@ public class MainController {
         GraphicsContext gc = mainCanvas.getGraphicsContext2D();
 
 
-
         for (XYPoint point : courseXY) {
             Rectangle r = new Rectangle(point.x-7.5, point.y-7.5, 15, 15);
             r.setFill(Color.BLACK);
