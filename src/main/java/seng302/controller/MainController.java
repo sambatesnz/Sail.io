@@ -54,7 +54,7 @@ public class MainController {
         mainRace.raceSetup();
 
         ArrayList<Text> AnnoText = setUpAnno();
-        updateAnnoPos("ORACLE TEAM USA", 500, 500, AnnoText);
+        updateAnnoPos(mainRace.getRacingBoats().get(0), 500, 500, AnnoText);
 
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
         animation.start();
@@ -63,24 +63,24 @@ public class MainController {
     public ArrayList<Text> setUpAnno() {
         ArrayList<Text> AnnoText = new ArrayList<>();
          for (Boat boat : mainRace.getRacingBoats()) {
-            Text boatText = new Text(400, 400, boat.getShorthandName());
-            boatText.setDisable(false);
-            AnnoText.add(boatText);
-            raceGroup.getChildren().add(boatText);
+             String boatInfo = "Name: " + boat.getShorthandName() + ", " +
+                                "Speed: " + boat.getBoatSpeed() + "kmph";
+             Text boatText = new Text(400, 400, boatInfo);
+             AnnoText.add(boatText);
+             raceGroup.getChildren().add(boatText);
 
         }
         return AnnoText;
     }
 
-    public void updateAnnoPos(String boatName, float posX, float posY, ArrayList<Text> AnnoText) {
+    public void updateAnnoPos(Boat boat, float posX, float posY, ArrayList<Text> AnnoText) {
         // Get the boat index by the boat name
         int index = -1;
         for (int i = 0; i < mainRace.getRacingBoats().size(); i++) {
-            if (mainRace.getRacingBoats().get(i).getBoatName().equals(boatName)) {
+            if (mainRace.getRacingBoats().get(i).equals(boat)) {
                 index = i;
             }
         }
-
         // Update the boat position
         AnnoText.get(index).setX(posX);
         AnnoText.get(index).setY(posY);
