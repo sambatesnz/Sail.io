@@ -36,7 +36,6 @@ public class MainController {
     @FXML private Group raceGroup;
     @FXML private Text windDirText;
 
-
     public void initialize(){
 
         raceCourse = new Course("Kevin");
@@ -48,10 +47,15 @@ public class MainController {
 
         displayWindDir(raceCourse.getWindDirection());
 
+
         mainRace = new Race(raceGroup, raceCourse, mainCanvas);
         mainRace.raceSetup();
 
         mainRace.getRacingBoats();
+
+        ArrayList<Text> AnnoText = setUpAnno();
+        updateAnnoPos("ORACLE TEAM USA", 500, 500, AnnoText);
+
 
         for (XYPoint pt : courseXY){
             System.out.printf("(%f, %f) ", pt.x, pt.y);
@@ -59,6 +63,35 @@ public class MainController {
 
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
         animation.start();
+    }
+
+    public ArrayList<Text> setUpAnno() {
+        ArrayList<Text> AnnoText = new ArrayList<>();
+        for (Boat boat : mainRace.getRacingBoats()) {
+            Text boatText = new Text(400, 400, boat.getBoatName());
+            //boatText.setText(boat.getBoatName());
+            System.out.println(boat.getBoatName());
+            //boatText.setX(400);
+            //boatText.setY(400);
+            boatText.setVisible(true);
+            boatText.toFront();
+            AnnoText.add(boatText);
+        }
+        return AnnoText;
+    }
+
+    public void updateAnnoPos(String boatName, float posX, float posY, ArrayList<Text> AnnoText) {
+        // Get the boat index by the boat name
+        int index = -1;
+        for (int i = 0; i < mainRace.getRacingBoats().size(); i++) {
+            if (mainRace.getRacingBoats().get(i).getBoatName().equals(boatName)) {
+                index = i;
+            }
+        }
+
+        // Update the boat position
+        AnnoText.get(index).setX(posX);
+        AnnoText.get(index).setY(posY);
     }
 
     public void displayWindDir(int windDir) {
