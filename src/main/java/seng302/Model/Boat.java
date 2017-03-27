@@ -11,16 +11,17 @@ public class Boat {
     private int currentLeg = 0;
     private CompoundMark currentPosition;
     private CompoundMark destinationMark;
-
+    private String shorthandName;
 
     /**
      * Basic Constructor for Boat objects.
      * @param name
      * @param speed
      */
-    public Boat(String name, float speed) {
+    public Boat(String name, float speed, String shorthandName) {
         this.boatName = name;
         this.boatSpeed = speed;
+        this.shorthandName = shorthandName;
         this.currentPosition = new CompoundMark("currentPosition", -1);
         this.currentPosition.addMark(0,0);
     }
@@ -35,6 +36,10 @@ public class Boat {
 
     public String toString(){
         return this.boatName;
+    }
+
+    public String getShorthandName() {
+        return shorthandName;
     }
 
     public int getCurrentLeg() {

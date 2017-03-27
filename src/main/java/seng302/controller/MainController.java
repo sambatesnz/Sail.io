@@ -63,10 +63,8 @@ public class MainController {
     public ArrayList<Text> setUpAnno() {
         ArrayList<Text> AnnoText = new ArrayList<>();
          for (Boat boat : mainRace.getRacingBoats()) {
-            Text boatText = new Text(400, 400, boat.getBoatName());
+            Text boatText = new Text(400, 400, boat.getShorthandName());
             boatText.setDisable(false);
-//            boatText.setVisible(true);
-//            boatText.toFront();
             AnnoText.add(boatText);
             raceGroup.getChildren().add(boatText);
 
