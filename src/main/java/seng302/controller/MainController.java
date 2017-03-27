@@ -29,6 +29,7 @@ import static java.util.Arrays.asList;
  */
 public class MainController {
     private Course raceCourse;
+    private Race mainRace;
 
     @FXML private Canvas mainCanvas;
     @FXML private GridPane boatGridPane;
@@ -47,8 +48,10 @@ public class MainController {
 
         displayWindDir(raceCourse.getWindDirection());
 
-        Race mainRace = new Race(raceGroup, raceCourse, mainCanvas);
+        mainRace = new Race(raceGroup, raceCourse, mainCanvas);
         mainRace.raceSetup();
+
+        mainRace.getRacingBoats();
 
         for (XYPoint pt : courseXY){
             System.out.printf("(%f, %f) ", pt.x, pt.y);
