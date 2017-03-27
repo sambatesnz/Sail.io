@@ -38,7 +38,6 @@ public class MainController {
 
     public void initialize(){
 
-
         raceCourse = new Course("Kevin");
         mainCanvas.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
         mainCanvas.setWidth(Screen.getPrimary().getVisualBounds().getWidth() * 0.8);
