@@ -1,5 +1,6 @@
 package seng302.Model;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
@@ -75,7 +76,31 @@ public class Race {
         }
     }
 
+    private double calculateDistanceIncrement(Boat boat, double timeDifference){
+        double courseLength = raceCourse.generateTotalCourseLength();
+        double actual_time_to_destination =  (slowestBoatSpeed/courseLength)*racePlaybackDuration; //Check if racePlayBackDuration is corrent
+        double scaling_factor = racePlaybackDuration/actual_time_to_destination;
+        double scaled_velocity = courseLength / (timeDifference * racePlaybackDuration);
+
+        double boat_speed = boat.getBoatSpeed();
+        double boat_scaling_factor = boat_speed/slowestBoatSpeed;
+
+        double distance_increment = timeDifference * scaled_velocity * boat_scaling_factor;
+        System.out.println(distance_increment);
+        return distance_increment;
+    }
+
     public void updatePositions(double timeDifference){
+        System.out.println("----");
+        for (int i=0; i<racingBoats.size(); i++){
+            Boat currentBoat = racingBoats.get(i);
+            double increment_distance = calculateDistanceIncrement(currentBoat, timeDifference);
+
+            updateBoat(increment_distance, currentBoat);
+        }
+
+/*
+        //System.out.println(getSlowestBoatSpeed());
         for(int i = 0; i < racingBoats.size(); i++){
             Boat b = racingBoats.get(i);
             double distanceTravelled = timeDifference * b.getBoatSpeed();
@@ -89,14 +114,70 @@ public class Race {
             //c.setCenterX(newXval);
             //c.setCenterY(newYval);
 
-        }
+        }*/
     }
+    /**
+     *Calculates the spherical distance between two airports based off their latitude longitude and altitude.
+     * Implementation taken from http://stackoverflow.com/questions/3694380/calculating-distance-between-two-points-using-latitude-longitude-what-am-i-doi
+     * @return Returns a double of the spherical distance between airports.
+     */
+    private static double sphericalDistance(Boat boat) {
 
+        CompoundMark boatPosition = boat.getCurrentPosition();
+        CompoundMark destinationPosition = boat.getDestinationMark();
+
+        //System.out.println(Course.findDistBetweenCompoundMarks(boatPosition.getCompoundMarks(), destinationPosition.getCompoundMarks()));
+        final int R = 6371; //
+
+        CompoundMark.Point  boatCoords = boatPosition.getCompoundMarks().get(0);
+        CompoundMark.Point  destCoords = destinationPosition.getCompoundMarks().get(0);
+
+        Double latDistance = Math.toRadians(destCoords.getLatitude() - boatCoords.getLatitude());
+        Double longDistance = Math.toRadians(destCoords.getLongitude() - boatCoords.getLongitude());
+        Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(boatCoords.getLatitude())) * Math.cos(Math.toRadians(destCoords.getLatitude()))
+                * Math.sin(longDistance / 2) * Math.sin(longDistance / 2);
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+
+        double distance = R * c * 1000; // convert to meters
+        double height = 0;
+        distance = Math.pow(distance, 2) + Math.pow(height, 2);
+
+        return Math.sqrt(distance);  //In meters
+    }
 
     private void updateBoat(double distanceTravelled, Boat boat){
         Circle boatCircle = boatCircles.get(boat.getBoatName());
 
+        double distance = Course.findDistBetweenCompoundMarks(boat.getCurrentPosition(), boat.getDestinationMark());
+
+        boolean hasPassed = hasBoatPassedMark(boat, distanceTravelled);
+        System.out.println(hasPassed);
+
+        //hasBoatPassedMark(boat, distanceTravelled);
+
+        //Check if boat has reached dest
+        //CheckIfPassed
+            //If the distance
+        //if (checkIfpassc){
+            //Find new point to go to
+            //Set heading
+            //Start moved
+
+        //}
+
         //System.out.println();
+    }
+
+    public static boolean hasBoatPassedMark(Boat boat, double distanceTravelled) {
+        boolean hasPassed = false;
+
+        double distanceFromCurrentPosToMark = Course.findDistBetweenCompoundMarks(boat.getCurrentPosition(), boat.getDestinationMark());
+        if( distanceTravelled > distanceFromCurrentPosToMark) {
+            hasPassed = true;
+        }
+        return hasPassed;
     }
 
     /**
@@ -165,13 +246,9 @@ public class Race {
         }
     }
 
-    /**
-     * Gets a playback duration from std input,
-     * must be either 0, 1 or 5 minutes.
-     */
-    public void setRacePlaybackDuration(){
-        // TODO: REMOVE THIS 0 BEFORE SUBMISSION.
-        HashSet<Integer> validRaceLength = new HashSet<>(asList(0, 1, 5));
+
+    public void setRaceSpeed(){
+        HashSet<Integer> validRaceLength = new HashSet<>(asList(1, 5));
         Scanner input = new Scanner(System.in);
         System.out.println("What duration do you want the race to be in minutes?");
         while (!(validRaceLength.contains(racePlaybackDuration))){
@@ -182,10 +259,12 @@ public class Race {
                 input.next();
             }
             if(!(validRaceLength.contains(racePlaybackDuration))){
-                System.out.println("Please ensure that the number is a valid race duration (0, 1 or 5 minutes long).");
+                System.out.println("Please ensure that the number is a valid race duration (1 or 5 minutes long).");
             }
         }
-        playbackSpeedMultiplier = racePlaybackDuration / (60*((float)totalRaceDistance / getSlowestBoatSpeed()));
+
+        racePlaybackDuration = racePlaybackDuration * 60;
+
     }
 
 

@@ -42,8 +42,19 @@ public class CourseTest {
         myCourse.overloadCourseOrder(newCourseOrder);
 
         double courseLength = myCourse.generateTotalCourseLength();
-        double expectedCourseLength = 2224;
+        double expectedCourseLength = 3335;
+
 
         assertTrue(isNumInRange(courseLength, expectedCourseLength, RANGE));
+    }
+
+    @Test
+    public void generateTotalCourseLengthOfAmericasCupRace(){
+        String fileLocation = "/src/test/test-resources/americas-cup-course.xml";
+        Course americasCupCourse = new Course("Americas Cup Course", fileLocation);
+
+        double courseLength = americasCupCourse.generateTotalCourseLength();
+
+        assertTrue(isNumInRange(courseLength, 10.5, 1));
     }
 }

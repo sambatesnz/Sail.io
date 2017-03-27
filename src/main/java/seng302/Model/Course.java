@@ -50,7 +50,7 @@ public class Course {
      * @param mark2
      * @return
      */
-    private double findDistBetweenCompoundMarks(CompoundMark mark1, CompoundMark mark2) {
+    public static double findDistBetweenCompoundMarks(CompoundMark mark1, CompoundMark mark2) {
         if (mark1.getCompoundMarks().size() == 2) {
             mark1 = mark1.findAverageGate(mark1);
         }
@@ -160,7 +160,7 @@ public class Course {
             CompoundMark secondMark = getCompoundMarkById(secondMarkId);
             cumulativeCourseLengthDistance = findDistBetweenCompoundMarks(firstMark, secondMark);
         } else{
-            for (int i=1; i<courseOrder.size()-1; i++){
+            for (int i=1; i<courseOrder.size(); i++){
                 int firstMarkId = courseOrder.get(i-1);
                 int secondMarkId = courseOrder.get(i);
                 CompoundMark firstMark = getCompoundMarkById(firstMarkId);

@@ -38,6 +38,7 @@ public class MainController {
         displayMarks(courseXY);
 
         Race mainRace = new Race(raceGroup, raceCourse, mainCanvas);
+        mainRace.setRaceSpeed();
         mainRace.raceSetup();
 
         for (XYPoint pt : courseXY){
