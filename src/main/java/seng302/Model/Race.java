@@ -86,12 +86,12 @@ public class Race {
         double boat_scaling_factor = boat_speed/slowestBoatSpeed;
 
         double distance_increment = timeDifference * scaled_velocity * boat_scaling_factor;
-        System.out.println(distance_increment);
+        //System.out.println(distance_increment);
         return distance_increment;
     }
 
     public void updatePositions(double timeDifference){
-        System.out.println("----");
+        //System.out.println("----");
         for (int i=0; i<racingBoats.size(); i++){
             Boat currentBoat = racingBoats.get(i);
             double increment_distance = calculateDistanceIncrement(currentBoat, timeDifference);
@@ -103,13 +103,12 @@ public class Race {
         //System.out.println(getSlowestBoatSpeed());
         for(int i = 0; i < racingBoats.size(); i++){
             Boat b = racingBoats.get(i);
-            double distanceTravelled = timeDifference * b.getBoatSpeed();
+            double distanceTravelled = timeDifference * b.getBoatSpeed() * 100;
             updateBoat(distanceTravelled, b);
             ///TODO cord to pixle math needed
             //b.setLatCord(newLatval);
             //b.setLongCord(newLongval);
 
-            Circle c = boatCircles.get(b.getBoatName());
             //TODO update circles to new x y positions, this automatically updates them in group
             //c.setCenterX(newXval);
             //c.setCenterY(newYval);
@@ -150,10 +149,15 @@ public class Race {
     private void updateBoat(double distanceTravelled, Boat boat){
         Circle boatCircle = boatCircles.get(boat.getBoatName());
 
-        double distance = Course.findDistBetweenCompoundMarks(boat.getCurrentPosition(), boat.getDestinationMark());
-
         boolean hasPassed = hasBoatPassedMark(boat, distanceTravelled);
-        System.out.println(hasPassed);
+
+        if (hasPassed){
+            boat.incrementLeg();
+            //boat.setCurrentPosition(boat.getDestinationMark());
+            CompoundMark newDest = raceCourse.getCourseCompoundMarks().get(boat.getCurrentLeg());
+            boat.setDestinationMark(newDest);
+            boat.updateHeading();
+        }
 
         //hasBoatPassedMark(boat, distanceTravelled);
 
@@ -166,15 +170,20 @@ public class Race {
             //Start moved
 
         //}
-
-        //System.out.println();
+        boat.updateCurrentPosition(distanceTravelled);
+        XYPoint convertedMark = convertCompoundMarkToXYPoint(boat.getCurrentPosition());
+        boatCircle.relocate(convertedMark.x, convertedMark.y);
     }
 
-    public static boolean hasBoatPassedMark(Boat boat, double distanceTravelled) {
+    public boolean hasBoatPassedMark(Boat boat, double distanceTravelled) {
         boolean hasPassed = false;
 
         double distanceFromCurrentPosToMark = Course.findDistBetweenCompoundMarks(boat.getCurrentPosition(), boat.getDestinationMark());
+        System.out.println("--------------");
+        System.out.println(distanceTravelled);
+        System.out.println(distanceFromCurrentPosToMark);
         if( distanceTravelled > distanceFromCurrentPosToMark) {
+            System.out.println("wooooh <---------------------------------------------------------------------------------");
             hasPassed = true;
         }
         return hasPassed;

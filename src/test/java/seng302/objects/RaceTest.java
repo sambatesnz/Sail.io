@@ -61,7 +61,7 @@ public class RaceTest {
         boat.setDestinationMark(destinationMark);
         boat.setCurrentPosition(startMark);
 
-        boolean hasPassed = Race.hasBoatPassedMark(boat, 1112);
+        boolean hasPassed = false;//Race.hasBoatPassedMark(boat, 1112);
         assertTrue(hasPassed);
 
 

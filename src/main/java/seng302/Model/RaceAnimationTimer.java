@@ -25,7 +25,7 @@ public class RaceAnimationTimer extends AnimationTimer {
 
     public void handle(long currentNanoTime)
     {
-        double currentTime = ((double) currentNanoTime) / 1E9; //to convert from nano-seconds to seconds
+        double currentTime = ((double) currentNanoTime) * 1E9; //to convert from nano-seconds to seconds
         mainRace.updatePositions(currentTime - previousTime);
 
 

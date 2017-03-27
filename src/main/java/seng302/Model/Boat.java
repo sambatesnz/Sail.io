@@ -45,6 +45,32 @@ public class Boat {
     }
 
     /**
+     * takes the distance the boat has travelled and calculates a new lat/long
+     * position based on the currentPosition and the heading to find a new position
+     * http://www.movable-type.co.uk/scripts/latlong.html maths from here
+     * @param metersTravelled distance the boat has travelled along its heading
+     */
+    public void updateCurrentPosition(double metersTravelled){
+
+        CompoundMark.Point currentMark = currentPosition.getCompoundMarks().get(0);
+        double currentLat = currentMark.getLatitude();
+        currentLat = Math.toRadians(currentLat);
+        double currentLong = currentMark.getLongitude();
+        currentLong = Math.toRadians(currentLong);
+        double radiansHeading = Math.toRadians(currentHeading);
+
+        double angularDistance = metersTravelled / 6371000; // divide by radius of earth
+        double newLat = Math.asin(Math.sin(currentLat) * Math.cos(angularDistance) + Math.cos(currentLat) * Math.sin(angularDistance)*Math.cos(radiansHeading));
+        double newLong = currentLong + Math.atan2(Math.sin(radiansHeading)*Math.sin(angularDistance)*Math.cos(currentLat), Math.cos(angularDistance) - Math.sin(currentLat) * Math.sin(newLat));
+
+        newLat = Math.toDegrees(newLat);
+        newLong = Math.toDegrees(newLong);
+
+        currentMark.setLongitude(newLong);
+        currentMark.setLatitude(newLat);
+    }
+
+    /**
      * increments the leg which the boat is currently on
      */
     public void incrementLeg(){
