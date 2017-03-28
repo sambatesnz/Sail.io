@@ -1,17 +1,25 @@
 package seng302.controller;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
 import seng302.Model.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
@@ -25,6 +33,7 @@ public class MainController {
     @FXML private Canvas mainCanvas;
     @FXML private GridPane boatGridPane;
     @FXML private Group raceGroup;
+    @FXML private Text windDirText;
 
 
     public void initialize(){
@@ -36,6 +45,8 @@ public class MainController {
 
         ArrayList<XYPoint> courseXY = convertLatLongToXY();
         displayMarks(courseXY);
+
+        displayWindDir(raceCourse.getWindDirection());
 
         Race mainRace = new Race(raceGroup, raceCourse, mainCanvas);
         mainRace.setRaceSpeed();
@@ -49,6 +60,31 @@ public class MainController {
         animation.start();
     }
 
+    public void displayWindDir(int windDir) {
+        File file = new File("./src/main/resources/transparent_wind_arrow.png");
+        FileInputStream fis = null;
+
+        windDirText.setText("Wind Direction\nBearing: " + windDir);
+
+        try {
+            fis = new FileInputStream(file);
+
+            Image image = new Image(fis);
+            GraphicsContext gc = mainCanvas.getGraphicsContext2D();
+
+            gc.save();
+            Rotate r = new Rotate(windDir, 50+image.getWidth()/2, 50+image.getHeight()/2);
+            gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+            gc.drawImage(image, 50, 50);
+            gc.restore();
+        } catch (Exception e) {
+            System.out.println("./src/main/resources/wind.png not found.");
+            e.printStackTrace();
+        }
+    }
+
+    private final int ARR_SIZE = 8;
+
     public void displayMarks(ArrayList<XYPoint> courseXY) {
         XYPoint gateStart = null;
         XYPoint gateEnd;
@@ -56,7 +92,6 @@ public class MainController {
         Line line = null;
 
         GraphicsContext gc = mainCanvas.getGraphicsContext2D();
-
 
 
         for (XYPoint point : courseXY) {
