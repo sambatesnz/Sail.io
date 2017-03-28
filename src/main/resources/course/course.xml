@@ -41,17 +41,18 @@
         </compoundMark>
         <compoundMark type="Gate" name="Finish" id="5">
             <mark>
-                <latitude>32.317379</latitude>
-                <longitude>-64.839291</longitude>
-            </mark>
-            <mark>
                 <latitude>32.317257</latitude>
                 <longitude>-64.836260</longitude>
+            </mark>
+            <mark>
+                <latitude>32.317379</latitude>
+                <longitude>-64.839291</longitude>
             </mark>
         </compoundMark>
     </compoundMarks>
     <gateOrder>
         1,2,3,4,3,5
+        <!--1,5-->
     </gateOrder>
 </course>
 

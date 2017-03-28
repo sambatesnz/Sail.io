@@ -25,15 +25,23 @@ public class RaceAnimationTimer extends AnimationTimer {
 
     public void handle(long currentNanoTime)
     {
-        double currentTime = ((double) currentNanoTime) * 1E9; //to convert from nano-seconds to seconds
-        mainRace.updatePositions(currentTime - previousTime);
+/*        double currentTime = ((double) currentNanoTime) / 1E9; //to convert from nano-seconds to seconds
+
+        if (previousTime == 0){
+            currentTime = 0.017;
+        }*/
+        mainRace.updatePositions(0.016);
+
+      /*  currentTime = 0.017;
+        mainRace.updatePositions(0.017);*/
+//        mainRace.updatePositions(currentTime - previousTime);
+//        previousTime = currentTime;
 
 
-
-
-
-        previousTime = currentTime;
 
     }
+
+
+
 
 }

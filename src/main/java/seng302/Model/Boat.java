@@ -12,6 +12,7 @@ public class Boat {
     private double currentHeading = 0.0; // in degrees
     private CompoundMark currentPosition;
     private CompoundMark destinationMark;
+    public boolean hasFinished;
 
 
     /**
@@ -24,6 +25,7 @@ public class Boat {
         this.boatSpeed = speed;
         this.currentPosition = new CompoundMark("currentPosition", -1);
         this.currentPosition.addMark(0,0);
+        this.hasFinished = false;
     }
 
     /**

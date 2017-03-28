@@ -1,6 +1,7 @@
 package seng302.Model;
 
 import com.sun.org.apache.xpath.internal.SourceTree;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
@@ -46,6 +47,7 @@ public class Race {
         this.raceCourse = raceCourse;
         this.raceGroup = raceGroup;
         this.canvas = (Canvas)raceGroup.getChildren().get(0);
+
     }
 
     public Race(Group raceGroup, Course raceCourse, Canvas mainCanvas){
@@ -74,46 +76,25 @@ public class Race {
             raceGroup.getChildren().add(boatCircle);
             boatCircles.put(boat.getBoatName(), boatCircle);
         }
+        totalRaceDistance = raceCourse.generateTotalCourseLength() * 1000; //TODO WE EXPECT 10626m (Convert that bad boy from km to m)
     }
 
     private double calculateDistanceIncrement(Boat boat, double timeDifference){
-        double courseLength = raceCourse.generateTotalCourseLength();
-        double actual_time_to_destination =  (slowestBoatSpeed/courseLength)*racePlaybackDuration; //Check if racePlayBackDuration is corrent
-        double scaling_factor = racePlaybackDuration/actual_time_to_destination;
-        double scaled_velocity = courseLength / (timeDifference * racePlaybackDuration);
 
-        double boat_speed = boat.getBoatSpeed();
-        double boat_scaling_factor = boat_speed/slowestBoatSpeed;
+        double v_desired = totalRaceDistance  / racePlaybackDuration;
+        double K = v_desired / slowestBoatSpeed;
+        double scaled_boat_speed = boat.getBoatSpeed() * K;
+        double distance_increment = scaled_boat_speed * timeDifference;
 
-        double distance_increment = timeDifference * scaled_velocity * boat_scaling_factor;
-        //System.out.println(distance_increment);
         return distance_increment;
     }
 
     public void updatePositions(double timeDifference){
-        //System.out.println("----");
         for (int i=0; i<racingBoats.size(); i++){
             Boat currentBoat = racingBoats.get(i);
             double increment_distance = calculateDistanceIncrement(currentBoat, timeDifference);
-
             updateBoat(increment_distance, currentBoat);
         }
-
-/*
-        //System.out.println(getSlowestBoatSpeed());
-        for(int i = 0; i < racingBoats.size(); i++){
-            Boat b = racingBoats.get(i);
-            double distanceTravelled = timeDifference * b.getBoatSpeed() * 100;
-            updateBoat(distanceTravelled, b);
-            ///TODO cord to pixle math needed
-            //b.setLatCord(newLatval);
-            //b.setLongCord(newLongval);
-
-            //TODO update circles to new x y positions, this automatically updates them in group
-            //c.setCenterX(newXval);
-            //c.setCenterY(newYval);
-
-        }*/
     }
     /**
      *Calculates the spherical distance between two airports based off their latitude longitude and altitude.
@@ -125,7 +106,6 @@ public class Race {
         CompoundMark boatPosition = boat.getCurrentPosition();
         CompoundMark destinationPosition = boat.getDestinationMark();
 
-        //System.out.println(Course.findDistBetweenCompoundMarks(boatPosition.getCompoundMarks(), destinationPosition.getCompoundMarks()));
         final int R = 6371; //
 
         CompoundMark.Point  boatCoords = boatPosition.getCompoundMarks().get(0);
@@ -151,25 +131,20 @@ public class Race {
 
         boolean hasPassed = hasBoatPassedMark(boat, distanceTravelled);
 
-        if (hasPassed){
-            boat.incrementLeg();
-            //boat.setCurrentPosition(boat.getDestinationMark());
-            CompoundMark newDest = raceCourse.getCourseCompoundMarks().get(boat.getCurrentLeg());
-            boat.setDestinationMark(newDest);
-            boat.updateHeading();
+        if (hasPassed) {
+
+            if (boat.hasFinished){
+                distanceTravelled = 0;
+            }
+            else{
+                boat.incrementLeg();
+                CompoundMark newDest = raceCourse.getCompoundMarkById(raceCourse.getCourseOrder(boat.getCurrentLeg()));
+                boat.setDestinationMark(newDest);
+                boat.updateHeading();
+            }
+
         }
 
-        //hasBoatPassedMark(boat, distanceTravelled);
-
-        //Check if boat has reached dest
-        //CheckIfPassed
-            //If the distance
-        //if (checkIfpassc){
-            //Find new point to go to
-            //Set heading
-            //Start moved
-
-        //}
         boat.updateCurrentPosition(distanceTravelled);
         XYPoint convertedMark = convertCompoundMarkToXYPoint(boat.getCurrentPosition());
         boatCircle.relocate(convertedMark.x, convertedMark.y);
@@ -177,14 +152,12 @@ public class Race {
 
     public boolean hasBoatPassedMark(Boat boat, double distanceTravelled) {
         boolean hasPassed = false;
-
-        double distanceFromCurrentPosToMark = Course.findDistBetweenCompoundMarks(boat.getCurrentPosition(), boat.getDestinationMark());
-        System.out.println("--------------");
-        System.out.println(distanceTravelled);
-        System.out.println(distanceFromCurrentPosToMark);
+        double distanceFromCurrentPosToMark = Course.findDistBetweenCompoundMarks(boat.getCurrentPosition(), boat.getDestinationMark()) * 1000; //Scaled to 1km
         if( distanceTravelled > distanceFromCurrentPosToMark) {
-            System.out.println("wooooh <---------------------------------------------------------------------------------");
             hasPassed = true;
+            if (boat.getDestinationMark().getName().equals("Finish")){
+                boat.hasFinished = true;
+            }
         }
         return hasPassed;
     }
@@ -235,7 +208,6 @@ public class Race {
         return convertedMark;
     }
 
-
     /**
      * Adds the boats in the current race from the regatta
      * @param numberOfBoats Number of boats to be added from the current regatta to the race
@@ -255,8 +227,7 @@ public class Race {
         }
     }
 
-
-    public void setRaceSpeed(){
+    public void setRaceSpeed(){;
         HashSet<Integer> validRaceLength = new HashSet<>(asList(1, 5));
         Scanner input = new Scanner(System.in);
         System.out.println("What duration do you want the race to be in minutes?");
@@ -276,9 +247,6 @@ public class Race {
 
     }
 
-
-
-
     public ArrayList<Boat> getRacingBoats() {
         return racingBoats;
     }
@@ -286,7 +254,6 @@ public class Race {
     public ArrayList<String> getFinishingOrder() {
         return finishingOrder;
     }
-
 
     public void setRacePlaybackDuration(int racePlaybackDuration) {
         this.racePlaybackDuration = racePlaybackDuration;

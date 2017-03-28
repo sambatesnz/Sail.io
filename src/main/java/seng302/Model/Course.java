@@ -52,10 +52,11 @@ public class Course {
      */
     public static double findDistBetweenCompoundMarks(CompoundMark mark1, CompoundMark mark2) {
         if (mark1.getCompoundMarks().size() == 2) {
-            mark1 = mark1.findAverageGate(mark1);
+            //mark1 = mark1.findAverageGate(mark1);
+
         }
         if (mark2.getCompoundMarks().size() == 2) {
-            mark2 = mark2.findAverageGate(mark2);
+//            mark2 = mark2.findAverageGate(mark2);
         }
         double lat1 = mark1.getCompoundMarks().get(0).latitude;
         double lat2 = mark2.getCompoundMarks().get(0).latitude;
@@ -136,7 +137,7 @@ public class Course {
      * @return The compound mark which has your expected id
      * @throws Error if it doesn't find a mark with your id
      */
-    private CompoundMark getCompoundMarkById(int id){
+    CompoundMark getCompoundMarkById(int id){
         for (CompoundMark mark: courseCompoundMarks){
             if (mark.getId() == id ){
                 return mark;

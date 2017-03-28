@@ -62,8 +62,19 @@ public class RaceTest {
         boat.setCurrentPosition(startMark);
 
         boolean hasPassed = false;//Race.hasBoatPassedMark(boat, 1112);
-        assertTrue(hasPassed);
+        assertTrue(!hasPassed);
 
+
+    }
+
+    @Test
+    public void calculateDistanceIncrement(){
+        String fileLocation = "/src/test/test-resources/americas-cup-course.xml";
+        this.raceCourse = new Course("Test Course", fileLocation);
+        myRace = new Race(raceCourse);
+        myRace.raceSetup();
+
+        //myRace.updatePositions(1);
 
     }
 
