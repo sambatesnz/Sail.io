@@ -52,10 +52,6 @@ public class MainController {
         mainRace.setRaceSpeed();
         mainRace.raceSetup();
 
-        for (XYPoint pt : courseXY){
-            System.out.printf("(%f, %f) ", pt.x, pt.y);
-        }
-
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
         animation.start();
     }
@@ -125,7 +121,7 @@ public class MainController {
                 }
             }
         } catch (Exception e) {
-            System.out.println("fuck");
+            System.out.println("There has been a stitch up. Unluggy uce.");
         }
     }
 
