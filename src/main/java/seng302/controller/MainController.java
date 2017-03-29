@@ -32,6 +32,7 @@ import static java.util.Arrays.asList;
 public class MainController {
     private Course raceCourse;
     private Race mainRace;
+    private ArrayList<Text> annoText;
 
     @FXML private Canvas mainCanvas;
     @FXML private GridPane boatGridPane;
@@ -51,17 +52,19 @@ public class MainController {
 
 
         mainRace = new Race(raceGroup, raceCourse, mainCanvas);
+        mainRace.passMainController(this);
         mainRace.setRaceSpeed();
         mainRace.raceSetup();
 
-        ArrayList<Text> AnnoText = setUpAnno();
-        updateAnnoPos(mainRace.getRacingBoats().get(0), 500, 500, AnnoText);
+        setUpAnno();
+
+        updateAnnoPos(mainRace.getRacingBoats().get(0), 500, 500);
 
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
         animation.start();
     }
 
-    public ArrayList<Text> setUpAnno() {
+    public void setUpAnno() {
         ArrayList<Text> AnnoText = new ArrayList<>();
          for (Boat boat : mainRace.getRacingBoats()) {
              String boatInfo = boat.getShorthandName() + ", " + boat.getBoatSpeed() + "kmph";
@@ -70,10 +73,10 @@ public class MainController {
              raceGroup.getChildren().add(boatText);
 
         }
-        return AnnoText;
+        this.annoText = AnnoText;
     }
 
-    public void updateAnnoPos(Boat boat, float posX, float posY, ArrayList<Text> AnnoText) {
+    public void updateAnnoPos(Boat boat, double posX, double posY) {
         // Get the boat index by the boat name
         int index = -1;
         for (int i = 0; i < mainRace.getRacingBoats().size(); i++) {
@@ -82,8 +85,8 @@ public class MainController {
             }
         }
         // Update the boat position
-        AnnoText.get(index).setX(posX);
-        AnnoText.get(index).setY(posY);
+        annoText.get(index).setX(posX);
+        annoText.get(index).setY(posY);
     }
 
     public void displayWindDir(int windDir) {
