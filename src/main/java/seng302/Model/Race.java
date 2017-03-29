@@ -198,6 +198,7 @@ public class Race {
         }
     }
 
+
     private XYPoint convertCompoundMarkToXYPoint(CompoundMark mark){
         XYPoint convertedMark = new XYPoint();
         double minCanvasBoundsXY = 50;
