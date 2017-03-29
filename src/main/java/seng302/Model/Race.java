@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import jdk.internal.util.xml.impl.Pair;
 import seng302.controller.XYPoint;
 
 import java.util.*;
@@ -90,11 +91,23 @@ public class Race {
     }
 
     public void updatePositions(double timeDifference){
-        for (int i=0; i<racingBoats.size(); i++){
-            Boat currentBoat = racingBoats.get(i);
-            double increment_distance = calculateDistanceIncrement(currentBoat, timeDifference);
-            updateBoat(increment_distance, currentBoat);
+
+        if (finishingOrder.size() == racingBoats.size()) {
+            for (int i=0; i<finishingOrder.size(); i++) {
+                System.out.println(finishingOrder);
+            }
         }
+        else{
+            for (int i=0; i<racingBoats.size(); i++){
+                Boat currentBoat = racingBoats.get(i);
+                if (!currentBoat.hasFinished){
+                    double increment_distance = calculateDistanceIncrement(currentBoat, timeDifference);
+                    updateBoat(increment_distance, currentBoat);
+                }
+
+            }
+        }
+
     }
     /**
      *Calculates the spherical distance between two airports based off their latitude longitude and altitude.
@@ -156,6 +169,7 @@ public class Race {
         if( distanceTravelled > distanceFromCurrentPosToMark) {
             hasPassed = true;
             if (boat.getDestinationMark().getName().equals("Finish")){
+                finishingOrder.add(boat.getBoatName());
                 boat.hasFinished = true;
             }
         }
