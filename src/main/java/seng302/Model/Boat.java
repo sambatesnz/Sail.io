@@ -72,6 +72,7 @@ public class Boat {
 
         currentMark.setLongitude(newLong);
         currentMark.setLatitude(newLat);
+
     }
 
     /**
