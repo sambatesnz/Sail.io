@@ -183,12 +183,12 @@ public class Race {
     public void generateBoats(int numBoats){
         racingBoats.clear();
         ArrayList<Boat> allBoats = new ArrayList<>();
-        allBoats.add(new Boat("ORACLE TEAM USA", 50));
-        allBoats.add(new Boat("Artemis Racing", 55));
-        allBoats.add(new Boat("Emirates Team New Zealand", 60));
-        allBoats.add(new Boat("Groupama Team France", 65));
-        allBoats.add(new Boat("Land Rover BAR", 70));
-        allBoats.add(new Boat("SoftBank Team Japan", 75));
+        allBoats.add(new Boat("ORACLE TEAM USA", 50, "USA"));
+        allBoats.add(new Boat("Artemis Racing", 55, "SWE"));
+        allBoats.add(new Boat("Emirates Team New Zealand", 60, "NZL"));
+        allBoats.add(new Boat("Groupama Team France", 65, "FRA"));
+        allBoats.add(new Boat("Land Rover BAR", 70, "GBR"));
+        allBoats.add(new Boat("SoftBank Team Japan", 75, "JPN"));
 
         setSlowestBoatSpeed(Integer.MAX_VALUE);
 

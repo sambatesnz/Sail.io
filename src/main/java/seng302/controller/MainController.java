@@ -11,7 +11,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
@@ -29,15 +31,14 @@ import static java.util.Arrays.asList;
  */
 public class MainController {
     private Course raceCourse;
+    private Race mainRace;
 
     @FXML private Canvas mainCanvas;
     @FXML private GridPane boatGridPane;
     @FXML private Group raceGroup;
     @FXML private Text windDirText;
 
-
     public void initialize(){
-
 
         raceCourse = new Course("Kevin");
         mainCanvas.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
@@ -48,12 +49,41 @@ public class MainController {
 
         displayWindDir(raceCourse.getWindDirection());
 
-        Race mainRace = new Race(raceGroup, raceCourse, mainCanvas);
+
+        mainRace = new Race(raceGroup, raceCourse, mainCanvas);
         mainRace.setRaceSpeed();
         mainRace.raceSetup();
 
+        ArrayList<Text> AnnoText = setUpAnno();
+        updateAnnoPos(mainRace.getRacingBoats().get(0), 500, 500, AnnoText);
+
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
         animation.start();
+    }
+
+    public ArrayList<Text> setUpAnno() {
+        ArrayList<Text> AnnoText = new ArrayList<>();
+         for (Boat boat : mainRace.getRacingBoats()) {
+             String boatInfo = boat.getShorthandName() + ", " + boat.getBoatSpeed() + "kmph";
+             Text boatText = new Text(400, 400, boatInfo);
+             AnnoText.add(boatText);
+             raceGroup.getChildren().add(boatText);
+
+        }
+        return AnnoText;
+    }
+
+    public void updateAnnoPos(Boat boat, float posX, float posY, ArrayList<Text> AnnoText) {
+        // Get the boat index by the boat name
+        int index = -1;
+        for (int i = 0; i < mainRace.getRacingBoats().size(); i++) {
+            if (mainRace.getRacingBoats().get(i).equals(boat)) {
+                index = i;
+            }
+        }
+        // Update the boat position
+        AnnoText.get(index).setX(posX);
+        AnnoText.get(index).setY(posY);
     }
 
     public void displayWindDir(int windDir) {
@@ -78,8 +108,6 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
-    private final int ARR_SIZE = 8;
 
     public void displayMarks(ArrayList<XYPoint> courseXY) {
         XYPoint gateStart = null;
@@ -123,52 +151,6 @@ public class MainController {
         } catch (Exception e) {
             System.out.println("There has been a stitch up. Unluggy uce.");
         }
-    }
-
-    public void displayDots() {
-
-        ArrayList<Color> boatColors = new ArrayList<>(asList(Color.CHOCOLATE, Color.GREEN, Color.CYAN, Color.GOLD, Color.DARKGREY, Color.PURPLE));
-
-        GraphicsContext gc= mainCanvas.getGraphicsContext2D();
-
-        gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-
-        System.out.println("BoatGridPaneWidth: " + boatGridPane.getWidth());
-//        System.out.println("AnchorPaneWidth: " + boatAnchorPane.widthProperty());
-        System.out.println("canvasWidth: " + gc.getCanvas().getWidth());
-        System.out.println("canvasHeight: " + gc.getCanvas().getHeight());
-
-
-        new AnimationTimer() {
-            double x = 0;
-            double y = 0;
-
-            double canvasWidth = gc.getCanvas().getWidth();
-
-            double canvasHeight = gc.getCanvas().getHeight();
-
-            public void handle(long currentNanoTime) {
-                gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-                gc.setFill(Color.LIGHTCYAN);
-                gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-                gc.setFill(Color.GREEN);
-                gc.fillRect(50, 50, 16, 16);
-
-                x += 2;
-                y += 1;
-
-                if (x > canvasWidth || y > canvasHeight || y > canvasWidth || x > canvasHeight) {
-                    x = 0;
-                    y = 0;
-                }
-                gc.setFill(boatColors.get(3));
-                gc.fillOval(y, x, 15, 15);
-                gc.setFill(boatColors.get(2));
-                gc.fillOval(x, y, 15, 15);
-
-            }
-        }.start();
-
     }
 
     private ArrayList<Double> getCanvasBounds(){
