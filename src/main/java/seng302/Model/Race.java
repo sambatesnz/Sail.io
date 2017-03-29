@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import seng302.controller.MainController;
 import seng302.controller.XYPoint;
 
 import java.util.*;
@@ -28,6 +29,7 @@ public class Race {
     private Canvas canvas;
     private HashMap<String, Circle> boatCircles = new HashMap<>();
     private ArrayList<Color> boatColors = new ArrayList<>(asList(Color.CHOCOLATE, Color.GREEN, Color.CYAN,Color.DARKGREY, Color.GOLD,  Color.PURPLE));
+    private MainController mainController;
 
 //    private ArrayList<>  boatOrder
 
@@ -40,6 +42,10 @@ public class Race {
     public Race (Course raceCourse) {
         this.raceCourse = raceCourse;
         generateBoats(6);
+    }
+
+    public void passMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 
     /**
@@ -169,6 +175,9 @@ public class Race {
         }
 
         boat.updateCurrentPosition(distanceTravelled);
+        mainController.updateAnnoPos(boat,
+                                    this.convertCompoundMarkToXYPoint(boat.getCurrentPosition()).x,
+                                    this.convertCompoundMarkToXYPoint(boat.getCurrentPosition()).y);
         XYPoint convertedMark = convertCompoundMarkToXYPoint(boat.getCurrentPosition());
         boatCircle.relocate(convertedMark.x, convertedMark.y);
     }
@@ -212,6 +221,7 @@ public class Race {
             }
         }
     }
+
 
     private XYPoint convertCompoundMarkToXYPoint(CompoundMark mark){
         XYPoint convertedMark = new XYPoint();
