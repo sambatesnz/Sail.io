@@ -57,6 +57,7 @@ public class MainController {
 
         positionsColumn.setCellValueFactory( new PropertyValueFactory<BoatOrder, Integer>("position"));
         PositionsTable.setItems(boatOrder);
+        positionsColumn.prefWidthProperty().bind(PositionsTable.widthProperty().multiply(0.97));
 
 
 
@@ -82,8 +83,10 @@ public class MainController {
         ObservableList<Boat> boats = mainRace.getRacingBoats();
 
         boatNameColumn.setCellValueFactory(new PropertyValueFactory<Boat, String>("boatName"));
-        boatInfoTableView.setItems(boats);
         boatSpeedColumn.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("boatSpeed"));
+        boatInfoTableView.setItems(boats);
+        boatNameColumn.prefWidthProperty().bind(boatInfoTableView.widthProperty().multiply(0.69));
+        boatSpeedColumn.prefWidthProperty().bind(boatInfoTableView.widthProperty().multiply(0.3));
 
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
         animation.start();
@@ -170,7 +173,7 @@ public class MainController {
                 }
             }
         } catch (Exception e) {
-            System.out.println("There has been a stitch up. Unluggy uce.");
+            System.out.println(e.toString());
         }
     }
 
