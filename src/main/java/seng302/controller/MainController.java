@@ -71,7 +71,6 @@ public class MainController {
              Text boatText = new Text(400, 400, boatInfo);
              AnnoText.add(boatText);
              raceGroup.getChildren().add(boatText);
-
         }
         this.annoText = AnnoText;
     }
