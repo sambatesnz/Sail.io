@@ -1,12 +1,11 @@
 package seng302.Model;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import jdk.internal.util.xml.impl.Pair;
 import seng302.controller.XYPoint;
 
 import java.util.*;
@@ -18,7 +17,7 @@ import static java.util.Arrays.asList;
  */
 public class Race {
 
-    private ArrayList<Boat> racingBoats = new ArrayList<>();
+    private ObservableList<Boat> racingBoats = FXCollections.observableArrayList();
     private Course raceCourse;
     private ArrayList<String> finishingOrder = new ArrayList<>();
     private int racePlaybackDuration = -1;
@@ -29,6 +28,10 @@ public class Race {
     private Canvas canvas;
     private HashMap<String, Circle> boatCircles = new HashMap<>();
     private ArrayList<Color> boatColors = new ArrayList<>(asList(Color.CHOCOLATE, Color.GREEN, Color.CYAN,Color.DARKGREY, Color.GOLD,  Color.PURPLE));
+
+//    private ArrayList<>  boatOrder
+
+
 
     /**
      * Basic constructor for the Race. this may be subject to change at some point.
@@ -106,9 +109,16 @@ public class Race {
                 }
 
             }
+
+            sortBoatOrder();
         }
 
     }
+
+    private void sortBoatOrder() {
+        Collections.sort(racingBoats, (b2, b1) -> String.valueOf(b1.getCurrentLeg()).compareTo(String.valueOf(b2.getCurrentLeg())) );
+    }
+
     /**
      *Calculates the spherical distance between two airports based off their latitude longitude and altitude.
      * Implementation taken from http://stackoverflow.com/questions/3694380/calculating-distance-between-two-points-using-latitude-longitude-what-am-i-doi
@@ -261,7 +271,7 @@ public class Race {
 
     }
 
-    public ArrayList<Boat> getRacingBoats() {
+    public ObservableList<Boat> getRacingBoats() {
         return racingBoats;
     }
 

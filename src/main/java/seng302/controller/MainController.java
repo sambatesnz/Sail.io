@@ -2,10 +2,16 @@ package seng302.controller;
 
 import com.sun.corba.se.impl.orbutil.graph.Graph;
 import javafx.animation.AnimationTimer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -23,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static java.util.Arrays.asList;
 
@@ -37,10 +44,40 @@ public class MainController {
     @FXML private GridPane boatGridPane;
     @FXML private Group raceGroup;
     @FXML private Text windDirText;
+//    @FXML private TableColumn<Integer, Order> boatPositions;
+//    @FXML private TableColumn<BoatOrder, Integer> boatPositions;
+    @FXML private TableColumn<BoatOrder, Integer> positionsColumn;
+    @FXML private TableView<BoatOrder> PositionsTable;
+
+    @FXML private TableView<Boat> boatInfoTableView;
+    @FXML private TableColumn<Boat, String> boatNameColumn;
+    @FXML private TableColumn<Boat, Integer> boatSpeedColumn;
+
+
+    private class Order {
+
+    }
+
+    //private static final ObservableList boatPositions = FXCollections.observableArrayList(Arrays.asList(1,2,3,4,5,6));
+
+//    @FXML private TableColumn boatNames;
 
     public void initialize(){
 
-        raceCourse = new Course("Kevin");
+        ObservableList<BoatOrder> boatOrder = FXCollections.observableArrayList();
+        for (int i=0; i<6; i++){
+            BoatOrder b = new BoatOrder(i+1);
+            boatOrder.add(b);
+        }
+
+
+
+        positionsColumn.setCellValueFactory( new PropertyValueFactory<BoatOrder, Integer>("position"));
+        PositionsTable.setItems(boatOrder);
+
+
+
+        raceCourse = new Course("Americas Cup Race");
         mainCanvas.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
         mainCanvas.setWidth(Screen.getPrimary().getVisualBounds().getWidth() * 0.8);
 
@@ -57,8 +94,25 @@ public class MainController {
         ArrayList<Text> AnnoText = setUpAnno();
         updateAnnoPos(mainRace.getRacingBoats().get(0), 500, 500, AnnoText);
 
+        ObservableList<Boat> boats = mainRace.getRacingBoats();
+        //ArrayList<Boat> racingBoats = mainRace.getRacingBoats();
+        //for (int i=0; i< racingBoats.size(); i++){
+         //   boats.add(racingBoats.get(i));
+        //}
+        boatNameColumn.setCellValueFactory(new PropertyValueFactory<Boat, String>("boatName"));
+        boatInfoTableView.setItems(boats);
+
+//        boats.addListener(boatLeg -> {
+//
+//        });
+
+
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
         animation.start();
+
+
+
+
     }
 
     public ArrayList<Text> setUpAnno() {
