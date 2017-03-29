@@ -122,7 +122,7 @@ public class Race {
     }
 
     /**
-     *Calculates the spherical distance between two airports based off their latitude longitude and altitude.
+     *Calculates the spherical distance between two points based off their latitude longitude and altitude.
      * Implementation taken from http://stackoverflow.com/questions/3694380/calculating-distance-between-two-points-using-latitude-longitude-what-am-i-doi
      * @return Returns a double of the spherical distance between airports.
      */

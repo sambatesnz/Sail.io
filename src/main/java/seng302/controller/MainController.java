@@ -1,14 +1,11 @@
 package seng302.controller;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,21 +14,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
 import seng302.Model.*;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 
-import static java.util.Arrays.asList;
 
 /**
  * Created by Justin on 15-Mar-17.
@@ -39,14 +31,12 @@ import static java.util.Arrays.asList;
 public class MainController {
     private Course raceCourse;
     private Race mainRace;
-    private ArrayList<Text> annoText;
+    private HashMap<String, Text> annoText;
 
     @FXML private Canvas mainCanvas;
     @FXML private GridPane boatGridPane;
     @FXML private Group raceGroup;
     @FXML private Text windDirText;
-//    @FXML private TableColumn<Integer, Order> boatPositions;
-//    @FXML private TableColumn<BoatOrder, Integer> boatPositions;
     @FXML private TableColumn<BoatOrder, Integer> positionsColumn;
     @FXML private TableView<BoatOrder> PositionsTable;
 
@@ -54,14 +44,6 @@ public class MainController {
     @FXML private TableColumn<Boat, String> boatNameColumn;
     @FXML private TableColumn<Boat, Integer> boatSpeedColumn;
 
-
-    private class Order {
-
-    }
-
-    //private static final ObservableList boatPositions = FXCollections.observableArrayList(Arrays.asList(1,2,3,4,5,6));
-
-//    @FXML private TableColumn boatNames;
 
     public void initialize(){
 
@@ -98,18 +80,10 @@ public class MainController {
         updateAnnoPos(mainRace.getRacingBoats().get(0), 500, 500);
 
         ObservableList<Boat> boats = mainRace.getRacingBoats();
-        //ArrayList<Boat> racingBoats = mainRace.getRacingBoats();
-        //for (int i=0; i< racingBoats.size(); i++){
-         //   boats.add(racingBoats.get(i));
-        //}
+
         boatNameColumn.setCellValueFactory(new PropertyValueFactory<Boat, String>("boatName"));
         boatInfoTableView.setItems(boats);
         boatSpeedColumn.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("boatSpeed"));
-
-//        boats.addListener(boatLeg -> {
-//
-//        });
-
 
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
         animation.start();
@@ -117,27 +91,20 @@ public class MainController {
     }
 
     public void setUpAnno() {
-        ArrayList<Text> AnnoText = new ArrayList<>();
+        annoText = new HashMap<>();
          for (Boat boat : mainRace.getRacingBoats()) {
              String boatInfo = boat.getShorthandName() + ", " + boat.getBoatSpeed() + "kmph";
              Text boatText = new Text(400, 400, boatInfo);
-             AnnoText.add(boatText);
+             annoText.put(boat.getBoatName(), boatText);
              raceGroup.getChildren().add(boatText);
         }
-        this.annoText = AnnoText;
     }
 
     public void updateAnnoPos(Boat boat, double posX, double posY) {
-        // Get the boat index by the boat name
-        int index = -1;
-        for (int i = 0; i < mainRace.getRacingBoats().size(); i++) {
-            if (mainRace.getRacingBoats().get(i).equals(boat)) {
-                index = i;
-            }
-        }
-        // Update the boat position
-        annoText.get(index).setX(posX);
-        annoText.get(index).setY(posY);
+        Text boatAnnotation = annoText.get(boat.getBoatName());
+        boatAnnotation.setX(posX);
+        boatAnnotation.setY(posY);
+
     }
 
     public void displayWindDir(int windDir) {
@@ -167,7 +134,7 @@ public class MainController {
         XYPoint gateStart = null;
         XYPoint gateEnd;
         boolean flag = false;
-        Line line = null;
+        Line line;
 
         GraphicsContext gc = mainCanvas.getGraphicsContext2D();
 
