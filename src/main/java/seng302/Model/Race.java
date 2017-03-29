@@ -86,7 +86,7 @@ public class Race {
             raceGroup.getChildren().add(boatCircle);
             boatCircles.put(boat.getBoatName(), boatCircle);
         }
-        totalRaceDistance = raceCourse.generateTotalCourseLength() * 1000; //TODO WE EXPECT 10626m (Convert that bad boy from km to m)
+        totalRaceDistance = raceCourse.generateTotalCourseLength() * 1000;
     }
 
     private double calculateDistanceIncrement(Boat boat, double timeDifference){
@@ -102,9 +102,7 @@ public class Race {
     public void updatePositions(double timeDifference){
 
         if (finishingOrder.size() == racingBoats.size()) {
-            for (int i=0; i<finishingOrder.size(); i++) {
-                System.out.println(finishingOrder);
-            }
+
         }
         else{
             for (int i=0; i<racingBoats.size(); i++){
@@ -113,9 +111,7 @@ public class Race {
                     double increment_distance = calculateDistanceIncrement(currentBoat, timeDifference);
                     updateBoat(increment_distance, currentBoat);
                 }
-
             }
-
             sortBoatOrder();
         }
 

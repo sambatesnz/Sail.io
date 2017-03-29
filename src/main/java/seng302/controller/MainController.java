@@ -104,6 +104,7 @@ public class MainController {
         //}
         boatNameColumn.setCellValueFactory(new PropertyValueFactory<Boat, String>("boatName"));
         boatInfoTableView.setItems(boats);
+        boatSpeedColumn.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("boatSpeed"));
 
 //        boats.addListener(boatLeg -> {
 //
@@ -112,9 +113,6 @@ public class MainController {
 
         RaceAnimationTimer animation = new RaceAnimationTimer(mainRace);
         animation.start();
-
-
-
 
     }
 
