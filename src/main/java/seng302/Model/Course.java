@@ -52,12 +52,13 @@ public class Course {
      * @param mark2
      * @return
      */
-    private double findDistBetweenCompoundMarks(CompoundMark mark1, CompoundMark mark2) {
+    public static double findDistBetweenCompoundMarks(CompoundMark mark1, CompoundMark mark2) {
         if (mark1.getCompoundMarks().size() == 2) {
-            mark1 = mark1.findAverageGate(mark1);
+            //mark1 = mark1.findAverageGate(mark1);
+
         }
         if (mark2.getCompoundMarks().size() == 2) {
-            mark2 = mark2.findAverageGate(mark2);
+//            mark2 = mark2.findAverageGate(mark2);
         }
         double lat1 = mark1.getCompoundMarks().get(0).latitude;
         double lat2 = mark2.getCompoundMarks().get(0).latitude;
@@ -138,7 +139,7 @@ public class Course {
      * @return The compound mark which has your expected id
      * @throws Error if it doesn't find a mark with your id
      */
-    private CompoundMark getCompoundMarkById(int id){
+    CompoundMark getCompoundMarkById(int id){
         for (CompoundMark mark: courseCompoundMarks){
             if (mark.getId() == id ){
                 return mark;
@@ -161,7 +162,7 @@ public class Course {
             CompoundMark secondMark = getCompoundMarkById(secondMarkId);
             cumulativeCourseLengthDistance = findDistBetweenCompoundMarks(firstMark, secondMark);
         } else{
-            for (int i=1; i<courseOrder.size()-1; i++){
+            for (int i=1; i<courseOrder.size(); i++){
                 int firstMarkId = courseOrder.get(i-1);
                 int secondMarkId = courseOrder.get(i);
                 CompoundMark firstMark = getCompoundMarkById(firstMarkId);
@@ -178,6 +179,10 @@ public class Course {
 
     public ArrayList<CompoundMark> getCourseCompoundMarks() {
         return courseCompoundMarks;
+    }
+
+    public int getCourseOrder(int legNumber) {
+        return courseOrder.get(legNumber);
     }
 
     public ArrayList<Double> findMaxMinLatLong(){

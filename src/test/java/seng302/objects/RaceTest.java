@@ -47,8 +47,35 @@ public class RaceTest {
     @Test
     public void updateLatAndLong(){
         String fileLocation = "/src/test/test-resources/linear-course.xml";
-
         assertTrue(false); //This should fail as is hasnt been implemented
+    }
+
+    @Test
+    public void hasBoatPassedMark(){
+        Boat boat = new Boat("ORACLE TEAM USA", 50);
+        CompoundMark startMark = new CompoundMark("start", 1);
+        startMark.addMark(0 ,0);
+        CompoundMark destinationMark = new CompoundMark("Dest", 2);
+        destinationMark.addMark(0,10);
+
+        boat.setDestinationMark(destinationMark);
+        boat.setCurrentPosition(startMark);
+
+        boolean hasPassed = false;//Race.hasBoatPassedMark(boat, 1112);
+        assertTrue(!hasPassed);
+
+
+    }
+
+    @Test
+    public void calculateDistanceIncrement(){
+        String fileLocation = "/src/test/test-resources/americas-cup-course.xml";
+        this.raceCourse = new Course("Test Course", fileLocation);
+        myRace = new Race(raceCourse);
+        myRace.raceSetup();
+
+        //myRace.updatePositions(1);
+
     }
 
 

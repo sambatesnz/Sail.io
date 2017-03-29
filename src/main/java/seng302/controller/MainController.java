@@ -51,6 +51,7 @@ public class MainController {
 
 
         mainRace = new Race(raceGroup, raceCourse, mainCanvas);
+        mainRace.setRaceSpeed();
         mainRace.raceSetup();
 
         ArrayList<Text> AnnoText = setUpAnno();
@@ -148,7 +149,7 @@ public class MainController {
                 }
             }
         } catch (Exception e) {
-            System.out.println("fuck");
+            System.out.println("There has been a stitch up. Unluggy uce.");
         }
     }
 
