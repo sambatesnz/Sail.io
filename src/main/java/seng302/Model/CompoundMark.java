@@ -62,14 +62,6 @@ public class CompoundMark {
         public String toString() {
             return "(" + latitude + ", " + longitude + ")";
         }
-
-        public void setLatitude(double latitude) {
-            this.latitude = latitude;
-        }
-
-        public void setLongitude(double longitude) {
-            this.longitude = longitude;
-        }
     }
 
     /**

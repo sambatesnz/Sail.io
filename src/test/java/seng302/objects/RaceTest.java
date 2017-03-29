@@ -52,7 +52,7 @@ public class RaceTest {
 
     @Test
     public void hasBoatPassedMark(){
-        Boat boat = new Boat("ORACLE TEAM USA", 50);
+        Boat boat = new Boat("ORACLE TEAM USA", 50, "USA");
         CompoundMark startMark = new CompoundMark("start", 1);
         startMark.addMark(0 ,0);
         CompoundMark destinationMark = new CompoundMark("Dest", 2);
