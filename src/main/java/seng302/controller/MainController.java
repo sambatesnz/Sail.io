@@ -53,13 +53,9 @@ public class MainController {
             boatOrder.add(b);
         }
 
-
-
         positionsColumn.setCellValueFactory( new PropertyValueFactory<BoatOrder, Integer>("position"));
         PositionsTable.setItems(boatOrder);
         positionsColumn.prefWidthProperty().bind(PositionsTable.widthProperty().multiply(0.97));
-
-
 
         raceCourse = new Course("Americas Cup Race");
         mainCanvas.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
@@ -69,7 +65,6 @@ public class MainController {
         displayMarks(courseXY);
 
         displayWindDir(raceCourse.getWindDirection());
-
 
         mainRace = new Race(raceGroup, raceCourse, mainCanvas);
         mainRace.passMainController(this);
