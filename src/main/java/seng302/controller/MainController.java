@@ -32,6 +32,7 @@ public class MainController {
     private Course raceCourse;
     private Race mainRace;
     private HashMap<String, Text> annoText;
+    private ObservableList<Boat> boats;
 
     @FXML private Canvas mainCanvas;
     @FXML private GridPane boatGridPane;
@@ -75,7 +76,7 @@ public class MainController {
 
         updateAnnoPos(mainRace.getRacingBoats().get(0), 500, 500);
 
-        ObservableList<Boat> boats = mainRace.getRacingBoats();
+        boats = mainRace.getRacingBoats();
 
         boatNameColumn.setCellValueFactory(new PropertyValueFactory<Boat, String>("boatName"));
         boatSpeedColumn.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("boatSpeed"));
@@ -99,10 +100,18 @@ public class MainController {
     }
 
     public void updateAnnoPos(Boat boat, double posX, double posY) {
-        Text boatAnnotation = annoText.get(boat.getBoatName());
-        boatAnnotation.setX(posX);
-        boatAnnotation.setY(posY);
-
+        if(!boat.hasFinished) {
+            Text boatAnnotation = annoText.get(boat.getBoatName());
+            boatAnnotation.setX(posX);
+            boatAnnotation.setY(posY);
+        }else{
+            for(Boat observableBoat : boats){
+                if (boat.getBoatName().equals(observableBoat.getBoatName())){
+                    observableBoat.setBoatName(boat.getBoatName() + " (Finished)");
+                    boatInfoTableView.refresh();
+                }
+            }
+        }
     }
 
     public void displayWindDir(int windDir) {

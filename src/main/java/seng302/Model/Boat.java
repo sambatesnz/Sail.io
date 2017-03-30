@@ -122,6 +122,10 @@ public class Boat {
         this.destinationMark = destinationMark;
     }
 
+    public void setBoatName(String boatName) {
+        this.boatName = boatName;
+    }
+
     public double getCurrentHeading() {
         return currentHeading;
     }

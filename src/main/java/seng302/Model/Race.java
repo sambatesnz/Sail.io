@@ -169,13 +169,12 @@ public class Race {
             }
 
         }
-
-        boat.updateCurrentPosition(distanceTravelled);
-        mainController.updateAnnoPos(boat,
-                                    this.convertCompoundMarkToXYPoint(boat.getCurrentPosition()).x,
-                                    this.convertCompoundMarkToXYPoint(boat.getCurrentPosition()).y);
-        XYPoint convertedMark = convertCompoundMarkToXYPoint(boat.getCurrentPosition());
-        boatCircle.relocate(convertedMark.x, convertedMark.y);
+            boat.updateCurrentPosition(distanceTravelled);
+            mainController.updateAnnoPos(boat,
+                    this.convertCompoundMarkToXYPoint(boat.getCurrentPosition()).x,
+                    this.convertCompoundMarkToXYPoint(boat.getCurrentPosition()).y);
+            XYPoint convertedMark = convertCompoundMarkToXYPoint(boat.getCurrentPosition());
+            boatCircle.relocate(convertedMark.x, convertedMark.y);
     }
 
     public boolean hasBoatPassedMark(Boat boat, double distanceTravelled) {
