@@ -3,12 +3,12 @@ package seng302.Model;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
+import seng302.App;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +33,7 @@ public class CourseCreator {
      * Creates an object that we can create files
      * @param courseFileLocation the relative location of the course xml file
      */
-    public CourseCreator(String courseFileLocation){
+    public CourseCreator(String courseFileLocation) throws IOException {
         this.courseRelativeFileLocation = courseFileLocation;
         this.configDoc = loadCourseXmlFile(courseFileLocation);
     }
@@ -43,10 +43,20 @@ public class CourseCreator {
      * @param relativeFilePath file path of the course you with to load
      * @return The DOM document which we can now parse
      */
-    private Document loadCourseXmlFile(String relativeFilePath) {
+    private Document loadCourseXmlFile(String relativeFilePath) throws IOException {
         String basePath = new File("").getAbsolutePath();
+        //String actual = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().toString() + "/course/course.xml";
+        InputStream fileInputStream = App.class.getClassLoader().getResourceAsStream( "course.xml" );
+        OutputStream outputStream = new FileOutputStream(new File("").getAbsolutePath()+ "/temp.txt");
 
-        File configFile = new File(basePath + relativeFilePath);
+        int read = 0;
+        byte[] bytes = new byte[1024];
+
+        while ((read = fileInputStream.read(bytes)) != -1) {
+            outputStream.write(bytes, 0, read);
+        }
+
+        File configFile = new File(new File("").getAbsolutePath()+ "/temp.txt");
 
 
         Document doc = null;

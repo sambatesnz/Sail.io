@@ -17,10 +17,12 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
+import seng302.App;
 import seng302.Model.*;
 
-import java.io.File;
-import java.io.FileInputStream;
+import javax.imageio.ImageIO;
+import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -46,7 +48,7 @@ public class MainController {
     @FXML private TableColumn<Boat, Integer> boatSpeedColumn;
 
 
-    public void initialize(){
+    public void initialize() throws IOException {
 
         ObservableList<BoatOrder> boatOrder = FXCollections.observableArrayList();
         for (int i=0; i<6; i++){
@@ -114,16 +116,15 @@ public class MainController {
         }
     }
 
-    public void displayWindDir(int windDir) {
-        File file = new File("./src/main/resources/transparent_wind_arrow.png");
-        FileInputStream fis = null;
-
+    public void displayWindDir(int windDir) throws IOException {
         windDirText.setText("Wind Direction\nBearing: " + windDir);
 
         try {
-            fis = new FileInputStream(file);
-
-            Image image = new Image(fis);
+            //File g = new File("/home/cosc/student/sha162/Documents/team-4/arrow.png");
+//            InputStream url = App.class.getClassLoader().getResourceAsStream(
+//                    "transparent_wind_arrow");
+            InputStream url = App.class.getClassLoader().getResourceAsStream("transparent_wind_arrow.png");
+            Image image = new Image(url);
             GraphicsContext gc = mainCanvas.getGraphicsContext2D();
 
             gc.save();
@@ -132,7 +133,7 @@ public class MainController {
             gc.drawImage(image, 50, 50);
             gc.restore();
         } catch (Exception e) {
-            System.out.println("./src/main/resources/wind.png not found.");
+            System.out.println(e);
             e.printStackTrace();
         }
     }

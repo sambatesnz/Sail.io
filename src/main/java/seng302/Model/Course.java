@@ -1,5 +1,6 @@
 package seng302.Model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +20,7 @@ public class Course {
      * Constructor.
      * @param courseName
      */
-    public Course(String courseName) {
+    public Course(String courseName) throws IOException {
         this.courseName = courseName;
         //this.courseCompoundMarks = courseCompoundMarks;
         //this.courseOrder = courseOrder;
@@ -29,20 +30,22 @@ public class Course {
         this.windDirection = courseCreator.getWindDirection();
     }
 
-    public Course(String courseName, String fileLocation){
+    public Course(String courseName, String fileLocation) throws IOException {
         this.courseName = courseName;
         this.courseCreator = loadCoarseCreator(fileLocation);
         this.courseCompoundMarks = courseCreator.getCompoundMarks();
         this.courseOrder = courseCreator.getGateOrderForRace();
     }
 
-    private CourseCreator loadCoarseCreator() {
-        AppConfig appConfig = new AppConfig();
-        String fileLocation = appConfig.getProperty(AppConfig.COURSE_FILE_LOCATION);
-        return new CourseCreator(fileLocation);
+    private CourseCreator loadCoarseCreator() throws IOException {
+        //AppConfig appConfig = new AppConfig();
+        //String fileLocation = "/src/main/resources/course/course.xml"; //appConfig.getProperty(AppConfig.COURSE_FILE_LOCATION);
+//        String fileLocation = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().toString();
+        return new CourseCreator("");
+
     }
 
-    private CourseCreator loadCoarseCreator(String fileLocation){
+    private CourseCreator loadCoarseCreator(String fileLocation) throws IOException {
         return new CourseCreator(fileLocation);
     }
 
