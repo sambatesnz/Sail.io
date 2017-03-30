@@ -37,7 +37,7 @@
          <children>
             <TableView fx:id="PositionsTable" prefHeight="376.0" prefWidth="128.0">
               <columns>
-                <TableColumn fx:id="positionsColumn" editable="false" minWidth="-Infinity" prefWidth="90.0" sortable="false" text="Positions" />
+                <TableColumn fx:id="positionsColumn" editable="false" minWidth="-Infinity" prefWidth="90.0" sortable="false" text="Position" />
               </columns>
             </TableView>
             <TableView fx:id="boatInfoTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
