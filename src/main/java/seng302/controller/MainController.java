@@ -144,7 +144,8 @@ public class MainController {
         Line line;
 
         GraphicsContext gc = mainCanvas.getGraphicsContext2D();
-
+        gc.setFill(Color.LIGHTCYAN);
+        gc.fillRect(0,0, mainCanvas.getWidth(), mainCanvas.getHeight());
 
         for (XYPoint point : courseXY) {
             Rectangle r = new Rectangle(point.x-7.5, point.y-7.5, 15, 15);
