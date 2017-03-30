@@ -37,7 +37,6 @@ public class App extends Application {
         setPrimaryStage(primaryStage);
 
         primaryStage.setTitle("SailFast - Sprint 2 - Team 4");
-        //primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("icon.png")));
 
         // Gets the screen resolution of the primary screen.
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getBounds();
