@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<GridPane fx:id="boatGridPane" maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng302.controller.MainController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" percentWidth="20.0" prefWidth="280.0" />
+      <ColumnConstraints percentWidth="80.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints percentHeight="100.0" />
+  </rowConstraints>
+   <children>
+      <GridPane>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="223.0" minWidth="10.0" percentWidth="25.0" prefWidth="77.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="203.0" minWidth="10.0" percentWidth="75.0" prefWidth="203.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="378.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <TableView fx:id="PositionsTable" prefHeight="376.0" prefWidth="128.0">
+              <columns>
+                <TableColumn fx:id="positionsColumn" editable="false" minWidth="-Infinity" prefWidth="90.0" sortable="false" text="Position" />
+              </columns>
+            </TableView>
+            <TableView fx:id="boatInfoTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+              <columns>
+                <TableColumn fx:id="boatNameColumn" editable="false" prefWidth="104.0" sortable="false" text="Boat" />
+                <TableColumn fx:id="boatSpeedColumn" editable="false" prefWidth="98.0" sortable="false" text="Speed" />
+              </columns>
+            </TableView>
+         </children>
+      </GridPane>
+      <AnchorPane GridPane.columnIndex="1">
+         <children>
+            <Group fx:id="raceGroup" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                   <Canvas fx:id="mainCanvas" AnchorPane.topAnchor="25.0" GridPane.columnIndex="1">
+                   </Canvas>
+               </children>
+            </Group>
+            <Text fx:id="windDirText" layoutX="35.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wind Direction" />
+         </children>
+      </AnchorPane>
+   </children>
+</GridPane>

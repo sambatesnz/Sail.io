@@ -45,8 +45,14 @@ public class CourseCreator {
      */
     private Document loadCourseXmlFile(String relativeFilePath) throws IOException {
         String basePath = new File("").getAbsolutePath();
-        //String actual = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().toString() + "/course/course.xml";
-        InputStream fileInputStream = App.class.getClassLoader().getResourceAsStream( "course.xml" );
+        InputStream fileInputStream = null;
+        if (relativeFilePath.length()<1){
+            fileInputStream = App.class.getClassLoader().getResourceAsStream( "course.xml" );
+        }
+        else{
+            fileInputStream = App.class.getClassLoader().getResourceAsStream(relativeFilePath);
+        }
+
         OutputStream outputStream = new FileOutputStream(new File("").getAbsolutePath()+ "/temp.txt");
 
         int read = 0;

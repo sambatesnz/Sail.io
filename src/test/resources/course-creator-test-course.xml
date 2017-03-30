@@ -1,0 +1,13 @@
+<course>
+    <compoundMarks>
+        <compoundMark type="Mark" name="Start" id="1">
+            <mark>
+                <latitude>32.293039</latitude>
+                <longitude>-64.843983</longitude>
+            </mark>
+        </compoundMark>
+    </compoundMarks>
+    <gateOrder>
+        1
+    </gateOrder>
+</course>
