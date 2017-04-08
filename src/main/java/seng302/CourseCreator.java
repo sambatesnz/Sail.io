@@ -1,10 +1,12 @@
-package seng302.Model;
+package seng302;
 
 
-import org.w3c.dom.*;
+import javafx.scene.paint.Color;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import seng302.App;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -22,10 +24,12 @@ public class CourseCreator {
     private String COMPOUND_MARK = "compoundMark";
     private String MARK_TYPE = "type";
     private String MARK_NAME = "name";
+    private String MARK_COLOR = "color";
     private String MARK_ID = "id";
     private String MARK = "Mark";
     private String GATE = "Gate";
     private String GATE_ORDER = "gateOrder";
+    private String BOUNDARY = "boundary";
     String courseRelativeFileLocation;
 
 
@@ -47,10 +51,10 @@ public class CourseCreator {
         String basePath = new File("").getAbsolutePath();
         InputStream fileInputStream = null;
         if (relativeFilePath.length()<1){
-            fileInputStream = App.class.getClassLoader().getResourceAsStream( "course.xml" );
+            fileInputStream = Main.class.getClassLoader().getResourceAsStream( "course.xml" );
         }
         else{
-            fileInputStream = App.class.getClassLoader().getResourceAsStream(relativeFilePath);
+            fileInputStream = Main.class.getClassLoader().getResourceAsStream(relativeFilePath);
         }
 
         OutputStream outputStream = new FileOutputStream(new File("").getAbsolutePath()+ "/temp.txt");
@@ -185,6 +189,68 @@ public class CourseCreator {
             mark.addMark(latitude, longitude);
         }
         return mark;
+    }
+
+    private Landmark createLandmarkFromElement(Element markElement) {
+
+        // Rips the color, type?, and the name for each Landmark
+        String name = markElement.getAttribute(MARK_NAME);
+        String type = markElement.getAttribute(MARK_TYPE);
+        String colors = markElement.getAttribute(MARK_COLOR);
+
+        Color color = Color.valueOf(markElement.getAttribute(MARK_COLOR));
+
+        int id = Integer.parseInt(markElement.getAttribute(MARK_ID));
+        double latitude;
+        double longitude;
+//        Landmark mark = new Landmark(name, id);
+
+        ArrayList<Position> positions = new ArrayList<>();
+        //We know a mark is always going to have a lat and long
+        latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE));
+        longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE));
+
+        positions.add(new Position(latitude, longitude));
+        if (type.equals(GATE)){
+            latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE, 1));
+            longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE, 1));
+            positions.add(new Position(latitude, longitude));
+        }
+        return new Landmark(name, positions, color, id, type);
+    }
+
+    public ArrayList<Landmark> getLandmarks() {
+        NodeList nodes = this.configDoc.getElementsByTagName(COMPOUND_MARK);
+        ArrayList<Landmark> landmarks = new ArrayList<>();
+
+        for (int i=0; i< nodes.getLength(); i++){
+            Node node = nodes.item(i);
+            Element markElement = (Element) node;
+            Landmark mark = createLandmarkFromElement(markElement);
+            landmarks.add(mark);
+        }
+        return landmarks;
+    }
+
+    public ArrayList<Position> getBoundaries() {
+        NodeList nodes = this.configDoc.getElementsByTagName(BOUNDARY);
+        ArrayList<Position> boundaries = new ArrayList<>();
+
+        for (int i=0; i< nodes.getLength(); i++){
+            Node node = nodes.item(i);
+            Element markElement = (Element) node;
+            Position pos = createPositionFromElement(markElement);
+            boundaries.add(pos);
+        }
+        return boundaries;
+    }
+
+    private Position createPositionFromElement(Element markElement) {
+        double latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE));
+        double longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE));
+
+        return new Position(latitude, longitude);
+
     }
 
 }
