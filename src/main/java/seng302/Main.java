@@ -27,6 +27,7 @@ public class Main extends Application {
             Scene rootScene = new Scene(root);
             primaryStage.setMinHeight(600);
             primaryStage.setMinWidth(800);
+            primaryStage.setMaximized(true);
             primaryStage.setScene((rootScene));
             primaryStage.setTitle("RaceView");
             primaryStage.show();
