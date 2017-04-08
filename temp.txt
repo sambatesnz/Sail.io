@@ -55,7 +55,6 @@
     </compoundMarks>
     <gateOrder>
         1,2,3,4,3,5
-        <!--1,5-->
     </gateOrder>
 
     <boundary>
@@ -83,100 +82,3 @@
         <latitude>32.290</latitude>
     </boundary>
 </course>
-
-        <!--Things that will eventually be added:
-                - Wind (str/direction)
-                - Boats ( i.e. who is competing.)
-                - Boat Speeds, Names, etc.
-                - Other?-->
-
-
-
-
-        <!--<course>-->
-    <!--<landmark>-->
-        <!--<name>StartLine1</name>-->
-        <!--<long>-64.854304</long>-->
-        <!--<lat>32.296577</lat>-->
-        <!--<colour>GREEN</colour>-->
-    <!--</landmark>-->
-    <!--<landmark>-->
-        <!--<name>StartLine2</name>-->
-        <!--<long>-64.855242</long>-->
-        <!--<lat>32.293771</lat>-->
-        <!--<colour>GREEN</colour>-->
-    <!--</landmark>-->
-    <!--<landmark>-->
-        <!--<name>Mark</name>-->
-        <!--<long>-64.843983</long>-->
-        <!--<lat>32.293039</lat>-->
-        <!--<colour>CORNFLOWERBLUE</colour>-->
-    <!--</landmark>-->
-    <!--<landmark>-->
-        <!--<name>LeewardGate1</name>-->
-        <!--<long>-64.850045</long>-->
-        <!--<lat>32.284680</lat>-->
-        <!--<colour>BISQUE</colour>-->
-    <!--</landmark>-->
-    <!--<landmark>-->
-        <!--<name>LeewardGate2</name>-->
-        <!--<long>-64.847591</long>-->
-        <!--<lat>32.280164</lat>-->
-        <!--<colour>BISQUE</colour>-->
-    <!--</landmark>-->
-    <!--<landmark>-->
-        <!--<name>WindwardGate1</name>-->
-        <!--<long>-64.835249</long>-->
-        <!--<lat>32.309693</lat>-->
-        <!--<colour>BEIGE</colour>-->
-    <!--</landmark>-->
-    <!--<landmark>-->
-        <!--<name>WindwardGate2</name>-->
-        <!--<long>-64.831785</long>-->
-        <!--<lat>32.308046</lat>-->
-        <!--<colour>BEIGE</colour>-->
-    <!--</landmark>-->
-    <!--<landmark>-->
-        <!--<name>FinishLine1</name>-->
-        <!--<long>-64.839291</long>-->
-        <!--<lat>32.317379</lat>-->
-        <!--<colour>RED</colour>-->
-    <!--</landmark>-->
-    <!--<landmark>-->
-        <!--<name>FinishLine1</name>-->
-        <!--<long>-64.839291</long>-->
-        <!--<lat>32.317379</lat>-->
-        <!--<colour>RED</colour>-->
-    <!--</landmark>-->
-    <!--<landmark>-->
-        <!--<name>FinishLine2</name>-->
-        <!--<long>-64.836260</long>-->
-        <!--<lat>32.317257</lat>-->
-        <!--<colour>RED</colour>-->
-    <!--</landmark>-->
-
-    <!--<boundary>-->
-        <!--<long>-64.830</long>-->
-        <!--<lat>32.318</lat>-->
-    <!--</boundary>-->
-    <!--<boundary>-->
-        <!--<long>-64.856</long>-->
-        <!--<lat>32.318</lat>-->
-    <!--</boundary>-->
-    <!--<boundary>-->
-        <!--<long>-64.859</long>-->
-        <!--<lat>32.290</lat>-->
-    <!--</boundary>-->
-    <!--<boundary>-->
-        <!--<long>-64.856</long>-->
-        <!--<lat>32.277</lat>-->
-    <!--</boundary>-->
-    <!--<boundary>-->
-        <!--<long>-64.830</long>-->
-        <!--<lat>32.277</lat>-->
-    <!--</boundary>-->
-    <!--<boundary>-->
-        <!--<long>-64.825</long>-->
-        <!--<lat>32.290</lat>-->
-    <!--</boundary>-->
-<!--</course>-->

@@ -35,7 +35,7 @@ public class Race {
      */
     public Race() {
         parseXML("course.xml");
-        setWindHeading(190);                // TODO: this need to have the angle between gates.
+        setWindHeading(190);
         boats = getContestants();
         finishedBoats = new ArrayList<>();
         currentOrder = observableArrayList(boats);
@@ -160,26 +160,6 @@ public class Race {
      * @param fileName the filename to parse
      */
     private void parseXML(String fileName) {
-//        InputStream inputStream;
-//        SAXParserFactory factory = SAXParserFactory.newInstance();
-//        try {
-//            SAXParser parser = factory.newSAXParser ();
-//            CourseHandler courseHandler = new CourseHandler();
-//            try {
-//                inputStream = new FileInputStream(new File(fileName));
-//            } catch (FileNotFoundException e) {
-//                inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
-//            }
-//            parser.parse(inputStream, courseHandler);
-//            legs = courseHandler.getLegs();                                                       *
-//            gates = courseHandler.getGates();                                                     *
-//            Map<String, Landmark> landmarksMap = courseHandler.getLandmarks();                    *
-//            landmarks = new ArrayList<>(landmarksMap.values());                                   *
-//            boundaries = courseHandler.getBoundaries();                                           *
-//
-//        } catch (ParserConfigurationException | SAXException | IOException e) {
-//            e.printStackTrace();
-//        }
 
         try {
             CourseCreator cc = new CourseCreator(fileName);

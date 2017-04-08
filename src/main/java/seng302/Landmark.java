@@ -18,7 +18,7 @@ public class Landmark {
     /**
      * Constructs a landmark
      * @param name the name of the landmark
-     * @param position the position of the landmark in lat/long
+     * @param positions the position of the landmark in lat/long
      * @param color the color that the landmark appears on the map.
      */
     public Landmark(String name, ArrayList<Position> positions, Color color, int id, String type) {

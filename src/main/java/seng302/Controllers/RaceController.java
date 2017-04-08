@@ -147,12 +147,6 @@ public class RaceController {
             }
         }
 
-//        for (int i = 0; i < race.getLandmarks().size(); i++) {
-//            Landmark current = race.getLandmarks().get(i);
-//            Rectangle square = new Rectangle(10, 10, current.getColor());
-//            landmarks.add(square);
-//        }
-
         //Initialises gates
         for (int i = 0; i < race.getGates().size(); i++) {
             Landmark gate = race.getGates().get(i);
@@ -211,10 +205,6 @@ public class RaceController {
     private Polygon getBoundary(Race race){
         Polygon boundary = new Polygon();
         for (int i=0; i<race.getBoundaries().size(); i++) {
-            System.out.println(String.format("X = %f, y = %f, lat = %f, long %f",
-                    Coordinate.getRelativeX(race.getBoundaries().get(i).getX()),
-                    Coordinate.getRelativeY(race.getBoundaries().get(i).getY()),
-                    race.getBoundaries().get(i).getX(), race.getBoundaries().get(i).getY()));
             boundary.getPoints().add(Coordinate.getRelativeX(race.getBoundaries().get(i).getX()));
             boundary.getPoints().add(Coordinate.getRelativeY(race.getBoundaries().get(i).getY()));
         }
@@ -281,7 +271,6 @@ public class RaceController {
             if (showName) {
                 name = race.getBoats().get(i).getAbrv();
             }
-
             boats.get(i).setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
             boats.get(i).setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
             boats.get(i).getChildren().get(0).setRotate(race.getBoats().get(i).getHeading()); //Sets rotation of boat

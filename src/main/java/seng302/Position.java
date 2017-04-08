@@ -31,30 +31,11 @@ public class Position {
     }
 
     /**
-     * Setter for the lattitude.
-     * @param latitude, the lattitude of the
-     */
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-        //this.x = /*Math.cos(Math.toRadians(latitude)) * */ longitude * EARTH_CIRCUMFERENCE / 360;
-        this.y = latitude * EARTH_CIRCUMFERENCE / 180;
-    }
-
-    /**
      * Getter for the longitude.
      * @return the longitude.
      */
     public double getLongitude() {
         return longitude;
-    }
-
-    /**
-     * Setter for the longitude.
-     * @param longitude the longitude to be set.
-     */
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-        this.x = /*Math.cos(Math.toRadians(latitude)) **/ longitude * EARTH_CIRCUMFERENCE / 360;
     }
 
     /**

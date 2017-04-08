@@ -127,28 +127,6 @@ public class CourseCreator {
         return courseOrder;
     }
 
-    /**
-     * Gets an array list of compounds from the xml file
-     * @return An array list of compound marks
-     */
-    public ArrayList<CompoundMark> getCompoundMarks(){
-
-        NodeList nodes = this.configDoc.getElementsByTagName(COMPOUND_MARK);
-        ArrayList<CompoundMark> compoundMarks = new ArrayList<>();
-
-        for (int i=0; i< nodes.getLength(); i++){
-            Node node = nodes.item(i);
-
-            Element markElement = (Element) node;
-
-            CompoundMark mark = createMarkFromElement(markElement);
-            compoundMarks.add(mark);
-
-        }
-        return compoundMarks;
-    }
-
-
     public int getWindDirection() {
         NodeList nodes = this.configDoc.getElementsByTagName(WINDDIRECTION);
         int windDir = 0;
@@ -166,44 +144,17 @@ public class CourseCreator {
         return windDir;
     }
 
-    /** Takes a xml mark and converts it into compound mark
-     * @param markElement the element you wish to convert to a mark
-     * @return CompoundMark
-     */
-    private CompoundMark createMarkFromElement(Element markElement) {
-        String name = markElement.getAttribute(MARK_NAME);
-        String type = markElement.getAttribute(MARK_TYPE);
-        int id = Integer.parseInt(markElement.getAttribute(MARK_ID));
-        double latitude;
-        double longitude;
-        CompoundMark mark = new CompoundMark(name, id);
-
-        //We know a mark is always going to have a lat and long
-        latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE));
-        longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE));
-
-        mark.addMark(latitude, longitude);
-        if (type.equals(GATE)){
-            latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE, 1));
-            longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE, 1));
-            mark.addMark(latitude, longitude);
-        }
-        return mark;
-    }
-
     private Landmark createLandmarkFromElement(Element markElement) {
 
         // Rips the color, type?, and the name for each Landmark
         String name = markElement.getAttribute(MARK_NAME);
         String type = markElement.getAttribute(MARK_TYPE);
-        String colors = markElement.getAttribute(MARK_COLOR);
 
         Color color = Color.valueOf(markElement.getAttribute(MARK_COLOR));
 
         int id = Integer.parseInt(markElement.getAttribute(MARK_ID));
         double latitude;
         double longitude;
-//        Landmark mark = new Landmark(name, id);
 
         ArrayList<Position> positions = new ArrayList<>();
         //We know a mark is always going to have a lat and long
@@ -250,7 +201,5 @@ public class CourseCreator {
         double longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE));
 
         return new Position(latitude, longitude);
-
     }
-
 }
