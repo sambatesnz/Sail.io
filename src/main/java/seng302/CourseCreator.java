@@ -150,6 +150,8 @@ public class CourseCreator {
         String name = markElement.getAttribute(MARK_NAME);
         String type = markElement.getAttribute(MARK_TYPE);
 
+        System.out.println(name);
+
         Color color = Color.valueOf(markElement.getAttribute(MARK_COLOR));
 
         int id = Integer.parseInt(markElement.getAttribute(MARK_ID));
