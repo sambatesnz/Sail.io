@@ -85,6 +85,10 @@ public class RaceController {
     public void initialize() {
         race = new Race();
 
+        //Where should we put this?
+        TimeZoneWrapper timeZone = new TimeZoneWrapper("Atlantic/Bermuda");
+
+
         finishedListView = new ListView<>();
         boundary = getBoundary(race);
         group.getChildren().add(boundary);
