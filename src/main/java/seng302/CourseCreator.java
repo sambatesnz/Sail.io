@@ -156,6 +156,8 @@ public class CourseCreator {
         double latitude;
         double longitude;
 
+        System.out.println(name);
+
         ArrayList<Position> positions = new ArrayList<>();
         //We know a mark is always going to have a lat and long
         latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE));
