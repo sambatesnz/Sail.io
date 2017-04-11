@@ -173,4 +173,21 @@ public class Boat {
      * @param position1
      */
     public void setPosition(int position1) { position = position1; }
+
+    /**
+     * Get the current latitude
+     * @return the current latitude
+     */
+    public double getLatitude(){
+        return 420.6969420;
+    }
+
+    /**
+     * Get the current latitude
+     * @return the current latitude
+     */
+    public double getLongitude(){
+        return 420.6969420;
+    }
 }
+
