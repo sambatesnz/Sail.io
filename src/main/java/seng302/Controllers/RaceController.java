@@ -54,6 +54,9 @@ public class RaceController {
     @FXML
     private Button fpsBtn;
 
+    @FXML private CheckBox BoatNameCheckBox;
+    @FXML private CheckBox BoatSpeedCheckBox;
+
     private Race race;
 
     private List<Pane> boats = new ArrayList<>();
@@ -223,22 +226,6 @@ public class RaceController {
     }
 
     /**
-     * When the annotationBtn is clicked, this method is called.
-     * Changes the boolean values for showSpeed and showName, hence changing the visibility of the annotations.
-     */
-    @FXML
-    private void annotationBtnClicked(ActionEvent event) {
-
-        if (showSpeed) {
-            annotationBtn.setText("Show Annotations");
-        } else {
-            annotationBtn.setText("Remove Annotations");
-        }
-        showSpeed = !showSpeed;
-        showName = !showName;
-    }
-
-    /**
      * Called when the fpsBtn is clicked.
      * Changes the showFPS boolean to toggle the visibility of the FPS label.
      */
@@ -250,6 +237,69 @@ public class RaceController {
             fpsBtn.setText("Remove FPS counter");
         } else {
             fpsBtn.setText("Show FPS counter");
+        }
+    }
+
+    /**
+     * When the annotationBtn is clicked, this method is called.
+     * Changes the boolean values for showSpeed and showName, hence changing the visibility of the annotations.
+     */
+    @FXML
+    private void annotationBtnClicked(ActionEvent event) {
+
+        if (BoatNameCheckBox.isSelected() && BoatSpeedCheckBox.isSelected()) {
+            annotationBtn.setText("Show Annotations");
+
+            BoatNameCheckBox.setSelected(false);
+            showName = false;
+
+            BoatSpeedCheckBox.setSelected(false);
+            showSpeed = false;
+
+        } else {
+            annotationBtn.setText("Remove Annotations");
+
+            BoatNameCheckBox.setSelected(true);
+            showName = true;
+            BoatSpeedCheckBox.setSelected(true);
+            showSpeed = true;
+        }
+    }
+
+    /**
+     * Toggles the Boat Name annotation when the boat name checkbox is clicked
+     */
+    @FXML
+    private void ToggleBoatNameAnnotation() {
+        if (BoatNameCheckBox.isSelected()) {
+            showName = true;
+        } else {
+            showName = false;
+        }
+
+        if (BoatNameCheckBox.isSelected() && BoatSpeedCheckBox.isSelected()) {
+            annotationBtn.setText("Remove Annotations");
+        } else {
+            annotationBtn.setText("Show Annotations");
+        }
+
+    }
+
+    /**
+     * Toggles the Boat Speed annotation when the boat speed checkbox is clicked
+     */
+    @FXML
+    private void ToggleBoatSpeedAnnotation() {
+        if (BoatSpeedCheckBox.isSelected()) {
+            showSpeed = true;
+        } else {
+            showSpeed = false;
+        }
+
+        if (BoatNameCheckBox.isSelected() && BoatSpeedCheckBox.isSelected()) {
+            annotationBtn.setText("Remove Annotations");
+        } else {
+            annotationBtn.setText("Show Annotations");
         }
     }
 
@@ -338,6 +388,12 @@ public class RaceController {
 
         annotationBtn.setLayoutX(14);
         annotationBtn.setLayoutY(Coordinate.getWindowY() - 150);
+
+        BoatNameCheckBox.setLayoutX(14);
+        BoatNameCheckBox.setLayoutY(Coordinate.getWindowY() - 275);
+
+        BoatSpeedCheckBox.setLayoutX(14);
+        BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowY() - 250);
 
         clock.setLayoutX(Coordinate.getWindowX() - 160);
         clock.setLayoutY(20);
