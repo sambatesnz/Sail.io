@@ -363,7 +363,7 @@ public class RaceController {
         clock.setLayoutX(Coordinate.getWindowX() - 160);
         clock.setLayoutY(20);
 
-        localTimeZone.setLayoutX(Coordinate.getWindowX() - 150);
+        localTimeZone.setLayoutX(Coordinate.getWindowX() - 180);
         localTimeZone.setLayoutY(80);
 
         localTime.setLayoutX(Coordinate.getWindowX() - 100);

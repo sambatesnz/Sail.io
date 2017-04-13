@@ -1,11 +1,12 @@
 package seng302;
 
-import java.time.ZoneId;
+import java.text.SimpleDateFormat;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-import java.time.LocalTime;
 
 
 public class TimeZoneWrapper {
@@ -13,10 +14,23 @@ public class TimeZoneWrapper {
     private DateTimeFormatter raceTimeStringFormat;
     private String raceTimeZone;
 
+    private TimeZone localTimeZone;
+    private String utcOffset;
+
     public TimeZoneWrapper(String raceTimeZone) {
         this.raceTimeZone = raceTimeZone;
         this.raceTimeZoneId = ZoneId.of(raceTimeZone);
         this.raceTimeStringFormat = DateTimeFormatter.ofPattern("hh:mm:ss");
+
+        Calendar calendar = new GregorianCalendar();
+        this.localTimeZone = calendar.getTimeZone();
+        this.utcOffset = calculateOffset();
+    }
+
+    private String calculateOffset(){
+        ZonedDateTime zdt = LocalDateTime.now().atZone(this.raceTimeZoneId);
+        ZoneOffset offset = zdt.getOffset();
+        return "UTC" + offset;
     }
 
     private LocalTime getLocalTime(){
@@ -28,7 +42,7 @@ public class TimeZoneWrapper {
     }
 
     public String getRaceTimeZoneString(){
-        return "ABCD";
+        return this.utcOffset;
     }
 
 }
