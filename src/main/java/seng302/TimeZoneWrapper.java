@@ -1,34 +1,34 @@
 package seng302;
 
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+import java.time.LocalTime;
 
-/**
- * Created by Stefan! on 10/04/2017.
- */
+
 public class TimeZoneWrapper {
-    Calendar calendar;
-    TimeZone localTimeZone;
-    TimeZone raceTimeZone;
-    int utcOffset;
+    private ZoneId raceTimeZoneId;
+    private DateTimeFormatter raceTimeStringFormat;
+    private String raceTimeZone;
 
     public TimeZoneWrapper(String raceTimeZone) {
-        this.raceTimeZone = TimeZone.getTimeZone(raceTimeZone);
-        this.calendar = new GregorianCalendar();
-        this.localTimeZone = this.calendar.getTimeZone();
-        this.utcOffset = calculateOffset();
+        this.raceTimeZone = raceTimeZone;
+        this.raceTimeZoneId = ZoneId.of(raceTimeZone);
+        this.raceTimeStringFormat = DateTimeFormatter.ofPattern("hh:mm:ss");
     }
 
-    private int calculateOffset() {
-        Calendar cal = GregorianCalendar.getInstance(raceTimeZone);
-        int offsetInMillis = raceTimeZone.getOffset(cal.getTimeInMillis());
-
-        String offset = String.format("%02d:%02d", Math.abs((offsetInMillis) / 3600000), Math.abs((offsetInMillis / 60000) % 60));
-        offset = (offsetInMillis >= 0 ? "+" : "-") + offset;
-        System.out.println(offset);
-        return 0;
+    private LocalTime getLocalTime(){
+        return LocalTime.now(this.raceTimeZoneId);
     }
 
+    public String getLocalTimeString(){
+        return getLocalTime().format(raceTimeStringFormat);
+    }
+
+    public String getRaceTimeZoneString(){
+        return "ABCD";
+    }
 
 }

@@ -33,7 +33,12 @@
                         <Font size="30.0" />
                     </font>
                 </Label>
-            <Label fx:id="timeZone" layoutX="680.0" layoutY="126.0" text="NZDT" textAlignment="RIGHT" visible="false">
+            <Label fx:id="localTime" layoutX="690.0" layoutY="136.0" text="localTime" textAlignment="RIGHT" visible="false">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Label fx:id="localTimeZone" layoutX="680.0" layoutY="126.0" text="NZDT" textAlignment="RIGHT" visible="false">
                <font>
                   <Font size="30.0" />
                </font>
