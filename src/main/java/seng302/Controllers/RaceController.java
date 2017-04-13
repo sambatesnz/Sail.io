@@ -274,8 +274,13 @@ public class RaceController {
             boats.get(i).setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
             boats.get(i).setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
             boats.get(i).getChildren().get(0).setRotate(race.getBoats().get(i).getHeading()); //Sets rotation of boat
-            boats.get(i).getChildren().remove(2); //Sets the length of wake
-            boats.get(i).getChildren().add(2, newWake(boatSpeed));
+
+            //boats.get(i).getChildren().remove(2); //Sets the length of wake
+            if(!raceStarted){
+                boats.get(i).getChildren().set(2, new Polyline());
+            }else {
+                boats.get(i).getChildren().set(2, newWake(boatSpeed));
+            }
             boats.get(i).getChildren().get(2).setRotate(race.getBoats().get(i).getHeading()); //Sets rotation of wake
             boats.get(i).getChildren().get(2).setLayoutX((8 + boatSpeed) * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
             boats.get(i).getChildren().get(2).setLayoutY((8 + boatSpeed) * Math.cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
