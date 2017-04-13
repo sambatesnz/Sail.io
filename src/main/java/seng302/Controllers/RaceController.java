@@ -36,6 +36,8 @@ public class RaceController {
     @FXML
     private Label clock;
     @FXML
+    private Label timeZone;
+    @FXML
     private ListView<String> finishedListView;
     @FXML
     private TableView<Boat> positionTable;
@@ -86,7 +88,7 @@ public class RaceController {
         race = new Race();
 
         //Where should we put this?
-        TimeZoneWrapper timeZone = new TimeZoneWrapper("Atlantic/Bermuda");
+        TimeZoneWrapper timeZoneWrapper = new TimeZoneWrapper("Atlantic/Bermuda");
 
 
         finishedListView = new ListView<>();
@@ -180,6 +182,13 @@ public class RaceController {
         clock.setFont(new Font("Arial", 30));
         clock.setText(" 00:00:00");
         clock.setVisible(true);
+
+        //Initialise time zone
+        timeZone.setFont(new Font("Arial", 15));
+        timeZone.setText("NZDT");
+        timeZone.setVisible(true);
+
+
 
         group.getChildren().addAll(gates);
         group.getChildren().addAll(landmarks);
@@ -345,6 +354,9 @@ public class RaceController {
 
         clock.setLayoutX(Coordinate.getWindowX() - 160);
         clock.setLayoutY(20);
+
+        timeZone.setLayoutX(Coordinate.getWindowX() - 150);
+        timeZone.setLayoutY(80);
 
         updateBoundary();
     }

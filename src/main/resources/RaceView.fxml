@@ -9,16 +9,16 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainBorderPane" maxHeight="600.0" maxWidth="800.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng302.Controllers.RaceController">
+<BorderPane fx:id="mainBorderPane" maxHeight="600.0" maxWidth="800.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng302.Controllers.RaceController">
     <left>
         <AnchorPane maxWidth="248" minWidth="248" prefWidth="248">
             <children>
                 
-                <TableView fx:id="positionTable" layoutY="61.0" maxWidth="248" minWidth="248" prefHeight="539.0" prefWidth="248" >
+                <TableView fx:id="positionTable" layoutY="61.0" maxWidth="248" minWidth="248" prefHeight="539.0" prefWidth="248">
                     <columns>
-                        <TableColumn fx:id="positionCol" maxWidth="31.0" prefWidth="20.0" sortable="false"/>
-                        <TableColumn fx:id="nameCol" maxWidth="200.0" prefWidth="150.0" text="Name" sortable="false"/>
-                        <TableColumn fx:id="speedCol" maxWidth="200.0" prefWidth="77.0" text="Speed(m/s)" sortable="false"/>
+                        <TableColumn fx:id="positionCol" maxWidth="31.0" prefWidth="20.0" sortable="false" />
+                        <TableColumn fx:id="nameCol" maxWidth="200.0" prefWidth="150.0" sortable="false" text="Name" />
+                        <TableColumn fx:id="speedCol" maxWidth="200.0" prefWidth="77.0" sortable="false" text="Speed(m/s)" />
                     </columns>
                 </TableView>
             </children>
@@ -28,22 +28,24 @@
        <AnchorPane fx:id="viewAnchorPane" style="-fx-background-color: #26c6d8;" BorderPane.alignment="CENTER">
             <children>
                 <Group fx:id="group" autoSizeChildren="false" />
-                <Label fx:id="clock" layoutX="663.0" text="00:00:00">
+                <Label fx:id="clock" layoutX="663.0" text="00:00:00" textAlignment="RIGHT" visible="false">
                     <font>
                         <Font size="30.0" />
                     </font>
                 </Label>
+            <Label fx:id="timeZone" layoutX="680.0" layoutY="126.0" text="NZDT" textAlignment="RIGHT" visible="false">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
                 <Label fx:id="fpsLabel" layoutX="736.0" layoutY="43.0" text="0 fps" textAlignment="RIGHT">
                     <font>
                         <Font size="16.0" />
                     </font>
                 </Label>
-                <Button fx:id="annotationBtn" layoutX="14.0" layoutY="600.0" mnemonicParsing="false"
-                        text="Remove Annotations" onAction="#annotationBtnClicked" />
-                <Button fx:id="fpsBtn" layoutX="14.0" layoutY="700.0" mnemonicParsing="false"
-                        text="Remove FPS counter" onAction="#fpsBtnClicked" />
-                <Button fx:id="startButton" layoutX="14.0" layoutY="500.0" mnemonicParsing="false"
-                        onAction="#startButtonPressed" text="Start Race" />
+                <Button fx:id="annotationBtn" layoutX="14.0" layoutY="600.0" mnemonicParsing="false" onAction="#annotationBtnClicked" text="Remove Annotations" />
+                <Button fx:id="fpsBtn" layoutX="14.0" layoutY="700.0" mnemonicParsing="false" onAction="#fpsBtnClicked" text="Remove FPS counter" />
+                <Button fx:id="startButton" layoutX="14.0" layoutY="500.0" mnemonicParsing="false" onAction="#startButtonPressed" text="Start Race" />
 
             </children>
        </AnchorPane>
