@@ -1,4 +1,4 @@
-package seng302.Model;
+package seng302;
 
 
 import java.io.FileInputStream;

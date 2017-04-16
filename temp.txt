@@ -6,7 +6,7 @@
         121
     </windDirection>
     <compoundMarks>
-        <compoundMark type="Gate" name="Start" id="1">
+        <compoundMark type="Gate" name="Start" id="1" color="Green">
             <mark>
                 <latitude>32.296577</latitude>
                 <longitude>-64.854304</longitude>
@@ -16,13 +16,13 @@
                 <longitude>-64.855242</longitude>
             </mark>
         </compoundMark>
-        <compoundMark type="Mark" name="Mark" id="2">
+        <compoundMark type="Mark" name="Mark" id="2" color="AZURE">
             <mark>
                 <latitude>32.293039</latitude>
                 <longitude>-64.843983</longitude>
             </mark>
         </compoundMark>
-        <compoundMark type="Gate" name="Northern Gate" id="3">
+        <compoundMark type="Gate" name="Northern Gate" id="3" color="AZURE">
             <mark>
                 <latitude>32.309693</latitude>
                 <longitude>-64.835249</longitude>
@@ -32,7 +32,7 @@
                 <longitude>-64.831785</longitude>
             </mark>
         </compoundMark>
-        <compoundMark type="Gate" name="Southern Gate" id="4">
+        <compoundMark type="Gate" name="Southern Gate" id="4" color="AZURE">
             <mark>
                 <latitude>32.284680</latitude>
                 <longitude>-64.850045</longitude>
@@ -42,7 +42,7 @@
                 <longitude>-64.847591</longitude>
             </mark>
         </compoundMark>
-        <compoundMark type="Gate" name="Finish" id="5">
+        <compoundMark type="Gate" name="Finish" id="5" color="RED">
             <mark>
                 <latitude>32.317257</latitude>
                 <longitude>-64.836260</longitude>
@@ -55,13 +55,30 @@
     </compoundMarks>
     <gateOrder>
         1,2,3,4,3,5
-        <!--1,5-->
     </gateOrder>
+
+    <boundary>
+        <longitude>-64.830</longitude>
+        <latitude>32.318</latitude>
+    </boundary>
+    <boundary>
+        <longitude>-64.856</longitude>
+        <latitude>32.318</latitude>
+    </boundary>
+    <boundary>
+        <longitude>-64.859</longitude>
+        <latitude>32.290</latitude>
+    </boundary>
+    <boundary>
+        <longitude>-64.856</longitude>
+        <latitude>32.277</latitude>
+    </boundary>
+    <boundary>
+        <longitude>-64.830</longitude>
+        <latitude>32.277</latitude>
+    </boundary>
+    <boundary>
+        <longitude>-64.825</longitude>
+        <latitude>32.290</latitude>
+    </boundary>
 </course>
-
-<!--Things that will eventually be added:
-        - Wind (str/direction)
-        - Boats ( i.e. who is competing.)
-        - Boat Speeds, Names, etc.
-        - Other?-->
-
