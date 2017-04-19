@@ -15,7 +15,8 @@ import java.io.IOException;
 public class Main extends Application {
 
     public static void main(String[] args) {
-        Application.launch(Main.class, (java.lang.String[]) null);
+        StreamClient sc = new StreamClient();
+        //Application.launch(Main.class, (java.lang.String[]) null);
     }
 
     @Override
