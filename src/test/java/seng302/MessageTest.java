@@ -3,8 +3,12 @@ package seng302;
 import javafx.scene.paint.Color;
 import org.junit.Test;
 
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.List;
+import java.util.zip.CRC32;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -40,10 +44,10 @@ public class MessageTest {
     }
 
     @Test
-    public void testBoatPositionMessage() throws Exception {
+    public void testBoatPositionBody() throws Exception {
         Boat boat = new Boat("Boat1", 33.33, Color.BLUE, "USA");
         boat.setHeading(90.0);
-        List<Byte> message = (new Message()).boatPositionMessage(boat);
+        List<Byte> message = (new Message()).boatPositionBody(boat);
 
         assertEquals(new Byte((byte) 'U'), message.get(7));  // testing SourceID
         assertEquals(new Byte((byte) 'S'), message.get(8));
@@ -68,6 +72,29 @@ public class MessageTest {
 
         assertEquals(new Byte((byte) 0x82), message.get(34));  // testing BoatSpeed
         assertEquals(new Byte((byte) 0x32), message.get(35));
+
+        assertEquals(Message.BOAT_POSITION_LENGTH, message.size());
     }
 
+    @Test
+    public void testBoatPositionMessage() throws Exception {
+        Boat boat = new Boat("Boat1", 33.33, Color.BLUE, "USA");
+        List<Byte> message = (new Message()).boatPositionMessage(boat);
+        assertEquals(Message.BOAT_POSITION_LENGTH + Message.HEADER_LENGTH + Message.CRC_LENGTH, message.size());
+
+        CRC32 crc32 = new CRC32();
+        byte[] bytesArray = new byte[message.size() - 4];
+        for (int i = 0; i < message.size() - 4; i++) {
+            bytesArray[i] = message.get(i);
+        }
+        crc32.update(bytesArray);
+        byte[] realCRC = ByteBuffer.allocate(4).putInt((int) crc32.getValue()).array();
+
+        byte[] CRC = new byte[4];
+        for (int i = 0; i < 4; i++) {
+            CRC[i] = message.get(i + message.size() - 4);
+        }
+
+        assertArrayEquals(realCRC, CRC); // testing CRC (end of message)
+    }
 }
