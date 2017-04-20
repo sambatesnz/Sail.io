@@ -1,6 +1,7 @@
 package seng302;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,14 +17,16 @@ public class Message {
         byte messageType = (byte) 0x37;
         byte[] time = ByteBuffer.allocate(8).putLong(System.currentTimeMillis()).array();
         byte[] timeStamp = Arrays.copyOfRange(time, 2, 8);
-        byte[] sourceID = {0x00, 0x00, 0x00, 0x01};
+        byte[] sourceID = new byte[4];
+        byte[] abrv = boat.getAbrv().getBytes(StandardCharsets.UTF_8);
+        System.arraycopy(abrv, 0, sourceID, 0, abrv.length);
         byte[] seqNum = {0x00, 0x00, 0x00, 0x01};
         byte[] altitude = {0x00, 0x00, 0x00, 0x00};
         byte[] pitch = {0x00, 0x00};
         byte[] roll = {0x00, 0x00};
         byte versionNum = (byte) 0x01;
-
         byte deviceType = (byte) 0x01;
+        byte[] speed = ByteBuffer.allocate(2).putShort((short) (boat.getSpeed() * 1000)).array();
 
         //scaled down to fit into number of bytes
         byte[] latitude = ByteBuffer.allocate(4).putInt(get4BytePos(boat.getLatitude())).array();
@@ -58,6 +61,9 @@ public class Message {
             bytes.add(b);
         }
         for (byte b : roll) {
+            bytes.add(b);
+        }
+        for (byte b : speed) {
             bytes.add(b);
         }
         return bytes;

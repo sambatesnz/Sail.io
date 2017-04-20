@@ -41,9 +41,15 @@ public class MessageTest {
 
     @Test
     public void testBoatPositionMessage() throws Exception {
-        Boat boat = new Boat("Boat1", 33.33, Color.BLUE, "b1");
+        Boat boat = new Boat("Boat1", 33.33, Color.BLUE, "USA");
         boat.setHeading(90.0);
         List<Byte> message = (new Message()).boatPositionMessage(boat);
+
+        assertEquals(new Byte((byte) 'U'), message.get(7));  // testing SourceID
+        assertEquals(new Byte((byte) 'S'), message.get(8));
+        assertEquals(new Byte((byte) 'A'), message.get(9));
+        assertEquals(new Byte((byte) 0x00), message.get(10));
+
         assertEquals(new Byte((byte) 0x01), message.get(15));  // testing DeviceType
 
         // TODO: implement lat/long
@@ -59,6 +65,9 @@ public class MessageTest {
 
         assertEquals(new Byte((byte) 0x40), message.get(28));  // testing Heading
         assertEquals(new Byte((byte) 0x00), message.get(29));
+
+        assertEquals(new Byte((byte) 0x82), message.get(34));  // testing BoatSpeed
+        assertEquals(new Byte((byte) 0x32), message.get(35));
     }
 
 }
