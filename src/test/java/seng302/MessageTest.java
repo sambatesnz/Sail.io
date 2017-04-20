@@ -1,6 +1,9 @@
 package seng302;
 
+import javafx.scene.paint.Color;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,20 +21,44 @@ public class MessageTest {
     @Test
     public void testGet4BytePos45() throws Exception {
         double latitude = 45.0;
-        long transformed = (new Message()).get4BytePos(latitude);
+        int transformed = (new Message()).get4BytePos(latitude);
         assertEquals(1<<29, transformed);
     }
 
     @Test
     public void testGet4BytePosN45() throws Exception {
         double latitude = -45.0;
-        long transformed = (new Message()).get4BytePos(latitude);
+        int transformed = (new Message()).get4BytePos(latitude);
         assertEquals(-(1<<29), transformed);
     }
+
     @Test
     public void testGet2ByteHeading90() throws Exception {
-        double heading = 90;
-        long transformed = (new Message()).get2ByteHeading(heading);
+        double heading = 90.0;
+        short transformed = (new Message()).get2ByteHeading(heading);
         assertEquals(1<<14, transformed);
     }
+
+    @Test
+    public void testBoatPositionMessage() throws Exception {
+        Boat boat = new Boat("Boat1", 33.33, Color.BLUE, "b1");
+        boat.setHeading(90.0);
+        List<Byte> message = (new Message()).boatPositionMessage(boat);
+        assertEquals(new Byte((byte) 0x01), message.get(15));  // testing DeviceType
+
+        // TODO: implement lat/long
+//        assertEquals(new Byte((byte) 0x01), message.get(16));  // testing Latitude
+//        assertEquals(new Byte((byte) 0x01), message.get(17));
+//        assertEquals(new Byte((byte) 0x01), message.get(18));
+//        assertEquals(new Byte((byte) 0x01), message.get(19));
+//
+//        assertEquals(new Byte((byte) 0x01), message.get(20));  // testing Longitude
+//        assertEquals(new Byte((byte) 0x01), message.get(21));
+//        assertEquals(new Byte((byte) 0x01), message.get(22));
+//        assertEquals(new Byte((byte) 0x01), message.get(23));
+
+        assertEquals(new Byte((byte) 0x40), message.get(28));  // testing Heading
+        assertEquals(new Byte((byte) 0x00), message.get(29));
+    }
+
 }

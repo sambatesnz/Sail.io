@@ -26,9 +26,9 @@ public class Message {
         byte deviceType = (byte) 0x01;
 
         //scaled down to fit into number of bytes
-        byte[] latitude = ByteBuffer.allocate(4).putDouble(get4BytePos(boat.getLatitude())).array();
-        byte[] longitude = ByteBuffer.allocate(4).putDouble(get4BytePos(boat.getLongitude())).array();
-        byte[] heading = ByteBuffer.allocate(2).putDouble(get2ByteHeading(boat.getHeading())).array();
+        byte[] latitude = ByteBuffer.allocate(4).putInt(get4BytePos(boat.getLatitude())).array();
+        byte[] longitude = ByteBuffer.allocate(4).putInt(get4BytePos(boat.getLongitude())).array();
+        byte[] heading = ByteBuffer.allocate(2).putShort(get2ByteHeading(boat.getHeading())).array();
 
         List<Byte> bytes = new ArrayList<>(56);
         bytes.add(versionNum);
@@ -63,10 +63,10 @@ public class Message {
         return bytes;
     }
 
-    public Long get4BytePos(double pos){
-        return (long) ((pos+180)/360*(1L << 32L)-(1L << 31L));
+    public int get4BytePos(double pos){
+        return (int) ((pos+180)/360*(1L << 32L)-(1L << 31L));
     }
-    public Long get2ByteHeading(double heading){
-        return (long) ((heading)/360*(1L << 16L));
+    public short get2ByteHeading(double heading){
+        return (short) ((heading)/360*(1L << 16L));
     }
 }
