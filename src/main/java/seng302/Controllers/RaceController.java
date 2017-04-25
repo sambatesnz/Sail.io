@@ -363,11 +363,11 @@ public class RaceController {
         clock.setLayoutX(Coordinate.getWindowX() - 160);
         clock.setLayoutY(20);
 
-        localTimeZone.setLayoutX(Coordinate.getWindowX() - 180);
+        localTimeZone.setLayoutX(Coordinate.getWindowX() - 115);
         localTimeZone.setLayoutY(80);
 
-        localTime.setLayoutX(Coordinate.getWindowX() - 100);
-        localTime.setLayoutY(80);
+        localTime.setLayoutX(Coordinate.getWindowX() - 110);
+        localTime.setLayoutY(100);
         localTime.setText(timeZoneWrapper.getLocalTimeString());
 
         updateBoundary();
