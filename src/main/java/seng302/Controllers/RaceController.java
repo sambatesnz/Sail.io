@@ -36,6 +36,10 @@ public class RaceController {
     @FXML
     private Label clock;
     @FXML
+    private Label localTimeZone;
+    @FXML
+    private Label localTime;
+    @FXML
     private ListView<String> finishedListView;
     @FXML
     private TableView<Boat> positionTable;
@@ -69,14 +73,16 @@ public class RaceController {
     private List<Path> paths = new ArrayList<>();
 
     private int timeBeforeRace = 5;
-    private int hours = 0;
-    private int minutes = 0;
-    private int seconds = -timeBeforeRace - 1;
+    private int raceHours = 0;
+    private int raceMinutes = 0;
+    private int raceSeconds = -timeBeforeRace - 1;
     private long lastTime = 0;
     private long timerUpdate = 1000;
     private boolean raceStarted = false;
     private boolean countingDown = false;
     private int frameCount = 0;
+
+    private TimeZoneWrapper timeZoneWrapper;
 
     /**
      * initializes the race display.
@@ -84,6 +90,10 @@ public class RaceController {
     @FXML
     public void initialize() {
         race = new Race();
+
+        //Where should we put this?
+        this.timeZoneWrapper = new TimeZoneWrapper("Atlantic/Bermuda");
+
 
         finishedListView = new ListView<>();
         boundary = getBoundary(race);
@@ -176,6 +186,17 @@ public class RaceController {
         clock.setFont(new Font("Arial", 30));
         clock.setText(" 00:00:00");
         clock.setVisible(true);
+
+        //Initialise time zone
+        localTimeZone.setFont(new Font("Arial", 15));
+        localTimeZone.setText(timeZoneWrapper.getRaceTimeZoneString());
+        localTimeZone.setVisible(true);
+
+        localTime.setFont(new Font("Arial", 15));
+        localTime.setVisible(true);
+
+
+
 
         group.getChildren().addAll(gates);
         group.getChildren().addAll(landmarks);
@@ -342,6 +363,13 @@ public class RaceController {
         clock.setLayoutX(Coordinate.getWindowX() - 160);
         clock.setLayoutY(20);
 
+        localTimeZone.setLayoutX(Coordinate.getWindowX() - 115);
+        localTimeZone.setLayoutY(80);
+
+        localTime.setLayoutX(Coordinate.getWindowX() - 110);
+        localTime.setLayoutY(100);
+        localTime.setText(timeZoneWrapper.getLocalTimeString());
+
         updateBoundary();
     }
 
@@ -358,23 +386,23 @@ public class RaceController {
     /**
      * Increments the race clock, and updates the fps display
      */
-    private void updateClock() {
+    private void updateRaceClock() {
         if (currentTimeMillis() - lastTime >= timerUpdate) {
-            seconds++;
+            raceSeconds++;
             fpsLabel.setText(frameCount + " fps");
             frameCount = 0;
-            if ((seconds / 60) >= 1) {
-                seconds = 0;
-                minutes++;
-                if ((minutes / 60) >= 1) {
-                    minutes = 0;
-                    hours++;
+            if ((raceSeconds / 60) >= 1) {
+                raceSeconds = 0;
+                raceMinutes++;
+                if ((raceMinutes / 60) >= 1) {
+                    raceMinutes = 0;
+                    raceHours++;
                 }
             }
-            if (seconds < 0) {
-                clock.setText(String.format("-%02d:%02d:%02d", hours, minutes, -seconds));
+            if (raceSeconds < 0) {
+                clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
             } else {
-                clock.setText(String.format(" %02d:%02d:%02d", hours, minutes, seconds));
+                clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
             }
             lastTime = currentTimeMillis();
         }
@@ -397,17 +425,17 @@ public class RaceController {
                 if (raceStarted) {
                     race.updateBoats();
                     Coordinate.updateBorder();
-                    updateClock();
+                    updateRaceClock();
                 }
                 else if (countingDown){
                     if (currentTimeMillis() - lastTime >= timerUpdate) {
-                        seconds++;
+                        raceSeconds++;
                         frameCount = 0;
-                        clock.setText(String.format("-%02d:%02d:%02d", hours, minutes, -seconds));
+                        clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
                         lastTime = currentTimeMillis();
                     }
-                    if (seconds == 0) {
-                        clock.setText(String.format(" %02d:%02d:%02d", hours, minutes, seconds));
+                    if (raceSeconds == 0) {
+                        clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
                         raceStarted = true;
                     }
                 }
