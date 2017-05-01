@@ -239,6 +239,7 @@ public class Race {
                     if (boat.getCurrentLegIndex() == legs.size()) {
 //                        System.out.println(boat.getName() + " finished race!");
                         numFinishers++;
+                        boat.setSpeed(0);
                         finishedBoats.add(boat);
                         if (numFinishers == boats.size()) {
                             finished = true;

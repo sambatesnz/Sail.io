@@ -82,3 +82,5 @@
         <latitude>32.290</latitude>
     </boundary>
 </course>
+
+<!--Added a test comment to see if this builds-->
