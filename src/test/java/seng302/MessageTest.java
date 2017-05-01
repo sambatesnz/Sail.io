@@ -3,11 +3,6 @@ package seng302;
 import javafx.scene.paint.Color;
 import org.junit.Test;
 
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.List;
-import java.util.zip.CRC32;
-
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -47,54 +42,53 @@ public class MessageTest {
     public void testBoatPositionBody() throws Exception {
         Boat boat = new Boat("Boat1", 33.33, Color.BLUE, "USA");
         boat.setHeading(90.0);
-        List<Byte> message = (new Message()).boatPositionBody(boat);
+        byte[] message = (new Message()).boatPositionBody(boat);
 
-        assertEquals(new Byte((byte) 'U'), message.get(7));  // testing SourceID
-        assertEquals(new Byte((byte) 'S'), message.get(8));
-        assertEquals(new Byte((byte) 'A'), message.get(9));
-        assertEquals(new Byte((byte) 0x00), message.get(10));
+        assertEquals((byte) 'U', message[7]);  // testing SourceID
+        assertEquals((byte) 'S', message[8]);
+        assertEquals((byte) 'A', message[9]);
+        assertEquals((byte) 0x00, message[10]);
 
-        assertEquals(new Byte((byte) 0x01), message.get(15));  // testing DeviceType
+        assertEquals((byte) 0x01, message[15]);  // testing DeviceType
 
         // TODO: implement lat/long
-//        assertEquals(new Byte((byte) 0x01), message.get(16));  // testing Latitude
-//        assertEquals(new Byte((byte) 0x01), message.get(17));
-//        assertEquals(new Byte((byte) 0x01), message.get(18));
-//        assertEquals(new Byte((byte) 0x01), message.get(19));
+//        assertEquals((byte) 0x01), message[16]);  // testing Latitude
+//        assertEquals((byte) 0x01), message[17]);
+//        assertEquals((byte) 0x01), message[18]);
+//        assertEquals((byte) 0x01), message[19]);
 //
-//        assertEquals(new Byte((byte) 0x01), message.get(20));  // testing Longitude
-//        assertEquals(new Byte((byte) 0x01), message.get(21));
-//        assertEquals(new Byte((byte) 0x01), message.get(22));
-//        assertEquals(new Byte((byte) 0x01), message.get(23));
+//        assertEquals((byte) 0x01), message[20]);  // testing Longitude
+//        assertEquals((byte) 0x01), message[21]);
+//        assertEquals((byte) 0x01), message[22]);
+//        assertEquals((byte) 0x01), message[23]);
 
-        assertEquals(new Byte((byte) 0x40), message.get(28));  // testing Heading
-        assertEquals(new Byte((byte) 0x00), message.get(29));
+        assertEquals((byte) 0x00, message[28]);  // testing Heading
+        assertEquals((byte) 0x40, message[29]);
 
-        assertEquals(new Byte((byte) 0x82), message.get(34));  // testing BoatSpeed
-        assertEquals(new Byte((byte) 0x32), message.get(35));
+        assertEquals((byte) 0x32, message[34]);  // testing BoatSpeed
+        assertEquals((byte) 0x82, message[35]);
 
-        assertEquals(Message.BOAT_POSITION_LENGTH, message.size());
+        assertEquals(Message.BOAT_POSITION_LENGTH, message.length);
     }
 
     @Test
     public void testBoatPositionMessage() throws Exception {
         Boat boat = new Boat("Boat1", 33.33, Color.BLUE, "USA");
-        List<Byte> message = (new Message()).boatPositionMessage(boat);
-        assertEquals(Message.BOAT_POSITION_LENGTH + Message.HEADER_LENGTH + Message.CRC_LENGTH, message.size());
+        Message message = new Message();
+        byte[] bytes = message.boatPositionMessage(boat);
+        assertEquals(Message.BOAT_POSITION_LENGTH + Message.HEADER_LENGTH + Message.CRC_LENGTH, bytes.length);
 
-        CRC32 crc32 = new CRC32();
-        byte[] bytesArray = new byte[message.size() - 4];
-        for (int i = 0; i < message.size() - 4; i++) {
-            bytesArray[i] = message.get(i);
+        byte[] bytesArray = new byte[bytes.length - 4];
+        for (int i = 0; i < bytes.length - 4; i++) {
+            bytesArray[i] = bytes[i];
         }
-        crc32.update(bytesArray);
-        byte[] realCRC = ByteBuffer.allocate(4).putInt((int) crc32.getValue()).array();
+        byte[] realCRC = message.calculateChecksum(bytesArray);
 
         byte[] CRC = new byte[4];
         for (int i = 0; i < 4; i++) {
-            CRC[i] = message.get(i + message.size() - 4);
+            CRC[i] = bytes[i + bytes.length - 4];
         }
 
-        assertArrayEquals(realCRC, CRC); // testing CRC (end of message)
+        assertArrayEquals(realCRC, CRC); // testing CRC (at end of message)
     }
 }

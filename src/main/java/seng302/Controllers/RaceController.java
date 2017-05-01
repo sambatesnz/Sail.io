@@ -397,10 +397,11 @@ public class RaceController {
 
                 if (raceStarted) {
                     race.updateBoats();
-                    List<List<Byte>> boatsBinList
+                    List<byte[]> boatsBinList = new ArrayList<>();
                     for (Boat boat : race.getBoats()) {
-                        List<Byte> boatsBin = message.boatPositionMessage(boat);
+                        boatsBinList.add(message.boatPositionMessage(boat));
                     }
+                    // TODO: give streamer updated message
 
                     Coordinate.updateBorder();
                     updateClock();
