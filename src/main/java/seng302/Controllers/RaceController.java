@@ -1,6 +1,8 @@
 package seng302.Controllers;
 
 import javafx.animation.AnimationTimer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -16,6 +18,7 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Callback;
 import seng302.*;
 import javafx.event.ActionEvent;
 import java.util.ArrayList;
@@ -57,6 +60,8 @@ public class RaceController {
     private Button annotationBtn;
     @FXML
     private Button fpsBtn;
+    @FXML
+    private ListView startersList;
 
     private Race race;
 
@@ -89,6 +94,7 @@ public class RaceController {
      */
     @FXML
     public void initialize() {
+
         race = new Race();
 
         //Where should we put this?
@@ -202,7 +208,23 @@ public class RaceController {
         group.getChildren().addAll(landmarks);
         group.getChildren().addAll(boats);
 
+        RacersListBeforeStart(race);
+
         runRace();
+    }
+
+    private void RacersListBeforeStart(Race race) {
+        startersList.setVisible(true);
+        ObservableList<String> listOfStarters = FXCollections.observableArrayList();
+        for(Boat boat : race.getBoats()) {
+            String name = boat.getName();
+            listOfStarters.add(name);
+        }
+        startersList.setItems(listOfStarters);
+    }
+
+    private void RemoveRacersList() {
+        startersList.setVisible(false);
     }
 
     /**
@@ -370,6 +392,11 @@ public class RaceController {
         localTime.setLayoutY(100);
         localTime.setText(timeZoneWrapper.getLocalTimeString());
 
+        startersList.setPrefSize(Coordinate.getWindowX() - 400, Coordinate.getWindowY() - 200);
+
+        startersList.setLayoutX(200);
+        startersList.setLayoutY(100);
+
         updateBoundary();
     }
 
@@ -432,6 +459,9 @@ public class RaceController {
                         raceSeconds++;
                         frameCount = 0;
                         clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
+                        if (raceSeconds == -2) {
+                            RemoveRacersList();
+                        }
                         lastTime = currentTimeMillis();
                     }
                     if (raceSeconds == 0) {
