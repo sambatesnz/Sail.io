@@ -7,7 +7,6 @@ import java.util.ArrayList;
  */
 public class TestServerData implements IServerData {
 
-
     private ArrayList<byte[]> bytes;
 
     public TestServerData(){
@@ -15,7 +14,7 @@ public class TestServerData implements IServerData {
     }
 
 
-    void add(byte[] data){
+    public void add(byte[] data){
         bytes.add(data);
     }
 

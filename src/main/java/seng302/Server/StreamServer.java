@@ -14,7 +14,7 @@ public class StreamServer {
     private ServerSocket listener;
     private Socket socket;
 
-    StreamServer(int port) throws IOException {
+    public StreamServer(int port) throws IOException {
         this.listener = new ServerSocket(port);
     }
 
