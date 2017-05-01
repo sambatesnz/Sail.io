@@ -1,5 +1,0 @@
-I am a file
-I have multiple lines
-I am not binary
-la la la
-end file
