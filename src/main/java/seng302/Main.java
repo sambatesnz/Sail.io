@@ -16,9 +16,6 @@ public class Main extends Application {
 
     public static void main(String[] args) throws IOException {
 
-
-        NodeJsWrapper client = new NodeJsWrapper("132.181.12.155", 3001);
-        client.listen();
         Application.launch(Main.class, (java.lang.String[]) null);
     }
 
