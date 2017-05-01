@@ -1,10 +1,9 @@
 package seng302;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.zip.CRC32;
 
 /**
@@ -24,50 +23,41 @@ public class Message {
         messageId = Integer.MIN_VALUE;
     }
 
-    public List<Byte> boatPositionMessage(Boat boat) {
-        byte[] time = ByteBuffer.allocate(8).putLong(System.currentTimeMillis()).array();
-        byte[] timestamp = Arrays.copyOfRange(time, 2, 8);
+    private static ByteBuffer LEBuffer(int capacity) {
+        return ByteBuffer.allocate(capacity).order(ByteOrder.LITTLE_ENDIAN);
+    }
+
+    public byte[] boatPositionMessage(Boat boat) {
         byte messageType = 37;
-        byte[] messageLength = ByteBuffer.allocate(2).putShort(BOAT_POSITION_LENGTH).array();
-        byte[] messageID = ByteBuffer.allocate(4).putInt(messageId++).array();
+        byte[] time = LEBuffer(8).putLong(System.currentTimeMillis()).array();
+        byte[] timestamp = Arrays.copyOfRange(time, 2, 8);
+        byte[] messageLength = LEBuffer(2).putShort(BOAT_POSITION_LENGTH).array();
+        byte[] messageID = LEBuffer(4).putInt(messageId++).array();
 
-        List<Byte> header = new ArrayList<>(HEADER_LENGTH);
-        header.add(SYNC_BYTE_1);
-        header.add(SYNC_BYTE_2);
-        header.add(messageType);
-        for (byte b : timestamp) {
-            header.add(b);
-        }
-        for (byte b : messageID) {
-            header.add(b);
-        }
-        for (byte b : messageLength) {
-            header.add(b);
-        }
+        ByteBuffer header = LEBuffer(HEADER_LENGTH);
+        header.put(SYNC_BYTE_1);
+        header.put(SYNC_BYTE_2);
+        header.put(messageType);
+        header.put(timestamp);
+        header.put(messageID);
+        header.put(messageLength);
 
-        List<Byte> bytes = new ArrayList<>(HEADER_LENGTH + BOAT_POSITION_LENGTH + CRC_LENGTH);
-        bytes.addAll(header);
-        bytes.addAll(boatPositionBody(boat));
-
-        byte[] CRC = calculateChecksum(bytes);
-        for (byte b: CRC) {
-            bytes.add(b);
-        }
-        return bytes;
+        ByteBuffer bytes = LEBuffer(HEADER_LENGTH + BOAT_POSITION_LENGTH);
+        bytes.put(header.array());
+        bytes.put(boatPositionBody(boat));
+        ByteBuffer bytesPCRC = LEBuffer(HEADER_LENGTH + BOAT_POSITION_LENGTH + CRC_LENGTH);
+        bytesPCRC.put(bytes.array());
+        bytesPCRC.put(calculateChecksum(bytes.array()));
+        return bytesPCRC.array();
     }
-    public byte[] calculateChecksum(List<Byte> bytes) {
+    public byte[] calculateChecksum(byte[] bytes) {
         CRC32 crc32 = new CRC32();
-        byte[] bytesArray = new byte[bytes.size()];
-        for (int i = 0; i < bytes.size(); i++) {
-            bytesArray[i] = bytes.get(i);
-        }
-        crc32.update(bytesArray);
-        return ByteBuffer.allocate(4).putInt((int) crc32.getValue()).array();
+        crc32.update(bytes);
+        return LEBuffer(4).putInt((int) crc32.getValue()).array();
     }
 
-    public List<Byte> boatPositionBody(Boat boat) {
-        byte messageType = (byte) 0x37;
-        byte[] time = ByteBuffer.allocate(8).putLong(System.currentTimeMillis() + VALID_TIME_MILLI).array();
+    public byte[] boatPositionBody(Boat boat) {
+        byte[] time = LEBuffer(8).putLong(System.currentTimeMillis() + VALID_TIME_MILLI).array();
         byte[] timestamp = Arrays.copyOfRange(time, 2, 8);
         byte[] sourceID = new byte[4];
         byte[] abrv = boat.getAbrv().getBytes(StandardCharsets.UTF_8);
@@ -78,50 +68,27 @@ public class Message {
         byte[] roll = {0x00, 0x00};
         byte versionNum = (byte) 0x01;
         byte deviceType = (byte) 0x01;
-        byte[] speed = ByteBuffer.allocate(2).putShort((short) (boat.getSpeed() * 1000)).array();
+        byte[] speed = LEBuffer(2).putShort((short) (boat.getSpeed() * 1000)).array();
 
         //scaled down to fit into number of bytes
-        byte[] latitude = ByteBuffer.allocate(4).putInt(get4BytePos(boat.getLatitude())).array();
-        byte[] longitude = ByteBuffer.allocate(4).putInt(get4BytePos(boat.getLongitude())).array();
-        byte[] heading = ByteBuffer.allocate(2).putShort(get2ByteHeading(boat.getHeading())).array();
+        byte[] latitude = LEBuffer(4).putInt(get4BytePos(boat.getLatitude())).array();
+        byte[] longitude = LEBuffer(4).putInt(get4BytePos(boat.getLongitude())).array();
+        byte[] heading = LEBuffer(2).putShort(get2ByteHeading(boat.getHeading())).array();
 
-        List<Byte> bytes = new ArrayList<>(BOAT_POSITION_LENGTH);
-        bytes.add(versionNum);
-        for (byte b : timestamp) {
-            bytes.add(b);
-        }
-        for (byte b : sourceID) {
-            bytes.add(b);
-        }
-        for (byte b : seqNum) {
-            bytes.add(b);
-        }
-        bytes.add(deviceType);
-        for (byte b : latitude) {
-            bytes.add(b);
-        }
-        for (byte b : longitude) {
-            bytes.add(b);
-        }
-        for (byte b : altitude) {
-            bytes.add(b);
-        }
-        for (byte b : heading) {
-            bytes.add(b);
-        }
-        for (byte b : pitch) {
-            bytes.add(b);
-        }
-        for (byte b : roll) {
-            bytes.add(b);
-        }
-        for (byte b : speed) {
-            bytes.add(b);
-        }
-        for (int i = 0; i < 20; i++) {
-            bytes.add((byte) 0x00);
-        }
-        return bytes;
+        ByteBuffer bytes = LEBuffer(BOAT_POSITION_LENGTH);
+        bytes.put(versionNum);
+        bytes.put(timestamp);
+        bytes.put(sourceID);
+        bytes.put(seqNum);
+        bytes.put(deviceType);
+        bytes.put(latitude);
+        bytes.put(longitude);
+        bytes.put(altitude);
+        bytes.put(heading);
+        bytes.put(pitch);
+        bytes.put(roll);
+        bytes.put(speed);
+        return bytes.array();
     }
 
     public int get4BytePos(double pos){
