@@ -16,10 +16,9 @@ public class Main extends Application {
 
     public static void main(String[] args) throws IOException {
 
-
-        NodeJsWrapper client = new NodeJsWrapper("132.181.12.155", 3001);
+        StreamClient client = new StreamClient("132.181.14.173", 9090);
         client.listen();
-        Application.launch(Main.class, (java.lang.String[]) null);
+//        Application.launch(Main.class, (java.lang.String[]) null);
     }
 
     @Override
