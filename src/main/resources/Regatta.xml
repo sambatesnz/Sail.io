@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RegattaConfig>
+    <RegattaID>3</RegattaID>
+    <RegattaName>AC35 Test Course</RegattaName>
+    <CourseName>AC35 Test Course</CourseName>
+    <CentralLatitude>32.296577</CentralLatitude>
+    <CentralLongitude>-64.854304</CentralLongitude>
+    <CentralAltitude>0.00</CentralAltitude>
+    <UtcOffset>12</UtcOffset>
+    <MagneticVariation>14.1</MagneticVariation>
+</RegattaConfig>
