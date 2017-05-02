@@ -12,9 +12,8 @@ import java.util.zip.CRC32;
 public class Message {
     private static final int VALID_TIME_MILLI = 1000;
     public static final short BOAT_POSITION_LENGTH= 56;
-    public static final short BOAT_POS_HEADER_LENGTH = 15;
-    public static final short XML_HEADER_LENGTH = 15;
-    public static final short BOAT_POSITION_MESSAGE_TYPE = 37;
+    public static final short HEADER_LENGTH = 15;
+    public static final short XML_HEADER_LENGTH = 14;
     private static final byte SYNC_BYTE_1 = (byte) 0x47;
     private static final byte SYNC_BYTE_2 = (byte) 0x83;
     public static final int CRC_LENGTH = 4;
@@ -29,8 +28,17 @@ public class Message {
         return ByteBuffer.allocate(capacity).order(ByteOrder.LITTLE_ENDIAN);
     }
 
+    public byte[] calculateChecksum(byte[] bytes) {
+        CRC32 crc32 = new CRC32();
+        crc32.update(bytes);
+        return LEBuffer(4).putInt((int) crc32.getValue()).array();
+    }
+
     public byte[] xmlMessage(String xml, short ackN, short seqNum) {
-        byte messageType = 26;
+        return message((byte) 26, xmlBody(xml, ackN, seqNum));
+    }
+
+    public byte[] xmlBody(String xml, short ackN, short seqNum) {
         byte versionNum = 0x01;
         byte[] ackNumber = LEBuffer(2).putShort(ackN).array();
         byte[] time = LEBuffer(8).putLong(System.currentTimeMillis()).array();
@@ -38,52 +46,47 @@ public class Message {
         byte xmlMsgSubType = 0x00;
         byte[] seqNumber = LEBuffer(2).putShort(seqNum).array();
         byte[] xmlBytes = xml.getBytes(StandardCharsets.UTF_8);
-        byte[] xmlBody = Arrays.copyOf(xmlBytes, xmlBytes.length+1);
-        byte[] xmlBodyLen = LEBuffer(2).putShort((short) xmlBody.length).array();
+        byte[] xmlText = Arrays.copyOf(xmlBytes, xmlBytes.length+1);
+        byte[] xmlTextLen = LEBuffer(2).putShort((short) xmlText.length).array();
 
-        ByteBuffer bytes = LEBuffer(XML_HEADER_LENGTH + xmlBody.length);
+        ByteBuffer bytes = LEBuffer(XML_HEADER_LENGTH + xmlText.length);
         bytes.put(versionNum);
         bytes.put(ackNumber);
         bytes.put(timestamp);
         bytes.put(xmlMsgSubType);
         bytes.put(seqNumber);
-        bytes.put(xmlBodyLen);
-        bytes.put(xmlBody);
+        bytes.put(xmlTextLen);
+        bytes.put(xmlText);
 
         return bytes.array();
     }
 
-    public byte[] message(int type, int length, byte[] body) {
-
-    }
-
-    public byte[] boatPositionMessage(Boat boat) {
-        byte pitch = 37;
+    public byte[] message(byte type, byte[] body) {
         byte[] time = LEBuffer(8).putLong(System.currentTimeMillis()).array();
         byte[] timestamp = Arrays.copyOfRange(time, 2, 8);
-        byte[] messageLength = LEBuffer(2).putShort(BOAT_POSITION_LENGTH).array();
+        byte[] messageLength = LEBuffer(2).putShort((short) body.length).array();
         byte[] messageID = LEBuffer(4).putInt(messageId++).array();
 
-        ByteBuffer header = LEBuffer(BOAT_POS_HEADER_LENGTH);
+        ByteBuffer header = LEBuffer(HEADER_LENGTH);
         header.put(SYNC_BYTE_1);
         header.put(SYNC_BYTE_2);
-        header.put(messageType);
+        header.put(type);
         header.put(timestamp);
         header.put(messageID);
         header.put(messageLength);
 
-        ByteBuffer bytes = LEBuffer(BOAT_POS_HEADER_LENGTH + BOAT_POSITION_LENGTH);
+        ByteBuffer bytes = LEBuffer(HEADER_LENGTH + body.length);
         bytes.put(header.array());
-        bytes.put(boatPositionBody(boat));
-        ByteBuffer bytesPCRC = LEBuffer(BOAT_POS_HEADER_LENGTH + BOAT_POSITION_LENGTH + CRC_LENGTH);
-        bytesPCRC.put(bytes.array());
-        bytesPCRC.put(calculateChecksum(bytes.array()));
-        return bytesPCRC.array();
+        bytes.put(body);
+
+        ByteBuffer bytesCRC = LEBuffer(bytes.array().length + CRC_LENGTH);
+        bytesCRC.put(bytes.array());
+        bytesCRC.put(calculateChecksum(bytes.array()));
+        return bytesCRC.array();
     }
-    public byte[] calculateChecksum(byte[] bytes) {
-        CRC32 crc32 = new CRC32();
-        crc32.update(bytes);
-        return LEBuffer(4).putInt((int) crc32.getValue()).array();
+
+    public byte[] boatPositionMessage(Boat boat) {
+        return message((byte) 37, boatPositionBody(boat));
     }
 
     public byte[] boatPositionBody(Boat boat) {

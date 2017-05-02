@@ -76,7 +76,7 @@ public class MessageTest {
         Boat boat = new Boat("Boat1", 33.33, Color.BLUE, "USA");
         Message message = new Message();
         byte[] bytes = message.boatPositionMessage(boat);
-        assertEquals(Message.BOAT_POSITION_LENGTH + Message.BOAT_POS_HEADER_LENGTH + Message.CRC_LENGTH, bytes.length);
+        assertEquals(Message.BOAT_POSITION_LENGTH + Message.HEADER_LENGTH + Message.CRC_LENGTH, bytes.length);
 
         byte[] bytesArray = new byte[bytes.length - 4];
         for (int i = 0; i < bytes.length - 4; i++) {
