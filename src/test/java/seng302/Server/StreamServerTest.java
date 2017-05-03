@@ -1,7 +1,7 @@
 package seng302.Server;
 
 import org.junit.Test;
-import seng302.StreamClient;
+import seng302.*;
 
 import java.io.*;
 import java.net.Inet4Address;
@@ -50,4 +50,30 @@ public class StreamServerTest {
         byte[] expected = new byte[] {0,1,2,3};
         assertArrayEquals(actual, expected);
     }
+
+
+    @Test
+    public void serverWithGeneratedMessage() throws Exception {
+//
+//        StreamServer server = new StreamServer(9090);
+//        Thread serverThread = new Thread(() -> {
+//            try {
+//                server.start(data);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//        });
+//        serverThread.start();
+//    }
+
+//filename is filepath string
+//        //file:/home/cosc/student/sha162/Documents/team-4/target/classes/RaceView.fxml
+
+        DataGenerator d = new DataGenerator("Race.xml");
+
+       Message m = new Message();
+
+    }
+
 }
