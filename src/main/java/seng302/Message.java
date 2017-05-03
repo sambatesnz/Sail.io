@@ -75,6 +75,10 @@ public class Message {
         header.put(messageID);
         header.put(messageLength);
 
+//        System.out.println(Arrays.toString(messageLength));
+//        System.out.println(body.length);
+//        System.out.println(ByteBuffer.wrap(messageLength).order(ByteOrder.LITTLE_ENDIAN).getShort());
+
         ByteBuffer bytes = LEBuffer(HEADER_LENGTH + body.length);
         bytes.put(header.array());
         bytes.put(body);
@@ -82,6 +86,7 @@ public class Message {
         ByteBuffer bytesCRC = LEBuffer(bytes.array().length + CRC_LENGTH);
         bytesCRC.put(bytes.array());
         bytesCRC.put(calculateChecksum(bytes.array()));
+//        System.out.println(Arrays.toString(bytesCRC.array()));
         return bytesCRC.array();
     }
 
