@@ -1,9 +1,8 @@
 package seng302;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -16,18 +15,28 @@ public class DataGenerator {
     }
 
     void loadFile(String xml){
-        System.out.println(xml);
-
-        String location = String.valueOf(getClass().getClassLoader().getResource(xml));
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(new File(location)));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        String line;
+        URL location = getClass().getClassLoader().getResource(xml);
+        BufferedReader br;
         StringBuilder sb = new StringBuilder();
 
+        try {
+            br = new BufferedReader(new FileReader(new File(location.toURI())));
+            String line = "";
+            while((line = br.readLine()) != null){
+                sb.append(line);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (NullPointerException n){
+            n.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String message = sb.toString();
+
+        Message
     }
 
 

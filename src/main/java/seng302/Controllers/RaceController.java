@@ -395,8 +395,14 @@ public class RaceController {
                 frameCount++;
                 updateView();
 
+
+
                 if (raceStarted) {
                     race.updateBoats();
+                    for (Boat boat : race.getBoats()){
+                         Message positionMessage = new Message();
+                         positionMessage.boatPositionMessage(boat);
+                    }
                     List<byte[]> boatsBinList = new ArrayList<>();
                     for (Boat boat : race.getBoats()) {
                         boatsBinList.add(message.boatPositionMessage(boat));
