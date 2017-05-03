@@ -24,7 +24,6 @@ public class CoordinateTest {
 //        Position endEquator = new Position(180, 0);
 //        Assert.assertEquals(20037500, endEquator.getX(), 1);
 //    }
-
     @Test
     public void testEndEquatorX(){
         // This is something that I needed to add in order to get our build passing.
