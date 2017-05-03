@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import seng302.Controllers.RaceViewController;
+import seng302.Server.GeneratedData;
+import seng302.Server.StreamServer;
 
 import java.io.IOException;
 
@@ -16,9 +18,16 @@ public class Main extends Application {
 
     public static void main(String[] args) throws IOException {
 
+        StreamServer server = new StreamServer(9090);
+
+        GeneratedData genData = new GeneratedData();
+
+        genData.runServerTimers();
+        server.start(genData);
+
 //        StreamClient client = new StreamClient("132.181.14.173", 9090);
 //        client.listen();
-        Application.launch(Main.class, (java.lang.String[]) null);
+        //Application.launch(Main.class, (java.lang.String[]) null);
     }
 
     @Override

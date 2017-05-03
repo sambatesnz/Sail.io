@@ -10,33 +10,25 @@ import java.time.format.DateTimeFormatter;
  */
 public class DataGenerator {
 
-    public DataGenerator(String xml){
-        loadFile(xml);
-    }
-
-    void loadFile(String xml){
+    public String loadFile(String xml){
         URL location = getClass().getClassLoader().getResource(xml);
         BufferedReader br;
         StringBuilder sb = new StringBuilder();
 
         try {
             br = new BufferedReader(new FileReader(new File(location.toURI())));
-            String line = "";
+            String line;
             while((line = br.readLine()) != null){
                 sb.append(line);
             }
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | URISyntaxException e) {
             e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (NullPointerException e){
             e.printStackTrace();
-        } catch (NullPointerException n){
-            n.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String message = sb.toString();
-
-        Message
+        return sb.toString();
     }
 
 

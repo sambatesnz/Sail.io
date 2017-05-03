@@ -79,7 +79,7 @@ public class StreamServerTest {
         //Generate a fake race internally
         //Send boats
 
-        DataGenerator d = new DataGenerator("Race.xml");
+//        DataGenerator d = new DataGenerator("Race.xml");
 
        Message m = new Message();
 

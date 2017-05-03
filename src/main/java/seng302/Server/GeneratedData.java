@@ -1,17 +1,27 @@
 package seng302.Server;
 
-import java.util.Queue;
+import javafx.animation.AnimationTimer;
+import seng302.Boat;
+import seng302.DataGenerator;
+import seng302.Message;
+import seng302.Race;
+
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Created by sba136 on 3/05/17.
  */
 public class GeneratedData implements IServerData {
-    private Queue<byte[]> bytes = new ArrayBlockingQueue<byte[]>();
+    private Queue<byte[]> bytes = new LinkedList<>();
+    private Message message = new Message();
+    private Race race = new Race();
 
     @Override
     public byte[] getData() {
-        return new byte[0];
+        byte[] ez = bytes.remove();
+        System.out.println(Arrays.toString(ez));
+        return ez;
     }
 
     @Override
@@ -21,9 +31,38 @@ public class GeneratedData implements IServerData {
 
     @Override
     public boolean ready() {
-
-        return false;
+        return !bytes.isEmpty();
     }
 
-    //addData()
+    class XMLSender extends TimerTask {
+        @Override
+        public void run() {
+            DataGenerator dataGenerator = new DataGenerator();
+            byte[] xmlBytes = message.xmlMessage(dataGenerator.loadFile("Race.xml"), (short) 0, (short) 0);
+            bytes.add(xmlBytes);
+        }
+    }
+
+    class BoatPosSender extends TimerTask {
+        @Override
+        public void run() {
+            for (Boat boat : race.getBoats()) {
+                bytes.add(message.boatPositionMessage(boat));
+            }
+        }
+    }
+
+    class RaceRunner extends TimerTask {
+        @Override
+        public void run() {
+            race.updateBoats();
+        }
+    }
+
+    public void runServerTimers() {
+        Timer timer = new Timer();
+        timer.schedule(new XMLSender(), 0, 5000);
+        timer.schedule(new BoatPosSender(), 0, 500);
+        timer.schedule(new RaceRunner(), 0, 17);
+    }
 }
