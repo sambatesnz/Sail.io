@@ -1,10 +1,12 @@
 package seng302;
 
+import sun.font.EAttribute;
+
 /**
  * Class to hold a position (set of coordinates)
  */
 public class Position {
-    private double EARTH_CIRCUMFERENCE = 40075000;
+    private static double EARTH_CIRCUMFERENCE = 40075000;
     private double latitude;
     private double longitude;
     private double x;
@@ -18,9 +20,25 @@ public class Position {
     public Position(double latitude, double longitude){
         this.latitude = latitude;
         this.longitude = longitude;
-        this.x = /*Math.cos(Math.toRadians(latitude)) */ longitude * EARTH_CIRCUMFERENCE / 360;
+        this.x = longitude * EARTH_CIRCUMFERENCE / 360;
         this.y = latitude * EARTH_CIRCUMFERENCE / 180;
     }
+
+    public static double convertX(double x){
+        return x / EARTH_CIRCUMFERENCE * 360;
+    }
+    public static double convertY(double y){
+        return y / EARTH_CIRCUMFERENCE * 180;
+    }
+
+//    public Position (int integer, double x, double y){
+//        this.latitude = y / EARTH_CIRCUMFERENCE * 180;
+//        this.longitude = x / EARTH_CIRCUMFERENCE * 360;
+//        this.x = x;
+//        this.y = y;
+//    }
+
+
 
     /**
      * Getter for the latitude.

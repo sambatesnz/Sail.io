@@ -389,6 +389,7 @@ public class RaceController {
         updateView();
 
         new AnimationTimer() {
+            Message message = new Message();
             @Override
             public void handle(long currentNanoTime) {
                 frameCount++;
@@ -396,6 +397,12 @@ public class RaceController {
 
                 if (raceStarted) {
                     race.updateBoats();
+                    List<byte[]> boatsBinList = new ArrayList<>();
+                    for (Boat boat : race.getBoats()) {
+                        boatsBinList.add(message.boatPositionMessage(boat));
+                    }
+                    // TODO: give streamer updated message
+
                     Coordinate.updateBorder();
                     updateClock();
                 }

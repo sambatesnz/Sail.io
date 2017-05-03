@@ -1,5 +1,6 @@
 package seng302;
 
+import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
 
 /**
@@ -173,4 +174,21 @@ public class Boat {
      * @param position1
      */
     public void setPosition(int position1) { position = position1; }
+
+    /**
+     * Get the current latitude
+     * @return the current latitude
+     */
+    public double getLatitude(){
+        return Position.convertY(y);
+    }
+
+    /**
+     * Get the current latitude
+     * @return the current latitude
+     */
+    public double getLongitude(){
+        return Position.convertX(x);
+    }
 }
+
