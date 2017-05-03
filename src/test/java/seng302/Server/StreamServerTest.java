@@ -70,6 +70,15 @@ public class StreamServerTest {
 //filename is filepath string
 //        //file:/home/cosc/student/sha162/Documents/team-4/target/classes/RaceView.fxml
 
+
+        //TODO
+        //Send the race .xml file to stream server to send over sockets
+        //Send the Regatta file to stream server to send over sockets
+        //Send the boats file to stream server to send over sockets
+
+        //Generate a fake race internally
+        //Send boats
+
         DataGenerator d = new DataGenerator("Race.xml");
 
        Message m = new Message();
