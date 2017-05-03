@@ -32,10 +32,4 @@ public class CoordinateTest {
         Assert.assertTrue(true);
     }
 
-    @Test
-    public void test(){
-        Interpreter socket = new Interpreter();
-        socket.retrieveData();
-
-    }
 }

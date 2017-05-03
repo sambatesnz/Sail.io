@@ -1,5 +1,6 @@
 package seng302.Client;
 
+import org.junit.Assert;
 import org.junit.Test;
 import seng302.Server.ServerUtility;
 import seng302.Server.StreamServer;
@@ -12,9 +13,10 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
- * Created by osr13 on 1/05/17.
+ * Gets the StreamClient to read in the first 200 packets.
  */
 public class StreamClientTest {
 
@@ -42,9 +44,10 @@ public class StreamClientTest {
         });
         serverThread.start();
 
-        StreamClient client = new StreamClient(ServerUtility.getLocalIpAddress(), 9090);
-        client.listen();
-
+        StreamClient client = new StreamClient();
+        client.connect();
+        client.retrieveData();
+        Assert.assertFalse(false);
     }
 
 
