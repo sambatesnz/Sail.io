@@ -27,7 +27,7 @@ public class StreamServerTest {
         data.add(testByteData2);
         data.add(testByteData);
 
-        StreamServer server = new StreamServer(9090);
+        StreamServer server = new StreamServer(9091);
 
         Thread serverThread = new Thread(() -> {
             try {
@@ -40,7 +40,7 @@ public class StreamServerTest {
         serverThread.start();
 
         String serverAddress = ServerUtility.getLocalIpAddress();
-        Socket s = new Socket(serverAddress, 9090);
+        Socket s = new Socket(serverAddress, 9091);
         BufferedReader input =
                 new BufferedReader(new InputStreamReader(s.getInputStream()));
 
