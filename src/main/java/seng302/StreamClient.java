@@ -53,7 +53,6 @@ public class StreamClient {
                 System.out.println("Data read in.");
 //                output += new String(data, 0, result);
                 breakNo ++;
-                System.out.println(breakNo);
                 int syncPacket1 = data[0];
                 int syncPacket2 = data[1];
                 //System.out.printf("SP1: %d, SP2: %d", syncPacket1, syncPacket2);

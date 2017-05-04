@@ -20,9 +20,9 @@ public class Main extends Application {
 
         //Client
 
-//        StreamClient client = new StreamClient();
-//        client.connect();
-//        client.retrieveData();
+        StreamClient client = new StreamClient();
+        client.connect();
+        client.retrieveData();
 
         //Server
 
@@ -33,7 +33,7 @@ public class Main extends Application {
 
         //App
 
-        Application.launch(Main.class, (java.lang.String[]) null);
+//        Application.launch(Main.class, (java.lang.String[]) null);
     }
 
     @Override
