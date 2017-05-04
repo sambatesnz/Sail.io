@@ -21,7 +21,7 @@ import static org.junit.Assert.assertFalse;
 public class StreamClientTest {
 
     @Test
-    public void testServerWithByteArray() throws Exception {
+    public void testClientCanConnectToServer() throws Exception {
         TestServerData data = new TestServerData(); //implemented as a stack
 
         byte[] testByteData = new byte[]{(byte)0X00, (byte)0X01};
@@ -44,9 +44,11 @@ public class StreamClientTest {
         });
         serverThread.start();
 
-        StreamClient client = new StreamClient();
+        StreamClient client = new StreamClient("127.0.0.1", 9090);
         client.connect();
-        client.retrieveData();
+//        client.retrieveData();
+        Thread.sleep(1000);
+        client.disconnect();
         Assert.assertFalse(false);
     }
 

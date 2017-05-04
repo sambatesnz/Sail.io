@@ -1,6 +1,7 @@
 package seng302;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -15,8 +16,9 @@ public class StreamClient {
     private Socket clientSocket;
     private DataInputStream streamInput;
     private String serverName;
-    private int port;
     private byte[] data;
+    private String host;
+    private int port;
 //    String output = "";
 
     public StreamClient() {
@@ -26,6 +28,19 @@ public class StreamClient {
         AppConfig config = new AppConfig();
         serverName = config.getProperty(AppConfig.DATA_HOST_NAME);
         port = Integer.parseInt(config.getProperty(AppConfig.DATA_HOST_PORT));
+        try {
+            host = new URL(serverName).getHost();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public StreamClient(String host, int port) {
+        data = new byte[4300];
+        clientSocket = null;
+        streamInput = null;
+        this.host = host;
+        this.port = port;
     }
 
     public void retrieveData() {
@@ -61,11 +76,8 @@ public class StreamClient {
 
     public void connect() {
         try {
-            String host = "132.181.13.120";
-//            String host = new URL(serverName).getHost();
             System.out.println("Attempting to connect...");
-//            clientSocket = new Socket(host, port);
-            clientSocket = new Socket(host, 9090);
+            clientSocket = new Socket(host, port);
             System.out.println("Connected.");
             streamInput = new DataInputStream(clientSocket.getInputStream());
         }
@@ -81,5 +93,9 @@ public class StreamClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void changeHost() {
+
     }
 }
