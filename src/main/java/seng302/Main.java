@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import seng302.Controllers.RaceViewController;
+import seng302.Server.GeneratedData;
+import seng302.Server.StreamServer;
 
 import java.io.IOException;
 
@@ -14,9 +16,24 @@ import java.io.IOException;
  */
 public class Main extends Application {
 
-    public static void main(String[] args) {
-        System.out.println("acb test");
-        Application.launch(Main.class, (java.lang.String[]) null);
+    public static void main(String[] args) throws IOException {
+
+        //Client
+
+        StreamClient client = new StreamClient();
+        client.connect();
+        client.retrieveData();
+
+        //Server
+
+//        StreamServer server = new StreamServer(9090);
+//        GeneratedData genData = new GeneratedData();
+//        genData.runServerTimers();
+//        server.start(genData);
+
+        //App
+
+        //Application.launch(Main.class, (java.lang.String[]) null);
     }
 
     @Override

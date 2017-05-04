@@ -50,7 +50,6 @@ public class Race {
             boat.setY(legs.get(0).getStart().getY());
         }
     }
-
     /**
      * Setter for finishedBoat, mainly to allow for testing.
      * @param finishedBoats set the finished list of boats

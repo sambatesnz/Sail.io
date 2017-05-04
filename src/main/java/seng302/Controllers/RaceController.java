@@ -504,13 +504,17 @@ public class RaceController {
         updateView();
 
         new AnimationTimer() {
+            Message message = new Message();
             @Override
             public void handle(long currentNanoTime) {
                 frameCount++;
                 updateView();
 
+
+
                 if (raceStarted) {
                     race.updateBoats();
+
                     Coordinate.updateBorder();
                     updateRaceClock();
                 }
