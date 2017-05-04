@@ -18,15 +18,21 @@ public class Main extends Application {
 
     public static void main(String[] args) throws IOException {
 
-        StreamServer server = new StreamServer(9090);
+        //Client
 
-        GeneratedData genData = new GeneratedData();
+        StreamClient client = new StreamClient();
+        client.connect();
+        client.retrieveData();
 
-        genData.runServerTimers();
-        server.start(genData);
+        //Server
 
-//        StreamClient client = new StreamClient("132.181.14.173", 9090);
-//        client.listen();
+//        StreamServer server = new StreamServer(9090);
+//        GeneratedData genData = new GeneratedData();
+//        genData.runServerTimers();
+//        server.start(genData);
+
+        //App
+
         //Application.launch(Main.class, (java.lang.String[]) null);
     }
 

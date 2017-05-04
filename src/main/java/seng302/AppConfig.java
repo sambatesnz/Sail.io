@@ -10,6 +10,9 @@ public class AppConfig {
 
     private Properties prop = new Properties();
     public static final String COURSE_FILE_LOCATION= "courseFileLocation";
+    public static final String DATA_HOST_NAME = "testACDataHostname";
+    public static final String DATA_HOST_PORT = "testACDataPort";
+
     private static final String CONFIG_FILE_LOCATION = "src/config.properties";
 
     public AppConfig(){

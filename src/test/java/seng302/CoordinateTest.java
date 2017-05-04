@@ -31,4 +31,5 @@ public class CoordinateTest {
         // There is an old Java bug which causes a crash if there are no classes in here.
         Assert.assertTrue(true);
     }
+
 }

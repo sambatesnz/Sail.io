@@ -1,6 +1,8 @@
 package seng302.Controllers;
 
 import javafx.animation.AnimationTimer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -16,6 +18,7 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Callback;
 import seng302.*;
 import javafx.event.ActionEvent;
 import java.util.ArrayList;
@@ -36,6 +39,10 @@ public class RaceController {
     @FXML
     private Label clock;
     @FXML
+    private Label localTimeZone;
+    @FXML
+    private Label localTime;
+    @FXML
     private ListView<String> finishedListView;
     @FXML
     private TableView<Boat> positionTable;
@@ -53,6 +60,11 @@ public class RaceController {
     private Button annotationBtn;
     @FXML
     private Button fpsBtn;
+    @FXML
+    private ListView startersList;
+
+    @FXML private CheckBox BoatNameCheckBox;
+    @FXML private CheckBox BoatSpeedCheckBox;
 
     private Race race;
 
@@ -69,21 +81,28 @@ public class RaceController {
     private List<Path> paths = new ArrayList<>();
 
     private int timeBeforeRace = 5;
-    private int hours = 0;
-    private int minutes = 0;
-    private int seconds = -timeBeforeRace - 1;
+    private int raceHours = 0;
+    private int raceMinutes = 0;
+    private int raceSeconds = -timeBeforeRace - 1;
     private long lastTime = 0;
     private long timerUpdate = 1000;
     private boolean raceStarted = false;
     private boolean countingDown = false;
     private int frameCount = 0;
 
+    private TimeZoneWrapper timeZoneWrapper;
+
     /**
      * initializes the race display.
      */
     @FXML
     public void initialize() {
+
         race = new Race();
+
+        //Where should we put this?
+        this.timeZoneWrapper = new TimeZoneWrapper("Atlantic/Bermuda");
+
 
         finishedListView = new ListView<>();
         boundary = getBoundary(race);
@@ -177,11 +196,38 @@ public class RaceController {
         clock.setText(" 00:00:00");
         clock.setVisible(true);
 
+        //Initialise time zone
+        localTimeZone.setFont(new Font("Arial", 15));
+        localTimeZone.setText(timeZoneWrapper.getRaceTimeZoneString());
+        localTimeZone.setVisible(true);
+
+        localTime.setFont(new Font("Arial", 15));
+        localTime.setVisible(true);
+
+
+
+
         group.getChildren().addAll(gates);
         group.getChildren().addAll(landmarks);
         group.getChildren().addAll(boats);
 
+        RacersListBeforeStart(race);
+
         runRace();
+    }
+
+    private void RacersListBeforeStart(Race race) {
+        startersList.setVisible(true);
+        ObservableList<String> listOfStarters = FXCollections.observableArrayList();
+        for(Boat boat : race.getBoats()) {
+            String name = boat.getName();
+            listOfStarters.add(name);
+        }
+        startersList.setItems(listOfStarters);
+    }
+
+    private void RemoveRacersList() {
+        startersList.setVisible(false);
     }
 
     /**
@@ -229,13 +275,23 @@ public class RaceController {
     @FXML
     private void annotationBtnClicked(ActionEvent event) {
 
-        if (showSpeed) {
+        if (BoatNameCheckBox.isSelected() && BoatSpeedCheckBox.isSelected()) {
             annotationBtn.setText("Show Annotations");
+
+            BoatNameCheckBox.setSelected(false);
+            showName = false;
+
+            BoatSpeedCheckBox.setSelected(false);
+            showSpeed = false;
+
         } else {
             annotationBtn.setText("Remove Annotations");
+
+            BoatNameCheckBox.setSelected(true);
+            showName = true;
+            BoatSpeedCheckBox.setSelected(true);
+            showSpeed = true;
         }
-        showSpeed = !showSpeed;
-        showName = !showName;
     }
 
     /**
@@ -250,6 +306,42 @@ public class RaceController {
             fpsBtn.setText("Remove FPS counter");
         } else {
             fpsBtn.setText("Show FPS counter");
+        }
+    }
+
+    /**
+     * Toggles the Boat Name annotation when the boat name checkbox is clicked
+     */
+    @FXML
+    private void ToggleBoatNameAnnotation() {
+        if (BoatNameCheckBox.isSelected()) {
+            showName = true;
+        } else {
+            showName = false;
+        }
+
+        if (BoatNameCheckBox.isSelected() && BoatSpeedCheckBox.isSelected()) {
+            annotationBtn.setText("Remove Annotations");
+        } else {
+            annotationBtn.setText("Show Annotations");
+        }
+    }
+
+    /**
+     * Toggles the Boat Speed annotation when the boat speed checkbox is clicked
+     */
+    @FXML
+    private void ToggleBoatSpeedAnnotation() {
+        if (BoatSpeedCheckBox.isSelected()) {
+            showSpeed = true;
+        } else {
+            showSpeed = false;
+        }
+
+        if (BoatNameCheckBox.isSelected() && BoatSpeedCheckBox.isSelected()) {
+            annotationBtn.setText("Remove Annotations");
+        } else {
+            annotationBtn.setText("Show Annotations");
         }
     }
 
@@ -339,8 +431,26 @@ public class RaceController {
         annotationBtn.setLayoutX(14);
         annotationBtn.setLayoutY(Coordinate.getWindowY() - 150);
 
+        BoatNameCheckBox.setLayoutX(14);
+        BoatNameCheckBox.setLayoutY(Coordinate.getWindowY() - 275);
+
+        BoatSpeedCheckBox.setLayoutX(14);
+        BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowY() - 250);
+
         clock.setLayoutX(Coordinate.getWindowX() - 160);
         clock.setLayoutY(20);
+
+        localTimeZone.setLayoutX(Coordinate.getWindowX() - 115);
+        localTimeZone.setLayoutY(80);
+
+        localTime.setLayoutX(Coordinate.getWindowX() - 110);
+        localTime.setLayoutY(100);
+        localTime.setText(timeZoneWrapper.getLocalTimeString());
+
+        startersList.setPrefSize(Coordinate.getWindowX() - 400, Coordinate.getWindowY() - 200);
+
+        startersList.setLayoutX(200);
+        startersList.setLayoutY(100);
 
         updateBoundary();
     }
@@ -358,23 +468,23 @@ public class RaceController {
     /**
      * Increments the race clock, and updates the fps display
      */
-    private void updateClock() {
+    private void updateRaceClock() {
         if (currentTimeMillis() - lastTime >= timerUpdate) {
-            seconds++;
+            raceSeconds++;
             fpsLabel.setText(frameCount + " fps");
             frameCount = 0;
-            if ((seconds / 60) >= 1) {
-                seconds = 0;
-                minutes++;
-                if ((minutes / 60) >= 1) {
-                    minutes = 0;
-                    hours++;
+            if ((raceSeconds / 60) >= 1) {
+                raceSeconds = 0;
+                raceMinutes++;
+                if ((raceMinutes / 60) >= 1) {
+                    raceMinutes = 0;
+                    raceHours++;
                 }
             }
-            if (seconds < 0) {
-                clock.setText(String.format("-%02d:%02d:%02d", hours, minutes, -seconds));
+            if (raceSeconds < 0) {
+                clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
             } else {
-                clock.setText(String.format(" %02d:%02d:%02d", hours, minutes, seconds));
+                clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
             }
             lastTime = currentTimeMillis();
         }
@@ -401,17 +511,20 @@ public class RaceController {
                     race.updateBoats();
 
                     Coordinate.updateBorder();
-                    updateClock();
+                    updateRaceClock();
                 }
                 else if (countingDown){
                     if (currentTimeMillis() - lastTime >= timerUpdate) {
-                        seconds++;
+                        raceSeconds++;
                         frameCount = 0;
-                        clock.setText(String.format("-%02d:%02d:%02d", hours, minutes, -seconds));
+                        clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
+                        if (raceSeconds == -2) {
+                            RemoveRacersList();
+                        }
                         lastTime = currentTimeMillis();
                     }
-                    if (seconds == 0) {
-                        clock.setText(String.format(" %02d:%02d:%02d", hours, minutes, seconds));
+                    if (raceSeconds == 0) {
+                        clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
                         raceStarted = true;
                     }
                 }
