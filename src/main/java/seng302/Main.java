@@ -19,6 +19,7 @@ public class Main extends Application {
     public static void main(String[] args) throws IOException {
 
         //Client
+        System.out.println("hello");
 
         StreamClient client = new StreamClient();
         client.connect();
