@@ -1,15 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>seng302</groupId>
-    <artifactId>app</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>visualiser</artifactId>
+    <packaging>jar</packaging>
     <version>0.0</version>
-    <modules>
-        <module>mock</module>
-    </modules>
+
     <name>app</name>
-    <url>https://eng-git.canterbury.ac.nz/SENG302-2017/team-4</url>
+    <url>https://eng-git.canterbury.ac.nz/SENG302-2016/team-4/visualiser</url>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -24,25 +23,25 @@
             <scope>test</scope>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>junit</groupId>-->
-            <!--<artifactId>junit</artifactId>-->
-            <!--<version>4.12</version>-->
+        <!--<groupId>junit</groupId>-->
+        <!--<artifactId>junit</artifactId>-->
+        <!--<version>4.12</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>junit</groupId>-->
-            <!--<artifactId>junit</artifactId>-->
-            <!--<version>4.12</version>-->
+        <!--<groupId>junit</groupId>-->
+        <!--<artifactId>junit</artifactId>-->
+        <!--<version>4.12</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>junit</groupId>-->
-            <!--<artifactId>junit</artifactId>-->
-            <!--<version>4.12</version>-->
+        <!--<groupId>junit</groupId>-->
+        <!--<artifactId>junit</artifactId>-->
+        <!--<version>4.12</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>junit</groupId>-->
-            <!--<artifactId>junit</artifactId>-->
-            <!--<version>3.8.1</version>-->
-            <!--<scope>test</scope>-->
+        <!--<groupId>junit</groupId>-->
+        <!--<artifactId>junit</artifactId>-->
+        <!--<version>3.8.1</version>-->
+        <!--<scope>test</scope>-->
         <!--</dependency>-->
     </dependencies>
 
@@ -59,9 +58,10 @@
                 <version>2.4.3</version>
                 <configuration>
                     <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <manifestEntries>
-                                <seng302.seng302.Main-Class>seng302.seng302.seng302.Main</seng302.seng302.Main-Class>
+                                <Main-Class>seng302.Main</Main-Class>
                                 <X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>
                                 <X-Compile-Target-JDK>${maven.compiler.target}</X-Compile-Target-JDK>
                             </manifestEntries>
