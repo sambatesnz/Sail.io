@@ -47,15 +47,12 @@ public class StreamClient {
         int result = 0;
         while (clientSocket != null && streamInput != null && result != -1) {
             try {
-                // Commented out steam test messages
-                //System.out.println("Requesting Data: ");
+                System.out.println("Requesting Data: ");
                 result = streamInput.read(data);
-                // Commented out steam test messages
-                //System.out.println("Data read in.");
+                System.out.println("Data read in.");
 //                output += new String(data, 0, result);
                 breakNo ++;
-                // Commented out steam test messages
-                //System.out.println(breakNo);
+                System.out.println(breakNo);
                 int syncPacket1 = data[0];
                 int syncPacket2 = data[1];
                 //System.out.printf("SP1: %d, SP2: %d", syncPacket1, syncPacket2);
@@ -63,11 +60,9 @@ public class StreamClient {
                 byte[] dest = new byte[2];
                 System.arraycopy(data,13,dest,0,2);
                 short length = ByteBuffer.wrap(dest).order(ByteOrder.LITTLE_ENDIAN).getShort();
-                // Commented out steam test messages
-                //System.out.println(length);
+                System.out.println(length);
                 if (syncPacket1 == 71 && syncPacket2 == -125) {
-                    // Commented out steam test messages
-                    //System.out.println("Valid Packet.");
+                    System.out.println("Valid Packet.");
                     // TODO: Pass to Parser.
                 }
             } catch (IOException e) {
@@ -80,11 +75,9 @@ public class StreamClient {
 
     public void connect() {
         try {
-            // Commented out steam test messages
-            //System.out.println("Attempting to connect...");
+            System.out.println("Attempting to connect...");
             clientSocket = new Socket(host, port);
-            // Commented out steam test messages
-            //System.out.println("Connected.");
+            System.out.println("Connected.");
             streamInput = new DataInputStream(clientSocket.getInputStream());
         }
         catch (IOException e) {
