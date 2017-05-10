@@ -90,6 +90,8 @@ nbactions.xml
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
 app.iml
+mock/mock.iml
+visualiser/visualiser.iml
 .idea/*
 
 # Sensitive or high-churn files:
