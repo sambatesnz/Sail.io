@@ -21,7 +21,7 @@ public class Race {
     private int numFinishers = 0;
     private List<Landmark> landmarks;
     private List<Landmark> gates;
-    private List<Boat> boats;
+    private ObservableList<Boat> boats;
     private List<Boat> finishedBoats;
     private List<Leg> legs;
     private List<Position> boundaries;
@@ -135,7 +135,7 @@ public class Race {
      * Get the boats competing
      * @return the boats competing
      */
-    public List<Boat> getBoats() {
+    public ObservableList<Boat> getBoats() {
         return boats;
     }
 
@@ -143,8 +143,8 @@ public class Race {
      * Creates an ArrayList of boats competing in the current race
      * @return The ArrayList of boats
      */
-    private ArrayList<Boat> getContestants() {
-        ArrayList<Boat> contestants = new ArrayList<>();
+    private ObservableList<Boat> getContestants() {
+        ObservableList<Boat> contestants = FXCollections.observableArrayList();
         contestants.add(new Boat("ORACLE TEAM USA", 5.8, Color.RED, "USA"));
         contestants.add(new Boat("Artemis Racing", 7.1, Color.BLUE, "SWE"));
         contestants.add(new Boat("Emirates Team New Zealand", 11.2, Color.BLACK, "NZL"));

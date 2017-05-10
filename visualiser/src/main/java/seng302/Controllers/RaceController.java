@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -90,6 +91,15 @@ public class RaceController {
     private int frameCount = 0;
 
     private TimeZoneWrapper timeZoneWrapper;
+
+    @FXML
+    private TableView<Boat> zoomBoatTable;
+    @FXML
+    private TableColumn<Boat, String> zoomBoatTableCol;
+    @FXML
+    private Button zoomBoatZoomButton;
+    @FXML
+    private Button zoomBoatUnzoomButton;
 
     /**
      * initializes the race display.
@@ -209,6 +219,10 @@ public class RaceController {
 
         localTime.setFont(new Font("Arial", 15));
         localTime.setVisible(true);
+
+        // Initialise boats in zoom list
+        zoomBoatTableCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        zoomBoatTable.setItems(race.getBoats());
 
 
 
@@ -499,6 +513,55 @@ public class RaceController {
             }
             lastTime = currentTimeMillis();
         }
+    }
+
+    // Zooms the view onto a boat selected in the table
+    @FXML
+    private void zoomOnBoat() {
+
+        // Check that a boat is highlighted in the list
+        if (zoomBoatTable.getSelectionModel().getSelectedIndex() > -1) {
+
+            // Get selected boat
+            Boat zoomedBoat = race.getBoats().get(zoomBoatTable.getSelectionModel().getSelectedIndex());
+            System.out.println("Zooming onto " + zoomedBoat.getName() + ".");
+
+            // Code to zoom into boat
+            //boundary.setScaleX(2);
+            //boundary.setScaleY(2);
+
+            for (Node node : group.getChildren()) {
+                node.setScaleX(2);
+                node.setScaleY(2);
+            }
+
+            //zoomBoatZoomButton.setTranslateX(zoomBoatZoomButton.getTranslateX()/2);
+            //zoomBoatZoomButton.setTranslateY(zoomBoatZoomButton.getTranslateY()/2);
+
+
+
+            // Set zoom buttons
+            zoomBoatZoomButton.setDisable(true);
+            zoomBoatUnzoomButton.setDisable(false);
+        }
+
+    }
+
+    // Resets the zoom to default
+    @FXML
+    private void unzoom() {
+
+        // Code to reset zoom to normal
+        System.out.println("The view will be reset to default zoom.");
+        for (Node node : group.getChildren()) {
+            node.setScaleX(1);
+            node.setScaleY(1);
+        }
+
+        // Set zoom buttons
+        zoomBoatZoomButton.setDisable(false);
+        zoomBoatUnzoomButton.setDisable(true);
+
     }
 
     /**
