@@ -14,8 +14,6 @@ public class Message {
     private byte data[];
     private byte crc[];
 
-    public Message(){}
-
     public Message(byte[] data){
 
         syncByte1 = ByteBuffer.wrap(data, 1, 1).order(ByteOrder.LITTLE_ENDIAN).getInt();
@@ -26,9 +24,10 @@ public class Message {
         System.arraycopy(data,15, data,0, messageLen);
         crc = new byte[4];
         System.arraycopy(data,15 + messageLen, data,0, 4);
+        System.out.println(syncByte1);
     }
 
-    public void processMessage(){
+    public void getMessage(){
         switch (messageType) {
             case 1:                                             //Heartbeat
                 break;

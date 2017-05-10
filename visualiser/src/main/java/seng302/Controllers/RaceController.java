@@ -510,7 +510,7 @@ public class RaceController {
         updateView();
 
         new AnimationTimer() {
-            Message message = new Message();
+            //Message message = new Message();
             @Override
             public void handle(long currentNanoTime) {
                 frameCount++;

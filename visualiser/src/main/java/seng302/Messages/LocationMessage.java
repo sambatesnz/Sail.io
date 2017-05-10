@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 
-public class LocationMessage extends Message{
+public class LocationMessage{
     private int time;
     private int sourceID;
     private double latitude;
@@ -26,5 +26,6 @@ public class LocationMessage extends Message{
         speedOverGround = ByteBuffer.wrap(bytes, 38, 2).order(ByteOrder.LITTLE_ENDIAN).getInt();
 
     }
+
 }
 

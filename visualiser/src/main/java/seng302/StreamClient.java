@@ -1,4 +1,5 @@
 package seng302;
+import seng302.Messages.*;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -13,7 +14,6 @@ import java.util.Arrays;
 
 public class StreamClient {
     //    private StreamParser parser;
-
     private Socket clientSocket;
     private InputStream streamInput;
     private String serverName;
@@ -51,7 +51,7 @@ public class StreamClient {
         int breakNo = 0;
         int result = 0;
         boolean moreData = false;
-        while (clientSocket != null && streamInput != null && result != -1) {
+        while (clientSocket != null && streamInput != null) {
             try {
                 nextMessage();
 
@@ -69,9 +69,11 @@ public class StreamClient {
     private void nextMessage() throws IOException{
         final int HEADER_LEN = 15;
         final int CRC_LEN = 4;
+        System.out.println(streamInput.available());
         if (streamInput.available() < HEADER_LEN){
             return;
         }
+        System.out.println("here2");
         byte[] head = new byte[HEADER_LEN];
         streamInput.mark(0);
         streamInput.read(head);
@@ -81,11 +83,13 @@ public class StreamClient {
             streamInput.reset();
             return;
         }
+        System.out.println("here");
         byte[] message = new byte[HEADER_LEN + messageLength + CRC_LEN];
         streamInput.read(message);
-//        System.arraycopy(data,0,message,0,15+messageLength);
+//
         //TODO: passmessage in to the thing
-
+        System.out.println("madea message");
+        Message packet = new Message(message);
     }
 
     public void connect() {
