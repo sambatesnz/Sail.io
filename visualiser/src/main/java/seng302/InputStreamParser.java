@@ -37,73 +37,45 @@ public class InputStreamParser {
      * @param type data type.
      * @param data the data to be parsed.
      */
-    public void parseInput(int type, byte[] data) {
-
-        switch (type) {
-            case 1:                                             //Heartbeat
-                break;
-            case 12: //race.setRaceStatus(data[11]);            //Race Status
-                break;
-            case 20:                                            //Display
-                break;
-            case 26:                                            //XML Message
-//                messageVersionNumber = data[0];
-//                ackNumber = Arrays.copyOfRange(data, 1, 3);
-//                timeStamp = Arrays.copyOfRange(data, 3, 9);
-//                xmlMessageSubType = data[9];
-//                seqNumber = Arrays.copyOfRange(data, 10, 12);
-//                xmlLength = Arrays.copyOfRange(data, 12, 14);
+//    public void parseInput(int type, byte[] data) {
 //
-//                xmlMessage = Arrays.copyOfRange(data, 14, data.length);
-//                System.out.println(xmlMessage);
-
-//                Document doc = null;
-//                try {
-//                    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-//                    DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-//                    doc = dBuilder.newDocument();
-//                    Element toAdd = xmlMessage.
-//                    doc.getDocumentElement().normalize();
-//                } catch (Exception e) {
-//                    throw new Error(e);
-//                }
+//        switch (type) {
+//            case 1:                                             //Heartbeat
+//                break;
+//            case 12: //race.setRaceStatus(data[11]);            //Race Status
+//                break;
+//            case 20:                                            //Display
+//                break;
+//            case 26:                                            //XML Message
+//                break;
+//            case 27:                                            //Race Start Status
+//                break;
+//            case 29:                                            //Yacht Event Code
+//                break;
+//            case 31:                                            //Yacht Action Code
+//                break;
+//            case 36:                                            //Chatter Text
+//                break;
+//            case 37:                                            //Boat Location
+//                LocationMessage location = new LocationMessage(data);
 //
-//                if (xmlMessageSubType == 5) {             //Regatta
+//                //Retrieve the boat that this message is about
+//                //Boat boat = race.getBoatByID(ByteBuffer.wrap(sourceID).order(ByteOrder.LITTLE_ENDIAN).getInt());
 //
-//                } else if (xmlMessageSubType == 6) {      //Race
+//                //Set the boat speed the the value given
+//                //boat.setSpeed(ByteBuffer.wrap(sourceID).order(ByteOrder.LITTLE_ENDIAN).getDouble());
 //
-//                } else if (xmlMessageSubType == 7) {      //Boat
 //
-//                }
-                break;
-            case 27:                                            //Race Start Status
-                break;
-            case 29:                                            //Yacht Event Code
-                break;
-            case 31:                                            //Yacht Action Code
-                break;
-            case 36:                                            //Chatter Text
-                break;
-            case 37:                                            //Boat Location
-                LocationMessage location = new LocationMessage(data);
-
-                //Retrieve the boat that this message is about
-                //Boat boat = race.getBoatByID(ByteBuffer.wrap(sourceID).order(ByteOrder.LITTLE_ENDIAN).getInt());
-
-                //Set the boat speed the the value given
-                //boat.setSpeed(ByteBuffer.wrap(sourceID).order(ByteOrder.LITTLE_ENDIAN).getDouble());
-
-
-                break;
-            case 38:                                            //Mark Rounding
-                break;
-            case 44:                                            //Course Wind
-                break;
-            case 47:                                            //Avg Wind
-                break;
-
-
-        }
-    }
+//                break;
+//            case 38:                                            //Mark Rounding
+//                break;
+//            case 44:                                            //Course Wind
+//                break;
+//            case 47:                                            //Avg Wind
+//                break;
+//
+//
+//        }
+//    }
 
 }

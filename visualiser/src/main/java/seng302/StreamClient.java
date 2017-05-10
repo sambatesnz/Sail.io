@@ -68,28 +68,21 @@ public class StreamClient {
 
     private void nextMessage() throws IOException{
         final int HEADER_LEN = 15;
+        final int CRC_LEN = 4;
         if (streamInput.available() < HEADER_LEN){
             return;
         }
         byte[] head = new byte[HEADER_LEN];
-        streamInput.mark(HEADER_LEN);
+        streamInput.mark(0);
         streamInput.read(head);
-        byte[] messageLengthBytes = new byte[4];
-        byte[] messageTypeBytes = new byte[4];
-        System.arraycopy(head,13,messageLengthBytes,0,2);
-        System.arraycopy(head,2,messageTypeBytes,0,2);
-        int messageLength = ByteBuffer.wrap(messageLengthBytes).order(ByteOrder.LITTLE_ENDIAN).getInt();
-        int messageType = ByteBuffer.wrap(messageTypeBytes).order(ByteOrder.LITTLE_ENDIAN).getInt();
-        System.out.println(messageLength);
-
-        if(streamInput.available() < messageLength){
+        int messageLength = ByteBuffer.wrap(data, 13, 2).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        //System.out.println(messageLength);
+        if(streamInput.available() < messageLength + CRC_LEN){
             streamInput.reset();
             return;
         }
-        if (messageLength < 0) {
-            System.out.println(messageLength);
-        }
-        byte[] message = new byte[messageLength];
+        byte[] message = new byte[HEADER_LEN + messageLength + CRC_LEN];
+        streamInput.read(message);
 //        System.arraycopy(data,0,message,0,15+messageLength);
         //TODO: passmessage in to the thing
 

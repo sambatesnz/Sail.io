@@ -1,18 +1,19 @@
 package seng302.Messages;
 
 
+import seng302.*;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 
-public class LocationMessage {
+public class LocationMessage extends Message{
     private int time;
     private int sourceID;
     private double latitude;
     private double longitude;
     private double heading;
     private int speedOverGround;
-
 
     public LocationMessage(byte[] bytes) {
 //        messageVersionNumber = data[0];
