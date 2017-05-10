@@ -1,7 +1,9 @@
 package seng302;
 
+import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
@@ -13,9 +15,12 @@ public class StreamClient {
     //    private StreamParser parser;
 
     private Socket clientSocket;
-    private DataInputStream streamInput;
+    private InputStream streamInput;
     private String serverName;
     private byte[] data;
+
+    private ByteBuffer messageBuffer;
+    private byte[] messageBytes;
     private String host;
     private int port;
 //    String output = "";
@@ -48,41 +53,12 @@ public class StreamClient {
         boolean moreData = false;
         while (clientSocket != null && streamInput != null && result != -1) {
             try {
-                System.out.println("Requesting Data: ");
-                result = streamInput.read(data);
-                System.out.println("Data read in.");
-//                output += new String(data, 0, result);
-                breakNo ++;
-                //System.out.println(breakNo);
-                int syncPacket1 = data[0];
-                int syncPacket2 = data[1];
-                int dataType = data [2];
-                //System.out.printf("SP1: %d, SP2: %d", syncPacket1, syncPacket2);
-//                System.out.println(Arrays.toString(data));
-                byte[] dest = new byte[2];
-                // Retrieve the length of the packet from the header
-                System.arraycopy(data,13,dest,0,2);
-                short length = ByteBuffer.wrap(dest).order(ByteOrder.LITTLE_ENDIAN).getShort();
-                //System.out.println(length);
-                if ((syncPacket1 == 71 && syncPacket2 == -125) || moreData) {
-                    //System.out.println("Valid Packet.");
-                    // TODO: Pass to Parser.
+                nextMessage();
 
-                    if (dataType == 26 || moreData) {
-                        moreData = true;
-                        String output = new String(data, 0, result);
-                        System.out.println(output);
-                        System.out.println("End of Packet\n");
-                        char end = output.toCharArray()[output.length() - 1];
-                        System.out.println("End of packet: '" + end + "'\n");
-                        if (data[result - 1] == 0x00) {
-                            moreData = false;
-                        }
 
-                        //if (output.charAt(output.length() - 1) == null))
-                    }
-                }
-            } catch (IOException e) {
+
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             Arrays.fill(data, (byte)0);
@@ -90,12 +66,41 @@ public class StreamClient {
         disconnect();
     }
 
+    private void nextMessage() throws IOException{
+        final int HEADER_LEN = 15;
+        if (streamInput.available() < HEADER_LEN){
+            return;
+        }
+        byte[] head = new byte[HEADER_LEN];
+        streamInput.mark(HEADER_LEN);
+        streamInput.read(head);
+        byte[] messageLengthBytes = new byte[4];
+        byte[] messageTypeBytes = new byte[4];
+        System.arraycopy(head,13,messageLengthBytes,0,2);
+        System.arraycopy(head,2,messageTypeBytes,0,2);
+        int messageLength = ByteBuffer.wrap(messageLengthBytes).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        int messageType = ByteBuffer.wrap(messageTypeBytes).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        System.out.println(messageLength);
+
+        if(streamInput.available() < messageLength){
+            streamInput.reset();
+            return;
+        }
+        if (messageLength < 0) {
+            System.out.println(messageLength);
+        }
+        byte[] message = new byte[messageLength];
+//        System.arraycopy(data,0,message,0,15+messageLength);
+        //TODO: passmessage in to the thing
+
+    }
+
     public void connect() {
         try {
             System.out.println("Attempting to connect...");
             clientSocket = new Socket(host, port);
             System.out.println("Connected.");
-            streamInput = new DataInputStream(clientSocket.getInputStream());
+            streamInput = new BufferedInputStream(clientSocket.getInputStream());
         }
         catch (IOException e) {
             e.printStackTrace();
