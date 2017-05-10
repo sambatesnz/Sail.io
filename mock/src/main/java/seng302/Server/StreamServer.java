@@ -33,8 +33,7 @@ public class StreamServer {
         socket = listener.accept();
 
         while (!dataInterface.finished()){
-//            System.out.print("We must print this for the program to work (sorry)");
-            System.out.flush();
+            System.out.flush();  // Need to flush output stream to send packets
             if(dataInterface.ready()){
                 byte[] data = dataInterface.getData();
                 send(data);
