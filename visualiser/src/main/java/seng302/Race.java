@@ -139,6 +139,15 @@ public class Race {
         return boats;
     }
 
+    public Boat getBoatByID(int id) {
+        for (Boat boat : boats) {
+            if (boat.getSourceID() == id) {
+                return boat;
+            }
+        }
+        return null;
+    }
+
     /**
      * Creates an ArrayList of boats competing in the current race
      * @return The ArrayList of boats

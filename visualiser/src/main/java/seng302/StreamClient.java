@@ -45,6 +45,7 @@ public class StreamClient {
     public void retrieveData() {
         int breakNo = 0;
         int result = 0;
+        boolean moreData = false;
         while (clientSocket != null && streamInput != null && result != -1) {
             try {
                 System.out.println("Requesting Data: ");
@@ -52,18 +53,34 @@ public class StreamClient {
                 System.out.println("Data read in.");
 //                output += new String(data, 0, result);
                 breakNo ++;
-                System.out.println(breakNo);
+                //System.out.println(breakNo);
                 int syncPacket1 = data[0];
                 int syncPacket2 = data[1];
+                int dataType = data [2];
                 //System.out.printf("SP1: %d, SP2: %d", syncPacket1, syncPacket2);
 //                System.out.println(Arrays.toString(data));
                 byte[] dest = new byte[2];
+                // Retrieve the length of the packet from the header
                 System.arraycopy(data,13,dest,0,2);
                 short length = ByteBuffer.wrap(dest).order(ByteOrder.LITTLE_ENDIAN).getShort();
-                System.out.println(length);
-                if (syncPacket1 == 71 && syncPacket2 == -125) {
-                    System.out.println("Valid Packet.");
+                //System.out.println(length);
+                if ((syncPacket1 == 71 && syncPacket2 == -125) || moreData) {
+                    //System.out.println("Valid Packet.");
                     // TODO: Pass to Parser.
+
+                    if (dataType == 26 || moreData) {
+                        moreData = true;
+                        String output = new String(data, 0, result);
+                        System.out.println(output);
+                        System.out.println("End of Packet\n");
+                        char end = output.toCharArray()[output.length() - 1];
+                        System.out.println("End of packet: '" + end + "'\n");
+                        if (data[result - 1] == 0x00) {
+                            moreData = false;
+                        }
+
+                        //if (output.charAt(output.length() - 1) == null))
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();

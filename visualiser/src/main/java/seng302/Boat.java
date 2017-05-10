@@ -17,6 +17,7 @@ public class Boat {
     private Long raceTime;
     private int position;
     private String abrv;
+    private int sourceID;
 
     /**
      * Gets the abbreviation of the name of the team's boat
@@ -189,5 +190,9 @@ public class Boat {
     public double getLongitude(){
         return Position.convertX(x);
     }
+
+    public void setSourceID(int id) { this.sourceID = id; }
+
+    public int getSourceID() { return sourceID; }
 }
 
