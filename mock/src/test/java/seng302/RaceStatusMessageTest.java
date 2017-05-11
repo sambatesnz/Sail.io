@@ -3,7 +3,10 @@ package seng302;
 import org.junit.Test;
 
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.LongBuffer;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
@@ -42,7 +45,6 @@ public class RaceStatusMessageTest {
     @Test
     public void testCurrentTime() throws Exception {
         long time = System.currentTimeMillis();
-        System.out.println(System.currentTimeMillis());
 
         RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
                 1,
@@ -61,9 +63,10 @@ public class RaceStatusMessageTest {
         int bufferStart = RaceStatusMessage.CURRENT_TIME;
         int bufferEnd = bufferStart + RaceStatusMessage.CURRENT_TIME_SIZE;
         byte[] currentTime = Arrays.copyOfRange(message, bufferStart, bufferEnd);
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES).order(ByteOrder.LITTLE_ENDIAN);
         buffer.put(currentTime);
         buffer.flip();
+        buffer.rewind();
         long raceStatusTime = buffer.getLong();
 
         assertEquals(time, raceStatusTime);

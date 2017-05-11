@@ -73,12 +73,13 @@ public class RaceStatusMessage {
     }
 
     private byte[] getCurrentTime(){
-        byte[] time = LEBuffer(6).putLong(System.currentTimeMillis()).array();
-        return time;
+        byte[] time = LEBuffer(8).putLong(System.currentTimeMillis()).array();
+        return Arrays.copyOfRange(time, 2, 8);
     }
 
     private byte[] getCurrentTime(long currentTime){
         byte[] time = LEBuffer(8).putLong(currentTime).array();
-        return time;
+        byte[] smallerTime = Arrays.copyOfRange(time, 0, 6);
+        return smallerTime;
     }
 }
