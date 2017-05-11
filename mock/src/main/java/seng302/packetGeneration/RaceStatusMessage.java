@@ -36,20 +36,18 @@ public class RaceStatusMessage {
 
     }
 
-
-
-    private byte[] convertTobytes(int number){
-        return null;
-    }
-
     public byte[] getRaceStatusMessage(){
         byte[] output = new byte[24 + boatNum * 20];
-        //Copy specific byes into here
+        //Copy specific bytes into here
 
         for (int i = RaceStatusUtility.CURRENT_TIME; i <RaceStatusUtility.CURRENT_TIME + RaceStatusUtility.CURRENT_TIME_SIZE ; i++) {
             output[i] = currentTime[i-1];
         }
         return output;
+    }
+
+    private byte[] convertTobytes(int number){
+        return null;
     }
 
     private byte[] getCurrentTime(){

@@ -57,6 +57,7 @@ public class RaceStatusMessageTest {
                 null
         );
 
+
         byte[] message = raceStatusMessage.getRaceStatusMessage();
         byte[] actualMessage = new byte[8];
         int sourceIndex = RaceStatusUtility.MESSAGE_VERSION;
@@ -83,11 +84,46 @@ public class RaceStatusMessageTest {
         );
 
         byte[] message = raceStatusMessage.getRaceStatusMessage();
-        byte[] actualMessage = new byte[8];
         int sourceIndex = RaceStatusUtility.CURRENT_TIME;
         int size = RaceStatusUtility.CURRENT_TIME_SIZE;
+        byte[] actualMessage = new byte[8];
         long expectedTime = sliceArray(message, sourceIndex, actualMessage, size);
-        assertEquals(time, expectedTime);
+        assertTrue(false); //Not implemented yet
+    }
+
+    @Test
+    public void raceId() throws Exception {
+        assertTrue(false); //Not implemented yet
+    }
+
+    @Test
+    public void raceStatus() throws Exception {
+        assertTrue(false);//Not implemented yet
+    }
+
+    @Test
+    public void expectedStartTime() throws Exception {
+        assertTrue(false);//Not implemented yet
+    }
+
+    @Test
+    public void windDirection() throws Exception {
+        assertTrue(false);//Not implemented yet
+    }
+
+    @Test
+    public void windSpeed() throws Exception {
+        assertTrue(false);//Not implemented yet
+    }
+
+    @Test
+    public void numBoatsInRace() throws Exception {
+        assertTrue(false);//Not implemented yet
+    }
+
+    @Test
+    public void raceType() throws Exception {
+        assertTrue(false);//Not implemented yet
     }
 
 
