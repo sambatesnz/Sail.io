@@ -63,7 +63,7 @@ public class RaceStatusMessageTest {
         int sourceIndex = RaceStatusUtility.MESSAGE_VERSION;
         int size = RaceStatusUtility.MESSAGE_VERSION_SIZE;
         long expectedTime = sliceArray(message, sourceIndex, actualMessage, size);
-        assertEquals(versionNumber, expectedTime);
+        assertTrue(false); //Not implemented yet
     }
 
     @Test
@@ -88,7 +88,7 @@ public class RaceStatusMessageTest {
         int size = RaceStatusUtility.CURRENT_TIME_SIZE;
         byte[] actualMessage = new byte[8];
         long expectedTime = sliceArray(message, sourceIndex, actualMessage, size);
-        assertTrue(false); //Not implemented yet
+        assertEquals(time, expectedTime);
     }
 
     @Test
@@ -103,7 +103,27 @@ public class RaceStatusMessageTest {
 
     @Test
     public void expectedStartTime() throws Exception {
-        assertTrue(false);//Not implemented yet
+        long startTime = System.currentTimeMillis();
+
+        RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
+                1,
+                0,
+                0,
+                0,
+                startTime,
+                0,
+                0,
+                0,
+                0,
+                null
+        );
+
+        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        int sourceIndex = RaceStatusUtility.EXPECTED_START_TIME;
+        int size = RaceStatusUtility.EXPECTED_START_TIME_SIZE;
+        byte[] actualMessage = new byte[8];
+        long expectedTime = sliceArray(message, sourceIndex, actualMessage, size);
+        assertEquals(startTime, expectedTime);
     }
 
     @Test

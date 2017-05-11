@@ -29,7 +29,8 @@ public class RaceStatusMessage {
 
     public RaceStatusMessage(int versionNumber, long currentTime, int raceID, int raceStatus, long startTime, int windDirection, int windSpeed, int numberOfBoats, int raceType, List<Boat> boats) {
         this.boatNum = numberOfBoats;
-        this.currentTime = getCurrentTime(currentTime);
+        this.currentTime = RaceStatusUtility.longToSixBytes(currentTime);
+        this.startTime = RaceStatusUtility.longToSixBytes(currentTime);
     }
 
     public RaceStatusMessage(int raceID, int raceStatus, long startTime, int windDirection, int windSpeed, int raceType, List<Boat> boats) {
@@ -40,24 +41,13 @@ public class RaceStatusMessage {
         byte[] output = new byte[24 + boatNum * 20];
         //Copy specific bytes into here
 
-        for (int i = RaceStatusUtility.CURRENT_TIME; i <RaceStatusUtility.CURRENT_TIME + RaceStatusUtility.CURRENT_TIME_SIZE ; i++) {
-            output[i] = currentTime[i-1];
-        }
+        System.arraycopy(currentTime, 0, output, RaceStatusUtility.CURRENT_TIME, RaceStatusUtility.CURRENT_TIME_SIZE);
+        System.arraycopy(startTime, 0, output, RaceStatusUtility.EXPECTED_START_TIME, RaceStatusUtility.EXPECTED_START_TIME_SIZE);
+
         return output;
     }
 
     private byte[] convertTobytes(int number){
         return null;
-    }
-
-    private byte[] getCurrentTime(){
-        byte[] time = RaceStatusUtility.LEBuffer(8).putLong(System.currentTimeMillis()).array();
-        return Arrays.copyOfRange(time, 2, 8);
-    }
-
-    private byte[] getCurrentTime(long currentTime){
-        byte[] time = RaceStatusUtility.LEBuffer(8).putLong(currentTime).array();
-        byte[] smallerTime = Arrays.copyOfRange(time, 0, 6);
-        return smallerTime;
     }
 }
