@@ -15,22 +15,17 @@ import java.util.List;
  */
 public class RaceStatusMessage {
 
-
-
-
-
-    byte[] versionNumber;
-    byte[] currentTime;
-    byte[] raceID;
-    byte[] raceStatus;
-    byte[] startTime;
-    byte[] windDirection;
-    byte[] windSpeed;
-    byte[] numberOfBoats;
-    byte[] raceType;
-    List<byte[]> boats;
-
-    int boatNum;
+    private byte[] versionNumber;
+    private byte[] currentTime;
+    private byte[] raceID;
+    private byte[] raceStatus;
+    private byte[] startTime;
+    private byte[] windDirection;
+    private byte[] windSpeed;
+    private byte[] numberOfBoats;
+    private byte[] raceType;
+    private List<byte[]> boats;
+    private int boatNum;
 
     public RaceStatusMessage(int versionNumber, long currentTime, int raceID, int raceStatus, long startTime, int windDirection, int windSpeed, int numberOfBoats, int raceType, List<Boat> boats) {
         this.boatNum = numberOfBoats;
