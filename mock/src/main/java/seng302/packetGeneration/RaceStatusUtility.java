@@ -10,6 +10,7 @@ import java.util.Arrays;
  */
 public final class RaceStatusUtility {
 
+    static int OFFSET = 1;
     static int MESSAGE_VERSION = 0;
     static int MESSAGE_VERSION_SIZE = 1;
     static int CURRENT_TIME = 1;
