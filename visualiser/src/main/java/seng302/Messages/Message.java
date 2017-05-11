@@ -25,10 +25,6 @@ public class Message {
         System.arraycopy(data,15, body,0, messageLen);
         crc = new byte[4];
         System.arraycopy(data,15 + messageLen, crc,0, 4);
-        System.out.println(syncByte1);
-        if (messageType == 37){
-            System.out.println(messageType);
-        }
     }
 
     public static int byteArrayToInt(byte[] bytes, int pos, int len){
@@ -45,7 +41,8 @@ public class Message {
         switch (messageType) {
             case 1:                                             //Heartbeat
                 break;
-            case 12: //race.setRaceStatus(data[11]);            //Race Status
+            case 12:
+                RaceStatusMessage raceStatus = new RaceStatusMessage(body);            //Race Status
                 break;
             case 20:                                            //Display
                 break;

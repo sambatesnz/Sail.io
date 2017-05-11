@@ -89,7 +89,6 @@ public class StreamClient {
 //
         //TODO: passmessage in to the thing
         byte[] message = new byte[messageLength + CRC_LEN + HEADER_LEN];
-        System.out.println("madea message");
         System.arraycopy(head, 0, message, 0, HEADER_LEN);
         System.arraycopy(body, 0, message, HEADER_LEN, messageLength);
         Message packet = new Message(message);

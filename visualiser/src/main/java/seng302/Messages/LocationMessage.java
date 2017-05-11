@@ -24,7 +24,6 @@ public class LocationMessage{
         longitude = Message.byteArrayToLong(bytes, 20, 4) * 180 / 2147483648.0;
         heading = Message.byteArrayToInt(bytes, 28, 2) * 360 / 65536.0;
         speedOverGround = Message.byteArrayToInt(bytes, 38, 2);
-        System.out.println(heading);
     }
 
 }

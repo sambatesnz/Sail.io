@@ -15,5 +15,6 @@ public class BoatStatusMessage {
         this.legNumber = legNumber;
         this.estTimeToNextMark = estTimeToNextMark;
         this.estTimeToFinish = estTimeToFinish;
+        System.out.println(legNumber);
     }
 }

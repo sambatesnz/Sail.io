@@ -46,5 +46,6 @@ public class RaceStatusMessage {
 
             indent += 20;
         }
+        System.out.println("Race Status: " + raceStatus);
     }
 }
