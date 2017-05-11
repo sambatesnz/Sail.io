@@ -3,6 +3,9 @@ package seng302;
 import org.junit.Test;
 
 
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 /**
@@ -12,7 +15,7 @@ public class RaceStatusMessageTest {
 
 
     @Test
-    public void test() throws Exception {
+    public void testMessagePacketSize() throws Exception {
 
         int headerSize = 24;
         int boatPacketSize = 20;
@@ -34,5 +37,35 @@ public class RaceStatusMessageTest {
         int expected =  headerSize + numBoats * boatPacketSize;
         int packetSize = raceStatusMessage.getRaceStatusMessage().length;
         assertEquals(packetSize, expected);
+    }
+
+    @Test
+    public void testCurrentTime() throws Exception {
+        long time = System.currentTimeMillis();
+        System.out.println(System.currentTimeMillis());
+
+        RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
+                1,
+                time,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                null
+        );
+
+        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        int bufferStart = RaceStatusMessage.CURRENT_TIME;
+        int bufferEnd = bufferStart + RaceStatusMessage.CURRENT_TIME_SIZE;
+        byte[] currentTime = Arrays.copyOfRange(message, bufferStart, bufferEnd);
+        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+        buffer.put(currentTime);
+        buffer.flip();
+        long raceStatusTime = buffer.getLong();
+
+        assertEquals(time, raceStatusTime);
     }
 }
