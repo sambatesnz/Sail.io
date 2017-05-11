@@ -30,7 +30,7 @@ public class RaceStatusMessage {
     public RaceStatusMessage(int versionNumber, long currentTime, int raceID, int raceStatus, long startTime, int windDirection, int windSpeed, int numberOfBoats, int raceType, List<Boat> boats) {
         this.boatNum = numberOfBoats;
         this.currentTime = RaceStatusUtility.longToSixBytes(currentTime);
-        this.startTime = RaceStatusUtility.longToSixBytes(currentTime);
+        this.startTime = RaceStatusUtility.longToSixBytes(startTime);
     }
 
     public RaceStatusMessage(int raceID, int raceStatus, long startTime, int windDirection, int windSpeed, int raceType, List<Boat> boats) {
