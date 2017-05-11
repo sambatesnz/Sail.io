@@ -1,6 +1,7 @@
-package seng302;
+package seng302.packetGeneration;
 
 import org.junit.Test;
+import seng302.WindDirection;
 import seng302.packetGeneration.RaceStatusMessage;
 
 

@@ -9,6 +9,9 @@ import java.util.List;
 
 /**
  * For creating race status packets to be sent by the server
+ *
+ * The primary concern of this class is to copy byte arrays of info (eg currentTime
+ * Into the correct location for the race status message packet
  */
 public class RaceStatusMessage {
 
@@ -56,9 +59,7 @@ public class RaceStatusMessage {
 
     }
 
-    private ByteBuffer LEBuffer(int capacity) {
-        return ByteBuffer.allocate(capacity).order(ByteOrder.LITTLE_ENDIAN);
-    }
+
 
     private byte[] convertTobytes(int number){
         return null;
@@ -75,12 +76,12 @@ public class RaceStatusMessage {
     }
 
     private byte[] getCurrentTime(){
-        byte[] time = LEBuffer(8).putLong(System.currentTimeMillis()).array();
+        byte[] time = RaceStatusUtility.LEBuffer(8).putLong(System.currentTimeMillis()).array();
         return Arrays.copyOfRange(time, 2, 8);
     }
 
     private byte[] getCurrentTime(long currentTime){
-        byte[] time = LEBuffer(8).putLong(currentTime).array();
+        byte[] time = RaceStatusUtility.LEBuffer(8).putLong(currentTime).array();
         byte[] smallerTime = Arrays.copyOfRange(time, 0, 6);
         return smallerTime;
     }
