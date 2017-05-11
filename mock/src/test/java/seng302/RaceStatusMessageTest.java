@@ -4,11 +4,8 @@ import org.junit.Test;
 import seng302.packetGeneration.RaceStatusMessage;
 
 
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.LongBuffer;
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -43,6 +40,11 @@ public class RaceStatusMessageTest {
         assertEquals(packetSize, expected);
     }
 
+    private long sliceArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
+        System.arraycopy(message, sourceIndex, actualMessage, 0, size);
+        return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getLong();
+    }
+
     @Test
     public void testCurrentTime() throws Exception {
         long time = System.currentTimeMillis();
@@ -61,15 +63,10 @@ public class RaceStatusMessageTest {
         );
 
         byte[] message = raceStatusMessage.getRaceStatusMessage();
-        int bufferStart = RaceStatusMessage.CURRENT_TIME;
-        int bufferEnd = bufferStart + RaceStatusMessage.CURRENT_TIME_SIZE;
-        byte[] currentTime = Arrays.copyOfRange(message, bufferStart, bufferEnd);
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES).order(ByteOrder.LITTLE_ENDIAN);
-        buffer.put(currentTime);
-        buffer.flip();
-        buffer.rewind();
-        long raceStatusTime = buffer.getLong();
-
-        assertEquals(time, raceStatusTime);
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = RaceStatusMessage.CURRENT_TIME;
+        int size = RaceStatusMessage.CURRENT_TIME_SIZE;
+        long expectedTime = sliceArray(message, sourceIndex, actualMessage, size);
+        assertEquals(time, expectedTime);
     }
 }
