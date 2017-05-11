@@ -1,6 +1,7 @@
-package seng302;
+package seng302.packetGeneration;
 
 import org.junit.Test;
+import seng302.WindDirection;
 import seng302.packetGeneration.RaceStatusMessage;
 
 
@@ -10,7 +11,7 @@ import java.nio.ByteOrder;
 import static org.junit.Assert.*;
 
 /**
- * Created by tjg73 on 10/05/17.
+ * Test class for testing the race status messages
  */
 public class RaceStatusMessageTest {
 
@@ -40,9 +41,28 @@ public class RaceStatusMessageTest {
         assertEquals(packetSize, expected);
     }
 
-    private long sliceArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
-        System.arraycopy(message, sourceIndex, actualMessage, 0, size);
-        return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getLong();
+    @Test
+    public void testMessageVNumber() throws Exception {
+        int versionNumber = 2;
+        RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
+                versionNumber,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                null
+        );
+
+        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = RaceStatusUtility.MESSAGE_VERSION;
+        int size = RaceStatusUtility.MESSAGE_VERSION_SIZE;
+        long expectedTime = sliceArray(message, sourceIndex, actualMessage, size);
+        assertEquals(versionNumber, expectedTime);
     }
 
     @Test
@@ -64,9 +84,17 @@ public class RaceStatusMessageTest {
 
         byte[] message = raceStatusMessage.getRaceStatusMessage();
         byte[] actualMessage = new byte[8];
-        int sourceIndex = RaceStatusMessage.CURRENT_TIME;
-        int size = RaceStatusMessage.CURRENT_TIME_SIZE;
+        int sourceIndex = RaceStatusUtility.CURRENT_TIME;
+        int size = RaceStatusUtility.CURRENT_TIME_SIZE;
         long expectedTime = sliceArray(message, sourceIndex, actualMessage, size);
         assertEquals(time, expectedTime);
     }
+
+
+    private long sliceArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
+        System.arraycopy(message, sourceIndex, actualMessage, 0, size);
+        return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getLong();
+    }
+
+
 }
