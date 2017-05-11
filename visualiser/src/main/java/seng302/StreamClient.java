@@ -69,33 +69,38 @@ public class StreamClient {
     private void nextMessage() throws IOException{
         final int HEADER_LEN = 15;
         final int CRC_LEN = 4;
-        System.out.println(streamInput.available());
         if (streamInput.available() < HEADER_LEN){
             return;
         }
-        System.out.println("here2");
         byte[] head = new byte[HEADER_LEN];
-        streamInput.mark(0);
+        streamInput.mark(HEADER_LEN + 1);
         streamInput.read(head);
-        int messageLength = ByteBuffer.wrap(data, 13, 2).order(ByteOrder.LITTLE_ENDIAN).getInt();
-        //System.out.println(messageLength);
+        byte[] lenBytes = new byte[4];
+        System.arraycopy(head, 13, lenBytes, 0, 2);
+//        int messageLength = ((lenBytes[2] & 0xff) << 8) | (lenBytes[3] & 0xff);
+        int messageLength = ByteBuffer.wrap(lenBytes).order(ByteOrder.LITTLE_ENDIAN).getInt();
         if(streamInput.available() < messageLength + CRC_LEN){
             streamInput.reset();
             return;
         }
-        System.out.println("here");
-        byte[] message = new byte[HEADER_LEN + messageLength + CRC_LEN];
-        streamInput.read(message);
+        byte[] body = new byte[messageLength + CRC_LEN];
+        streamInput.read(body);
+
 //
         //TODO: passmessage in to the thing
+        byte[] message = new byte[messageLength + CRC_LEN + HEADER_LEN];
         System.out.println("madea message");
+        System.arraycopy(head, 0, message, 0, HEADER_LEN);
+        System.arraycopy(body, 0, message, HEADER_LEN, messageLength);
         Message packet = new Message(message);
+        packet.parseMessage();
     }
 
     public void connect() {
         try {
             System.out.println("Attempting to connect...");
-            clientSocket = new Socket(host, port);
+            clientSocket = new Socket("localhost", 5005);
+//            clientSocket = new Socket(host, port);
             System.out.println("Connected.");
             streamInput = new BufferedInputStream(clientSocket.getInputStream());
         }

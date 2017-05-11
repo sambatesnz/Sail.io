@@ -1,5 +1,6 @@
 package seng302.Messages;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -11,23 +12,36 @@ public class Message {
     private int syncByte2;
     private int messageType;
     private int messageLen;
-    private byte data[];
+    private byte body[];
     private byte crc[];
 
     public Message(byte[] data){
+        syncByte1 = byteArrayToInt(data, 0, 1);
+        syncByte2 = byteArrayToInt(data, 1,1);
+        messageType = byteArrayToInt(data, 2,1);
+        messageLen = byteArrayToInt(data, 13,2);
 
-        syncByte1 = ByteBuffer.wrap(data, 1, 1).order(ByteOrder.LITTLE_ENDIAN).getInt();
-        syncByte2 = ByteBuffer.wrap(data, 2, 1).order(ByteOrder.LITTLE_ENDIAN).getInt();
-        messageType = ByteBuffer.wrap(data, 3, 1).order(ByteOrder.LITTLE_ENDIAN).getInt();
-        messageLen = ByteBuffer.wrap(data, 13, 2).order(ByteOrder.LITTLE_ENDIAN).getInt();
-        data = new byte[messageLen];
-        System.arraycopy(data,15, data,0, messageLen);
+        body = new byte[messageLen];
+        System.arraycopy(data,15, body,0, messageLen);
         crc = new byte[4];
-        System.arraycopy(data,15 + messageLen, data,0, 4);
+        System.arraycopy(data,15 + messageLen, crc,0, 4);
         System.out.println(syncByte1);
+        if (messageType == 37){
+            System.out.println(messageType);
+        }
     }
 
-    public void getMessage(){
+    public static int byteArrayToInt(byte[] bytes, int pos, int len){
+        byte[] intByte = new byte[4];
+        System.arraycopy(bytes, pos, intByte, 0, len);
+        return ByteBuffer.wrap(intByte).order(ByteOrder.LITTLE_ENDIAN).getInt();
+    }
+    public static long byteArrayToLong(byte[] bytes, int pos, int len){
+        byte[] intByte = new byte[8];
+        System.arraycopy(bytes, pos, intByte, 0, len);
+        return ByteBuffer.wrap(intByte).order(ByteOrder.LITTLE_ENDIAN).getInt();
+    }
+    public void parseMessage() throws UnsupportedEncodingException {
         switch (messageType) {
             case 1:                                             //Heartbeat
                 break;
@@ -36,8 +50,10 @@ public class Message {
             case 20:                                            //Display
                 break;
             case 26:                                            //XML Message
+                XMLMessage xmlMessage = new XMLMessage(body);
                 break;
             case 27:                                            //Race Start Status
+
                 break;
             case 29:                                            //Yacht Event Code
                 break;
@@ -46,7 +62,7 @@ public class Message {
             case 36:                                            //Chatter Text
                 break;
             case 37:                                            //Boat Location
-                LocationMessage location = new LocationMessage(data);
+                LocationMessage location = new LocationMessage(body);
                 break;
             case 38:                                            //Mark Rounding
                 break;

@@ -3,20 +3,39 @@ package seng302.Messages;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-/**
- * Created by sba136 on 11/05/17.
- */
-public class XMLMessage {
-    int xmlMessageSubtype;
-    int xmlMessageLen;
-    byte[] xmlMessage;
+import org.w3c.dom.*;
 
-    public XMLMessage(byte[] data){
-        xmlMessageSubtype = ByteBuffer.wrap(data, 9, 1).order(ByteOrder.LITTLE_ENDIAN).getInt();
-        xmlMessageLen = ByteBuffer.wrap(data, 12, 2).order(ByteOrder.LITTLE_ENDIAN).getInt();
-        xmlMessageLen = ByteBuffer.wrap(data, 12, 2).order(ByteOrder.LITTLE_ENDIAN).getInt();
+import javax.swing.text.html.parser.Parser;
+import javax.xml.parsers.*;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.UnmappableCharacterException;
+
+
+public class XMLMessage {
+    private int xmlMessageSubtype;
+    private int xmlMessageLen;
+    private byte[] xmlMessage;
+    private String xmlString;
+
+
+    public XMLMessage(byte[] data) throws UnsupportedEncodingException{
+        xmlMessageSubtype = Message.byteArrayToInt(data, 9, 1);
+        xmlMessageLen = Message.byteArrayToInt(data, 12, 2);
+        xmlMessageLen = Message.byteArrayToInt(data, 12, 2);
         xmlMessage = new byte[xmlMessageLen];
-        System.arraycopy(data,15, data,0, xmlMessageLen);
+        System.arraycopy(data,14, xmlMessage,0, xmlMessageLen);
+        xmlString = new String(xmlMessage, "UTF-8");
+        System.out.println(xmlString);
+
+
+    }
+
+    public void parseBoats() throws ParserConfigurationException, UnsupportedEncodingException{
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        String boatsString = new String(xmlMessage, "UTF-8");
+        //print
 
 
     }
