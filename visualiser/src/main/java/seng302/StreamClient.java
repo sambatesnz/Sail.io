@@ -1,7 +1,10 @@
 package seng302;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
@@ -93,8 +96,6 @@ public class StreamClient {
             e.printStackTrace();
         }
     }
-
     public void changeHost() {
-
     }
 }
