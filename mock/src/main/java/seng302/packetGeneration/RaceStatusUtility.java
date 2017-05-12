@@ -33,8 +33,28 @@ public final class RaceStatusUtility {
     static int BOATS_SIZE = 20;
 
 
-    private RaceStatusUtility() {
+    enum BoatStatus {
+        UNDEFINED('0'),
+        PRESTART('1'),
+        RACING('2'),
+        FINISHED('3'),
+        DNS('4'),         // did not start
+        DNF('5'),         // did not finish
+        DSQ('6'),         // disqualified
+        OCS('7');         // On Course Side – across start line early
 
+        private char value;
+
+        BoatStatus(char value) {
+            this.value = value;
+        }
+
+        public char value(){
+            return value;
+        }
+    }
+
+    private RaceStatusUtility() {
     }
 
     static ByteBuffer LEBuffer(int capacity) {
@@ -42,8 +62,19 @@ public final class RaceStatusUtility {
     }
 
     static byte[] longToSixBytes(long value) {
-        byte[] wholeArray = RaceStatusUtility.LEBuffer(8).putLong(value).array();
+        byte[] wholeArray = LEBuffer(8).putLong(value).array();
         return Arrays.copyOfRange(wholeArray, 0, 6);
 
     }
+
+    static byte[] charToOneByte(char value) {
+        byte[] wholeArray = LEBuffer(2).putChar(value).array();
+        return Arrays.copyOfRange(wholeArray, 0, 1);
+    }
+
+    static byte[] intToFourBytes(int value) {
+        byte[] wholeArray = LEBuffer(4).putInt(value).array();
+        return Arrays.copyOfRange(wholeArray, 0, 4);
+    }
+
 }

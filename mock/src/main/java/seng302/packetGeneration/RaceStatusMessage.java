@@ -48,6 +48,7 @@ public class RaceStatusMessage {
     }
 
     private byte[] convertTobytes(int number){
+        BoatStatusMessage b = new BoatStatusMessage(3, RaceStatusUtility.BoatStatus.FINISHED.value(), (char)1, (long) 1, (long) 1);
         return null;
     }
 }
