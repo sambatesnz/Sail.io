@@ -3,10 +3,7 @@ package seng302;
 
 
 import javafx.scene.paint.Color;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -33,7 +30,9 @@ public class XMLParser {
     private String GATE = "Gate";
     private String GATE_ORDER = "gateOrder";
     private String BOUNDARY = "boundary";
+    private String COURSE = "Course";
     private String COURSE_LIMIT = "CourseLimit";
+    private String LIMIT = "Limit";
     private String SEQ_ID = "SeqID";
 
     private String xmlString;
@@ -46,18 +45,33 @@ public class XMLParser {
      */
     public XMLParser(String xml) throws IOException {
         this.xmlString = xml;
-        xmlDoc = loadCourseXmlFile();
+        xmlDoc = convertStringToDocument();
+//        if (xmlDoc != null) {
+//            Node firstChild = xmlDoc.getFirstChild();
+//            System.out.println(firstChild.getNodeName());
+//            NodeList nodes = firstChild.getChildNodes();
+//            for (int i = 0; i < nodes.getLength(); i ++) {
+//                if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
+//                    System.out.println(nodes.item(i).getNodeName());
+//                }
+//            }
+//        }
     }
 
     /**
      * Loads the course xml file as a Document with a DOM Structure
      * @return The DOM document which we can now parse
      */
-    private Document loadCourseXmlFile() throws IOException {
-        try {
-            return DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                    .parse(new InputSource(new StringReader(xmlString)));
-        } catch (SAXException | ParserConfigurationException e) {
+    private Document convertStringToDocument() {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder;
+        try
+        {
+            builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(new InputSource(new StringReader(xmlString)));
+            doc.getDocumentElement().normalize();
+            return doc;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -89,31 +103,48 @@ public class XMLParser {
      * @return Arraylist containing the gate order
      */
     public List<CourseLimit> getCourseLimits(){
-
         NodeList nodes = xmlDoc.getElementsByTagName(COURSE_LIMIT).item(0).getChildNodes();
         List<CourseLimit> courseLimits = new ArrayList<>();
-
         try {
-
             for (int i = 0; i < nodes.getLength(); i++) {
-
-                Element ele = (Element) nodes.item(i);
-                System.out.println(ele.toString());
-                int seqId = Integer.parseInt(ele.getAttribute(SEQ_ID));
-                double lat = Double.parseDouble(ele.getAttribute(LATITUDE));
-                double lon = Double.parseDouble(ele.getAttribute(LONGITUDE));
-
-                CourseLimit courseLimit = new CourseLimit(seqId, lat, lon);
-                courseLimits.add(courseLimit);
-
-                System.out.println(seqId + ", " + lat + ", " + lon);
+                Node node = nodes.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    NamedNodeMap nnm = node.getAttributes();
+                    float lon = Float.valueOf(nnm.getNamedItem(LONGITUDE).getNodeValue());
+                    float lat = Float.valueOf(nnm.getNamedItem(LATITUDE).getNodeValue());
+                    int seqId = Integer.valueOf(nnm.getNamedItem(SEQ_ID).getNodeValue());
+                    courseLimits.add(new CourseLimit(seqId, lat, lon));
+                }
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
         courseLimits.sort(Comparator.comparingInt(CourseLimit::getSeqId));
         return courseLimits;
+    }
+
+    public List<Landmark> getCourseLayout(){
+        NodeList nodes = xmlDoc.getElementsByTagName(COURSE).item(0).getChildNodes();
+        List<Landmark> courseObjects = new ArrayList<>();
+        try {
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Node node = nodes.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    //TODO: get children, for child in children, get attributes, get Lat/Long etc.
+                    //TODO: Need another level of parsing here, as it goes CompoundMark -> Mark.
+                    NamedNodeMap nnm = node.getAttributes();
+                    float lon = Float.valueOf(nnm.getNamedItem(LONGITUDE).getNodeValue());
+                    float lat = Float.valueOf(nnm.getNamedItem(LATITUDE).getNodeValue());
+                    int seqId = Integer.valueOf(nnm.getNamedItem(SEQ_ID).getNodeValue());
+                    Position pos = new Position(lat, lon);
+//                    courseLimits.add(new CourseLimit(seqId,lat, lon));
+                }
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        courseObjects.sort(Comparator.comparingInt(Landmark::getId));
+        return courseObjects;
     }
 
 //    public int getWindDirection() {

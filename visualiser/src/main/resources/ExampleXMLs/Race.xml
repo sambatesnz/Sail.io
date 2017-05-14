@@ -29,7 +29,6 @@
             <Mark SeqID="2" Name="G2" TargetLat="-36.64566590" TargetLng="174.98205159" SourceID="105" />
         </CompoundMark>
     </Course>
-
     <CompoundMarkSequence>
         <Corner SeqID="1" CompoundMarkID="1" Rounding="SP" ZoneSize="3" />
         <Corner SeqID="2" CompoundMarkID="2" Rounding="Port" ZoneSize="3" />
@@ -37,7 +36,6 @@
         <Corner SeqID="4" CompoundMarkID="4" Rounding="PS" ZoneSize="6" />
         <Corner SeqID="5" CompoundMarkID="1" Rounding="SP" ZoneSize="3"/>
     </CompoundMarkSequence>
-
     <CourseLimit>
         <Limit SeqID="1" Lat="-36.8325" Lon="174.8325"/>
         <Limit SeqID="2" Lat="-36.82883" Lon="174.81983"/>
