@@ -13,6 +13,21 @@ import static org.junit.Assert.*;
 public class BoatStatusMessageTest {
 
     @Test
+    public void testMessagePacketSize() throws Exception {
+        int boatPacketSize = 20;
+
+        BoatStatusMessage boatStatusMessage = new BoatStatusMessage(
+                0,
+                '0',
+                '0',
+                0L,
+                0L);
+
+        int actualSize = boatStatusMessage.getBoatStatusMessage().length;
+        assertEquals(boatPacketSize, actualSize);
+    }
+
+        @Test
     public void testSourceId() throws Exception {
         int sourceBoatID = 7;
 
