@@ -26,6 +26,9 @@ public class BoatStatusMessage {
         this.estTimeToFinish = RaceStatusUtility.longToSixBytes(estTimeToFinish);
     }
 
+    /**
+     * @return the byte[] packet for a boatsStatus
+     */
     public byte[] getBoatStatusMessage(){
         ByteBuffer boatStatus = RaceStatusUtility.LEBuffer(20);
         boatStatus.put(sourceBoatID);

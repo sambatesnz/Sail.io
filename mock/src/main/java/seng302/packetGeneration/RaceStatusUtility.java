@@ -32,31 +32,21 @@ public final class RaceStatusUtility {
     static int BOATS = 0;
     static int BOATS_SIZE = 20;
 
-
-    enum BoatStatus {
-        UNDEFINED('0'),
-        PRESTART('1'),
-        RACING('2'),
-        FINISHED('3'),
-        DNS('4'),         // did not start
-        DNF('5'),         // did not finish
-        DSQ('6'),         // disqualified
-        OCS('7');         // On Course Side – across start line early
-
-        private char value;
-
-        BoatStatus(char value) {
-            this.value = value;
-        }
-
-        public char value(){
-            return value;
-        }
-    }
+    static int SOURCE_ID_INDEX = 0;
+    static int BOAT_STATUS_INDEX = 4;
+    static int LEG_NUMBER_INDEX = 5;
+    static int NUMBER_PENALTIES_AWARDED_INDEX = 6;
+    static int NUMBER_PENALTIES_SERVED_INDEX = 7;
+    static int EST_TIME_AT_NEXT_MARK_INDEX = 8;
+    static int EST_TIME_AT_FINISH_INDEX = 14;
 
     private RaceStatusUtility() {
     }
 
+    /**
+     * @param capacity of the buffer
+     * @return a little endian ByteBuffer
+     */
     static ByteBuffer LEBuffer(int capacity) {
         return ByteBuffer.allocate(capacity).order(ByteOrder.LITTLE_ENDIAN);
     }
