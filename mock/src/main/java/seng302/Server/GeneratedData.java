@@ -4,6 +4,7 @@ import seng302.Boat;
 import seng302.DataGenerator;
 import seng302.Message;
 import seng302.Race;
+import seng302.packetGeneration.RaceStatusMessage;
 
 import java.util.*;
 
@@ -14,6 +15,18 @@ public class GeneratedData implements IServerData {
     private Queue<byte[]> bytes = new LinkedList<>();
     private Message message = new Message();
     private Race race = new Race();
+
+    // Hardcoded race
+    private RaceStatusMessage rsm = new RaceStatusMessage(1,
+                                                            2l,
+                                                            3,
+                                                            4,
+                                                            5l,
+                                                            6,
+                                                            7,
+                                                            8,
+                                                            9,
+                                                            race.getBoats());
 
     @Override
     public byte[] getData() {
@@ -61,8 +74,17 @@ public class GeneratedData implements IServerData {
         }
     }
 
+    class RSMSender extends TimerTask {
+        @Override
+        public void run() {
+            bytes.add(rsm.getRaceStatusMessage());
+            System.out.println("Race Status Message created");
+        }
+    }
+
     public void runServerTimers() {
         Timer timer = new Timer();
+        timer.schedule(new RSMSender(), 0, Long.MAX_VALUE);
         timer.schedule(new XMLSender(), 0, 2000);
         timer.schedule(new BoatPosSender(), 0, 500);
         timer.schedule(new RaceRunner(), 0, 17);
