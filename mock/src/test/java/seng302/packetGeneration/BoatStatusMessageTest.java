@@ -138,7 +138,7 @@ public class BoatStatusMessageTest {
      * @param size of message to slice out
      * @return a char from the message
      */
-    private char getCharFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
+     static char getCharFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
         System.arraycopy(message, sourceIndex, actualMessage, 0, size);
         return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getChar();
     }
