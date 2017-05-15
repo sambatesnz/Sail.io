@@ -22,6 +22,7 @@ public class RaceStatusMessageTest {
         int headerSize = 24;
         int boatPacketSize = 20;
         char numBoats = '0';
+        int numBoatsInt = 0;
 
         RaceStatusMessage raceStatusMessage =  new RaceStatusMessage(
                 1,
@@ -36,7 +37,8 @@ public class RaceStatusMessageTest {
                 null
         );
 
-        int expected =  headerSize + numBoats * boatPacketSize;
+
+        int expected =  headerSize + numBoatsInt * boatPacketSize;
         int packetSize = raceStatusMessage.getRaceStatusMessage().length;
         assertEquals(packetSize, expected);
     }
@@ -98,7 +100,27 @@ public class RaceStatusMessageTest {
 
     @Test
     public void raceStatus() throws Exception {
-        assertTrue(false);//Not implemented yet
+        int raceStatus = RaceStatus.STARTED.value();
+
+        RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
+                1,
+                0,
+                0,
+                raceStatus,
+                0,
+                0,
+                0,
+                '0',
+                '0',
+                null
+        );
+
+        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        int sourceIndex = RaceStatusUtility.RACE_STATUS;
+        int size = RaceStatusUtility.RACE_STATUS_SIZE;
+        byte[] actualMessage = new byte[4];
+        int expectedRaceStatus = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(raceStatus, expectedRaceStatus);
     }
 
     @Test
@@ -158,7 +180,7 @@ public class RaceStatusMessageTest {
         int sourceIndex = RaceStatusUtility.NUM_BOATS;
         int size = RaceStatusUtility.NUM_BOATS_SIZE;
         byte[] actualMessage = new byte[2];
-        char actualNumBoats = BoatStatusMessageTest.getCharFromByteArray(message, sourceIndex, actualMessage, size);
+        char actualNumBoats = PacketUtils.getCharFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(numBoats, actualNumBoats);
     }
 
@@ -184,7 +206,7 @@ public class RaceStatusMessageTest {
         int sourceIndex = RaceStatusUtility.RACE_TYPE;
         int size = RaceStatusUtility.RACE_TYPE_SIZE;
         byte[] actualMessage = new byte[2];
-        char actualRaceType = BoatStatusMessageTest.getCharFromByteArray(message, sourceIndex, actualMessage, size);
+        char actualRaceType = PacketUtils.getCharFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(raceType, actualRaceType);
     }
 
