@@ -58,6 +58,16 @@ public class Boat {
     }
 
     /**
+     * Used to create a boat for testing purposes.
+     * @param sourceID  boat source id
+     */
+    public Boat(Integer sourceID) {
+        this.sourceID = sourceID;
+    }
+
+
+
+    /**
      * Get the boats colour
      * @return the boats colour
      */

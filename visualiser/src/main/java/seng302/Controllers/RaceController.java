@@ -21,7 +21,9 @@ import seng302.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -153,7 +155,7 @@ public class RaceController {
             paths.add(path);
             absolutePaths.add(new ArrayList<>());
 
-            lastHeadings.add(race.getBoats().get(i).getHeading() / 2);  // guarantee its different
+            lastHeadings.add(race.getBoats().get(i).getHeading() + 21);  // guarantee its different
         }
 
         mainBorderPane.setLeft(positionTable);
@@ -209,9 +211,6 @@ public class RaceController {
 
         localTime.setFont(new Font("Arial", 15));
         localTime.setVisible(true);
-
-
-
 
         group.getChildren().addAll(gates);
         group.getChildren().addAll(landmarks);
@@ -386,7 +385,6 @@ public class RaceController {
             boats.get(i).getChildren().get(1).setTranslateX(10);
             boats.get(i).getChildren().get(1).setTranslateY(0);
 
-
             if (!lastHeadings.get(i).equals(race.getBoats().get(i).getHeading())) {
                 absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
                 paths.get(i).getElements().add(new LineTo());
@@ -502,6 +500,14 @@ public class RaceController {
     }
 
     /**
+     * Given the bat source ID, will update the position of that boat as it is displayed in the GUi.
+     * @param sourceID the key for the boat in te map of boats.
+     */
+    private void updateBoatPositoion(int sourceID) {
+
+    }
+
+    /**
      * Initiates an animationTimer to start the race in which the boats will participate. This will count down from the
      * timeToStart countdown, then start the boats racing. Keeps the window updated with calls to
      * updateView. Also displays the current position that the boats are in
@@ -519,7 +525,7 @@ public class RaceController {
 
 
                 if (raceStarted) {
-                    race.updateBoats();
+                    //race.updateBoats();
 
                     Coordinate.updateBorder();
                     updateRaceClock();

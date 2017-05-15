@@ -4,10 +4,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import seng302.Controllers.Coordinate;
+import seng302.Messages.LocationMessage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.Math.*;
 import static java.lang.System.currentTimeMillis;
@@ -21,8 +21,9 @@ public class Race {
     private int numFinishers = 0;
     private List<Landmark> landmarks;
     private List<Landmark> gates;
-    private List<Boat> boats;
-    private int numOfBoats;
+    // Changing list of boats to hashmap. where key is boat SourceID, as retrieved from the xml message
+//    private List<Boat> boats;
+    public Map<Integer, Boat> boats;
     private List<Boat> finishedBoats;
     private List<Leg> legs;
     private List<Position> boundaries;
@@ -38,22 +39,33 @@ public class Race {
      * Constructor for the race class.
      */
     public Race() {
-        parseXML("course.xml");
         setWindHeading(190);
-        boats = getContestants();
+        parseXML("course.xml");
+        // Contestants are now retrieved from the xml message
+        //boats = getContestants();
         finishedBoats = new ArrayList<>();
-        currentOrder = observableArrayList(boats);
+        // TODO: Current order needs to be instantiated here. Get the list of boats in the race first. Then use the time to next gate in the race packet to decide race position
         positionStrings = FXCollections.observableArrayList();
         Position viewMin = new Position(32.275, -64.855);
         Position viewMax = new Position(32.32, -64.831);
         Coordinate.setViewMin(viewMin);
         Coordinate.setViewMax(viewMax);
-        for (Boat boat : boats) {
-            boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
-            boat.setX(legs.get(0).getStart().getX());
-            boat.setY(legs.get(0).getStart().getY());
-        }
+        boats = new HashMap<Integer, Boat>();
+        populateBoatMap();
     }
+
+    /**
+     * Dummy call to hard code populate boat map for testing purposes.
+     */
+    public void populateBoatMap() {
+        boats.put(101, new Boat(101));
+        boats.put(102, new Boat(102));
+        boats.put(103, new Boat(103));
+        boats.put(104, new Boat(104));
+        boats.put(105, new Boat(105));
+        boats.put(106, new Boat(106));
+    }
+
     /**
      * Setter for finishedBoat, mainly to allow for testing.
      * @param finishedBoats set the finished list of boats
@@ -103,12 +115,13 @@ public class Race {
      * @return currentOrder as an observable list.
      */
     public ObservableList<Boat> getCurrentOrder() {
-        int i = 1;
-        for (Boat boat : currentOrder) {
-            boat.setPosition(i);
-            i++;
-        }
-        return currentOrder;
+//        int i = 1;
+//        for (Boat boat : currentOrder) {
+//            boat.setPosition(i);
+//            i++;
+//        }
+//        return currentOrder;
+        return FXCollections.observableArrayList(boats.values());
     }
 
     /**
@@ -140,32 +153,37 @@ public class Race {
      * @return the boats competing
      */
     public List<Boat> getBoats() {
-        return boats;
+        return new ArrayList<Boat>(boats.values());
     }
 
-    public Boat getBoatByID(int id) {
-        for (Boat boat : boats) {
-            if (boat.getSourceID() == id) {
-                return boat;
-            }
-        }
-        return null;
-    }
+    //DEPRECATED
+
+//    public Boat getBoatByID(int id) {
+//        for (Boat boat : boats) {
+//            if (boat.getSourceID() == id) {
+//                return boat;
+//            }
+//        }
+//        return null;
+//    }
+
 
     /**
      * Creates an ArrayList of boats competing in the current race
      * @return The ArrayList of boats
      */
-    private ArrayList<Boat> getContestants() {
-        ArrayList<Boat> contestants = new ArrayList<>();
-        contestants.add(new Boat("ORACLE TEAM USA", 5.8, Color.RED, "USA"));
-        contestants.add(new Boat("Artemis Racing", 7.1, Color.BLUE, "SWE"));
-        contestants.add(new Boat("Emirates Team New Zealand", 11.2, Color.BLACK, "NZL"));
-        contestants.add(new Boat("Groupama Team France", 6.7, Color.WHEAT, "FRA"));
-        contestants.add(new Boat("Land Rover BAR", 7.6, Color.AQUAMARINE, "GBR"));
-        contestants.add(new Boat("SoftBank Team Japan", 9.3, Color.DARKSALMON, "JPN"));
-        return contestants;
-    }
+//    private ArrayList<Boat> getContestants() {
+//        ArrayList<Boat> contestants = new ArrayList<>();
+//        contestants.add(new Boat("ORACLE TEAM USA", 5.8, Color.RED, "USA"));
+//        contestants.add(new Boat("Artemis Racing", 7.1, Color.BLUE, "SWE"));
+//        contestants.add(new Boat("Emirates Team New Zealand", 11.2, Color.BLACK, "NZL"));
+//        contestants.add(new Boat("Groupama Team France", 6.7, Color.WHEAT, "FRA"));
+//        contestants.add(new Boat("Land Rover BAR", 7.6, Color.AQUAMARINE, "GBR"));
+//        contestants.add(new Boat("SoftBank Team Japan", 9.3, Color.DARKSALMON, "JPN"));
+//        return contestants;
+//    }
+
+    // DEPRECATED, NOT REQUIRED FOR READING IN THE XML FROM THE STREAM
 
     /**
      * Reads an XML file to get the attributes of things on the course
@@ -205,8 +223,6 @@ public class Race {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     /**
@@ -217,56 +233,59 @@ public class Race {
         return gates;
     }
 
-    /**
-     * Runs a portion of the race, updating boat positions and leg status
-     */
-    public void updateBoats() {
-        double distanceMultiplier = 1;
-        double movementMultiplier = 1;
 
-        for (Boat boat : boats) {
-            if (!finishedBoats.contains(boat)) {
-                boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed()*distanceMultiplier);
+//  BELOW IS DEPRECATED. INFORMATION NO LONGER APPLIES AS NOT ALL DATA IS ACCESSIBLE FROM DATA STREAM.
 
-                //Increments the the distance by the speed
-                boat.setX(boat.getX() + boat.getSpeed()*sin(toRadians(boat.getHeading()))*movementMultiplier);
-                boat.setY(boat.getY() + boat.getSpeed()*cos(toRadians(boat.getHeading()))*movementMultiplier);
-
-                if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {
-                    String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
-                    boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
-                    boat.setCurrentLegIndex(boat.getCurrentLegIndex() + 1);
-
-                    // Gives each boat it's race time to the last mark.
-                    boat.setRaceTime(currentTimeMillis());
-                    // Sorts the boats in order. Attempts by leg it's doing first, then by time to complete last leg from start.
-                    currentOrder.sort((boat1, boat2) -> {
-                        if (boat1.getCurrentLegIndex() == boat2.getCurrentLegIndex()) {
-                            return Long.compare(boat1.getRaceTime(), boat2.getRaceTime());
-                        } else {
-                            return Integer.compare(boat2.getCurrentLegIndex(),boat1.getCurrentLegIndex());
-                        }
-                    });
-
-                    if (boat.getCurrentLegIndex() == legs.size()) {
-//                        System.out.println(boat.getName() + " finished race!");
-                        numFinishers++;
-                        boat.setSpeed(0);
-                        finishedBoats.add(boat);
-                        if (numFinishers == boats.size()) {
-                            finished = true;
-                            return;
-                        }
-                    } else {
-                        boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
-//                        System.out.println(boat.getName() + " passed " + passed + ", now sailing to " +
-//                                legs.get(boat.getCurrentLegIndex()).getDest().getName() + " with a heading of " +
-//                                String.format("%.2f", legs.get(boat.getCurrentLegIndex()).getHeading()) + "°");
-                    }
-                }
-            }
-        }
-    }
+//    /**
+//     * Runs a portion of the race, updating boat positions and leg status
+//     */
+//    public void updateBoats() {
+//        double distanceMultiplier = 1;
+//        double movementMultiplier = 1;
+//
+//        for (Boat boat : boats) {
+//            if (!finishedBoats.contains(boat)) {
+//                boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed()*distanceMultiplier);
+//
+//                //Increments the distance by the speed
+//                boat.setX(boat.getX() + boat.getSpeed()*sin(toRadians(boat.getHeading()))*movementMultiplier);
+//                boat.setY(boat.getY() + boat.getSpeed()*cos(toRadians(boat.getHeading()))*movementMultiplier);
+//
+//                if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {
+//                    String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
+//                    boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
+//                    boat.setCurrentLegIndex(boat.getCurrentLegIndex() + 1);
+//
+//                    // Gives each boat it's race time to the last mark.
+//                    boat.setRaceTime(currentTimeMillis());
+//                    // Sorts the boats in order. Attempts by leg it's doing first, then by time to complete last leg from start.
+//                    currentOrder.sort((boat1, boat2) -> {
+//                        if (boat1.getCurrentLegIndex() == boat2.getCurrentLegIndex()) {
+//                            return Long.compare(boat1.getRaceTime(), boat2.getRaceTime());
+//                        } else {
+//                            return Integer.compare(boat2.getCurrentLegIndex(),boat1.getCurrentLegIndex());
+//                        }
+//                    });
+//
+//                    if (boat.getCurrentLegIndex() == legs.size()) {
+////                        System.out.println(boat.getName() + " finished race!");
+//                        numFinishers++;
+//                        boat.setSpeed(0);
+//                        finishedBoats.add(boat);
+//                        if (numFinishers == boats.size()) {
+//                            finished = true;
+//                            return;
+//                        }
+//                    } else {
+//                        boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
+////                        System.out.println(boat.getName() + " passed " + passed + ", now sailing to " +
+////                                legs.get(boat.getCurrentLegIndex()).getDest().getName() + " with a heading of " +
+////                                String.format("%.2f", legs.get(boat.getCurrentLegIndex()).getHeading()) + "°");
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     public List<Position> getBoundaries() {
         return boundaries;
