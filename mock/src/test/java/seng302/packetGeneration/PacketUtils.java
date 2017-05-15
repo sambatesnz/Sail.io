@@ -50,4 +50,9 @@ public final class PacketUtils {
         return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getLong();
     }
 
+//    static int getTwoBitIntFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
+//        System.arraycopy(message, sourceIndex, actualMessage, 0, size);
+//        return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getInt();
+//    }
+
 }

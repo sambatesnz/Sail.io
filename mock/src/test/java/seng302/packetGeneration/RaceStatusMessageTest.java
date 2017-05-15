@@ -45,7 +45,16 @@ public class RaceStatusMessageTest {
 
     @Test
     public void testMessageVNumber() throws Exception {
-        int versionNumber = 2;
+
+//        System.out.println(Integer.toBinaryString(2));
+//        System.out.println(1 << 1);
+//        byte[] data = new byte[2];
+//        int a = 10;
+//        data[0] = (byte) a;
+//        data[1] = (byte) (a >>> 8);
+//        System.out.println(data);
+
+        int versionNumber = 1;
         RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
                 versionNumber,
                 0,
@@ -64,8 +73,8 @@ public class RaceStatusMessageTest {
         byte[] actualMessage = new byte[8];
         int sourceIndex = RaceStatusUtility.MESSAGE_VERSION;
         int size = RaceStatusUtility.MESSAGE_VERSION_SIZE;
-        long expectedTime = PacketUtils.getLongFromByteArray(message, sourceIndex, actualMessage, size);
-        assertTrue(false); //Not implemented yet
+        int expectedVNumber = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(versionNumber, expectedVNumber); //Not implemented yet
     }
 
     @Test
@@ -176,7 +185,25 @@ public class RaceStatusMessageTest {
 
     @Test
     public void windSpeed() throws Exception {
-        assertTrue(false);//Not implemented yet
+        int windSpeed = 30;
+        RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                windSpeed,
+                '0',
+                '0',
+                null
+        );
+        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = RaceStatusUtility.WIND_SPEED;
+        int size = RaceStatusUtility.WIND_SPEED_SIZE;
+        int expectedWindSpeed = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(windSpeed, expectedWindSpeed);
     }
 
     @Test
