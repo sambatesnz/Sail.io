@@ -41,7 +41,7 @@ public class BoatStatusMessageTest {
         byte[] message = boatStatusMessage.getBoatStatusMessage();
 
         byte[] actualMessage = new byte[4];
-        int actualBoatID = getIntFromByteArray(message, RaceStatusUtility.SOURCE_ID_INDEX, actualMessage, 4);
+        int actualBoatID = PacketUtils.getIntFromByteArray(message, RaceStatusUtility.SOURCE_ID_INDEX, actualMessage, 4);
         assertEquals(sourceBoatID, actualBoatID);
     }
 
@@ -59,7 +59,7 @@ public class BoatStatusMessageTest {
         byte[] message = boatStatusMessage.getBoatStatusMessage();
 
         byte[] actualMessage = new byte[2];
-        char actualBoatStatus = getCharFromByteArray(message, RaceStatusUtility.BOAT_STATUS_INDEX, actualMessage, 1);
+        char actualBoatStatus = PacketUtils.getCharFromByteArray(message, RaceStatusUtility.BOAT_STATUS_INDEX, actualMessage, 1);
         assertEquals(boatStatus, actualBoatStatus);
     }
 
@@ -77,7 +77,7 @@ public class BoatStatusMessageTest {
         byte[] message = boatStatusMessage.getBoatStatusMessage();
 
         byte[] actualMessage = new byte[2];
-        char actualLegNumber = getCharFromByteArray(message, RaceStatusUtility.LEG_NUMBER_INDEX, actualMessage, 1);
+        char actualLegNumber = PacketUtils.getCharFromByteArray(message, RaceStatusUtility.LEG_NUMBER_INDEX, actualMessage, 1);
         assertEquals(legNumber, actualLegNumber);
     }
 
@@ -95,7 +95,7 @@ public class BoatStatusMessageTest {
         byte[] message = boatStatusMessage.getBoatStatusMessage();
 
         byte[] actualMessage = new byte[8];
-        long actualEstTimeAtNextMark = getLongFromByteArray(message, RaceStatusUtility.EST_TIME_AT_NEXT_MARK_INDEX, actualMessage, 6);
+        long actualEstTimeAtNextMark = PacketUtils.getLongFromByteArray(message, RaceStatusUtility.EST_TIME_AT_NEXT_MARK_INDEX, actualMessage, 6);
         assertEquals(estTimeAtNextMark, actualEstTimeAtNextMark);
     }
 
@@ -113,46 +113,9 @@ public class BoatStatusMessageTest {
         byte[] message = boatStatusMessage.getBoatStatusMessage();
 
         byte[] actualMessage = new byte[8];
-        long actualEstTimeAtFinish = getLongFromByteArray(message, RaceStatusUtility.EST_TIME_AT_FINISH_INDEX, actualMessage, 6);
+        long actualEstTimeAtFinish = PacketUtils.getLongFromByteArray(message, RaceStatusUtility.EST_TIME_AT_FINISH_INDEX, actualMessage, 6);
         assertEquals(estTimeAtFinish, actualEstTimeAtFinish);
     }
 
-    /**
-     * Get an int out of a byte[]
-     * @param message byte array to be sliced
-     * @param sourceIndex to slice from
-     * @param actualMessage output array to copy to
-     * @param size of message to slice out
-     * @return an int from the message
-     */
-    private int getIntFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
-        System.arraycopy(message, sourceIndex, actualMessage, 0, size);
-        return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getInt();
-    }
 
-    /**
-     * Get a char out of a byte[]
-     * @param message byte array to be sliced
-     * @param sourceIndex to slice from
-     * @param actualMessage output array to copy to
-     * @param size of message to slice out
-     * @return a char from the message
-     */
-     static char getCharFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
-        System.arraycopy(message, sourceIndex, actualMessage, 0, size);
-        return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getChar();
-    }
-
-    /**
-     * Get a long out of a byte[]
-     * @param message byte array to be sliced
-     * @param sourceIndex to slice from
-     * @param actualMessage output array to copy to
-     * @param size of message to slice out
-     * @return a long from the message
-     */
-    private long getLongFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
-        System.arraycopy(message, sourceIndex, actualMessage, 0, size);
-        return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getLong();
-    }
 }
