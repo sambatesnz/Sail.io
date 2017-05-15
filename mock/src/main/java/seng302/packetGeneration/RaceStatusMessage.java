@@ -29,6 +29,7 @@ public class RaceStatusMessage {
 
     public RaceStatusMessage(int versionNumber, long currentTime, int raceID, int raceStatus, long startTime, int windDirection, int windSpeed, char numberOfBoats, char raceType, List<Boat> boats) {
         this.currentTime = RaceStatusUtility.longToSixBytes(currentTime);
+        this.raceID = RaceStatusUtility.intToFourBytes(raceID);
         this.raceStatus = RaceStatusUtility.intToFourBytes(raceStatus);
         this.startTime = RaceStatusUtility.longToSixBytes(startTime);
         this.numberOfBoats = RaceStatusUtility.charToOneByte(numberOfBoats);
@@ -45,6 +46,7 @@ public class RaceStatusMessage {
         //Copy specific bytes into here
 
         System.arraycopy(currentTime, 0, output, RaceStatusUtility.CURRENT_TIME, RaceStatusUtility.CURRENT_TIME_SIZE);
+        System.arraycopy(raceID, 0, output, RaceStatusUtility.RACE_ID, RaceStatusUtility.RACE_ID_SIZE);
         System.arraycopy(raceStatus, 0, output, RaceStatusUtility.RACE_STATUS, RaceStatusUtility.RACE_STATUS_SIZE);
         System.arraycopy(startTime, 0, output, RaceStatusUtility.EXPECTED_START_TIME, RaceStatusUtility.EXPECTED_START_TIME_SIZE);
         System.arraycopy(numberOfBoats, 0, output, RaceStatusUtility.NUM_BOATS, RaceStatusUtility.NUM_BOATS_SIZE);

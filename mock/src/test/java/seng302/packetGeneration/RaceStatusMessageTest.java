@@ -64,7 +64,7 @@ public class RaceStatusMessageTest {
         byte[] actualMessage = new byte[8];
         int sourceIndex = RaceStatusUtility.MESSAGE_VERSION;
         int size = RaceStatusUtility.MESSAGE_VERSION_SIZE;
-        long expectedTime = sliceArray(message, sourceIndex, actualMessage, size);
+        long expectedTime = PacketUtils.getLongFromByteArray(message, sourceIndex, actualMessage, size);
         assertTrue(false); //Not implemented yet
     }
 
@@ -89,13 +89,34 @@ public class RaceStatusMessageTest {
         int sourceIndex = RaceStatusUtility.CURRENT_TIME;
         int size = RaceStatusUtility.CURRENT_TIME_SIZE;
         byte[] actualMessage = new byte[8];
-        long expectedTime = sliceArray(message, sourceIndex, actualMessage, size);
+        long expectedTime = PacketUtils.getLongFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(time, expectedTime);
     }
 
     @Test
     public void raceId() throws Exception {
-        assertTrue(false); //Not implemented yet
+        int raceId = 1;
+
+        RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
+                1,
+                0,
+                raceId,
+                0,
+                0,
+                0,
+                0,
+                '0',
+                '0',
+                null
+        );
+
+        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        int sourceIndex = RaceStatusUtility.RACE_ID;
+        int size = RaceStatusUtility.RACE_ID_SIZE;
+        byte[] actualMessage = new byte[4];
+        int expectedRaceId = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(raceId, expectedRaceId);
+
     }
 
     @Test
@@ -144,7 +165,7 @@ public class RaceStatusMessageTest {
         int sourceIndex = RaceStatusUtility.EXPECTED_START_TIME;
         int size = RaceStatusUtility.EXPECTED_START_TIME_SIZE;
         byte[] actualMessage = new byte[8];
-        long expectedTime = sliceArray(message, sourceIndex, actualMessage, size);
+        long expectedTime = PacketUtils.getLongFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(startTime, expectedTime);
     }
 
@@ -209,12 +230,5 @@ public class RaceStatusMessageTest {
         char actualRaceType = PacketUtils.getCharFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(raceType, actualRaceType);
     }
-
-
-    private long sliceArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
-        System.arraycopy(message, sourceIndex, actualMessage, 0, size);
-        return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getLong();
-    }
-
 
 }
