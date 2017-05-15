@@ -19,10 +19,10 @@ public class RaceStatusMessage {
     private byte[] startTime;
     private byte[] windDirection;
     private byte[] windSpeed;
-    private byte[] numberOfBoats;
+    private byte[] numberOfBoatsByte;
     private byte[] raceType;
     private List<byte[]> boats;
-    private int boatNum;
+    private int numberOfBoatsInt;
 
     public static int CURRENT_VERSION_NUMBER= 2;
 
@@ -46,8 +46,8 @@ public class RaceStatusMessage {
         this.startTime = RaceStatusUtility.longToSixBytes(startTime);
         this.windDirection = RaceStatusUtility.shortToTwoBytes(windDirection);
         this.windSpeed = RaceStatusUtility.shortToTwoBytes(windSpeed);
-        this.numberOfBoats = RaceStatusUtility.charToOneByte(numberOfBoats);
-        this.boatNum = Character.getNumericValue(numberOfBoats);
+        this.numberOfBoatsByte = RaceStatusUtility.charToOneByte(numberOfBoats);
+        this.numberOfBoatsInt = Character.getNumericValue(numberOfBoats);
         this.raceType = RaceStatusUtility.charToOneByte(raceType);
     }
 
@@ -72,8 +72,8 @@ public class RaceStatusMessage {
         this.startTime = RaceStatusUtility.longToSixBytes(startTime);
         this.windDirection = RaceStatusUtility.shortToTwoBytes(windDirection);
         this.windSpeed = RaceStatusUtility.shortToTwoBytes(windSpeed);
-        this.numberOfBoats = RaceStatusUtility.charToOneByte(numberOfBoats);
-        this.boatNum = Character.getNumericValue(numberOfBoats);
+        this.numberOfBoatsByte = RaceStatusUtility.charToOneByte(numberOfBoats);
+        this.numberOfBoatsInt = Character.getNumericValue(numberOfBoats);
         this.raceType = RaceStatusUtility.charToOneByte(raceType);
     }
 
@@ -82,7 +82,8 @@ public class RaceStatusMessage {
      * @return byte array containing the whole Race Status Message
      */
     public byte[] getRaceStatusMessage(){
-        byte[] output = new byte[24 + boatNum * 20];
+        byte[] output = new byte[24 + numberOfBoatsInt * 20];
+        System.out.println(numberOfBoatsInt);
         //Copy specific bytes into here
         System.arraycopy(versionNumber, 0, output, RaceStatusUtility.MESSAGE_VERSION, RaceStatusUtility.MESSAGE_VERSION_SIZE);
         System.arraycopy(currentTime, 0, output, RaceStatusUtility.CURRENT_TIME, RaceStatusUtility.CURRENT_TIME_SIZE);
@@ -91,7 +92,7 @@ public class RaceStatusMessage {
         System.arraycopy(startTime, 0, output, RaceStatusUtility.EXPECTED_START_TIME, RaceStatusUtility.EXPECTED_START_TIME_SIZE);
         System.arraycopy(windDirection, 0, output, RaceStatusUtility.WIND_DIRECTION, RaceStatusUtility.WIND_DIRECTION_SIZE);
         System.arraycopy(windSpeed, 0, output, RaceStatusUtility.WIND_SPEED, RaceStatusUtility.WIND_SPEED_SIZE);
-        System.arraycopy(numberOfBoats, 0, output, RaceStatusUtility.NUM_BOATS, RaceStatusUtility.NUM_BOATS_SIZE);
+        System.arraycopy(numberOfBoatsByte, 0, output, RaceStatusUtility.NUM_BOATS, RaceStatusUtility.NUM_BOATS_SIZE);
         System.arraycopy(raceType, 0, output, RaceStatusUtility.RACE_TYPE, RaceStatusUtility.RACE_TYPE_SIZE );
         return output;
     }
