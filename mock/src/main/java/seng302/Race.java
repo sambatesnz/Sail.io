@@ -1,5 +1,6 @@
 package seng302;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
@@ -25,6 +26,9 @@ public class Race {
     private List<Leg> legs;
     private List<Position> boundaries;
     private double windHeading;
+    private int raceID;
+    private char raceType;
+    private int raceStatus;
     private ObservableList<Boat> currentOrder;
     private ObservableList<String> positionStrings;
     public boolean finished = false;
@@ -73,6 +77,42 @@ public class Race {
 
     public double getWindHeading() {
         return windHeading;
+    }
+
+    public short getWindDirection() {
+        // returns an unsigned short of the wind heading
+
+        return 0;
+    }
+
+    public short getWindSpeed() {
+        // returns an unsigned short of the wind speed in mm/sec
+
+        return 0;
+    }
+
+    public void setRaceID(int raceID) { this.raceID = raceID; }
+
+    public int getRaceID() {
+        // returns the raceID
+
+        return 0;
+    }
+
+    public void setRaceType(char raceType) { this.raceType = raceType; }
+
+    public char getRaceType() {
+        // returns the raceType
+
+        return '1';
+    }
+
+    public void setRaceStatus(int raceStatus) { this.raceStatus = raceStatus; }
+
+    public int getRaceStatus() {
+        // returns the raceStatus
+
+        return 0;
     }
 
     /**
