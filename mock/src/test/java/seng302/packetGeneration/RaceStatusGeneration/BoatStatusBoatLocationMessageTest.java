@@ -1,17 +1,14 @@
-package seng302.packetGeneration;
+package seng302.packetGeneration.RaceStatusGeneration;
 
 import org.junit.Test;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 import static org.junit.Assert.*;
 
 /**
- * Tests for the Boat Status message as a part of the Race Status Message Class
+ * Tests for the Boat Status message as a part of the Race Status BoatLocationMessage Class
  * Specification as defined on page 8 of https://docs.google.com/a/acracemgt.com/viewer?a=v&pid=sites&srcid=YWNyYWNlbWd0LmNvbXxub3RpY2Vib2FyZHxneDoyYTExNTQ4Yzg3ZGRmNTQ1
  */
-public class BoatStatusMessageTest {
+public class BoatStatusBoatLocationMessageTest {
 
     @Test
     public void testMessagePacketSize() throws Exception {

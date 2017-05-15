@@ -1,4 +1,4 @@
-package seng302.packetGeneration;
+package seng302.packetGeneration.RaceStatusGeneration;
 
 import org.junit.Test;
 
@@ -7,9 +7,9 @@ import static org.junit.Assert.*;
 
 /**
  * Test class for testing the race status messages
- * The tests test each section of the Race Status Message Specification as defined in page 9 of  https://docs.google.com/a/acracemgt.com/viewer?a=v&pid=sites&srcid=YWNyYWNlbWd0LmNvbXxub3RpY2Vib2FyZHxneDoyYTExNTQ4Yzg3ZGRmNTQ1
+ * The tests test each section of the Race Status BoatLocationMessage Specification as defined in page 9 of  https://docs.google.com/a/acracemgt.com/viewer?a=v&pid=sites&srcid=YWNyYWNlbWd0LmNvbXxub3RpY2Vib2FyZHxneDoyYTExNTQ4Yzg3ZGRmNTQ1
  */
-public class RaceStatusMessageTest {
+public class RaceStatusBoatLocationMessageTest {
 
 
     @Test

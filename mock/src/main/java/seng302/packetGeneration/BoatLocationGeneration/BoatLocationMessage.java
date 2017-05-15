@@ -1,4 +1,6 @@
-package seng302;
+package seng302.packetGeneration.BoatLocationGeneration;
+
+import seng302.Boat;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -9,7 +11,7 @@ import java.util.zip.CRC32;
 /**
  * Messages used in the data streams
  */
-public class Message {
+public class BoatLocationMessage {
     private static final int VALID_TIME_MILLI = 1000;
     public static final short BOAT_POSITION_LENGTH= 56;
     public static final short HEADER_LENGTH = 15;
@@ -20,7 +22,7 @@ public class Message {
 
     private int messageId;
 
-    public Message() {
+    public BoatLocationMessage() {
         messageId = Integer.MIN_VALUE;
     }
 
@@ -75,10 +77,6 @@ public class Message {
         header.put(messageID);
         header.put(messageLength);
 
-//        System.out.println(Arrays.toString(messageLength));
-//        System.out.println(body.length);
-//        System.out.println(ByteBuffer.wrap(messageLength).order(ByteOrder.LITTLE_ENDIAN).getShort());
-
         ByteBuffer bytes = LEBuffer(HEADER_LENGTH + body.length);
         bytes.put(header.array());
         bytes.put(body);
@@ -86,15 +84,14 @@ public class Message {
         ByteBuffer bytesCRC = LEBuffer(bytes.array().length + CRC_LENGTH);
         bytesCRC.put(bytes.array());
         bytesCRC.put(calculateChecksum(bytes.array()));
-//        System.out.println(Arrays.toString(bytesCRC.array()));
         return bytesCRC.array();
     }
 
     public byte[] boatPositionMessage(Boat boat) {
-        return message((byte) 37, boatPositionBody(boat));
+        return message((byte) 37, boatLocationBody(boat));
     }
 
-    public byte[] boatPositionBody(Boat boat) {
+    private byte[] boatLocationBody(Boat boat) {
         byte[] time = LEBuffer(8).putLong(System.currentTimeMillis() + VALID_TIME_MILLI).array();
         byte[] timestamp = Arrays.copyOfRange(time, 2, 8);
         byte[] sourceID = new byte[4];
@@ -129,10 +126,10 @@ public class Message {
         return bytes.array();
     }
 
-    public int get4BytePos(double pos){
+    private int get4BytePos(double pos){
         return (int) ((pos+180)/360*(1L << 32L)-(1L << 31L));
     }
-    public short get2ByteHeading(double heading){
+    private short get2ByteHeading(double heading){
         return (short) ((heading)/360*(1L << 16L));
     }
 }

@@ -1,4 +1,4 @@
-package seng302.packetGeneration;
+package seng302.packetGeneration.RaceStatusGeneration;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -49,10 +49,5 @@ public final class PacketUtils {
         System.arraycopy(message, sourceIndex, actualMessage, 0, size);
         return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getLong();
     }
-
-//    static int getTwoBitIntFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
-//        System.arraycopy(message, sourceIndex, actualMessage, 0, size);
-//        return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getInt();
-//    }
 
 }
