@@ -41,8 +41,8 @@ public class Message {
         switch (messageType) {
             case 1:                                             //Heartbeat
                 break;
-            case 12:
-                RaceStatusMessage raceStatus = new RaceStatusMessage(body);            //Race Status
+            case 12:                                            //Race Status
+                RaceStatusMessage raceStatus = new RaceStatusMessage(body);
                 break;
             case 20:                                            //Display
                 break;

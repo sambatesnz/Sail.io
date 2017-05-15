@@ -19,6 +19,9 @@ public class Boat {
     private String abrv;
     private int sourceID;
 
+    private int timeToNextMark;
+    private int timeToFinish;
+
     /**
      * Gets the abbreviation of the name of the team's boat
      * @return the boat's abbreviation string
@@ -194,5 +197,33 @@ public class Boat {
     public void setSourceID(int id) { this.sourceID = id; }
 
     public int getSourceID() { return sourceID; }
+
+    /**
+     * Getter for the estimated time that the boat will take to get to the next mark
+     * @return The estimated time to the next mark
+     */
+    public int getTimeToNextMark() {
+        return timeToNextMark;
+    }
+
+    /**
+     * Setter for the estimated time that the boat will take to get to the next mark
+     * @param timeToNextMark The estimated time to the next mark
+     */
+    public void setTimeToNextMark(int timeToNextMark) {
+        this.timeToNextMark = timeToNextMark;
+    }
+
+    /**
+     * Getter for the estimated time that the boat will take to finish
+     * @return The estimated time to finish
+     */
+    public int getTimeToFinish() {
+        return timeToFinish;
+    }
+
+    public void setTimeToFinish(int timeToFinish) {
+        this.timeToFinish = timeToFinish;
+    }
 }
 

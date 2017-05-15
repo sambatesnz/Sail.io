@@ -6,6 +6,7 @@ import seng302.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class LocationMessage{
     private long time;
@@ -14,6 +15,9 @@ public class LocationMessage{
     private double longitude;
     private double heading;
     private int speedOverGround;
+
+    private HashMap<Integer, Boat> boatDict = new HashMap<Integer, Boat>();
+
 
     public LocationMessage(byte[] bytes) {
 //        messageVersionNumber = data[0];
@@ -24,6 +28,13 @@ public class LocationMessage{
         longitude = Message.byteArrayToLong(bytes, 20, 4) * 180 / 2147483648.0;
         heading = Message.byteArrayToInt(bytes, 28, 2) * 360 / 65536.0;
         speedOverGround = Message.byteArrayToInt(bytes, 38, 2);
+    }
+
+    public void setBoatLocation() {
+        boatDict.get(sourceID).setX(Position.convertX(longitude));
+        boatDict.get(sourceID).setX(Position.convertY(latitude));
+        boatDict.get(sourceID).setSpeed(speedOverGround);
+        boatDict.get(sourceID).setHeading(heading);
     }
 
 }

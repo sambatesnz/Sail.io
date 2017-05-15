@@ -15,6 +15,14 @@ public class BoatStatusMessage {
         this.legNumber = legNumber;
         this.estTimeToNextMark = estTimeToNextMark;
         this.estTimeToFinish = estTimeToFinish;
-        System.out.println(legNumber);
+//        System.out.println("Source ID: " + sourceID);
+//        System.out.println("Boat Status: " + status);
+//        System.out.println("Leg Number: " + legNumber);
+//        System.out.println("Time to next mark: " + estTimeToNextMark);
+//        System.out.println("Time to finish: " + estTimeToFinish);
+    }
+
+    public void setBoatPosition() {
+
     }
 }

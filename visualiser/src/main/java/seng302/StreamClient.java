@@ -98,8 +98,8 @@ public class StreamClient {
     public void connect() {
         try {
             System.out.println("Attempting to connect...");
-            clientSocket = new Socket("localhost", 5005);
-//            clientSocket = new Socket(host, port);
+//            clientSocket = new Socket("localhost", 5005);
+            clientSocket = new Socket(host, port);
             System.out.println("Connected.");
             streamInput = new BufferedInputStream(clientSocket.getInputStream());
         }

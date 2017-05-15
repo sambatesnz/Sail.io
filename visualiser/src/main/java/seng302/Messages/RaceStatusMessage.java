@@ -28,6 +28,14 @@ public class RaceStatusMessage {
         windSpeed = Message.byteArrayToInt(bytes, 20, 2);
         numBoatsInRace = Message.byteArrayToInt(bytes, 22, 1);
         raceType = Message.byteArrayToInt(bytes, 23, 1);
+//        System.out.println("Current time: " + currentTime);
+//        System.out.println("Race ID: " + raceID);
+//        System.out.println("Race Status: " + raceStatus);
+//        System.out.println("Expected Start Time: " + expectedStartTime);
+//        System.out.println("Wind Direction: " + windDirection);
+//        System.out.println("Wind Speed: " + windSpeed);
+//        System.out.println("Number of Boats in Race: " + numBoatsInRace);
+//        System.out.println("Race Type: " + raceType);
 
         int indent = 24; //25th byte
 
@@ -46,6 +54,7 @@ public class RaceStatusMessage {
 
             indent += 20;
         }
-        System.out.println("Race Status: " + raceStatus);
     }
+
+
 }

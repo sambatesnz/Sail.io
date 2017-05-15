@@ -26,7 +26,7 @@ public class XMLMessage {
         xmlMessage = new byte[xmlMessageLen];
         System.arraycopy(data,14, xmlMessage,0, xmlMessageLen);
         xmlString = new String(xmlMessage, "UTF-8");
-        System.out.println(xmlString);
+//        System.out.println(xmlString);
 
 
     }

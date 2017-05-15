@@ -22,12 +22,16 @@ public class Race {
     private List<Landmark> landmarks;
     private List<Landmark> gates;
     private List<Boat> boats;
+    private int numOfBoats;
     private List<Boat> finishedBoats;
     private List<Leg> legs;
     private List<Position> boundaries;
     private double windHeading;
+    private double windSpeed;
     private ObservableList<Boat> currentOrder;
     private ObservableList<String> positionStrings;
+    private int expectedStartTime;
+    private int raceStatus;
     public boolean finished = false;
 
     /**
