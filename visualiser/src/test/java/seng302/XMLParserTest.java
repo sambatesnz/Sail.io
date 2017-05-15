@@ -32,4 +32,10 @@ public class XMLParserTest {
         List<Landmark> landmarks = xmlParser.getCourseLayout();
         Assert.assertTrue(landmarks.size() == 4);
     }
+
+    @Test
+    public void checkCourseOrderCorrect() throws IOException {
+        List<Integer> courseOrder = xmlParser.getCourseOrder();
+        Assert.assertTrue(courseOrder.size() == 5);
+    }
 }

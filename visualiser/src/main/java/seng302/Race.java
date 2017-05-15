@@ -26,6 +26,7 @@ public class Race {
     private List<Boat> finishedBoats;
     private List<Leg> legs;
     private List<Position> boundaries;
+    private List<Integer> courseOrder;
     private double windHeading;
     private ObservableList<Boat> currentOrder;
     private ObservableList<String> positionStrings;
@@ -35,9 +36,9 @@ public class Race {
      * Constructor for the race class.
      */
     public Race() {
-//        java.util.Scanner s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("ExampleXMLs/Race.xml")).useDelimiter("\\A");
-//        String xmlString = s.hasNext() ? s.next() : "";
-//        parseRaceXML(xmlString);
+        java.util.Scanner s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("ExampleXMLs/Race.xml")).useDelimiter("\\A");
+        String xmlString = s.hasNext() ? s.next() : "";
+        parseRaceXML(xmlString);
         parseXML("course.xml");
         setWindHeading(190);
         boats = getContestants();
@@ -172,16 +173,14 @@ public class Race {
         try {
             CourseCreator cc = new CourseCreator(fileName);
 
-            landmarks = cc.getLandmarks();
-            gates = new ArrayList<>();
-            for (Landmark mark : landmarks) {
-                if (mark.getType().equals("Gate")) {
-                    gates.add(mark);
-                }
-            }
-            boundaries = cc.getBoundaries();
-
-            ArrayList<Integer> courseOrder = cc.getGateOrderForRace();
+//            landmarks = cc.getLandmarks();
+//            gates = new ArrayList<>();
+//            for (Landmark mark : landmarks) {
+//                if (mark.getType().equals("Gate")) {
+//                    gates.add(mark);
+//                }
+//            }
+//            boundaries = cc.getBoundaries();
 
             legs = new ArrayList<>();
             for (int i = 1; i < courseOrder.size(); i++) {
@@ -212,18 +211,20 @@ public class Race {
         try {
             XMLParser xmlParser = new XMLParser(xmlString);
 
-//            landmarks = cc.getLandmarks();
-//            gates = new ArrayList<>();
-//            for (Landmark mark : landmarks) {
-//                if (mark.getType().equals("Gate")) {
-//                    gates.add(mark);
-//                }
-//            }
+            landmarks = xmlParser.getCourseLayout();
+            gates = new ArrayList<>();
+            for (Landmark mark : landmarks) {
+                if (mark.getType().equals("Gate")) {
+                    gates.add(mark);
+                }
+            }
             boundaries = new ArrayList<>();
             List<CourseLimit> courseLimits = xmlParser.getCourseLimits();
             for (CourseLimit cl: courseLimits) {
                 boundaries.add(new Position(cl.getLat(), cl.getLon()));
             }
+
+            courseOrder = xmlParser.getCourseOrder();
 
 //            ArrayList<Integer> courseOrder = cc.getGateOrderForRace();
 //

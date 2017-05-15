@@ -21,7 +21,7 @@ public class XMLParser {
     private String WINDDIRECTION = "windDirection";
     private String LATITUDE = "Lat";
     private String LONGITUDE = "Lon";
-    private String COMPOUND_MARK = "compoundMark";
+    private String COMPOUND_MARK_ID = "CompoundMarkID";
     private String MARK_TYPE = "type";
     private String MARK_NAME = "name";
     private String MARK_COLOR = "color";
@@ -34,6 +34,11 @@ public class XMLParser {
     private String COURSE_LIMIT = "CourseLimit";
     private String LIMIT = "Limit";
     private String SEQ_ID = "SeqID";
+    private String NAME = "Name";
+    private String TARGETLAT = "TargetLat";
+    private String TARGETLON = "TargetLng";
+    private String SOURCEID = "SourceID";
+    private String COMPOUND_MARK_SEQUENCE = "CompoundMarkSequence";
 
     private String xmlString;
     private Document xmlDoc;
@@ -46,16 +51,6 @@ public class XMLParser {
     public XMLParser(String xml) throws IOException {
         this.xmlString = xml;
         xmlDoc = convertStringToDocument();
-//        if (xmlDoc != null) {
-//            Node firstChild = xmlDoc.getFirstChild();
-//            System.out.println(firstChild.getNodeName());
-//            NodeList nodes = firstChild.getChildNodes();
-//            for (int i = 0; i < nodes.getLength(); i ++) {
-//                if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
-//                    System.out.println(nodes.item(i).getNodeName());
-//                }
-//            }
-//        }
     }
 
     /**
@@ -123,21 +118,59 @@ public class XMLParser {
         return courseLimits;
     }
 
+
+    public List<Integer> getCourseOrder(){
+        NodeList nodes = xmlDoc.getElementsByTagName(COMPOUND_MARK_SEQUENCE).item(0).getChildNodes();
+        List<Integer> courseOrder = new ArrayList<>();
+        try {
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Node node = nodes.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    NamedNodeMap nnm = node.getAttributes();
+                    courseOrder.add(Integer.parseInt(nnm.getNamedItem(COMPOUND_MARK_ID).getNodeValue()));
+                }
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+//        courseOrder.sort(Comparator.comparingInt(CourseLimit::getSeqId));
+        return courseOrder;
+    }
+
+
     public List<Landmark> getCourseLayout(){
         NodeList nodes = xmlDoc.getElementsByTagName(COURSE).item(0).getChildNodes();
         List<Landmark> courseObjects = new ArrayList<>();
         try {
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
+                ArrayList<Position> positions = new ArrayList<>();
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    //TODO: get children, for child in children, get attributes, get Lat/Long etc.
-                    //TODO: Need another level of parsing here, as it goes CompoundMark -> Mark.
                     NamedNodeMap nnm = node.getAttributes();
-                    float lon = Float.valueOf(nnm.getNamedItem(LONGITUDE).getNodeValue());
-                    float lat = Float.valueOf(nnm.getNamedItem(LATITUDE).getNodeValue());
-                    int seqId = Integer.valueOf(nnm.getNamedItem(SEQ_ID).getNodeValue());
-                    Position pos = new Position(lat, lon);
-//                    courseLimits.add(new CourseLimit(seqId,lat, lon));
+                    String compoundMarkName = nnm.getNamedItem(NAME).getNodeValue();
+                    int compoundMarkId = Integer.parseInt(nnm.getNamedItem(COMPOUND_MARK_ID).getNodeValue());
+                    NodeList marks = node.getChildNodes();
+                    for (int j = 0; j < marks.getLength(); j ++) {
+                        Node mark = marks.item(j);
+                        if (mark.getNodeType() == Node.ELEMENT_NODE) {
+                            NamedNodeMap nnm2 = mark.getAttributes();
+                            int sourceId = Integer.valueOf(nnm2.getNamedItem(SOURCEID).getNodeValue());
+                            double lat = Double.valueOf(nnm2.getNamedItem(TARGETLAT).getNodeValue());
+                            double lon = Double.valueOf(nnm2.getNamedItem(TARGETLON).getNodeValue());
+                            String name = nnm2.getNamedItem(NAME).getNodeValue();
+                            int seqId = -1;
+                            if (nnm2.getLength() >= 5) {
+                                seqId = Integer.valueOf(nnm2.getNamedItem(SEQ_ID).getNodeValue());
+                            }
+                            positions.add(new Position(lat, lon));
+                            System.out.println(String.format("Name: %s, Lat: %f, Long: %f, SrcId: %d, SeqId: %d", name, lat, lon, sourceId, seqId));
+                        }
+                    }
+                    String type = "Mark";
+                    if (positions.size() < 1) {
+                        type = "Gate";
+                    }
+                    courseObjects.add(new Landmark(compoundMarkName, positions, Color.RED, compoundMarkId, type));
                 }
             }
         } catch (NumberFormatException e) {
