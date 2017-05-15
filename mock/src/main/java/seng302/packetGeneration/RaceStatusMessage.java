@@ -27,7 +27,16 @@ public class RaceStatusMessage {
     private List<byte[]> boats;
     private int boatNum;
 
-    public RaceStatusMessage(int versionNumber, long currentTime, int raceID, int raceStatus, long startTime, int windDirection, int windSpeed, char numberOfBoats, char raceType, List<Boat> boats) {
+    public RaceStatusMessage(int versionNumber,
+                             long currentTime,
+                             int raceID,
+                             int raceStatus,
+                             long startTime,
+                             int windDirection,
+                             int windSpeed,
+                             char numberOfBoats,
+                             char raceType,
+                             List<Boat> boats) {
         this.boatNum = Character.getNumericValue(numberOfBoats);
         this.currentTime = RaceStatusUtility.longToSixBytes(currentTime);
         this.startTime = RaceStatusUtility.longToSixBytes(startTime);

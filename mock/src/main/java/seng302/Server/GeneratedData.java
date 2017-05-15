@@ -5,6 +5,7 @@ import seng302.DataGenerator;
 import seng302.Message;
 import seng302.Race;
 import seng302.packetGeneration.RaceStatusMessage;
+import static java.lang.System.currentTimeMillis;
 
 import java.util.*;
 
@@ -18,14 +19,14 @@ public class GeneratedData implements IServerData {
 
     // Hardcoded race
     private RaceStatusMessage rsm = new RaceStatusMessage(1,
-                                                            2l,
-                                                            3,
-                                                            4,
-                                                            5l,
-                                                            6,
-                                                            7,
-                                                            8,
-                                                            9,
+                                                            currentTimeMillis(),
+                                                            3,  // placeholder
+                                                            0,
+                                                            currentTimeMillis(),
+                                                            0,  // placeholder
+                                                            0,  // placeholder
+                                                            (char)race.getBoats().size(),
+                                                            '1',    // placeholder
                                                             race.getBoats());
 
     @Override
