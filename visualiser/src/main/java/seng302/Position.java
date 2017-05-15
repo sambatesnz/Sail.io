@@ -10,6 +10,7 @@ public class Position {
     private double x;
     private double y;
 
+    public Position(){}
     /**
      * Generates X and Y positions on meters based on the Latitude and Longitude
      * @param longitude longitude of the position
@@ -69,4 +70,13 @@ public class Position {
     public double getY() {
         return y;
     }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
 }

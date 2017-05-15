@@ -29,6 +29,7 @@ public class Race {
     private ObservableList<Boat> currentOrder;
     private ObservableList<String> positionStrings;
     public boolean finished = false;
+    private Position center;
 
     /**
      * Constructor for the race class.
@@ -40,10 +41,15 @@ public class Race {
         finishedBoats = new ArrayList<>();
         currentOrder = observableArrayList(boats);
         positionStrings = FXCollections.observableArrayList();
-        Position viewMin = new Position(32.275, -64.855);
-        Position viewMax = new Position(32.32, -64.831);
-        Coordinate.setViewMin(viewMin);
-        Coordinate.setViewMax(viewMax);
+        Position courseMin = new Position(32.275, -64.855);
+        Position courseMax = new Position(32.32, -64.831);
+        Coordinate.setOffset(new Position(0, 0));
+        Coordinate.setDefaultCourseMin(courseMin);
+        Coordinate.setDefaultCourseMax(courseMax);
+        Coordinate.setViewMin(courseMin);
+        Coordinate.setViewMax(courseMax);
+        Coordinate.updateViewCoordinates();
+        center = getCenter(courseMin, courseMax);
         for (Boat boat : boats) {
             boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
             boat.setX(legs.get(0).getStart().getX());
@@ -57,7 +63,20 @@ public class Race {
     public void setFinishedBoats(List<Boat> finishedBoats) {
         this.finishedBoats = finishedBoats;
     }
+    public Position getCenter(Position min, Position max) {
+        Position center = new Position();   // changing from setting lat/long to x/y
+        center.setX(max.getX() + min.getX() / 2);
+        center.setY(max.getY() + min.getY() / 2);
+        return center;
+}
 
+    public Position calculateOffset(Boat boat){
+//      TODO: calculate offset based on center and boat (boat - center)
+        Position offset = new Position();
+        offset.setX(200);
+        offset.setY(200);
+        return offset;
+    }
     /**
      * Setter for current order, mainly to allow for testing.
      * @param currentOrder sets the current order of boats
@@ -210,7 +229,8 @@ public class Race {
     public void updateBoats() {
         double distanceMultiplier = 1;
         double movementMultiplier = 1;
-
+        Coordinate.setOffset(calculateOffset(boats.get(0)));
+        Coordinate.updateViewCoordinates();
         for (Boat boat : boats) {
             if (!finishedBoats.contains(boat)) {
                 boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed()*distanceMultiplier);
