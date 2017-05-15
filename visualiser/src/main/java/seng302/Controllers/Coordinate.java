@@ -1,5 +1,6 @@
 package seng302.Controllers;
 
+import javafx.geometry.Pos;
 import seng302.Position;
 
 /**
@@ -7,7 +8,7 @@ import seng302.Position;
  * Contains methods that get relative positions so that items are scaled when the window is resized.
  * Created by Matt Simpson on 20/03/2017.
  */
-public class  Coordinate {
+public final class  Coordinate {
 
     private static double windowX;
     private static double windowY;
@@ -19,24 +20,50 @@ public class  Coordinate {
     private static double BorderY = 0;
     private static double BorderConstant = 0;
     private static int sidePaneWidth = 248;
-
+    private static double zoom = 1;
+    private static Position offset = new Position(0, 0);
+    private static Position defaultCourseMin;
+    private static Position defaultCourseMax;
     private static Position viewMin;
     private static Position viewMax;
+
+
+    private Coordinate(){}
 
     /**
      * Set the coordinates of the minimum postion on the map to be displayed
      * @param min A minimum coordinate to be viewed
      */
-    public static void setViewMin(Position min) {
-        viewMin = min;
+    public static void setDefaultCourseMin(Position min) {
+        defaultCourseMin = min;
+    }
+
+    public static void updateViewCoordinates(){
+        viewMin.setX(defaultCourseMin.getX() + offset.getX());
+        viewMin.setY(defaultCourseMin.getY() + offset.getY());
+        viewMax.setX(defaultCourseMax.getX() + offset.getX());
+        viewMax.setY(defaultCourseMax.getY() + offset.getY());
+
+    }
+
+    public static void setOffset(Position offset) {
+        Coordinate.offset = offset;
+    }
+
+    public static void setViewMin(Position viewMin) {
+        Coordinate.viewMin = viewMin;
+    }
+
+    public static void setViewMax(Position viewMax) {
+        Coordinate.viewMax = viewMax;
     }
 
     /**
      * Set the coordinates of the maximum position on the map to be displayed
      * @param max A maximum coordinate to be viewed
      */
-    public static void setViewMax(Position max) {
-        viewMax = max;
+    public static void setDefaultCourseMax(Position max) {
+        defaultCourseMax = max;
     }
 
     /**
