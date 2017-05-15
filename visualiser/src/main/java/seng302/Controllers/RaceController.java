@@ -19,7 +19,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import seng302.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class RaceController {
     @FXML
     private Button fpsBtn;
     @FXML
-    private ListView startersList;
+    private ListView<String> startersList;
 
     @FXML private CheckBox BoatNameCheckBox;
     @FXML private CheckBox BoatSpeedCheckBox;

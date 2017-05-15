@@ -50,12 +50,12 @@ public class StreamClient {
         int result = 0;
         while (clientSocket != null && streamInput != null && result != -1) {
             try {
-                System.out.println("Requesting Data: ");
+//                System.out.println("Requesting Data: ");
                 result = streamInput.read(data);
-                System.out.println("Data read in.");
+//                System.out.println("Data read in.");
 //                output += new String(data, 0, result);
                 breakNo ++;
-                System.out.println(breakNo);
+//                System.out.println(breakNo);
                 int syncPacket1 = data[0];
                 int syncPacket2 = data[1];
                 //System.out.printf("SP1: %d, SP2: %d", syncPacket1, syncPacket2);
@@ -63,9 +63,9 @@ public class StreamClient {
                 byte[] dest = new byte[2];
                 System.arraycopy(data,13,dest,0,2);
                 short length = ByteBuffer.wrap(dest).order(ByteOrder.LITTLE_ENDIAN).getShort();
-                System.out.println(length);
+//                System.out.println(length);
                 if (syncPacket1 == 71 && syncPacket2 == -125) {
-                    System.out.println("Valid Packet.");
+//                    System.out.println("Valid Packet.");
                     // TODO: Pass to Parser.
                 }
             } catch (IOException e) {

@@ -7,6 +7,7 @@ import seng302.Controllers.Coordinate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.lang.Math.*;
@@ -34,16 +35,24 @@ public class Race {
      * Constructor for the race class.
      */
     public Race() {
+//        java.util.Scanner s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("ExampleXMLs/Race.xml")).useDelimiter("\\A");
+//        String xmlString = s.hasNext() ? s.next() : "";
+//        parseRaceXML(xmlString);
         parseXML("course.xml");
         setWindHeading(190);
         boats = getContestants();
         finishedBoats = new ArrayList<>();
         currentOrder = observableArrayList(boats);
         positionStrings = FXCollections.observableArrayList();
-        Position viewMin = new Position(32.275, -64.855);
-        Position viewMax = new Position(32.32, -64.831);
+        double minLat = boundaries.stream().min(Comparator.comparingDouble(Position::getLatitude)).get().getLatitude();
+        double minLon = boundaries.stream().min(Comparator.comparingDouble(Position::getLongitude)).get().getLongitude();
+        double maxLat = boundaries.stream().max(Comparator.comparingDouble(Position::getLatitude)).get().getLatitude();
+        double maxLon = boundaries.stream().max(Comparator.comparingDouble(Position::getLongitude)).get().getLongitude();
+        Position viewMin = new Position(minLat, minLon);
+        Position viewMax = new Position(maxLat, maxLon);
         Coordinate.setViewMin(viewMin);
         Coordinate.setViewMax(viewMax);
+
         for (Boat boat : boats) {
             boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
             boat.setX(legs.get(0).getStart().getX());
@@ -192,8 +201,50 @@ public class Race {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    /**
+     * Reads an XML file to get the attributes of things on the course
+     * @param xmlString the XML string to parse
+     */
+    private void parseRaceXML(String xmlString) {
 
+        try {
+            XMLParser xmlParser = new XMLParser(xmlString);
+
+//            landmarks = cc.getLandmarks();
+//            gates = new ArrayList<>();
+//            for (Landmark mark : landmarks) {
+//                if (mark.getType().equals("Gate")) {
+//                    gates.add(mark);
+//                }
+//            }
+            boundaries = new ArrayList<>();
+            List<CourseLimit> courseLimits = xmlParser.getCourseLimits();
+            for (CourseLimit cl: courseLimits) {
+                boundaries.add(new Position(cl.getLat(), cl.getLon()));
+            }
+
+//            ArrayList<Integer> courseOrder = cc.getGateOrderForRace();
+//
+//            legs = new ArrayList<>();
+//            for (int i = 1; i < courseOrder.size(); i++) {
+//                int startId = courseOrder.get(i-1);
+//                int destId = courseOrder.get(i);
+//                Landmark start = null;
+//                Landmark dest = null;
+//                for (Landmark lm : landmarks) {
+//                    if (lm.getId() == startId) {
+//                        start = lm;
+//                    } else if (lm.getId() == destId) {
+//                        dest = lm;
+//                    }
+//                }
+//                legs.add(new Leg(start, dest));
+//            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
