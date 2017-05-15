@@ -1,14 +1,13 @@
 package seng302.Server;
 
 import org.junit.Test;
-import seng302.Message;
+import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertArrayEquals;
 
 
@@ -83,7 +82,7 @@ public class StreamServerTest {
 
 //        DataGenerator d = new DataGenerator("Race.xml");
 
-       Message m = new Message();
+       BoatLocationMessage m = new BoatLocationMessage();
 
     }
 

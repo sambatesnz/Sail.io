@@ -1,4 +1,4 @@
-package seng302.packetGeneration;
+package seng302.packetGeneration.RaceStatusGeneration;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

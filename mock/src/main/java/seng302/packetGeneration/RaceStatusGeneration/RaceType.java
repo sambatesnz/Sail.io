@@ -1,4 +1,4 @@
-package seng302.packetGeneration;
+package seng302.packetGeneration.RaceStatusGeneration;
 
 
 /**

@@ -1,7 +1,4 @@
-package seng302.packetGeneration;
-
-import seng302.Main;
-import seng302.Message;
+package seng302.packetGeneration.RaceStatusGeneration;
 
 /**
  * Enum for Race Status as defined by AC35 specification

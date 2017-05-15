@@ -1,4 +1,4 @@
-package seng302.packetGeneration;
+package seng302.packetGeneration.RaceStatusGeneration;
 
 /**
  * Enum for a boats status used in packet generation.

@@ -1,10 +1,10 @@
 package seng302.Server;
 
 import seng302.Boat;
+import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.DataGenerator;
-import seng302.Message;
 import seng302.Race;
-import seng302.packetGeneration.RaceStatusMessage;
+import seng302.packetGeneration.RaceStatusGeneration.RaceStatusMessage;
 import static java.lang.System.currentTimeMillis;
 
 import java.util.*;
@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class GeneratedData implements IServerData {
     private Queue<byte[]> bytes = new LinkedList<>();
-    private Message message = new Message();
+    private BoatLocationMessage boatLocationMessage = new BoatLocationMessage();
     private Race race = new Race();
 
     // Hardcoded race
@@ -52,7 +52,7 @@ public class GeneratedData implements IServerData {
         @Override
         public void run() {
             DataGenerator dataGenerator = new DataGenerator();
-            byte[] xmlBytes = message.xmlMessage(dataGenerator.loadFile("Race.xml"), (short) 0, (short) 0);
+            byte[] xmlBytes = boatLocationMessage.xmlMessage(dataGenerator.loadFile("Race.xml"), (short) 0, (short) 0);
 //            System.out.println(Arrays.toString(xmlBytes) + "\nsize: " + (bytes.size()+1));
             bytes.add(xmlBytes);
         }
@@ -62,7 +62,7 @@ public class GeneratedData implements IServerData {
         @Override
         public void run() {
             for (Boat boat : race.getBoats()) {
-                bytes.add(message.boatPositionMessage(boat));
+                bytes.add(boatLocationMessage.boatPositionMessage(boat));
                 System.out.println("packet created");
             }
         }
@@ -79,7 +79,7 @@ public class GeneratedData implements IServerData {
         @Override
         public void run() {
             bytes.add(rsm.getRaceStatusMessage());
-            System.out.println("Race Status Message created");
+            System.out.println("Race Status BoatLocationMessage created");
         }
     }
 
