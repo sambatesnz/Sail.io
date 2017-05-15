@@ -15,8 +15,18 @@ public class BoatStatusMessage {
     private byte[] estTimeToNextMark;
     private byte[] estTimeToFinish;
 
-    public BoatStatusMessage(int sourceBoatID, char status, char legNumber,
-                             long estTimeToNextMark, long estTimeToFinish){
+    /**
+     * Turns a boat object into a the Boat Status section of the Race Status Message Packet
+     * The penalties field according to the AC35 specification is ignored as we do no use it yet.
+     * It is set to a default value of 0 in both cases
+     * @param sourceBoatID Boat's id
+     * @param status Boat's status eg. 1=Undefined
+     * @param legNumber Number of leg that boat is on
+     * @param estTimeToNextMark Estimated time boat will take to reach next mark
+     * @param estTimeToFinish Estimated time boat will take to reach finish
+     */
+    BoatStatusMessage(int sourceBoatID, char status, char legNumber,
+                      long estTimeToNextMark, long estTimeToFinish){
         this.sourceBoatID = RaceStatusUtility.intToFourBytes(sourceBoatID);
         this.status = RaceStatusUtility.charToOneByte(status);
         this.legNumber = RaceStatusUtility.charToOneByte(legNumber);
@@ -29,7 +39,7 @@ public class BoatStatusMessage {
     /**
      * @return the byte[] packet for a boatsStatus
      */
-    public byte[] getBoatStatusMessage(){
+    byte[] getBoatStatusMessage(){
         ByteBuffer boatStatus = RaceStatusUtility.LEBuffer(20);
         boatStatus.put(sourceBoatID);
         boatStatus.put(status);

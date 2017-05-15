@@ -1,7 +1,6 @@
 package seng302.packetGeneration;
 
 /**
- * Created by tjg73 on 15/05/17.
  * Enum for a boats status used in packet generation.
  */
 public enum BoatStatus {

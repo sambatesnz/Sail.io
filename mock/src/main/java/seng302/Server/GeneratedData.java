@@ -18,13 +18,13 @@ public class GeneratedData implements IServerData {
     private Race race = new Race();
 
     // Hardcoded race
-    private RaceStatusMessage rsm = new RaceStatusMessage(1,
-                                                            currentTimeMillis(),
+    private RaceStatusMessage rsm = new RaceStatusMessage(
+            currentTimeMillis(),
                                                             3,  // placeholder
                                                             0,
                                                             currentTimeMillis(),
-                                                            0,  // placeholder
-                                                            0,  // placeholder
+            (short) 0,  // placeholder
+            (short) 0,  // placeholder
                                                             (char)race.getBoats().size(),
                                                             '1',    // placeholder
                                                             race.getBoats());

@@ -4,7 +4,6 @@ import seng302.Main;
 import seng302.Message;
 
 /**
- * Created by sha162 on 15/05/17.
  * Enum for Race Status as defined by AC35 specification
  */
 public enum RaceStatus {

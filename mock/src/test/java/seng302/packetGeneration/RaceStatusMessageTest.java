@@ -1,17 +1,13 @@
 package seng302.packetGeneration;
 
 import org.junit.Test;
-import seng302.WindDirection;
-import seng302.packetGeneration.RaceStatusMessage;
 
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 import static org.junit.Assert.*;
 
 /**
  * Test class for testing the race status messages
+ * The tests test each section of the Race Status Message Specification as defined in page 9 of  https://docs.google.com/a/acracemgt.com/viewer?a=v&pid=sites&srcid=YWNyYWNlbWd0LmNvbXxub3RpY2Vib2FyZHxneDoyYTExNTQ4Yzg3ZGRmNTQ1
  */
 public class RaceStatusMessageTest {
 
@@ -23,15 +19,15 @@ public class RaceStatusMessageTest {
         int boatPacketSize = 20;
         char numBoats = '0';
         int numBoatsInt = 0;
+        short windDirection = 0;
 
         RaceStatusMessage raceStatusMessage =  new RaceStatusMessage(
-                1,
                 System.currentTimeMillis(),
                 1,
                 2,
                 System.currentTimeMillis(),
-                WindDirection.NORTH,
-                15,
+                windDirection,
+                windDirection,
                 numBoats,
                 '1',
                 null
@@ -45,24 +41,15 @@ public class RaceStatusMessageTest {
 
     @Test
     public void testMessageVNumber() throws Exception {
-
-//        System.out.println(Integer.toBinaryString(2));
-//        System.out.println(1 << 1);
-//        byte[] data = new byte[2];
-//        int a = 10;
-//        data[0] = (byte) a;
-//        data[1] = (byte) (a >>> 8);
-//        System.out.println(data);
-
-        int versionNumber = 1;
+        int versionNumber = 5;
         RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
                 versionNumber,
                 0,
                 0,
                 0,
                 0,
-                0,
-                0,
+                (short)0,
+                (short) 0,
                 '0',
                 '0',
                 null
@@ -74,7 +61,32 @@ public class RaceStatusMessageTest {
         int sourceIndex = RaceStatusUtility.MESSAGE_VERSION;
         int size = RaceStatusUtility.MESSAGE_VERSION_SIZE;
         int expectedVNumber = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
-        assertEquals(versionNumber, expectedVNumber); //Not implemented yet
+        assertEquals(versionNumber, expectedVNumber);
+    }
+
+    @Test
+    public void testDefaultMessageVersionNumber() throws Exception {
+        int versionNumber = RaceStatusMessage.CURRENT_VERSION_NUMBER;
+        RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
+                0,
+                0,
+                0,
+                0,
+                (short)0,
+                (short) 0,
+                '0',
+                '0',
+                null
+        );
+
+
+        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = RaceStatusUtility.MESSAGE_VERSION;
+        int size = RaceStatusUtility.MESSAGE_VERSION_SIZE;
+        int expectedVNumber = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(versionNumber, expectedVNumber);
+
     }
 
     @Test
@@ -82,13 +94,12 @@ public class RaceStatusMessageTest {
         long time = System.currentTimeMillis();
 
         RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
-                1,
                 time,
                 0,
                 0,
                 0,
-                0,
-                0,
+                (short)0,
+                (short) 0,
                 '0',
                 '0',
                 null
@@ -107,13 +118,12 @@ public class RaceStatusMessageTest {
         int raceId = 1;
 
         RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
-                1,
                 0,
                 raceId,
                 0,
                 0,
-                0,
-                0,
+                (short)0,
+                (short)0,
                 '0',
                 '0',
                 null
@@ -133,13 +143,12 @@ public class RaceStatusMessageTest {
         int raceStatus = RaceStatus.STARTED.value();
 
         RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
-                1,
                 0,
                 0,
                 raceStatus,
                 0,
-                0,
-                0,
+                (short) 0,
+                (short) 0,
                 '0',
                 '0',
                 null
@@ -158,13 +167,12 @@ public class RaceStatusMessageTest {
         long startTime = System.currentTimeMillis();
 
         RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
-                1,
                 0,
                 0,
                 0,
                 startTime,
-                0,
-                0,
+                (short) 0,
+                (short) 0,
                 '0',
                 '0',
                 null
@@ -180,26 +188,42 @@ public class RaceStatusMessageTest {
 
     @Test
     public void windDirection() throws Exception {
-        assertTrue(false);//Not implemented yet
-    }
-
-    @Test
-    public void windSpeed() throws Exception {
-        int windSpeed = 30;
+        short windDirection = WindDirection.EAST;
         RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
                 0,
                 0,
                 0,
                 0,
+                windDirection,
+                (short) 0,
+                '0',
+                '0',
+                null
+        );
+        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] actualMessage = new byte[4];
+        int sourceIndex = RaceStatusUtility.WIND_DIRECTION;
+        int size = RaceStatusUtility.WIND_DIRECTION_SIZE;
+        int expectedWindDirection = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(windDirection, expectedWindDirection);
+    }
+
+    @Test
+    public void windSpeed() throws Exception {
+        short windSpeed = 30;
+        RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
                 0,
                 0,
+                0,
+                0,
+                (short) 0,
                 windSpeed,
                 '0',
                 '0',
                 null
         );
         byte[] message = raceStatusMessage.getRaceStatusMessage();
-        byte[] actualMessage = new byte[8];
+        byte[] actualMessage = new byte[4];
         int sourceIndex = RaceStatusUtility.WIND_SPEED;
         int size = RaceStatusUtility.WIND_SPEED_SIZE;
         int expectedWindSpeed = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
@@ -213,13 +237,12 @@ public class RaceStatusMessageTest {
         long startTime = System.currentTimeMillis();
 
         RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
-                1,
                 0,
                 0,
                 0,
                 0,
-                0,
-                0,
+                (short) 0,
+                (short)0,
                 numBoats,
                 '0',
                 null
@@ -239,13 +262,12 @@ public class RaceStatusMessageTest {
 
 
         RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
-                1,
                 0,
                 0,
                 0,
                 0,
-                0,
-                0,
+                (short) 0,
+                (short) 0,
                 '0',
                 raceType,
                 null

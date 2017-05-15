@@ -68,13 +68,16 @@ public final class RaceStatusUtility {
         return Arrays.copyOfRange(wholeArray, 0, 4);
     }
 
-    static byte[] intToTwoBytes(int value) {
+    static byte[] shortToTwoBytes(short value) {
         byte[] output = new byte[2];
         output[0] = (byte) value;
         output[1] = (byte) (value >>> 8);
         return output;
     }
 
-
-
+    static byte[] intToOneByte(int value) {
+        byte[] output = new byte[1];
+        output[0] = (byte) value;
+        return output;
+    }
 }
