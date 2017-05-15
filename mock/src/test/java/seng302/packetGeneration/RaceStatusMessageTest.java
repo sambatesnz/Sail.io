@@ -21,7 +21,7 @@ public class RaceStatusMessageTest {
 
         int headerSize = 24;
         int boatPacketSize = 20;
-        int numBoats = 0;
+        char numBoats = '0';
 
         RaceStatusMessage raceStatusMessage =  new RaceStatusMessage(
                 1,
@@ -52,7 +52,7 @@ public class RaceStatusMessageTest {
                 0,
                 0,
                 0,
-                0,
+                '0',
                 0,
                 null
         );
@@ -78,7 +78,7 @@ public class RaceStatusMessageTest {
                 0,
                 0,
                 0,
-                0,
+                '0',
                 0,
                 null
         );
@@ -113,7 +113,7 @@ public class RaceStatusMessageTest {
                 startTime,
                 0,
                 0,
-                0,
+                '0',
                 0,
                 null
         );
@@ -138,7 +138,28 @@ public class RaceStatusMessageTest {
 
     @Test
     public void numBoatsInRace() throws Exception {
-        assertTrue(false);//Not implemented yet
+        char numBoats = '1';
+
+        long startTime = System.currentTimeMillis();
+
+        RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                numBoats,
+                0,
+                null
+        );
+        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        int sourceIndex = RaceStatusUtility.NUM_BOATS;
+        int size = RaceStatusUtility.NUM_BOATS_SIZE;
+        byte[] actualMessage = new byte[2];
+        char actualNumBoats = BoatStatusMessageTest.getCharFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(numBoats, actualNumBoats);
     }
 
     @Test

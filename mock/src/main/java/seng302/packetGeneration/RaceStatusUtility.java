@@ -40,6 +40,7 @@ public final class RaceStatusUtility {
     static int EST_TIME_AT_NEXT_MARK_INDEX = 8;
     static int EST_TIME_AT_FINISH_INDEX = 14;
 
+
     private RaceStatusUtility() {
     }
 
@@ -66,5 +67,7 @@ public final class RaceStatusUtility {
         byte[] wholeArray = LEBuffer(4).putInt(value).array();
         return Arrays.copyOfRange(wholeArray, 0, 4);
     }
+
+
 
 }
