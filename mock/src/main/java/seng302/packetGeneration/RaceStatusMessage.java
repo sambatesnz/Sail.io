@@ -27,11 +27,12 @@ public class RaceStatusMessage {
     private List<byte[]> boats;
     private int boatNum;
 
-    public RaceStatusMessage(int versionNumber, long currentTime, int raceID, int raceStatus, long startTime, int windDirection, int windSpeed, char numberOfBoats, int raceType, List<Boat> boats) {
+    public RaceStatusMessage(int versionNumber, long currentTime, int raceID, int raceStatus, long startTime, int windDirection, int windSpeed, char numberOfBoats, char raceType, List<Boat> boats) {
         this.boatNum = Character.getNumericValue(numberOfBoats);
         this.currentTime = RaceStatusUtility.longToSixBytes(currentTime);
         this.startTime = RaceStatusUtility.longToSixBytes(startTime);
         this.numberOfBoats = RaceStatusUtility.charToOneByte(numberOfBoats);
+        this.raceType = RaceStatusUtility.charToOneByte(raceType);
     }
 
     public RaceStatusMessage(int raceID, int raceStatus, long startTime, int windDirection, int windSpeed, int raceType, List<Boat> boats) {
@@ -45,6 +46,7 @@ public class RaceStatusMessage {
         System.arraycopy(currentTime, 0, output, RaceStatusUtility.CURRENT_TIME, RaceStatusUtility.CURRENT_TIME_SIZE);
         System.arraycopy(startTime, 0, output, RaceStatusUtility.EXPECTED_START_TIME, RaceStatusUtility.EXPECTED_START_TIME_SIZE);
         System.arraycopy(numberOfBoats, 0, output, RaceStatusUtility.NUM_BOATS, RaceStatusUtility.NUM_BOATS_SIZE);
+        System.arraycopy(raceType, 0, output, RaceStatusUtility.RACE_TYPE, RaceStatusUtility.RACE_TYPE_SIZE );
 
 
         return output;

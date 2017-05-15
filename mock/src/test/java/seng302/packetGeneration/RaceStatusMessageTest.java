@@ -32,7 +32,7 @@ public class RaceStatusMessageTest {
                 WindDirection.NORTH,
                 15,
                 numBoats,
-                1,
+                '1',
                 null
         );
 
@@ -53,7 +53,7 @@ public class RaceStatusMessageTest {
                 0,
                 0,
                 '0',
-                0,
+                '0',
                 null
         );
 
@@ -79,7 +79,7 @@ public class RaceStatusMessageTest {
                 0,
                 0,
                 '0',
-                0,
+                '0',
                 null
         );
 
@@ -114,7 +114,7 @@ public class RaceStatusMessageTest {
                 0,
                 0,
                 '0',
-                0,
+                '0',
                 null
         );
 
@@ -151,7 +151,7 @@ public class RaceStatusMessageTest {
                 0,
                 0,
                 numBoats,
-                0,
+                '0',
                 null
         );
         byte[] message = raceStatusMessage.getRaceStatusMessage();
@@ -164,7 +164,28 @@ public class RaceStatusMessageTest {
 
     @Test
     public void raceType() throws Exception {
-        assertTrue(false);//Not implemented yet
+
+        char raceType = RaceType.MATCH_RACE.value();
+
+
+        RaceStatusMessage raceStatusMessage = new RaceStatusMessage(
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                '0',
+                raceType,
+                null
+        );
+        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        int sourceIndex = RaceStatusUtility.RACE_TYPE;
+        int size = RaceStatusUtility.RACE_TYPE_SIZE;
+        byte[] actualMessage = new byte[2];
+        char actualRaceType = BoatStatusMessageTest.getCharFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(raceType, actualRaceType);
     }
 
 
