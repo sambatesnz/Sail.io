@@ -1,6 +1,7 @@
 package seng302.packetGeneration.RaceStatusGeneration;
 
 import org.junit.Test;
+import seng302.packetGeneration.PacketUtils;
 
 import static org.junit.Assert.*;
 

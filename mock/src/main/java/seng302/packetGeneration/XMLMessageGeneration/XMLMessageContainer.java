@@ -1,5 +1,7 @@
 package seng302.packetGeneration.XMLMessageGeneration;
 
+import seng302.packetGeneration.PacketGenerationUtils;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -21,15 +23,15 @@ public class XMLMessageContainer {
 
     // Constructor for XMLMessageContainer.
     public XMLMessageContainer(String xml, short ackN, short seqNum) {
-        this.versionNum = XMLMessageUtility.intToOneByte(0x01);
-        this.ackNumber = XMLMessageUtility.shortToTwoBytes(ackN);
-        this.time = XMLMessageUtility.longToSixBytes(System.currentTimeMillis());
+        this.versionNum = PacketGenerationUtils.intToOneByte(0x01);
+        this.ackNumber = PacketGenerationUtils.shortToTwoBytes(ackN);
+        this.time = PacketGenerationUtils.longToSixBytes(System.currentTimeMillis());
         this.timestamp = Arrays.copyOfRange(time, 2, 8);
-        this.xmlMsgSubType = XMLMessageUtility.intToOneByte(0x00);
-        this.seqNumber = XMLMessageUtility.shortToTwoBytes(seqNum);
+        this.xmlMsgSubType = PacketGenerationUtils.intToOneByte(0x00);
+        this.seqNumber = PacketGenerationUtils.shortToTwoBytes(seqNum);
         this.xmlBytes = xml.getBytes(StandardCharsets.UTF_8);
         this.xmlText = Arrays.copyOf(xmlBytes, xmlBytes.length + 1);
-        this.xmlTextLenByte = XMLMessageUtility.shortToTwoBytes((short) xmlText.length);
+        this.xmlTextLenByte = PacketGenerationUtils.shortToTwoBytes((short) xmlText.length);
         this.xmlTextLenInt = xml.length();
     }
 

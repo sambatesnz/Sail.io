@@ -1,5 +1,7 @@
 package seng302.packetGeneration.RaceStatusGeneration;
 
+import seng302.packetGeneration.PacketGenerationUtils;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -27,20 +29,20 @@ public class BoatStatusMessage {
      */
     BoatStatusMessage(int sourceBoatID, char status, char legNumber,
                       long estTimeToNextMark, long estTimeToFinish){
-        this.sourceBoatID = RaceStatusUtility.intToFourBytes(sourceBoatID);
-        this.status = RaceStatusUtility.charToOneByte(status);
-        this.legNumber = RaceStatusUtility.charToOneByte(legNumber);
-        this.numPenaltiesAwarded = RaceStatusUtility.charToOneByte('0');
-        this.numPenaltiesServed = RaceStatusUtility.charToOneByte('0');
-        this.estTimeToNextMark = RaceStatusUtility.longToSixBytes(estTimeToNextMark);
-        this.estTimeToFinish = RaceStatusUtility.longToSixBytes(estTimeToFinish);
+        this.sourceBoatID = PacketGenerationUtils.intToFourBytes(sourceBoatID);
+        this.status = PacketGenerationUtils.charToOneByte(status);
+        this.legNumber = PacketGenerationUtils.charToOneByte(legNumber);
+        this.numPenaltiesAwarded = PacketGenerationUtils.charToOneByte('0');
+        this.numPenaltiesServed = PacketGenerationUtils.charToOneByte('0');
+        this.estTimeToNextMark = PacketGenerationUtils.longToSixBytes(estTimeToNextMark);
+        this.estTimeToFinish = PacketGenerationUtils.longToSixBytes(estTimeToFinish);
     }
 
     /**
      * @return the byte[] packet for a boatsStatus
      */
     byte[] getBoatStatusMessage(){
-        ByteBuffer boatStatus = RaceStatusUtility.LEBuffer(20);
+        ByteBuffer boatStatus = PacketGenerationUtils.LEBuffer(20);
         boatStatus.put(sourceBoatID);
         boatStatus.put(status);
         boatStatus.put(legNumber);

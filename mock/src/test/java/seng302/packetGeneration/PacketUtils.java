@@ -1,4 +1,4 @@
-package seng302.packetGeneration.RaceStatusGeneration;
+package seng302.packetGeneration;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -19,7 +19,7 @@ public final class PacketUtils {
      * @param size of message to slice out
      * @return an int from the message
      */
-    static int getIntFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
+    public static int getIntFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
         System.arraycopy(message, sourceIndex, actualMessage, 0, size);
         return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getInt();
     }
@@ -32,7 +32,7 @@ public final class PacketUtils {
      * @param size of message to slice out
      * @return a char from the message
      */
-    static char getCharFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
+    public static char getCharFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
         System.arraycopy(message, sourceIndex, actualMessage, 0, size);
         return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getChar();
     }
@@ -45,7 +45,7 @@ public final class PacketUtils {
      * @param size of message to slice out
      * @return a long from the message
      */
-    static long getLongFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
+    public static long getLongFromByteArray(byte[] message, int sourceIndex, byte[] actualMessage, int size){
         System.arraycopy(message, sourceIndex, actualMessage, 0, size);
         return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getLong();
     }

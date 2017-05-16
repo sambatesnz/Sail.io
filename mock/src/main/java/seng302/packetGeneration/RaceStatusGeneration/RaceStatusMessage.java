@@ -1,6 +1,7 @@
 package seng302.packetGeneration.RaceStatusGeneration;
 
 import seng302.Boat;
+import seng302.packetGeneration.PacketGenerationUtils;
 
 import java.util.List;
 
@@ -39,16 +40,16 @@ public class RaceStatusMessage {
      * @param boats List of boats in the race
      */
     public RaceStatusMessage(long currentTime, int raceID, int raceStatus, long startTime, short windDirection, short windSpeed, char numberOfBoats, char raceType, List<Boat> boats) {
-        this.versionNumber = RaceStatusUtility.intToOneByte(CURRENT_VERSION_NUMBER);
-        this.currentTime = RaceStatusUtility.longToSixBytes(currentTime);
-        this.raceID = RaceStatusUtility.intToFourBytes(raceID);
-        this.raceStatus = RaceStatusUtility.intToFourBytes(raceStatus);
-        this.startTime = RaceStatusUtility.longToSixBytes(startTime);
-        this.windDirection = RaceStatusUtility.shortToTwoBytes(windDirection);
-        this.windSpeed = RaceStatusUtility.shortToTwoBytes(windSpeed);
-        this.numberOfBoatsByte = RaceStatusUtility.charToOneByte(numberOfBoats);
+        this.versionNumber = PacketGenerationUtils.intToOneByte(CURRENT_VERSION_NUMBER);
+        this.currentTime = PacketGenerationUtils.longToSixBytes(currentTime);
+        this.raceID = PacketGenerationUtils.intToFourBytes(raceID);
+        this.raceStatus = PacketGenerationUtils.intToFourBytes(raceStatus);
+        this.startTime = PacketGenerationUtils.longToSixBytes(startTime);
+        this.windDirection = PacketGenerationUtils.shortToTwoBytes(windDirection);
+        this.windSpeed = PacketGenerationUtils.shortToTwoBytes(windSpeed);
+        this.numberOfBoatsByte = PacketGenerationUtils.charToOneByte(numberOfBoats);
         this.numberOfBoatsInt = Character.getNumericValue(numberOfBoats);
-        this.raceType = RaceStatusUtility.charToOneByte(raceType);
+        this.raceType = PacketGenerationUtils.charToOneByte(raceType);
     }
 
     /**
@@ -65,16 +66,16 @@ public class RaceStatusMessage {
      * @param boats List of boats in the race
      */
     public RaceStatusMessage(int versionNumber, long currentTime, int raceID, int raceStatus, long startTime, short windDirection, short windSpeed, char numberOfBoats, char raceType, List<Boat> boats) {
-        this.versionNumber = RaceStatusUtility.intToOneByte(versionNumber);
-        this.currentTime = RaceStatusUtility.longToSixBytes(currentTime);
-        this.raceID = RaceStatusUtility.intToFourBytes(raceID);
-        this.raceStatus = RaceStatusUtility.intToFourBytes(raceStatus);
-        this.startTime = RaceStatusUtility.longToSixBytes(startTime);
-        this.windDirection = RaceStatusUtility.shortToTwoBytes(windDirection);
-        this.windSpeed = RaceStatusUtility.shortToTwoBytes(windSpeed);
-        this.numberOfBoatsByte = RaceStatusUtility.charToOneByte(numberOfBoats);
+        this.versionNumber = PacketGenerationUtils.intToOneByte(versionNumber);
+        this.currentTime = PacketGenerationUtils.longToSixBytes(currentTime);
+        this.raceID = PacketGenerationUtils.intToFourBytes(raceID);
+        this.raceStatus = PacketGenerationUtils.intToFourBytes(raceStatus);
+        this.startTime = PacketGenerationUtils.longToSixBytes(startTime);
+        this.windDirection = PacketGenerationUtils.shortToTwoBytes(windDirection);
+        this.windSpeed = PacketGenerationUtils.shortToTwoBytes(windSpeed);
+        this.numberOfBoatsByte = PacketGenerationUtils.charToOneByte(numberOfBoats);
         this.numberOfBoatsInt = Character.getNumericValue(numberOfBoats);
-        this.raceType = RaceStatusUtility.charToOneByte(raceType);
+        this.raceType = PacketGenerationUtils.charToOneByte(raceType);
     }
 
     /**
@@ -83,7 +84,6 @@ public class RaceStatusMessage {
      */
     public byte[] getRaceStatusMessage(){
         byte[] output = new byte[24 + numberOfBoatsInt * 20];
-        System.out.println(numberOfBoatsInt);
         //Copy specific bytes into here
         System.arraycopy(versionNumber, 0, output, RaceStatusUtility.MESSAGE_VERSION_POS, RaceStatusUtility.MESSAGE_VERSION_SIZE);
         System.arraycopy(currentTime, 0, output, RaceStatusUtility.CURRENT_TIME_POS, RaceStatusUtility.CURRENT_TIME_SIZE);
