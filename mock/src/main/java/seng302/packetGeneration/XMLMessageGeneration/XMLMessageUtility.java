@@ -1,4 +1,4 @@
-package seng302.packetGeneration.RaceStatusGeneration;
+package seng302.packetGeneration.XMLMessageGeneration;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -8,40 +8,25 @@ import java.util.Arrays;
  * Utility Class for storing common functions
  * Used to generate packets/byte[array]
  */
-public final class RaceStatusUtility {
+public final class XMLMessageUtility {
 
-    static int OFFSET = 1;
     static int MESSAGE_VERSION_POS = 0;
     static int MESSAGE_VERSION_SIZE = 1;
-    static int CURRENT_TIME_POS = 1;
-    static int CURRENT_TIME_SIZE = 6;
-    static int RACE_ID_POS = 7;
-    static int RACE_ID_SIZE = 4;
-    static int RACE_STATUS_POS = 11;
-    static int RACE_STATUS_SIZE = 1;
-    static int EXPECTED_START_TIME_POS =  12;
-    static int EXPECTED_START_TIME_SIZE = 6;
-    static int WIND_DIRECTION_POS = 18;
-    static int WIND_DIRECTION_SIZE = 2;
-    static int WIND_SPEED_POS = 20;
-    static int WIND_SPEED_SIZE = 2;
-    static int NUM_BOATS_POS = 22;
-    static int NUM_BOATS_SIZE = 1;
-    static int RACE_TYPE_POS = 23;
-    static int RACE_TYPE_SIZE = 1;
-    static int BOATS_POS = 0;
-    static int BOATS_SIZE = 20;
-
-    static int SOURCE_ID_INDEX = 0;
-    static int BOAT_STATUS_INDEX = 4;
-    static int LEG_NUMBER_INDEX = 5;
-    static int NUMBER_PENALTIES_AWARDED_INDEX = 6;
-    static int NUMBER_PENALTIES_SERVED_INDEX = 7;
-    static int EST_TIME_AT_NEXT_MARK_INDEX = 8;
-    static int EST_TIME_AT_FINISH_INDEX = 14;
+    static int ACK_NUM_POS = 1;
+    static int ACK_NUM_SIZE = 2;
+    static int TIME_STAMP_POS = 3;
+    static int TIME_STAMP_SIZE = 6;
+    static int XML_MESSAGE_SUB_TYPE_POS = 9;
+    static int XML_MESSAGE_SUB_TYPE_SIZE = 1;
+    static int SEQUENCE_NUMBER_POS = 10;
+    static int SEQUENCE_NUMBER_SIZE = 2;
+    static int XML_MESSAGE_LENGTH_POS = 12;
+    static int XML_MESSAGE_LENGTH_SIZE = 2;
+    static int XML_MESSAGE_POS = 14;
+    static int XML_MESSAGE_SIZE;
 
 
-    private RaceStatusUtility() {
+    private XMLMessageUtility() {
     }
 
     /**
@@ -78,11 +63,6 @@ public final class RaceStatusUtility {
     static byte[] intToOneByte(int value) {
         byte[] output = new byte[1];
         output[0] = (byte) value;
-
-        //System.out.println(output[0]); // -22
-        //int i2 = output[0] & 0xFF;
-        //System.out.println(i2); // 234
-
         return output;
     }
 }

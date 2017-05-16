@@ -17,16 +17,15 @@ public class GeneratedData implements IServerData {
     private BoatLocationMessage boatLocationMessage = new BoatLocationMessage();
     private Race race = new Race();
 
-    // Hardcoded race
-    private RaceStatusMessage rsm = new RaceStatusMessage(
-            currentTimeMillis(),
-                                                            3,  // placeholder
-                                                            0,
+    // Generate RaceStatusMessage from using properties of Race object.
+    private RaceStatusMessage rsm = new RaceStatusMessage(currentTimeMillis(),
+                                                            race.getRaceID(),
+                                                            race.getRaceStatus()    ,
                                                             currentTimeMillis(),
-            (short) 0,  // placeholder
-            (short) 0,  // placeholder
-                                                            (char)race.getBoats().size(),
-                                                            '1',    // placeholder
+                                                            race.getWindDirection(),
+                                                            race.getWindSpeed(),
+                                                            (char)(race.getBoats().size() + 48),
+                                                            race.getRaceType(),
                                                             race.getBoats());
 
     @Override
@@ -85,7 +84,7 @@ public class GeneratedData implements IServerData {
 
     public void runServerTimers() {
         Timer timer = new Timer();
-        timer.schedule(new RSMSender(), 0, Long.MAX_VALUE);
+        timer.schedule(new RSMSender(), 0, 2000);
         timer.schedule(new XMLSender(), 0, 2000);
         timer.schedule(new BoatPosSender(), 0, 500);
         timer.schedule(new RaceRunner(), 0, 17);

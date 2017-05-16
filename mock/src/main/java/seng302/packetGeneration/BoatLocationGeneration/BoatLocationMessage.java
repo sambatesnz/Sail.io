@@ -1,6 +1,7 @@
 package seng302.packetGeneration.BoatLocationGeneration;
 
 import seng302.Boat;
+import seng302.packetGeneration.XMLMessageGeneration.XMLMessageContainer;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -37,31 +38,33 @@ public class BoatLocationMessage {
     }
 
     public byte[] xmlMessage(String xml, short ackN, short seqNum) {
-        return message((byte) 26, xmlBody(xml, ackN, seqNum));
+        //return message((byte) 26, xmlBody(xml, ackN, seqNum));
+        XMLMessageContainer xmc = new XMLMessageContainer(xml, ackN, seqNum);
+        return message((byte) 26, xmc.getXMLMessage());
     }
 
-    public byte[] xmlBody(String xml, short ackN, short seqNum) {
-        byte versionNum = 0x01;
-        byte[] ackNumber = LEBuffer(2).putShort(ackN).array();
-        byte[] time = LEBuffer(8).putLong(System.currentTimeMillis()).array();
-        byte[] timestamp = Arrays.copyOfRange(time, 2, 8);
-        byte xmlMsgSubType = 0x00;
-        byte[] seqNumber = LEBuffer(2).putShort(seqNum).array();
-        byte[] xmlBytes = xml.getBytes(StandardCharsets.UTF_8);
-        byte[] xmlText = Arrays.copyOf(xmlBytes, xmlBytes.length+1);
-        byte[] xmlTextLen = LEBuffer(2).putShort((short) xmlText.length).array();
-
-        ByteBuffer bytes = LEBuffer(XML_HEADER_LENGTH + xmlText.length);
-        bytes.put(versionNum);
-        bytes.put(ackNumber);
-        bytes.put(timestamp);
-        bytes.put(xmlMsgSubType);
-        bytes.put(seqNumber);
-        bytes.put(xmlTextLen);
-        bytes.put(xmlText);
-
-        return bytes.array();
-    }
+//    public byte[] xmlBody(String xml, short ackN, short seqNum) {
+//        byte versionNum = 0x01;
+//        byte[] ackNumber = LEBuffer(2).putShort(ackN).array();
+//        byte[] time = LEBuffer(8).putLong(System.currentTimeMillis()).array();
+//        byte[] timestamp = Arrays.copyOfRange(time, 2, 8);
+//        byte xmlMsgSubType = 0x00;
+//        byte[] seqNumber = LEBuffer(2).putShort(seqNum).array();
+//        byte[] xmlBytes = xml.getBytes(StandardCharsets.UTF_8);
+//        byte[] xmlText = Arrays.copyOf(xmlBytes, xmlBytes.length+1);
+//        byte[] xmlTextLen = LEBuffer(2).putShort((short) xmlText.length).array();
+//
+//        ByteBuffer bytes = LEBuffer(XML_HEADER_LENGTH + xmlText.length);
+//        bytes.put(versionNum);
+//        bytes.put(ackNumber);
+//        bytes.put(timestamp);
+//        bytes.put(xmlMsgSubType);
+//        bytes.put(seqNumber);
+//        bytes.put(xmlTextLen);
+//        bytes.put(xmlText);
+//
+//        return bytes.array();
+//    }
 
     public byte[] message(byte type, byte[] body) {
         byte[] time = LEBuffer(8).putLong(System.currentTimeMillis()).array();
