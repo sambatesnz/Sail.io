@@ -6,8 +6,9 @@ package seng302.packetGeneration.BoatLocationGeneration;
 public enum BoatLocationUtility {
 
     MESSAGE_VERSION(0, 1),
-    TIME_POS(1, 6),
-    SOURCE_ID(7, 4);
+    TIME(1, 6),
+    SOURCE_ID(7, 4),
+    SEQUENCE_NUMBER(11,4);
 
     private int index;
     private int size;

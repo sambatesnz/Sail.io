@@ -39,7 +39,7 @@ public class BoatLocationMessage {
 
     public BoatLocationMessage(int versionNumber, long time, int sourceId,
                                int sequenceNum, int deviceType,
-                               long latitude, long longitude, long altitude,
+                               double latitude, double longitude, long altitude,
                                short heading, int pitch, int roll, short boatSpeed,
                                short cog, short sog,
                                short apparantWindSpeed, short apparantWindAngle,
@@ -50,6 +50,8 @@ public class BoatLocationMessage {
 
         this.versionNumber = PacketGenerationUtils.intToOneByte(versionNumber);
         this.time = PacketGenerationUtils.longToSixBytes(time);
+        this.sourceId = PacketGenerationUtils.intToFourBytes(sourceId);
+
 
     }
 
@@ -57,7 +59,8 @@ public class BoatLocationMessage {
     public byte[] getBoatLocationMessage() {
         int firstIndex = 0;
         System.arraycopy(versionNumber, firstIndex, boatLocationMessage, BoatLocationUtility.MESSAGE_VERSION.getIndex(), BoatLocationUtility.MESSAGE_VERSION.getSize());
-        System.arraycopy(time, firstIndex, boatLocationMessage, BoatLocationUtility.TIME_POS.getIndex(), BoatLocationUtility.TIME_POS.getSize());
+        System.arraycopy(time, firstIndex, boatLocationMessage, BoatLocationUtility.TIME.getIndex(), BoatLocationUtility.TIME.getSize());
+        System.arraycopy(sourceId, firstIndex, boatLocationMessage, BoatLocationUtility.SOURCE_ID.getIndex(), BoatLocationUtility.SOURCE_ID.getSize());
         return boatLocationMessage;
     }
 }
