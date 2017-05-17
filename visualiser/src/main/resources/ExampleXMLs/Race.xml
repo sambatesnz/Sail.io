@@ -17,7 +17,7 @@
         </CompoundMark>
 
         <CompoundMark CompoundMarkID="2" Name="M1">
-            <Mark Name="M1" TargetLat="-36.63566590" TargetLng="174.88543944" SourceID="103" />
+            <Mark Name="M1" TargetLat="-36.82" TargetLng="174.88543944" SourceID="103" />
         </CompoundMark>
 
         <CompoundMark CompoundMarkID="3" Name="M2">
@@ -25,8 +25,8 @@
         </CompoundMark>
 
         <CompoundMark CompoundMarkID="4" Name="Gate">
-            <Mark SeqID="1" Name="G1" TargetLat="-36.63566590" TargetLng="174.97205159" SourceID="104" />
-            <Mark SeqID="2" Name="G2" TargetLat="-36.64566590" TargetLng="174.98205159" SourceID="105" />
+            <Mark SeqID="1" Name="G1" TargetLat="-36.82" TargetLng="174.97205159" SourceID="104" />
+            <Mark SeqID="2" Name="G2" TargetLat="-36.81" TargetLng="174.98205159" SourceID="105" />
         </CompoundMark>
     </Course>
     <CompoundMarkSequence>

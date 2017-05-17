@@ -117,7 +117,7 @@
             <FlagPosition Z="0.000" Y="3.426" X="0.000" />
         </Boat>
 
-        <Boat SourceID="125" ShapeID="1" StoweName="VOL" HullNum="LC01" ShortName="Volunteer"
+        <Boat Type="Mark" SourceID="125" ShapeID="1" StoweName="VOL" HullNum="LC01" ShortName="Volunteer"
               BoatName="Volunteer">
             <GPSposition Z="5.334" Y="3.804" X="0.000" />
             <FlagPosition Z="0.000" Y="3.426" X="0.000" />

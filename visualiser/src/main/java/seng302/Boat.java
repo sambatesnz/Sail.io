@@ -6,8 +6,7 @@ import javafx.scene.paint.Color;
  * Represent a boat competing in yacht race
  */
 public class Boat {
-    private String name;
-    private double speed;
+    private String boatName;
     private double currentLegDistance;
     private int currentLegIndex;
     private double heading = 0;
@@ -16,14 +15,29 @@ public class Boat {
     private Color colour;
     private Long raceTime;
     private int position;
-    private String abrv;
+    private String shortName;
+    private int sourceId;
+    private String country;
+    private double speed;
 
     /**
      * Gets the abbreviation of the name of the team's boat
      * @return the boat's abbreviation string
      */
-    public String getAbrv() {
-        return abrv;
+    public String getShortName() {
+        return shortName;
+    }
+
+    public String getBoatName() {
+        return boatName;
+    }
+
+    public int getSourceId() {
+        return sourceId;
+    }
+
+    public String getCountry() {
+        return country;
     }
 
     /**
@@ -41,16 +55,13 @@ public class Boat {
     /**
      * Constructs a boat
      * @param name the name of the boat/team
-     * @param speed the speed of the boat
      */
-    public Boat(String name, double speed, Color colour, String abrv) {
-        this.name = name;
-        this.currentLegDistance = 0;
-        this.currentLegIndex = 0;
-        this.speed = speed;
-        this.colour = colour;
-        this.abrv = abrv;
-        this.raceTime = Integer.toUnsignedLong(0);
+    public Boat(String name, String shortName, int sourceId, String country) {
+        this.boatName = name;
+        this.colour = Color.color(Math.random(), Math.random(), Math.random());
+        this.shortName = shortName;
+        this.sourceId = sourceId;
+        this.country = country;
     }
 
     /**
@@ -159,7 +170,7 @@ public class Boat {
      * @return the name of the boat
      */
     public String getName() {
-        return name;
+        return boatName;
     }
 
     /**
@@ -179,7 +190,7 @@ public class Boat {
      * @return the current latitude
      */
     public double getLatitude(){
-        return Position.convertY(y);
+        return Mark.convertY(y);
     }
 
     /**
@@ -187,7 +198,7 @@ public class Boat {
      * @return the current latitude
      */
     public double getLongitude(){
-        return Position.convertX(x);
+        return Mark.convertX(x);
     }
 }
 

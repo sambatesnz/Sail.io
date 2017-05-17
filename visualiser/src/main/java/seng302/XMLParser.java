@@ -5,14 +5,11 @@ package seng302;
 import javafx.scene.paint.Color;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -22,7 +19,8 @@ public class XMLParser {
     private String LATITUDE = "Lat";
     private String LONGITUDE = "Lon";
     private String COMPOUND_MARK_ID = "CompoundMarkID";
-    private String MARK_TYPE = "type";
+    private String TYPE = "Type";
+    private String YACHT = "Yacht";
     private String MARK_NAME = "name";
     private String MARK_COLOR = "color";
     private String MARK_ID = "id";
@@ -38,7 +36,12 @@ public class XMLParser {
     private String TARGETLAT = "TargetLat";
     private String TARGETLON = "TargetLng";
     private String SOURCEID = "SourceID";
+    private String SHORTNAME = "ShortName";
+    private String BOATNAME = "BoatName";
+    private String COUNTRY = "Country";
     private String COMPOUND_MARK_SEQUENCE = "CompoundMarkSequence";
+    private String BOATS = "Boats";
+    private String BOAT = "Boat";
 
     private String xmlString;
     private Document xmlDoc;
@@ -138,13 +141,13 @@ public class XMLParser {
     }
 
 
-    public List<Landmark> getCourseLayout(){
+    public List<CompoundMark> getCourseLayout(){
         NodeList nodes = xmlDoc.getElementsByTagName(COURSE).item(0).getChildNodes();
-        List<Landmark> courseObjects = new ArrayList<>();
+        List<CompoundMark> courseObjects = new ArrayList<>();
         try {
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
-                ArrayList<Position> positions = new ArrayList<>();
+                ArrayList<Mark> positions = new ArrayList<>();
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     NamedNodeMap nnm = node.getAttributes();
                     String compoundMarkName = nnm.getNamedItem(NAME).getNodeValue();
@@ -162,22 +165,46 @@ public class XMLParser {
                             if (nnm2.getLength() >= 5) {
                                 seqId = Integer.valueOf(nnm2.getNamedItem(SEQ_ID).getNodeValue());
                             }
-                            positions.add(new Position(lat, lon));
+                            positions.add(new Mark(lat, lon));
                             System.out.println(String.format("Name: %s, Lat: %f, Long: %f, SrcId: %d, SeqId: %d", name, lat, lon, sourceId, seqId));
                         }
                     }
                     String type = "Mark";
-                    if (positions.size() < 1) {
+                    if (positions.size() > 1) {
                         type = "Gate";
                     }
-                    courseObjects.add(new Landmark(compoundMarkName, positions, Color.RED, compoundMarkId, type));
+                    courseObjects.add(new CompoundMark(compoundMarkName, positions, Color.RED, compoundMarkId, type));
                 }
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        courseObjects.sort(Comparator.comparingInt(Landmark::getId));
+        courseObjects.sort(Comparator.comparingInt(CompoundMark::getId));
         return courseObjects;
+    }
+
+    public List<Boat> getBoats() {
+        NodeList nodes = xmlDoc.getElementsByTagName(BOATS).item(0).getChildNodes();
+        List<Boat> boats = new ArrayList<>();
+        try {
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Node node = nodes.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    NamedNodeMap nnm = node.getAttributes();
+                    if (nnm.getNamedItem(TYPE).getNodeValue().equals(YACHT)) {
+                        int srcId = Integer.parseInt(nnm.getNamedItem(SOURCEID).getNodeValue());
+                        String shortName = nnm.getNamedItem(SHORTNAME).getNodeValue();
+                        String boatName = nnm.getNamedItem(BOATNAME).getNodeValue();
+                        String country = nnm.getNamedItem(COUNTRY).getNodeValue();
+                        boats.add(new Boat(boatName, shortName, srcId, country));
+                    }
+                }
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+//        courseOrder.sort(Comparator.comparingInt(CourseLimit::getSeqId));
+        return boats;
     }
 
 //    public int getWindDirection() {
@@ -197,9 +224,9 @@ public class XMLParser {
 //        return windDir;
 //    }
 //
-//    private Landmark createLandmarkFromElement(Element markElement) {
+//    private CompoundMark createLandmarkFromElement(Element markElement) {
 //
-//        // Rips the color, type?, and the name for each Landmark
+//        // Rips the color, type?, and the name for each CompoundMark
 //        String name = markElement.getAttribute(MARK_NAME);
 //        String type = markElement.getAttribute(MARK_TYPE);
 //
@@ -210,51 +237,51 @@ public class XMLParser {
 //        double latitude;
 //        double longitude;
 //
-//        ArrayList<Position> positions = new ArrayList<>();
+//        ArrayList<Mark> positions = new ArrayList<>();
 //        //We know a mark is always going to have a lat and long
 //        latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE));
 //        longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE));
 //
-//        positions.add(new Position(latitude, longitude));
+//        positions.add(new Mark(latitude, longitude));
 //        if (type.equals(GATE)){
 //            latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE, 1));
 //            longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE, 1));
-//            positions.add(new Position(latitude, longitude));
+//            positions.add(new Mark(latitude, longitude));
 //        }
-//        return new Landmark(name, positions, color, id, type);
+//        return new CompoundMark(name, positions, color, id, type);
 //    }
 //
-//    public ArrayList<Landmark> getLandmarks() {
+//    public ArrayList<CompoundMark> getCompoundMarks() {
 //        NodeList nodes = this.configDoc.getElementsByTagName(COMPOUND_MARK);
-//        ArrayList<Landmark> landmarks = new ArrayList<>();
+//        ArrayList<CompoundMark> landmarks = new ArrayList<>();
 //
 //        for (int i=0; i< nodes.getLength(); i++){
 //            Node node = nodes.item(i);
 //            Element markElement = (Element) node;
-//            Landmark mark = createLandmarkFromElement(markElement);
+//            CompoundMark mark = createLandmarkFromElement(markElement);
 //            landmarks.add(mark);
 //        }
 //        return landmarks;
 //    }
 //
-//    public ArrayList<Position> getBoundaries() {
+//    public ArrayList<Mark> getBoundaries() {
 //        NodeList nodes = this.configDoc.getElementsByTagName(BOUNDARY);
-//        ArrayList<Position> boundaries = new ArrayList<>();
+//        ArrayList<Mark> boundaries = new ArrayList<>();
 //
 //        for (int i=0; i< nodes.getLength(); i++){
 //            Node node = nodes.item(i);
 //            Element markElement = (Element) node;
-//            Position pos = createPositionFromElement(markElement);
+//            Mark pos = createPositionFromElement(markElement);
 //            boundaries.add(pos);
 //        }
 //        return boundaries;
 //    }
 //
-//    private Position createPositionFromElement(Element markElement) {
+//    private Mark createPositionFromElement(Element markElement) {
 //        double latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE));
 //        double longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE));
 //
-//        return new Position(latitude, longitude);
+//        return new Mark(latitude, longitude);
 //    }
 }
 

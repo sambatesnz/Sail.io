@@ -20,12 +20,12 @@ import static javafx.collections.FXCollections.observableArrayList;
  */
 public class Race {
     private int numFinishers = 0;
-    private List<Landmark> landmarks;
-    private List<Landmark> gates;
+    private List<CompoundMark> compoundMarks;
+    private List<CompoundMark> gates;
     private List<Boat> boats;
     private List<Boat> finishedBoats;
     private List<Leg> legs;
-    private List<Position> boundaries;
+    private List<Mark> boundaries;
     private List<Integer> courseOrder;
     private double windHeading;
     private ObservableList<Boat> currentOrder;
@@ -39,26 +39,25 @@ public class Race {
         java.util.Scanner s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("ExampleXMLs/Race.xml")).useDelimiter("\\A");
         String xmlString = s.hasNext() ? s.next() : "";
         parseRaceXML(xmlString);
-        parseXML("course.xml");
+//        parseXML("course.xml");
         setWindHeading(190);
-        boats = getContestants();
+//        boats = getContestants();
+
+        s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("Boats.xml")).useDelimiter("\\A");
+        xmlString = s.hasNext() ? s.next() : "";
+        parseBoatsXML(xmlString);
+
         finishedBoats = new ArrayList<>();
         currentOrder = observableArrayList(boats);
         positionStrings = FXCollections.observableArrayList();
-        double minLat = boundaries.stream().min(Comparator.comparingDouble(Position::getLatitude)).get().getLatitude();
-        double minLon = boundaries.stream().min(Comparator.comparingDouble(Position::getLongitude)).get().getLongitude();
-        double maxLat = boundaries.stream().max(Comparator.comparingDouble(Position::getLatitude)).get().getLatitude();
-        double maxLon = boundaries.stream().max(Comparator.comparingDouble(Position::getLongitude)).get().getLongitude();
-        Position viewMin = new Position(minLat, minLon);
-        Position viewMax = new Position(maxLat, maxLon);
+        double minLat = boundaries.stream().min(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
+        double minLon = boundaries.stream().min(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
+        double maxLat = boundaries.stream().max(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
+        double maxLon = boundaries.stream().max(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
+        Mark viewMin = new Mark(minLat, minLon);
+        Mark viewMax = new Mark(maxLat, maxLon);
         Coordinate.setViewMin(viewMin);
         Coordinate.setViewMax(viewMax);
-
-        for (Boat boat : boats) {
-            boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
-            boat.setX(legs.get(0).getStart().getX());
-            boat.setY(legs.get(0).getStart().getY());
-        }
     }
     /**
      * Setter for finishedBoat, mainly to allow for testing.
@@ -126,11 +125,11 @@ public class Race {
     }
 
     /**
-     * Getter for the list of landmarks
-     * @return a list of landmarks
+     * Getter for the list of compoundMarks
+     * @return a list of compoundMarks
      */
-    public List<Landmark> getLandmarks() {
-        return landmarks;
+    public List<CompoundMark> getCompoundMarks() {
+        return compoundMarks;
     }
 
     /**
@@ -149,20 +148,20 @@ public class Race {
         return boats;
     }
 
-    /**
-     * Creates an ArrayList of boats competing in the current race
-     * @return The ArrayList of boats
-     */
-    private ArrayList<Boat> getContestants() {
-        ArrayList<Boat> contestants = new ArrayList<>();
-        contestants.add(new Boat("ORACLE TEAM USA", 5.8, Color.RED, "USA"));
-        contestants.add(new Boat("Artemis Racing", 7.1, Color.BLUE, "SWE"));
-        contestants.add(new Boat("Emirates Team New Zealand", 11.2, Color.BLACK, "NZL"));
-        contestants.add(new Boat("Groupama Team France", 6.7, Color.WHEAT, "FRA"));
-        contestants.add(new Boat("Land Rover BAR", 7.6, Color.AQUAMARINE, "GBR"));
-        contestants.add(new Boat("SoftBank Team Japan", 9.3, Color.DARKSALMON, "JPN"));
-        return contestants;
-    }
+//    /**
+//     * Creates an ArrayList of boats competing in the current race
+//     * @return The ArrayList of boats
+//     */
+//    private ArrayList<Boat> getContestants() {
+//        ArrayList<Boat> contestants = new ArrayList<>();
+//        contestants.add(new Boat("ORACLE TEAM USA", 5.8, Color.RED, "USA"));
+//        contestants.add(new Boat("Artemis Racing", 7.1, Color.BLUE, "SWE"));
+//        contestants.add(new Boat("Emirates Team New Zealand", 11.2, Color.BLACK, "NZL"));
+//        contestants.add(new Boat("Groupama Team France", 6.7, Color.WHEAT, "FRA"));
+//        contestants.add(new Boat("Land Rover BAR", 7.6, Color.AQUAMARINE, "GBR"));
+//        contestants.add(new Boat("SoftBank Team Japan", 9.3, Color.DARKSALMON, "JPN"));
+//        return contestants;
+//    }
 
     /**
      * Reads an XML file to get the attributes of things on the course
@@ -173,68 +172,25 @@ public class Race {
         try {
             CourseCreator cc = new CourseCreator(fileName);
 
-//            landmarks = cc.getLandmarks();
+//            compoundMarks = cc.getLandmarks();
 //            gates = new ArrayList<>();
-//            for (Landmark mark : landmarks) {
+//            for (CompoundMark mark : compoundMarks) {
 //                if (mark.getType().equals("Gate")) {
 //                    gates.add(mark);
 //                }
 //            }
 //            boundaries = cc.getBoundaries();
-
-            legs = new ArrayList<>();
-            for (int i = 1; i < courseOrder.size(); i++) {
-                int startId = courseOrder.get(i-1);
-                int destId = courseOrder.get(i);
-                Landmark start = null;
-                Landmark dest = null;
-                for (Landmark lm : landmarks) {
-                    if (lm.getId() == startId) {
-                        start = lm;
-                    } else if (lm.getId() == destId) {
-                        dest = lm;
-                    }
-                }
-                legs.add(new Leg(start, dest));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Reads an XML file to get the attributes of things on the course
-     * @param xmlString the XML string to parse
-     */
-    private void parseRaceXML(String xmlString) {
-
-        try {
-            XMLParser xmlParser = new XMLParser(xmlString);
-
-            landmarks = xmlParser.getCourseLayout();
-            gates = new ArrayList<>();
-            for (Landmark mark : landmarks) {
-                if (mark.getType().equals("Gate")) {
-                    gates.add(mark);
-                }
-            }
-            boundaries = new ArrayList<>();
-            List<CourseLimit> courseLimits = xmlParser.getCourseLimits();
-            for (CourseLimit cl: courseLimits) {
-                boundaries.add(new Position(cl.getLat(), cl.getLon()));
-            }
-
-            courseOrder = xmlParser.getCourseOrder();
-
-//            ArrayList<Integer> courseOrder = cc.getGateOrderForRace();
 //
+//            courseOrder = cc.getGateOrderForRace();
+
+
 //            legs = new ArrayList<>();
 //            for (int i = 1; i < courseOrder.size(); i++) {
 //                int startId = courseOrder.get(i-1);
 //                int destId = courseOrder.get(i);
-//                Landmark start = null;
-//                Landmark dest = null;
-//                for (Landmark lm : landmarks) {
+//                CompoundMark start = null;
+//                CompoundMark dest = null;
+//                for (CompoundMark lm : compoundMarks) {
 //                    if (lm.getId() == startId) {
 //                        start = lm;
 //                    } else if (lm.getId() == destId) {
@@ -249,69 +205,114 @@ public class Race {
     }
 
     /**
+     * Reads an XML file to get the attributes of things on the course
+     * @param xmlString the XML string to parse
+     */
+    private void parseRaceXML(String xmlString) {
+
+        try {
+            XMLParser xmlParser = new XMLParser(xmlString);
+
+            compoundMarks = xmlParser.getCourseLayout();
+            gates = new ArrayList<>();
+            for (CompoundMark mark : compoundMarks) {
+                if (mark.getType().equals("Gate")) {
+                    gates.add(mark);
+                }
+            }
+            boundaries = new ArrayList<>();
+            List<CourseLimit> courseLimits = xmlParser.getCourseLimits();
+            for (CourseLimit cl: courseLimits) {
+                boundaries.add(new Mark(cl.getLat(), cl.getLon()));
+            }
+
+            courseOrder = xmlParser.getCourseOrder();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Reads an XML file to get the boat attributes
+     * @param xmlString the XML string to parse
+     */
+    private void parseBoatsXML(String xmlString) {
+        try {
+            XMLParser xmlParser = new XMLParser(xmlString);
+
+            boats = xmlParser.getBoats();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Get the gates
      * @return the gates
      */
-    public List<Landmark> getGates() {
+    public List<CompoundMark> getGates() {
         return gates;
     }
 
     /**
      * Runs a portion of the race, updating boat positions and leg status
      */
-    public void updateBoats() {
-        double distanceMultiplier = 1;
-        double movementMultiplier = 1;
+//    public void updateBoats() {
+//        double distanceMultiplier = 1;
+//        double movementMultiplier = 1;
+//
+//        for (Boat boat : boats) {
+//            if (!finishedBoats.contains(boat)) {
+////                boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed()*distanceMultiplier);
+//
+//                //Increments the the distance by the speed
+////                boat.setX(boat.getX() + boat.getSpeed()*sin(toRadians(boat.getHeading()))*movementMultiplier);
+////                boat.setY(boat.getY() + boat.getSpeed()*cos(toRadians(boat.getHeading()))*movementMultiplier);
+//
+////                if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {
+////                    String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
+////                    boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
+////                    boat.setCurrentLegIndex(boat.getCurrentLegIndex() + 1);
+//
+//                    // Gives each boat it's race time to the last mark.
+////                    boat.setRaceTime(currentTimeMillis());
+//                    // Sorts the boats in order. Attempts by leg it's doing first, then by time to complete last leg from start.
+////                    currentOrder.sort((boat1, boat2) -> {
+////                        if (boat1.getCurrentLegIndex() == boat2.getCurrentLegIndex()) {
+////                            return Long.compare(boat1.getRaceTime(), boat2.getRaceTime());
+////                        } else {
+////                            return Integer.compare(boat2.getCurrentLegIndex(),boat1.getCurrentLegIndex());
+////                        }
+////                    });
+//
+////                    if (boat.getCurrentLegIndex() == legs.size()) {
+//////                        System.out.println(boat.getName() + " finished race!");
+////                        numFinishers++;
+////                        boat.setSpeed(0);
+////                        finishedBoats.add(boat);
+////                        if (numFinishers == boats.size()) {
+////                            finished = true;
+////                            return;
+////                        }
+////                    } else {
+////                        boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
+//////                        System.out.println(boat.getName() + " passed " + passed + ", now sailing to " +
+//////                                legs.get(boat.getCurrentLegIndex()).getDest().getName() + " with a heading of " +
+//////                                String.format("%.2f", legs.get(boat.getCurrentLegIndex()).getHeading()) + "°");
+////                    }
+////                }
+//            }
+//        }
+//    }
 
-        for (Boat boat : boats) {
-            if (!finishedBoats.contains(boat)) {
-                boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed()*distanceMultiplier);
-
-                //Increments the the distance by the speed
-                boat.setX(boat.getX() + boat.getSpeed()*sin(toRadians(boat.getHeading()))*movementMultiplier);
-                boat.setY(boat.getY() + boat.getSpeed()*cos(toRadians(boat.getHeading()))*movementMultiplier);
-
-                if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {
-                    String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
-                    boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
-                    boat.setCurrentLegIndex(boat.getCurrentLegIndex() + 1);
-
-                    // Gives each boat it's race time to the last mark.
-                    boat.setRaceTime(currentTimeMillis());
-                    // Sorts the boats in order. Attempts by leg it's doing first, then by time to complete last leg from start.
-                    currentOrder.sort((boat1, boat2) -> {
-                        if (boat1.getCurrentLegIndex() == boat2.getCurrentLegIndex()) {
-                            return Long.compare(boat1.getRaceTime(), boat2.getRaceTime());
-                        } else {
-                            return Integer.compare(boat2.getCurrentLegIndex(),boat1.getCurrentLegIndex());
-                        }
-                    });
-
-                    if (boat.getCurrentLegIndex() == legs.size()) {
-//                        System.out.println(boat.getName() + " finished race!");
-                        numFinishers++;
-                        boat.setSpeed(0);
-                        finishedBoats.add(boat);
-                        if (numFinishers == boats.size()) {
-                            finished = true;
-                            return;
-                        }
-                    } else {
-                        boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
-//                        System.out.println(boat.getName() + " passed " + passed + ", now sailing to " +
-//                                legs.get(boat.getCurrentLegIndex()).getDest().getName() + " with a heading of " +
-//                                String.format("%.2f", legs.get(boat.getCurrentLegIndex()).getHeading()) + "°");
-                    }
-                }
-            }
-        }
-    }
-
-    public List<Position> getBoundaries() {
+    public List<Mark> getBoundaries() {
         return boundaries;
     }
 
-    public void setBoundaries(ArrayList<Position> boundaries) {
+    public void setBoundaries(ArrayList<Mark> boundaries) {
         this.boundaries = boundaries;
     }
 }

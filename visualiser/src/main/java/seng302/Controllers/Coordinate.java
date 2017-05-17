@@ -1,6 +1,6 @@
 package seng302.Controllers;
 
-import seng302.Position;
+import seng302.Mark;
 
 /**
  * Holds information relating to the coordinates within the window.
@@ -20,14 +20,14 @@ public class  Coordinate {
     private static double BorderConstant = 0;
     private static int sidePaneWidth = 248;
 
-    private static Position viewMin;
-    private static Position viewMax;
+    private static Mark viewMin;
+    private static Mark viewMax;
 
     /**
      * Set the coordinates of the minimum postion on the map to be displayed
      * @param min A minimum coordinate to be viewed
      */
-    public static void setViewMin(Position min) {
+    public static void setViewMin(Mark min) {
         viewMin = min;
     }
 
@@ -35,7 +35,7 @@ public class  Coordinate {
      * Set the coordinates of the maximum position on the map to be displayed
      * @param max A maximum coordinate to be viewed
      */
-    public static void setViewMax(Position max) {
+    public static void setViewMax(Mark max) {
         viewMax = max;
     }
 
@@ -78,7 +78,7 @@ public class  Coordinate {
         double sizeX = viewMax.getX() - viewMin.getX();
         double sizeY = viewMax.getY() - viewMin.getY();
 
-        if((windowX / sizeX) > windowY / sizeY ) {
+        if ((windowX / sizeX) > windowY / sizeY ) {
             BorderX = BorderConstant + (windowX - windowY / sizeY * sizeX) / 2;
         }else if((windowX / sizeX) < windowY / sizeY ) {
             BorderY = BorderConstant + (windowY - windowX / sizeX * sizeY) / 2;

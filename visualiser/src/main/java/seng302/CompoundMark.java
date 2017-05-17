@@ -7,9 +7,9 @@ import java.util.ArrayList;
 /**
  * Represents a mark, gate, starting line, or finishing line in a yacht race
  */
-public class Landmark {
+public class CompoundMark {
 
-    private ArrayList<Position> positions;
+    private ArrayList<Mark> marks;
     private String name;
     private Color color;
     private int id;
@@ -18,12 +18,12 @@ public class Landmark {
     /**
      * Constructs a landmark
      * @param name the name of the landmark
-     * @param positions the position of the landmark in lat/long
+     * @param marks the position of the landmark in lat/long
      * @param color the color that the landmark appears on the map.
      */
-    public Landmark(String name, ArrayList<Position> positions, Color color, int id, String type) {
+    public CompoundMark(String name, ArrayList<Mark> marks, Color color, int id, String type) {
         this.name = name;
-        this.positions = positions;
+        this.marks = marks;
         this.color = color;
         this.id = id;
         this.type = type;
@@ -42,22 +42,22 @@ public class Landmark {
      * @return the landmarks x coordinate
      */
     public double getX() {
-        return this.positions.get(0).getX();
+        return this.marks.get(0).getX();
     }
 
     public double getXByIndex(int i) {
-        return this.positions.get(i).getX();
+        return this.marks.get(i).getX();
     }
 
     public double getYByIndex(int i) {
-        return this.positions.get(i).getY();
+        return this.marks.get(i).getY();
     }
     /**
      * Get the landmarks y coordinate
      * @return the landmarks y coordinate
      */
     public double getY() {
-        return this.positions.get(0).getY();
+        return this.marks.get(0).getY();
     }
 
     /**
@@ -76,7 +76,7 @@ public class Landmark {
         return type;
     }
 
-    public ArrayList<Position> getPositions() {
-        return positions;
+    public ArrayList<Mark> getMarks() {
+        return marks;
     }
 }

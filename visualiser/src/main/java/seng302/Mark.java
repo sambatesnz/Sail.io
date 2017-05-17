@@ -3,7 +3,7 @@ package seng302;
 /**
  * Class to hold a position (set of coordinates)
  */
-public class Position {
+public class Mark {
     private static double EARTH_CIRCUMFERENCE = 40075000;
     private double latitude;
     private double longitude;
@@ -15,7 +15,7 @@ public class Position {
      * @param longitude longitude of the position
      * @param latitude latitude of the position
      */
-    public Position(double latitude, double longitude){
+    public Mark(double latitude, double longitude){
         this.latitude = latitude;
         this.longitude = longitude;
         this.x = longitude * EARTH_CIRCUMFERENCE / 360;
@@ -28,14 +28,6 @@ public class Position {
     public static double convertY(double y){
         return y / EARTH_CIRCUMFERENCE * 180;
     }
-
-//    public Position (int integer, double x, double y){
-//        this.latitude = y / EARTH_CIRCUMFERENCE * 180;
-//        this.longitude = x / EARTH_CIRCUMFERENCE * 360;
-//        this.x = x;
-//        this.y = y;
-//    }
-
 
 
     /**

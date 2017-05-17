@@ -145,9 +145,9 @@ public class CourseCreator {
         return windDir;
     }
 
-    private Landmark createLandmarkFromElement(Element markElement) {
+    private CompoundMark createLandmarkFromElement(Element markElement) {
 
-        // Rips the color, type?, and the name for each Landmark
+        // Rips the color, type?, and the name for each CompoundMark
         String name = markElement.getAttribute(MARK_NAME);
         String type = markElement.getAttribute(MARK_TYPE);
 
@@ -158,50 +158,50 @@ public class CourseCreator {
         double latitude;
         double longitude;
 
-        ArrayList<Position> positions = new ArrayList<>();
+        ArrayList<Mark> marks = new ArrayList<>();
         //We know a mark is always going to have a lat and long
         latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE));
         longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE));
 
-        positions.add(new Position(latitude, longitude));
+        marks.add(new Mark(latitude, longitude));
         if (type.equals(GATE)){
             latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE, 1));
             longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE, 1));
-            positions.add(new Position(latitude, longitude));
+            marks.add(new Mark(latitude, longitude));
         }
-        return new Landmark(name, positions, color, id, type);
+        return new CompoundMark(name, marks, color, id, type);
     }
 
-    public ArrayList<Landmark> getLandmarks() {
+    public ArrayList<CompoundMark> getLandmarks() {
         NodeList nodes = this.configDoc.getElementsByTagName(COMPOUND_MARK);
-        ArrayList<Landmark> landmarks = new ArrayList<>();
+        ArrayList<CompoundMark> compoundMarks = new ArrayList<>();
 
         for (int i=0; i< nodes.getLength(); i++){
             Node node = nodes.item(i);
             Element markElement = (Element) node;
-            Landmark mark = createLandmarkFromElement(markElement);
-            landmarks.add(mark);
+            CompoundMark mark = createLandmarkFromElement(markElement);
+            compoundMarks.add(mark);
         }
-        return landmarks;
+        return compoundMarks;
     }
 
-    public ArrayList<Position> getBoundaries() {
+    public ArrayList<Mark> getBoundaries() {
         NodeList nodes = this.configDoc.getElementsByTagName(BOUNDARY);
-        ArrayList<Position> boundaries = new ArrayList<>();
+        ArrayList<Mark> boundaries = new ArrayList<>();
 
         for (int i=0; i< nodes.getLength(); i++){
             Node node = nodes.item(i);
             Element markElement = (Element) node;
-            Position pos = createPositionFromElement(markElement);
+            Mark pos = createPositionFromElement(markElement);
             boundaries.add(pos);
         }
         return boundaries;
     }
 
-    private Position createPositionFromElement(Element markElement) {
+    private Mark createPositionFromElement(Element markElement) {
         double latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE));
         double longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE));
 
-        return new Position(latitude, longitude);
+        return new Mark(latitude, longitude);
     }
 }

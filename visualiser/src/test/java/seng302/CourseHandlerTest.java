@@ -50,7 +50,7 @@ package seng302;//package seng302;
 //    public void testLandmarksGoodXML() throws SAXException {
 //        CourseHandler courseHandler = parseXML("coursetest.xml");
 //
-//        Map<String, Landmark> landmarksMap = courseHandler.getLandmarks();
+//        Map<String, CompoundMark> landmarksMap = courseHandler.getCompoundMarks();
 //        Assert.assertEquals(landmarksMap.size(), 9);
 //        Assert.assertEquals(Color.RED, landmarksMap.get("FinishLine1").getColor());
 //    }
