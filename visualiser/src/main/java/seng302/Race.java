@@ -31,7 +31,7 @@ public class Race {
     private double windSpeed;
     private ObservableList<Boat> currentOrder;
     private ObservableList<String> positionStrings;
-    private int expectedStartTime;
+    private long expectedStartTime;
     private int raceStatus;
     public boolean finished = false;
 
@@ -130,6 +130,76 @@ public class Race {
      */
     public void setWindHeading(double windHeading) {
         this.windHeading = windHeading;
+    }
+
+    /**
+     * Getter for the speed of the wind for the race
+     * @return the speed of the wind, in mm/s
+     */
+    public double getWindSpeed() {
+        return windSpeed;
+    }
+
+    /**
+     * Sets the current speed of the wind
+     * @param windSpeed the speed that the wind is travelling
+     */
+    public void setWindSpeed(double windSpeed) {
+        this.windSpeed = windSpeed;
+    }
+
+    /**
+     * Gets the time (in ms since 1 Jan, 1970) that the race is expected to start
+     * @return The time that the race is expected to start
+     */
+    public long getExpectedStartTime() {
+        return expectedStartTime;
+    }
+
+    /**
+     * Sets the time that the race is expected to start (in ms since 1 Jan, 1970)
+     * @param expectedStartTime The time that the race is expected to start
+     */
+    public void setExpectedStartTime(long expectedStartTime) {
+        this.expectedStartTime = expectedStartTime;
+    }
+
+    /**
+     * Gets the current status of the race:
+     * 0: Not active
+     * 1: Warning (between 3:00 and 1:00 before start)
+     * 2: Preparatory (less than 1:00 before start)
+     * 3: Started
+     * 4: Finished (obsolete)
+     * 5: Retired (obsolete)
+     * 6: Abandoned
+     * 7: Postponed
+     * 8: Terminated
+     * 9: Race start time not set
+     * 10: Prestart (more than 3:00 until start)
+     * @return The status of the race
+     */
+    public int getRaceStatus() {
+        return raceStatus;
+    }
+
+    /**
+     * Sets the current status of the race
+     * 0: Not active
+     * 1: Warning (between 3:00 and 1:00 before start)
+     * 2: Preparatory (less than 1:00 before start)
+     * 3: Started
+     * 4: Finished (obsolete)
+     * 5: Retired (obsolete)
+     * 6: Abandoned
+     * 7: Postponed
+     * 8: Terminated
+     * 9: Race start time not set
+     * 10: Prestart (more than 3:00 until start)
+     * @param raceStatus The status of the race
+     */
+    public void setRaceStatus(int raceStatus) {
+        this.raceStatus = raceStatus;
     }
 
     /**

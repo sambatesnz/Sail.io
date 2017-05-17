@@ -1,6 +1,13 @@
 package seng302.Messages;
 
 
+import seng302.Race;
+
+/**
+ * Class that holds anc can update the details for a race given by a race status packet.
+ * Passes on the boat status to the BoatStatusMessage class.
+ */
+
 public class RaceStatusMessage {
     private long currentTime;
     private long raceID;
@@ -11,14 +18,16 @@ public class RaceStatusMessage {
     private int numBoatsInRace;
     private int raceType;
 
-    private long boatSourceID;
-    private int boatStatus;
-    private int boatLegNumber;
-    private long boatTimeToNextMark;
-    private long boatTimeToFinish;
-
     private BoatStatusMessage[] boatDetailsList;
 
+    private Race race;
+
+    /**
+     * Constructor for the class. Takes in an array of bytes from a Race Status packet
+     * as a parameter, and extracts the relevant information from it so it can be used to
+     * update the status of the race, and create Boat Status Messages for each boat in the race.
+     * @param bytes The array of bytes from the body of a race status packet
+     */
     public RaceStatusMessage(byte[] bytes) {
         currentTime = Message.byteArrayToLong(bytes, 1, 6);
         raceID = Message.byteArrayToLong(bytes, 7, 4);
@@ -28,25 +37,17 @@ public class RaceStatusMessage {
         windSpeed = Message.byteArrayToInt(bytes, 20, 2);
         numBoatsInRace = Message.byteArrayToInt(bytes, 22, 1);
         raceType = Message.byteArrayToInt(bytes, 23, 1);
-//        System.out.println("Current time: " + currentTime);
-//        System.out.println("Race ID: " + raceID);
-//        System.out.println("Race Status: " + raceStatus);
-//        System.out.println("Expected Start Time: " + expectedStartTime);
-//        System.out.println("Wind Direction: " + windDirection);
-//        System.out.println("Wind Speed: " + windSpeed);
-//        System.out.println("Number of Boats in Race: " + numBoatsInRace);
-//        System.out.println("Race Type: " + raceType);
 
-        int indent = 24; //25th byte
+        int indent = 24;
 
         boatDetailsList = new BoatStatusMessage[numBoatsInRace];
 
         for (int i = 0; i < numBoatsInRace; i++) {
-            boatSourceID = Message.byteArrayToLong(bytes, indent, 4);
-            boatStatus = Message.byteArrayToInt(bytes, indent + 4, 1);
-            boatLegNumber = Message.byteArrayToInt(bytes, indent + 5, 1);
-            boatTimeToNextMark = Message.byteArrayToLong(bytes, indent + 8, 6);
-            boatTimeToFinish = Message.byteArrayToLong(bytes, indent + 14, 6);
+            long boatSourceID = Message.byteArrayToLong(bytes, indent, 4);
+            int boatStatus = Message.byteArrayToInt(bytes, indent + 4, 1);
+            int boatLegNumber = Message.byteArrayToInt(bytes, indent + 5, 1);
+            long boatTimeToNextMark = Message.byteArrayToLong(bytes, indent + 8, 6);
+            long boatTimeToFinish = Message.byteArrayToLong(bytes, indent + 14, 6);
 
             BoatStatusMessage boatDetails = new BoatStatusMessage(boatSourceID, boatStatus,
                     boatLegNumber, boatTimeToNextMark, boatTimeToFinish);
@@ -54,6 +55,24 @@ public class RaceStatusMessage {
 
             indent += 20;
         }
+
+//        for (BoatStatusMessage boatInfo : boatDetailsList) {
+//            boatInfo.setBoatDetails();
+//        }
+    }
+
+    /**
+     * Updates the following details of a yacht race:
+     * - Wind Heading
+     * - Wind Speed
+     * - Expected Start Time
+     * - Race Status
+     */
+    public void updateRaceDetails() {
+        race.setWindHeading(windDirection);
+        race.setWindSpeed(windSpeed);
+        race.setExpectedStartTime(expectedStartTime);
+        race.setRaceStatus(raceStatus);
     }
 
 

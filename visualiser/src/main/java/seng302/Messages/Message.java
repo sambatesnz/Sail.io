@@ -5,7 +5,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 /**
- * Created by sba136 on 11/05/17.
+ * Class to read in packets from a socket stream and distribute them to their relative
+ * message handler.
  */
 public class Message {
     private int syncByte1;
@@ -15,6 +16,12 @@ public class Message {
     private byte body[];
     private byte crc[];
 
+    /**
+     * Constructor for the class. Takes an array of bytes, extracts information from the header
+     * (such as the message type and length) and removes it from the rest of the data,
+     * along with the CRC, in preparation for the message to be given to it's relative handler.
+     * @param data The array of bytes containing the header, message and CRC
+     */
     public Message(byte[] data){
         syncByte1 = byteArrayToInt(data, 0, 1);
         syncByte2 = byteArrayToInt(data, 1,1);
@@ -27,16 +34,36 @@ public class Message {
         System.arraycopy(data,15 + messageLen, crc,0, 4);
     }
 
+    /**
+     * Converts a section from an array of bytes into an integer.
+     * @param bytes The array to convert bytes from
+     * @param pos The starting index of the bytes desired to be converted
+     * @param len The number of bytes to be converted (from the given index)
+     * @return An integer, converted from the given bytes
+     */
     public static int byteArrayToInt(byte[] bytes, int pos, int len){
         byte[] intByte = new byte[4];
         System.arraycopy(bytes, pos, intByte, 0, len);
         return ByteBuffer.wrap(intByte).order(ByteOrder.LITTLE_ENDIAN).getInt();
     }
+
+    /**
+     * Converts a section from an array of bytes into a long.
+     * @param bytes The array to convert bytes from
+     * @param pos The starting index of the bytes desired to be converted
+     * @param len The number of bytes to be converted (from the given index)
+     * @return A long, converted from the given bytes
+     */
     public static long byteArrayToLong(byte[] bytes, int pos, int len){
         byte[] intByte = new byte[8];
         System.arraycopy(bytes, pos, intByte, 0, len);
         return ByteBuffer.wrap(intByte).order(ByteOrder.LITTLE_ENDIAN).getInt();
     }
+
+    /**
+     * Gives the packet to the relative message handler based on the messageType
+     * @throws UnsupportedEncodingException
+     */
     public void parseMessage() throws UnsupportedEncodingException {
         switch (messageType) {
             case 1:                                             //Heartbeat

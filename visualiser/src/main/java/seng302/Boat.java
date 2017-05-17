@@ -18,9 +18,10 @@ public class Boat {
     private int position;
     private String abrv;
     private int sourceID;
+    private int status;
 
-    private int timeToNextMark;
-    private int timeToFinish;
+    private long timeToNextMark;
+    private long timeToFinish;
 
     /**
      * Gets the abbreviation of the name of the team's boat
@@ -184,7 +185,7 @@ public class Boat {
 
     /**
      * Sets the position of the boat.
-     * @param position1
+     * @param position1 the position of the boat in the race
      */
     public void setPosition(int position1) { position = position1; }
 
@@ -204,15 +205,55 @@ public class Boat {
         return Position.convertX(x);
     }
 
+    /**
+     * Sets the source ID, or the identification number, of the boat
+     * @param id The number that the boat will be identified by
+     */
     public void setSourceID(int id) { this.sourceID = id; }
 
+    /**
+     * Getter for the source ID, or the identification number, of the boat
+     * @return The number that the boat is identified by
+     */
     public int getSourceID() { return sourceID; }
+
+    /**
+     * Getter for the status of the boat:
+     * 0: Undefined
+     * 1: Prestart
+     * 2: Racing
+     * 3: Finished
+     * 4: DNS (did not start)
+     * 5: DNF (did not finish)
+     * 6: DSQ (disqualified)
+     * 7: OCS (On Course Side – across start line early)
+     * @return the status of the boat
+     */
+    public int getStatus() {
+        return status;
+    }
+
+    /**
+     * Setter for the status of the boat:
+     * 0: Undefined
+     * 1: Prestart
+     * 2: Racing
+     * 3: Finished
+     * 4: DNS (did not start)
+     * 5: DNF (did not finish)
+     * 6: DSQ (disqualified)
+     * 7: OCS (On Course Side – across start line early)
+     * @param status the status of the boat
+     */
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     /**
      * Getter for the estimated time that the boat will take to get to the next mark
      * @return The estimated time to the next mark
      */
-    public int getTimeToNextMark() {
+    public long getTimeToNextMark() {
         return timeToNextMark;
     }
 
@@ -220,7 +261,7 @@ public class Boat {
      * Setter for the estimated time that the boat will take to get to the next mark
      * @param timeToNextMark The estimated time to the next mark
      */
-    public void setTimeToNextMark(int timeToNextMark) {
+    public void setTimeToNextMark(long timeToNextMark) {
         this.timeToNextMark = timeToNextMark;
     }
 
@@ -228,11 +269,15 @@ public class Boat {
      * Getter for the estimated time that the boat will take to finish
      * @return The estimated time to finish
      */
-    public int getTimeToFinish() {
+    public long getTimeToFinish() {
         return timeToFinish;
     }
 
-    public void setTimeToFinish(int timeToFinish) {
+    /**
+     * Setter for the estimated time that the boat will take to finish
+     * @param timeToFinish The estimated time to finish
+     */
+    public void setTimeToFinish(long timeToFinish) {
         this.timeToFinish = timeToFinish;
     }
 }
