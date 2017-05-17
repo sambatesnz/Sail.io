@@ -1,138 +1,63 @@
 package seng302.packetGeneration.BoatLocationGeneration;
 
-import seng302.Boat;
-import seng302.packetGeneration.XMLMessageGeneration.XMLMessageContainer;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.zip.CRC32;
+import seng302.packetGeneration.PacketGenerationUtils;
 
 /**
- * Messages used in the data streams
+ * For the Creation of the Boat Location Message Packets
+ * As defined in page 19 of https://docs.google.com/a/acracemgt.com/viewer?a=v&pid=sites&srcid=YWNyYWNlbWd0LmNvbXxub3RpY2Vib2FyZHxneDoyYTExNTQ4Yzg3ZGRmNTQ1
+ * Packet body size should be 56 bytes
+ *
  */
 public class BoatLocationMessage {
-    private static final int VALID_TIME_MILLI = 1000;
-    public static final short BOAT_POSITION_LENGTH= 56;
-    public static final short HEADER_LENGTH = 15;
-    public static final short XML_HEADER_LENGTH = 14;
-    private static final byte SYNC_BYTE_1 = (byte) 0x47;
-    private static final byte SYNC_BYTE_2 = (byte) 0x83;
-    public static final int CRC_LENGTH = 4;
 
-    private int messageId;
+    private byte[] versionNumber;
+    private byte[] time;
+    private byte[] sourceId;
+    private byte[] sequenceNum;
+    private byte[] deviceType;
+    private byte[] latitude;
+    private byte[] longitude;
+    private byte[] altitude;
+    private byte[] heading;
+    private byte[] pitch;
+    private byte[] roll;
+    private byte[] boatSpeed;
+    private byte[] cog;
+    private byte[] sog;
+    private byte[] apparantWindSpeed;
+    private byte[] apparantWindAngle;
+    private byte[] trueWindSpeed;
+    private byte[] trueWindDirection;
+    private byte[] trueWindAngle;
+    private byte[] currentDrift;
+    private byte[] currentSet;
+    private byte[] rudderAngle;
 
-    public BoatLocationMessage() {
-        messageId = Integer.MIN_VALUE;
+    public static int CURRENT_VERSION_NUMBER = 1;
+    private static int MESSAGE_SIZE = 56;
+    private byte[] boatLocationMessage;
+
+    public BoatLocationMessage(int versionNumber, long time, int sourceId,
+                               int sequenceNum, int deviceType,
+                               long latitude, long longitude, long altitude,
+                               short heading, int pitch, int roll, short boatSpeed,
+                               short cog, short sog,
+                               short apparantWindSpeed, short apparantWindAngle,
+                               short trueWindSpeed, short trueWindDirection, short trueWindAngle,
+                               short currentDrift, short currentSet, short rudderAngle) {
+
+        this.boatLocationMessage = new byte[MESSAGE_SIZE];
+
+        this.versionNumber = PacketGenerationUtils.intToOneByte(versionNumber);
+        this.time = PacketGenerationUtils.longToSixBytes(time);
+
     }
 
-    private static ByteBuffer LEBuffer(int capacity) {
-        return ByteBuffer.allocate(capacity).order(ByteOrder.LITTLE_ENDIAN);
-    }
 
-    public byte[] calculateChecksum(byte[] bytes) {
-        CRC32 crc32 = new CRC32();
-        crc32.update(bytes);
-        return LEBuffer(4).putInt((int) crc32.getValue()).array();
-    }
-
-    public byte[] xmlMessage(String xml, short ackN, short seqNum) {
-        //return message((byte) 26, xmlBody(xml, ackN, seqNum));
-        XMLMessageContainer xmc = new XMLMessageContainer(xml, ackN, seqNum);
-        return message((byte) 26, xmc.getXMLMessage());
-    }
-
-//    public byte[] xmlBody(String xml, short ackN, short seqNum) {
-//        byte versionNum = 0x01;
-//        byte[] ackNumber = LEBuffer(2).putShort(ackN).array();
-//        byte[] time = LEBuffer(8).putLong(System.currentTimeMillis()).array();
-//        byte[] timestamp = Arrays.copyOfRange(time, 2, 8);
-//        byte xmlMsgSubType = 0x00;
-//        byte[] seqNumber = LEBuffer(2).putShort(seqNum).array();
-//        byte[] xmlBytes = xml.getBytes(StandardCharsets.UTF_8);
-//        byte[] xmlText = Arrays.copyOf(xmlBytes, xmlBytes.length+1);
-//        byte[] xmlTextLen = LEBuffer(2).putShort((short) xmlText.length).array();
-//
-//        ByteBuffer bytes = LEBuffer(XML_HEADER_LENGTH + xmlText.length);
-//        bytes.put(versionNum);
-//        bytes.put(ackNumber);
-//        bytes.put(timestamp);
-//        bytes.put(xmlMsgSubType);
-//        bytes.put(seqNumber);
-//        bytes.put(xmlTextLen);
-//        bytes.put(xmlText);
-//
-//        return bytes.array();
-//    }
-
-    public byte[] message(byte type, byte[] body) {
-        byte[] time = LEBuffer(8).putLong(System.currentTimeMillis()).array();
-        byte[] timestamp = Arrays.copyOfRange(time, 2, 8);
-        byte[] messageLength = LEBuffer(2).putShort((short) body.length).array();
-        byte[] messageID = LEBuffer(4).putInt(messageId++).array();
-
-        ByteBuffer header = LEBuffer(HEADER_LENGTH);
-        header.put(SYNC_BYTE_1);
-        header.put(SYNC_BYTE_2);
-        header.put(type);
-        header.put(timestamp);
-        header.put(messageID);
-        header.put(messageLength);
-
-        ByteBuffer bytes = LEBuffer(HEADER_LENGTH + body.length);
-        bytes.put(header.array());
-        bytes.put(body);
-
-        ByteBuffer bytesCRC = LEBuffer(bytes.array().length + CRC_LENGTH);
-        bytesCRC.put(bytes.array());
-        bytesCRC.put(calculateChecksum(bytes.array()));
-        return bytesCRC.array();
-    }
-
-    public byte[] boatPositionMessage(Boat boat) {
-        return message((byte) 37, boatLocationBody(boat));
-    }
-
-    private byte[] boatLocationBody(Boat boat) {
-        byte[] time = LEBuffer(8).putLong(System.currentTimeMillis() + VALID_TIME_MILLI).array();
-        byte[] timestamp = Arrays.copyOfRange(time, 2, 8);
-        byte[] sourceID = new byte[4];
-        byte[] abrv = boat.getAbrv().getBytes(StandardCharsets.UTF_8);
-        System.arraycopy(abrv, 0, sourceID, 0, abrv.length);
-        byte[] seqNum = {0x00, 0x00, 0x00, 0x01};
-        byte[] altitude = {0x00, 0x00, 0x00, 0x00};
-        byte[] pitch = {0x00, 0x00};
-        byte[] roll = {0x00, 0x00};
-        byte versionNum = (byte) 0x01;
-        byte deviceType = (byte) 0x01;
-        byte[] speed = LEBuffer(2).putShort((short) (boat.getSpeed() * 1000)).array();
-
-        //scaled down to fit into number of bytes
-        byte[] latitude = LEBuffer(4).putInt(get4BytePos(boat.getLatitude())).array();
-        byte[] longitude = LEBuffer(4).putInt(get4BytePos(boat.getLongitude())).array();
-        byte[] heading = LEBuffer(2).putShort(get2ByteHeading(boat.getHeading())).array();
-
-        ByteBuffer bytes = LEBuffer(BOAT_POSITION_LENGTH);
-        bytes.put(versionNum);
-        bytes.put(timestamp);
-        bytes.put(sourceID);
-        bytes.put(seqNum);
-        bytes.put(deviceType);
-        bytes.put(latitude);
-        bytes.put(longitude);
-        bytes.put(altitude);
-        bytes.put(heading);
-        bytes.put(pitch);
-        bytes.put(roll);
-        bytes.put(speed);
-        return bytes.array();
-    }
-
-    private int get4BytePos(double pos){
-        return (int) ((pos+180)/360*(1L << 32L)-(1L << 31L));
-    }
-    private short get2ByteHeading(double heading){
-        return (short) ((heading)/360*(1L << 16L));
+    public byte[] getBoatLocationMessage() {
+        int firstIndex = 0;
+        System.arraycopy(versionNumber, firstIndex, boatLocationMessage, BoatLocationUtility.MESSAGE_VERSION.getIndex(), BoatLocationUtility.MESSAGE_VERSION.getSize());
+        System.arraycopy(time, firstIndex, boatLocationMessage, BoatLocationUtility.TIME_POS.getIndex(), BoatLocationUtility.TIME_POS.getSize());
+        return boatLocationMessage;
     }
 }

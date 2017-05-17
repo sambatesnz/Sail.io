@@ -28,7 +28,7 @@ public class RaceStatusMessage {
     public static int CURRENT_VERSION_NUMBER= 2;
 
     /**
-     * Constructor for the Race Status BoatLocationMessage, Used when you don't know what version number to give
+     * Constructor for the Race Status Message, Used when you don't know what version number to give
      * @param currentTime current local time milliseconds
      * @param raceID Id of the race
      * @param raceStatus Status of the race eg Active
@@ -54,7 +54,7 @@ public class RaceStatusMessage {
 
     /**
      * Constructor for the Race Status message.
-     * @param versionNumber Version number of the Race Status BoatLocationMessage Packet
+     * @param versionNumber Version number of the Race Status Message Packet
      * @param currentTime current local time milliseconds
      * @param raceID Id of the race
      * @param raceStatus Status of the race eg Active
@@ -80,7 +80,7 @@ public class RaceStatusMessage {
 
     /**
      * Gets the Race Status message as a byte Array
-     * @return byte array containing the whole Race Status BoatLocationMessage
+     * @return byte array containing the whole Race Status Message
      */
     public byte[] getRaceStatusMessage(){
         byte[] output = new byte[24 + numberOfBoatsInt * 20];

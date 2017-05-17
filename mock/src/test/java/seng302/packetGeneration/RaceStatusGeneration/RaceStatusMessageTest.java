@@ -8,9 +8,9 @@ import static org.junit.Assert.*;
 
 /**
  * Test class for testing the race status messages
- * The tests test each section of the Race Status BoatLocationMessage Specification as defined in page 9 of  https://docs.google.com/a/acracemgt.com/viewer?a=v&pid=sites&srcid=YWNyYWNlbWd0LmNvbXxub3RpY2Vib2FyZHxneDoyYTExNTQ4Yzg3ZGRmNTQ1
+ * The tests test each section of the Race Status BoatLocationMessageDeprecated Specification as defined in page 9 of  https://docs.google.com/a/acracemgt.com/viewer?a=v&pid=sites&srcid=YWNyYWNlbWd0LmNvbXxub3RpY2Vib2FyZHxneDoyYTExNTQ4Yzg3ZGRmNTQ1
  */
-public class RaceStatusBoatLocationMessageTest {
+public class RaceStatusMessageTest {
 
 
     @Test
@@ -33,7 +33,6 @@ public class RaceStatusBoatLocationMessageTest {
                 '1',
                 null
         );
-
 
         int expected =  headerSize + numBoatsInt * boatPacketSize;
         int packetSize = raceStatusMessage.getRaceStatusMessage().length;

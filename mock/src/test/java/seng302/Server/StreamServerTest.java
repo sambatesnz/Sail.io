@@ -1,7 +1,7 @@
 package seng302.Server;
 
 import org.junit.Test;
-import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
+import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessageDeprecated;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -82,7 +82,7 @@ public class StreamServerTest {
 
 //        DataGenerator d = new DataGenerator("Race.xml");
 
-       BoatLocationMessage m = new BoatLocationMessage();
+       BoatLocationMessageDeprecated m = new BoatLocationMessageDeprecated();
 
     }
 

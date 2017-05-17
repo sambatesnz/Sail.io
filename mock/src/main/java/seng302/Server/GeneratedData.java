@@ -1,7 +1,7 @@
 package seng302.Server;
 
 import seng302.Boat;
-import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
+import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessageDeprecated;
 import seng302.DataGenerator;
 import seng302.Race;
 import seng302.packetGeneration.RaceStatusGeneration.RaceStatusMessage;
@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class GeneratedData implements IServerData {
     private Queue<byte[]> bytes = new LinkedList<>();
-    private BoatLocationMessage boatLocationMessage = new BoatLocationMessage();
+    private BoatLocationMessageDeprecated boatLocationMessage = new BoatLocationMessageDeprecated();
     private Race race = new Race();
 
     // Generate RaceStatusMessage from using properties of Race object.
@@ -78,7 +78,7 @@ public class GeneratedData implements IServerData {
         @Override
         public void run() {
             bytes.add(rsm.getRaceStatusMessage());
-            System.out.println("Race Status BoatLocationMessage created");
+            System.out.println("Race Status BoatLocationMessageDeprecated created");
         }
     }
 

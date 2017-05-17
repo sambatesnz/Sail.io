@@ -18,7 +18,7 @@ public class BoatStatusMessage {
     private byte[] estTimeToFinish;
 
     /**
-     * Turns a boat object into a the Boat Status section of the Race Status BoatLocationMessage Packet
+     * Turns a boat object into a the Boat Status section of the Race Status Message Packet
      * The penalties field according to the AC35 specification is ignored as we do no use it yet.
      * It is set to a default value of 0 in both cases
      * @param sourceBoatID Boat's id
