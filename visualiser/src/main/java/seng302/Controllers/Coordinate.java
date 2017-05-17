@@ -43,7 +43,6 @@ public final class  Coordinate {
         viewMin.setY(defaultCourseMin.getY() + offset.getY());
         viewMax.setX(defaultCourseMax.getX() + offset.getX());
         viewMax.setY(defaultCourseMax.getY() + offset.getY());
-
     }
 
     public static void setOffset(Position offset) {

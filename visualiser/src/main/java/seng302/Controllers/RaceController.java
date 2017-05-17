@@ -359,6 +359,11 @@ public class RaceController {
      */
     private void updateView() {
         Coordinate.updateBorder();
+        viewAnchorPane.setMinHeight(Coordinate.getWindowY());
+        viewAnchorPane.setMaxHeight(Coordinate.getWindowY());
+        viewAnchorPane.setMinWidth(Coordinate.getWindowX());
+        viewAnchorPane.setMaxWidth(Coordinate.getWindowX());
+
         for (int i = 0; i < boats.size(); i++) {
             double boatSpeed = race.getBoats().get(i).getSpeed();
             String speed = "";
