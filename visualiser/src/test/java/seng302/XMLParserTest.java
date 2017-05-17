@@ -13,39 +13,50 @@ import java.util.List;
 public class XMLParserTest {
     private XMLParser raceParser;
     private XMLParser boatParser;
+    private XMLParser regattaParser;
 
     @Before
     public void setup() throws IOException {
-        java.util.Scanner s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("ExampleXMLs/Race.xml")).useDelimiter("\\A");
+        java.util.Scanner s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("Race.xml")).useDelimiter("\\A");
         String xmlString = s.hasNext() ? s.next() : "";
         raceParser = new XMLParser(xmlString);
 
         s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("Boats.xml")).useDelimiter("\\A");
         xmlString = s.hasNext() ? s.next() : "";
         boatParser = new XMLParser(xmlString);
+
+        s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("Regatta.xml")).useDelimiter("\\A");
+        xmlString = s.hasNext() ? s.next() : "";
+        regattaParser = new XMLParser(xmlString);
     }
 
     @Test
     public void checkCourseLimitsCorrect() throws IOException {
         List<CourseLimit> cls = raceParser.getCourseLimits();
-        Assert.assertTrue(cls.size() == 10);
+        Assert.assertTrue(cls.size() == 6);
     }
 
     @Test
     public void checkCourseLayoutsCorrect() throws IOException {
         List<CompoundMark> compoundMarks = raceParser.getCourseLayout();
-        Assert.assertTrue(compoundMarks.size() == 4);
+        Assert.assertTrue(compoundMarks.size() == 5);
     }
 
     @Test
     public void checkCourseOrderCorrect() throws IOException {
         List<Integer> courseOrder = raceParser.getCourseOrder();
-        Assert.assertTrue(courseOrder.size() == 5);
+        Assert.assertTrue(courseOrder.size() == 6);
     }
 
     @Test
     public void checkBoats() throws IOException {
         List<Boat> boats = boatParser.getBoats();
         Assert.assertTrue(boats.size() == 6);
+    }
+
+    @Test
+    public void checkRegatta() throws IOException {
+        Regatta reg = regattaParser.getRegatta();
+        Assert.assertTrue(reg.getUtcOffset() == 12);
     }
 }

@@ -19,6 +19,7 @@ import static javafx.collections.FXCollections.observableArrayList;
  * This displays a text-based play by play commentary of the race as it happens
  */
 public class Race {
+    private Regatta regatta;
     private int numFinishers = 0;
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
@@ -46,6 +47,10 @@ public class Race {
         s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("Boats.xml")).useDelimiter("\\A");
         xmlString = s.hasNext() ? s.next() : "";
         parseBoatsXML(xmlString);
+
+        s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("Regatta.xml")).useDelimiter("\\A");
+        xmlString = s.hasNext() ? s.next() : "";
+        parseRegattaXML(xmlString);
 
         finishedBoats = new ArrayList<>();
         currentOrder = observableArrayList(boats);
@@ -242,8 +247,20 @@ public class Race {
             XMLParser xmlParser = new XMLParser(xmlString);
 
             boats = xmlParser.getBoats();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    /**
+     * Reads an XML file to get the regatta attributes
+     * @param xmlString the XML string to parse
+     */
+    private void parseRegattaXML(String xmlString) {
+        try {
+            XMLParser xmlParser = new XMLParser(xmlString);
 
+            regatta = xmlParser.getRegatta();
         } catch (IOException e) {
             e.printStackTrace();
         }

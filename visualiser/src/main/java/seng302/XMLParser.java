@@ -15,7 +15,6 @@ import java.util.List;
 
 public class XMLParser {
 
-    private String WINDDIRECTION = "windDirection";
     private String LATITUDE = "Lat";
     private String LONGITUDE = "Lon";
     private String COMPOUND_MARK_ID = "CompoundMarkID";
@@ -42,6 +41,11 @@ public class XMLParser {
     private String COMPOUND_MARK_SEQUENCE = "CompoundMarkSequence";
     private String BOATS = "Boats";
     private String BOAT = "Boat";
+    private String REGATTA = "RegattaConfig";
+    private final String REGATTA_ID = "RegattaID";
+    private final String REGATTA_NAME = "RegattaName";
+    private final String COURSE_NAME = "CourseName";
+    private final String UTC_OFFSET = "UtcOffset";
 
     private String xmlString;
     private Document xmlDoc;
@@ -49,6 +53,7 @@ public class XMLParser {
 
     /**
      * Creates an object that we can create files
+     *
      * @param xml the relative location of the course xml file
      */
     public XMLParser(String xml) throws IOException {
@@ -58,13 +63,13 @@ public class XMLParser {
 
     /**
      * Loads the course xml file as a Document with a DOM Structure
+     *
      * @return The DOM document which we can now parse
      */
     private Document convertStringToDocument() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
-        try
-        {
+        try {
             builder = factory.newDocumentBuilder();
             Document doc = builder.parse(new InputSource(new StringReader(xmlString)));
             doc.getDocumentElement().normalize();
@@ -77,30 +82,33 @@ public class XMLParser {
 
     /**
      * Gets the textual value from a single xml element
+     *
      * @param element the element you wish to find the value for
-     * @param name the name of the element
+     * @param name    the name of the element
      * @return A string containing the textual value contained inside an xml element
      */
-    private String getContentFromElement(Element element, String name){
+    private String getContentFromElement(Element element, String name) {
         return element.getElementsByTagName(name).item(0).getTextContent();
     }
 
     /**
      * Overloaded function
+     *
      * @param element
      * @param name
-     * @param order If you have multiple tags, you can define the order you want
+     * @param order   If you have multiple tags, you can define the order you want
      * @return
      */
-    private String getContentFromElement(Element element, String name, int order){
+    private String getContentFromElement(Element element, String name, int order) {
         return element.getElementsByTagName(name).item(order).getTextContent();
     }
 
     /**
      * Gets the gate order defined from the xml
+     *
      * @return Arraylist containing the gate order
      */
-    public List<CourseLimit> getCourseLimits(){
+    public List<CourseLimit> getCourseLimits() {
         NodeList nodes = xmlDoc.getElementsByTagName(COURSE_LIMIT).item(0).getChildNodes();
         List<CourseLimit> courseLimits = new ArrayList<>();
         try {
@@ -122,7 +130,7 @@ public class XMLParser {
     }
 
 
-    public List<Integer> getCourseOrder(){
+    public List<Integer> getCourseOrder() {
         NodeList nodes = xmlDoc.getElementsByTagName(COMPOUND_MARK_SEQUENCE).item(0).getChildNodes();
         List<Integer> courseOrder = new ArrayList<>();
         try {
@@ -141,7 +149,7 @@ public class XMLParser {
     }
 
 
-    public List<CompoundMark> getCourseLayout(){
+    public List<CompoundMark> getCourseLayout() {
         NodeList nodes = xmlDoc.getElementsByTagName(COURSE).item(0).getChildNodes();
         List<CompoundMark> courseObjects = new ArrayList<>();
         try {
@@ -153,7 +161,7 @@ public class XMLParser {
                     String compoundMarkName = nnm.getNamedItem(NAME).getNodeValue();
                     int compoundMarkId = Integer.parseInt(nnm.getNamedItem(COMPOUND_MARK_ID).getNodeValue());
                     NodeList marks = node.getChildNodes();
-                    for (int j = 0; j < marks.getLength(); j ++) {
+                    for (int j = 0; j < marks.getLength(); j++) {
                         Node mark = marks.item(j);
                         if (mark.getNodeType() == Node.ELEMENT_NODE) {
                             NamedNodeMap nnm2 = mark.getAttributes();
@@ -207,82 +215,39 @@ public class XMLParser {
         return boats;
     }
 
-//    public int getWindDirection() {
-//        NodeList nodes = this.xmlDoc.getElementsByTagName(WINDDIRECTION);
-//        int windDir = 0;
-//
-//        try
-//        {
-//            for (int i=0; i< nodes.getLength(); i++){
-//                String strippedNode = nodes.item(i).getTextContent().replaceAll("\\s+", "");
-//                windDir = Integer.parseInt(strippedNode);
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Could not parse the windspeed.");
-//            throw e;
-//        }
-//        return windDir;
-//    }
-//
-//    private CompoundMark createLandmarkFromElement(Element markElement) {
-//
-//        // Rips the color, type?, and the name for each CompoundMark
-//        String name = markElement.getAttribute(MARK_NAME);
-//        String type = markElement.getAttribute(MARK_TYPE);
-//
-//
-//        Color color = Color.valueOf(markElement.getAttribute(MARK_COLOR));
-//
-//        int id = Integer.parseInt(markElement.getAttribute(MARK_ID));
-//        double latitude;
-//        double longitude;
-//
-//        ArrayList<Mark> positions = new ArrayList<>();
-//        //We know a mark is always going to have a lat and long
-//        latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE));
-//        longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE));
-//
-//        positions.add(new Mark(latitude, longitude));
-//        if (type.equals(GATE)){
-//            latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE, 1));
-//            longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE, 1));
-//            positions.add(new Mark(latitude, longitude));
-//        }
-//        return new CompoundMark(name, positions, color, id, type);
-//    }
-//
-//    public ArrayList<CompoundMark> getCompoundMarks() {
-//        NodeList nodes = this.configDoc.getElementsByTagName(COMPOUND_MARK);
-//        ArrayList<CompoundMark> landmarks = new ArrayList<>();
-//
-//        for (int i=0; i< nodes.getLength(); i++){
-//            Node node = nodes.item(i);
-//            Element markElement = (Element) node;
-//            CompoundMark mark = createLandmarkFromElement(markElement);
-//            landmarks.add(mark);
-//        }
-//        return landmarks;
-//    }
-//
-//    public ArrayList<Mark> getBoundaries() {
-//        NodeList nodes = this.configDoc.getElementsByTagName(BOUNDARY);
-//        ArrayList<Mark> boundaries = new ArrayList<>();
-//
-//        for (int i=0; i< nodes.getLength(); i++){
-//            Node node = nodes.item(i);
-//            Element markElement = (Element) node;
-//            Mark pos = createPositionFromElement(markElement);
-//            boundaries.add(pos);
-//        }
-//        return boundaries;
-//    }
-//
-//    private Mark createPositionFromElement(Element markElement) {
-//        double latitude = Double.parseDouble(getContentFromElement(markElement, LATITUDE));
-//        double longitude = Double.parseDouble(getContentFromElement(markElement, LONGITUDE));
-//
-//        return new Mark(latitude, longitude);
-//    }
+    public Regatta getRegatta() {
+        NodeList nodes = xmlDoc.getElementsByTagName(REGATTA).item(0).getChildNodes();
+        int regattaId = -1;
+        String regattaName = "";
+        String courseName = "";
+        int utc = -1;
+
+        try {
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Node node = nodes.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+//                    System.out.println(node.getNodeName());
+                    NamedNodeMap nnm = node.getAttributes();
+                    System.out.println(node.getTextContent());
+                    switch (node.getNodeName()) {
+                        case REGATTA_ID:
+                            regattaId = Integer.parseInt(node.getTextContent());
+                            break;
+                        case REGATTA_NAME:
+                            regattaName = node.getTextContent();
+                            break;
+                        case COURSE_NAME:
+                            courseName = node.getTextContent();
+                            break;
+                        case UTC_OFFSET:
+                            utc = Integer.parseInt(node.getTextContent());
+                            break;
+                    }
+                }
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return new Regatta(regattaId, regattaName, courseName, utc);
+    }
 }
-
-
