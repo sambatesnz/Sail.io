@@ -20,10 +20,11 @@ public final class  Coordinate {
     private static double BorderY = 0;
     private static double BorderConstant = 0;
     private static int sidePaneWidth = 248;
-    private static double zoom = 1;
+    private static double zoom = -0.9;
     private static Position offset = new Position(0, 0);
     private static Position defaultCourseMin;
     private static Position defaultCourseMax;
+    private static Position center;
     private static Position viewMin;
     private static Position viewMax;
 
@@ -39,10 +40,16 @@ public final class  Coordinate {
     }
 
     public static void updateViewCoordinates(){
-        viewMin.setX(defaultCourseMin.getX() + offset.getX());
-        viewMin.setY(defaultCourseMin.getY() + offset.getY());
-        viewMax.setX(defaultCourseMax.getX() + offset.getX());
-        viewMax.setY(defaultCourseMax.getY() + offset.getY());
+        double zoomOffsetX = zoom*((defaultCourseMax.getX() - center.getX()));
+        double zoomOffsetY = zoom*((defaultCourseMax.getY() - center.getY()));
+        viewMin.setX(defaultCourseMin.getX() + offset.getX() - zoomOffsetX);
+        viewMin.setY(defaultCourseMin.getY() + offset.getY() - zoomOffsetY);
+        viewMax.setX(defaultCourseMax.getX() + offset.getX() + zoomOffsetX);
+        viewMax.setY(defaultCourseMax.getY() + offset.getY() + zoomOffsetY);
+    }
+
+    public static void setCenter(Position center) {
+        Coordinate.center = center;
     }
 
     public static void setOffset(Position offset) {

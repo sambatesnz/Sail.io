@@ -48,8 +48,10 @@ public class Race {
         Coordinate.setDefaultCourseMax(courseMax);
         Coordinate.setViewMin(courseMin.getCopy());
         Coordinate.setViewMax(courseMax.getCopy());
-        Coordinate.updateViewCoordinates();
+
         center = getCenter(courseMin.getCopy(), courseMax.getCopy());
+        Coordinate.setCenter(getCenter(courseMin.getCopy(), courseMax.getCopy()));
+        Coordinate.updateViewCoordinates();
         for (Boat boat : boats) {
             boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
             boat.setX(legs.get(0).getStart().getX());
