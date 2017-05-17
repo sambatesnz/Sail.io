@@ -48,4 +48,14 @@ public final class PacketGenerationUtils {
         output[0] = (byte) value;
         return output;
     }
+
+    /**
+     * Converts double into four bytes
+     * @param location the location you want to conver
+     * @return a byte array containing four bytes of the converted long
+     */
+    public static byte[] locationToFourBytes(double location) {
+        int casted = (int) ((location+180)/360*(1L << 32L)-(1L << 31L));
+        return intToFourBytes(casted);
+    }
 }

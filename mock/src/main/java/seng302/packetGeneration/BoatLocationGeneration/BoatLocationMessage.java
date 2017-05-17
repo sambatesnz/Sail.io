@@ -13,7 +13,7 @@ public class BoatLocationMessage {
     private byte[] versionNumber;
     private byte[] time;
     private byte[] sourceId;
-    private byte[] sequenceNum;
+    private byte[] sequenceNumber;
     private byte[] deviceType;
     private byte[] latitude;
     private byte[] longitude;
@@ -38,7 +38,7 @@ public class BoatLocationMessage {
     private byte[] boatLocationMessage;
 
     public BoatLocationMessage(int versionNumber, long time, int sourceId,
-                               int sequenceNum, int deviceType,
+                               int sequenceNumber, int deviceType,
                                double latitude, double longitude, long altitude,
                                short heading, int pitch, int roll, short boatSpeed,
                                short cog, short sog,
@@ -51,8 +51,10 @@ public class BoatLocationMessage {
         this.versionNumber = PacketGenerationUtils.intToOneByte(versionNumber);
         this.time = PacketGenerationUtils.longToSixBytes(time);
         this.sourceId = PacketGenerationUtils.intToFourBytes(sourceId);
-
-
+        this.sequenceNumber = PacketGenerationUtils.intToFourBytes(sequenceNumber);
+        this.deviceType = PacketGenerationUtils.intToOneByte(deviceType);
+        this.latitude = PacketGenerationUtils.locationToFourBytes(latitude);
+        this.longitude = PacketGenerationUtils.locationToFourBytes(longitude);
     }
 
 
@@ -61,6 +63,10 @@ public class BoatLocationMessage {
         System.arraycopy(versionNumber, firstIndex, boatLocationMessage, BoatLocationUtility.MESSAGE_VERSION.getIndex(), BoatLocationUtility.MESSAGE_VERSION.getSize());
         System.arraycopy(time, firstIndex, boatLocationMessage, BoatLocationUtility.TIME.getIndex(), BoatLocationUtility.TIME.getSize());
         System.arraycopy(sourceId, firstIndex, boatLocationMessage, BoatLocationUtility.SOURCE_ID.getIndex(), BoatLocationUtility.SOURCE_ID.getSize());
+        System.arraycopy(sequenceNumber, firstIndex, boatLocationMessage, BoatLocationUtility.SEQUENCE_NUMBER.getIndex(), BoatLocationUtility.SEQUENCE_NUMBER.getSize());
+        System.arraycopy(deviceType, firstIndex, boatLocationMessage, BoatLocationUtility.DEVICE_TYPE.getIndex(), BoatLocationUtility.DEVICE_TYPE.getSize());
+        System.arraycopy(latitude, firstIndex ,boatLocationMessage, BoatLocationUtility.LATITUDE.getIndex(), BoatLocationUtility.LATITUDE.getSize());
+        System.arraycopy(longitude, firstIndex ,boatLocationMessage, BoatLocationUtility.LONGITUDE.getIndex(), BoatLocationUtility.LONGITUDE.getSize());
         return boatLocationMessage;
     }
 }

@@ -14,8 +14,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class BoatLocationMessageTest {
 
-    short ZERO = 0;
-
     private int versionNumber;
     private long time;
     private int sourceId;
@@ -45,11 +43,11 @@ public class BoatLocationMessageTest {
 
     public BoatLocationMessageTest(){
         Random generator = new Random();
-        this.versionNumber = generator.nextInt(twoToThe(BoatLocationUtility.MESSAGE_VERSION));
+        this.versionNumber = generator.nextInt(twoToThe(BoatLocationUtility.MESSAGE_VERSION)); //Max six is one integer
         this.time = System.currentTimeMillis();
         this.sourceId = generator.nextInt();
         this.sequenceNum = generator.nextInt();
-        this.deviceType = generator.nextInt();
+        this.deviceType = generator.nextInt(13); //There 13 different possible device types
         this.latitude = generator.nextDouble();
         this.longitude = generator.nextDouble();
         this.altitude = generator.nextInt();
@@ -99,7 +97,7 @@ public class BoatLocationMessageTest {
     @Test
     public void testMessagePacketSize() throws Exception {
         int packetSize = 56; //As defined by specification
-        int actualPacketSize = boatLocationMessage.getBoatLocationMessage().length;
+        int actualPacketSize = this.message.length;
         assertEquals(packetSize, actualPacketSize);
     }
 
@@ -113,7 +111,7 @@ public class BoatLocationMessageTest {
     }
 
     @Test
-    public void testTime() throws Exception{
+    public void time() throws Exception{
         byte[] actualMessage = new byte[8];
         int sourceIndex = BoatLocationUtility.TIME.getIndex();
         int size = BoatLocationUtility.TIME.getSize();
@@ -132,27 +130,45 @@ public class BoatLocationMessageTest {
 
     @Test
     public void sequenceNumber() throws Exception {
-        int seqNumber = 43;
-        BoatLocationMessage  boatLocationMessage = new BoatLocationMessage(
-                0, 0, 0,
-                seqNumber,0,0,
-                0,0,ZERO,
-                0,0,ZERO,
-                ZERO,ZERO,ZERO,
-                ZERO,ZERO,ZERO,
-                ZERO,ZERO,ZERO,
-                ZERO
-        );
-
-        byte[] message = boatLocationMessage.getBoatLocationMessage();
         byte[] actualMessage = new byte[8];
         int sourceIndex = BoatLocationUtility.SEQUENCE_NUMBER.getIndex();
         int size = BoatLocationUtility.SEQUENCE_NUMBER.getSize();
         int actualSourceId = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
-        assertEquals(seqNumber, actualSourceId);
-
-        sourceId();
+        assertEquals(sequenceNum, actualSourceId);
     }
+
+    @Test
+    public void deviceType() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.DEVICE_TYPE.getIndex();
+        int size = BoatLocationUtility.DEVICE_TYPE.getSize();
+        int actualDeviceType = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(deviceType, actualDeviceType);
+    }
+
+    @Test
+    public void latitude() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.LATITUDE.getIndex();
+        int size = BoatLocationUtility.LATITUDE.getSize();
+        int actualLatitude = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        double convertedLatitude = PacketUtils.locationToInt(actualLatitude);
+        assertEquals(latitude, convertedLatitude, 0.000001);
+    }
+
+    @Test
+    public void longitude() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.LONGITUDE.getIndex();
+        int size = BoatLocationUtility.LONGITUDE.getSize();
+        int actualLongitude = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        double convertedLongitude = PacketUtils.locationToInt(actualLongitude);
+        assertEquals(longitude, convertedLongitude, 0.000001);
+    }
+
+
+
+
 
 
 

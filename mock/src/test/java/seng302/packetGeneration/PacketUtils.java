@@ -50,4 +50,8 @@ public final class PacketUtils {
         return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getLong();
     }
 
+    public static double locationToInt(int location){
+        return ((double)location * 180 )/ 2147483648.0;
+    }
+
 }
