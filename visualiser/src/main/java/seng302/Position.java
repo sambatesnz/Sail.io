@@ -30,14 +30,9 @@ public class Position {
         return y / EARTH_CIRCUMFERENCE * 180;
     }
 
-//    public Position (int integer, double x, double y){
-//        this.latitude = y / EARTH_CIRCUMFERENCE * 180;
-//        this.longitude = x / EARTH_CIRCUMFERENCE * 360;
-//        this.x = x;
-//        this.y = y;
-//    }
-
-
+    public Position getCopy(){
+        return new Position(this.latitude, this.longitude);
+    }
 
     /**
      * Getter for the latitude.

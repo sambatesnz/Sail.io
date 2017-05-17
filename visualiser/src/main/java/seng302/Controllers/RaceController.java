@@ -96,12 +96,12 @@ public class RaceController {
      */
     @FXML
     public void initialize() {
-        Thread serverThread = new Thread(() -> {
-            StreamClient client = new StreamClient();
-            client.connect();
-            client.retrieveData();
-        });
-        serverThread.start();
+//        Thread serverThread = new Thread(() -> {
+//            StreamClient client = new StreamClient();
+//            client.connect();
+//            client.retrieveData();
+//        });
+//        serverThread.start();
 
 
         race = new Race();

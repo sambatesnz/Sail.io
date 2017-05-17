@@ -46,10 +46,10 @@ public class Race {
         Coordinate.setOffset(new Position(0, 0));
         Coordinate.setDefaultCourseMin(courseMin);
         Coordinate.setDefaultCourseMax(courseMax);
-        Coordinate.setViewMin(courseMin);
-        Coordinate.setViewMax(courseMax);
+        Coordinate.setViewMin(courseMin.getCopy());
+        Coordinate.setViewMax(courseMax.getCopy());
         Coordinate.updateViewCoordinates();
-        center = getCenter(courseMin, courseMax);
+        center = getCenter(courseMin.getCopy(), courseMax.getCopy());
         for (Boat boat : boats) {
             boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
             boat.setX(legs.get(0).getStart().getX());
@@ -63,18 +63,21 @@ public class Race {
     public void setFinishedBoats(List<Boat> finishedBoats) {
         this.finishedBoats = finishedBoats;
     }
+
     public Position getCenter(Position min, Position max) {
         Position center = new Position();   // changing from setting lat/long to x/y
-        center.setX(max.getX() + min.getX() / 2);
-        center.setY(max.getY() + min.getY() / 2);
+        center.setX((max.getX() + min.getX()) / 2);
+        center.setY((max.getY() + min.getY()) / 2);
         return center;
 }
 
     public Position calculateOffset(Boat boat){
 //      TODO: calculate offset based on center and boat (boat - center)
         Position offset = new Position();
-        offset.setX(200);
-        offset.setY(200);
+
+        offset.setX(boat.getX() - center.getX());
+        offset.setY(boat.getY() - center.getY());
+
         return offset;
     }
     /**
