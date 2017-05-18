@@ -1,5 +1,6 @@
 package seng302.packetGeneration.BoatLocationGeneration;
 
+import seng302.packetGeneration.BinaryMessage;
 import seng302.packetGeneration.PacketGenerationUtils;
 
 /**
@@ -8,7 +9,7 @@ import seng302.packetGeneration.PacketGenerationUtils;
  * Packet body size should be 56 bytes
  *
  */
-public class BoatLocationMessage {
+public class BoatLocationMessage extends BinaryMessage {
 
     private byte[] versionNumber;
     private byte[] time;
@@ -73,7 +74,8 @@ public class BoatLocationMessage {
     }
 
 
-    public byte[] getBoatLocationMessage() {
+    @Override
+    public byte[] getBody() {
         int firstIndex = 0;
         System.arraycopy(versionNumber, firstIndex, boatLocationMessage, BoatLocationUtility.MESSAGE_VERSION.getIndex(), BoatLocationUtility.MESSAGE_VERSION.getSize());
         System.arraycopy(time, firstIndex, boatLocationMessage, BoatLocationUtility.TIME.getIndex(), BoatLocationUtility.TIME.getSize());
@@ -95,9 +97,12 @@ public class BoatLocationMessage {
         System.arraycopy(currentDrift, firstIndex, boatLocationMessage, BoatLocationUtility.CURRENT_DRIFT.getIndex(), BoatLocationUtility.CURRENT_DRIFT.getSize());
         System.arraycopy(currentSet, firstIndex, boatLocationMessage, BoatLocationUtility.CURRENT_SET.getIndex(), BoatLocationUtility.CURRENT_SET.getSize());
         System.arraycopy(rudderAngle, firstIndex, boatLocationMessage, BoatLocationUtility.RUDDER_ANGLE.getIndex(), BoatLocationUtility.RUDDER_ANGLE.getSize());
-
-
-
         return boatLocationMessage;
+    }
+
+    @Override
+    protected byte[] createMessage(int messageType){
+
+        return new byte[8];
     }
 }

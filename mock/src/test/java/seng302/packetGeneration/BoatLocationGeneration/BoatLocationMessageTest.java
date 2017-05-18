@@ -74,7 +74,7 @@ public class BoatLocationMessageTest {
                 deviceType, latitude, longitude, altitude, heading, pitch, roll, boatSpeed, cog,
         sog, apparentWindSpeed, apparantWindAngle, trueWindSpeed, trueWindDirection, trueWindAngle, currentDrift, currentSet, rudderAngle);
 
-        this.message = boatLocationMessage.getBoatLocationMessage();
+        this.message = boatLocationMessage.getBody();
     }
 
     /**
