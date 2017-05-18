@@ -1,5 +1,6 @@
 package seng302;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
@@ -24,7 +25,11 @@ public class Race {
     private List<Boat> finishedBoats;
     private List<Leg> legs;
     private List<Position> boundaries;
-    private double windHeading;
+    private short windHeading;
+    private short windSpeed;
+    private int raceID;
+    private char raceType;
+    private int raceStatus = 0;
     private ObservableList<Boat> currentOrder;
     private ObservableList<String> positionStrings;
     public boolean finished = false;
@@ -33,8 +38,9 @@ public class Race {
      * Constructor for the race class.
      */
     public Race() {
-        parseXML("course.xml");
-        setWindHeading(190);
+        parseCourseXML("course.xml");
+        parseRaceXML("Race.xml");
+        // setWindHeading(190);
         boats = getContestants();
         finishedBoats = new ArrayList<>();
         currentOrder = observableArrayList(boats);
@@ -71,8 +77,32 @@ public class Race {
      */
     public List<Boat> getFinishedBoats() { return finishedBoats; }
 
-    public double getWindHeading() {
-        return windHeading;
+//    public double getWindHeading() {
+//        return windHeading;
+//    }
+
+    public short getWindDirection() {
+        return this.windHeading;
+    }
+
+    public short getWindSpeed() {
+        return this.windSpeed;
+    }
+
+    public int getRaceID() {
+        return raceID;
+    }
+
+    public char getRaceType() {
+        return raceType;
+    }
+
+    public void setRaceStatus(int raceStatus) {
+        this.raceStatus = raceStatus;
+    }
+
+    public int getRaceStatus() {
+        return raceStatus;
     }
 
     /**
@@ -110,7 +140,7 @@ public class Race {
      * Sets the current direction of the wind
      * @param windHeading the direction that the wind is heading
      */
-    public void setWindHeading(double windHeading) {
+    public void setWindHeading(short windHeading) {
         this.windHeading = windHeading;
     }
 
@@ -154,10 +184,10 @@ public class Race {
     }
 
     /**
-     * Reads an XML file to get the attributes of things on the course
+     * Reads the course.xml file to get the attributes of things on the course
      * @param fileName the filename to parse
      */
-    private void parseXML(String fileName) {
+    private void parseCourseXML(String fileName) {
 
         try {
             CourseCreator cc = new CourseCreator(fileName);
@@ -188,6 +218,27 @@ public class Race {
                 }
                 legs.add(new Leg(start, dest));
             }
+
+            windHeading = cc.getWindDirection();
+            windSpeed = cc.getWindSpeed();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    /**
+     * Reads the Race.xml file to get the attributes of things of the race.
+     * @param fileName the filename to parse
+     */
+    private void parseRaceXML(String fileName) {
+
+        try {
+            RaceCreator rc = new RaceCreator(fileName);
+
+            raceID = rc.getRaceID();
+            raceType = rc.getRaceType();
         } catch (IOException e) {
             e.printStackTrace();
         }

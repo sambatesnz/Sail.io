@@ -1,9 +1,11 @@
 package seng302.Server;
 
 import seng302.Boat;
+import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessageDeprecated;
 import seng302.DataGenerator;
-import seng302.Message;
 import seng302.Race;
+import seng302.packetGeneration.RaceStatusGeneration.RaceStatusMessage;
+import static java.lang.System.currentTimeMillis;
 
 import java.util.*;
 
@@ -12,8 +14,19 @@ import java.util.*;
  */
 public class GeneratedData implements IServerData {
     private Queue<byte[]> bytes = new LinkedList<>();
-    private Message message = new Message();
+    private BoatLocationMessageDeprecated boatLocationMessage = new BoatLocationMessageDeprecated();
     private Race race = new Race();
+
+    // Generate RaceStatusMessage from using properties of Race object.
+    private RaceStatusMessage rsm = new RaceStatusMessage(currentTimeMillis(),
+                                                            race.getRaceID(),
+                                                            race.getRaceStatus()    ,
+                                                            currentTimeMillis(),
+                                                            race.getWindDirection(),
+                                                            race.getWindSpeed(),
+                                                            (char)(race.getBoats().size() + 48),
+                                                            race.getRaceType(),
+                                                            race.getBoats());
 
     @Override
     public byte[] getData() {
@@ -38,7 +51,7 @@ public class GeneratedData implements IServerData {
         @Override
         public void run() {
             DataGenerator dataGenerator = new DataGenerator();
-            byte[] xmlBytes = message.xmlMessage(dataGenerator.loadFile("Race.xml"), (short) 0, (short) 0);
+            byte[] xmlBytes = boatLocationMessage.xmlMessage(dataGenerator.loadFile("Race.xml"), (short) 0, (short) 0);
 //            System.out.println(Arrays.toString(xmlBytes) + "\nsize: " + (bytes.size()+1));
             bytes.add(xmlBytes);
         }
@@ -48,7 +61,7 @@ public class GeneratedData implements IServerData {
         @Override
         public void run() {
             for (Boat boat : race.getBoats()) {
-                bytes.add(message.boatPositionMessage(boat));
+                bytes.add(boatLocationMessage.boatPositionMessage(boat));
                 System.out.println("packet created");
             }
         }
@@ -61,8 +74,17 @@ public class GeneratedData implements IServerData {
         }
     }
 
+    class RSMSender extends TimerTask {
+        @Override
+        public void run() {
+            bytes.add(rsm.getRaceStatusMessage());
+            System.out.println("Race Status BoatLocationMessageDeprecated created");
+        }
+    }
+
     public void runServerTimers() {
         Timer timer = new Timer();
+        timer.schedule(new RSMSender(), 0, 2000);
         timer.schedule(new XMLSender(), 0, 2000);
         timer.schedule(new BoatPosSender(), 0, 500);
         timer.schedule(new RaceRunner(), 0, 17);
