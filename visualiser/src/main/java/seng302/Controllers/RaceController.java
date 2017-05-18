@@ -97,15 +97,24 @@ public class RaceController {
      */
     @FXML
     public void initialize() {
+        race = new Race();
+
         Thread serverThread = new Thread(() -> {
-            StreamClient client = new StreamClient();
+            StreamClient client = new StreamClient(race);
             client.connect();
             client.retrieveData();
         });
         serverThread.start();
 
-
-        race = new Race();
+        while (!race.isRaceReady()) {
+//            System.out.println(race.isRaceReady());
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(race.isRaceReady());
 
         //Where should we put this?
         this.timeZoneWrapper = new TimeZoneWrapper("Atlantic/Bermuda");

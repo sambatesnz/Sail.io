@@ -26,9 +26,11 @@ public class StreamClient {
     private byte[] messageBytes;
     private String host;
     private int port;
+    private Race race;
 //    String output = "";
 
-    public StreamClient() {
+    public StreamClient(Race race) {
+        this.race = race;
         data = new byte[4300];
         clientSocket = null;
         streamInput = null;
@@ -42,14 +44,6 @@ public class StreamClient {
         }
     }
 
-    public StreamClient(String host, int port) {
-        data = new byte[4300];
-        clientSocket = null;
-        streamInput = null;
-        this.host = host;
-        this.port = port;
-    }
-
     public void retrieveData() {
         int breakNo = 0;
         int result = 0;
@@ -57,10 +51,6 @@ public class StreamClient {
         while (clientSocket != null && streamInput != null) {
             try {
                 nextMessage();
-
-
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -94,7 +84,7 @@ public class StreamClient {
         byte[] message = new byte[messageLength + CRC_LEN + HEADER_LEN];
         System.arraycopy(head, 0, message, 0, HEADER_LEN);
         System.arraycopy(body, 0, message, HEADER_LEN, messageLength);
-        Message packet = new Message(message);
+        Message packet = new Message(message, race);
         packet.parseMessage();
     }
 

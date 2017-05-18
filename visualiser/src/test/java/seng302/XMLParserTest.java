@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by osr13 on 12/05/17.
@@ -50,7 +51,7 @@ public class XMLParserTest {
 
     @Test
     public void checkBoats() throws IOException {
-        List<Boat> boats = boatParser.getBoats();
+        Map<Integer, Boat> boats = boatParser.getBoats();
         Assert.assertTrue(boats.size() == 6);
     }
 

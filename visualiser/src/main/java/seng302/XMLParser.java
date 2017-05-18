@@ -8,44 +8,34 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.*;
 
 public class XMLParser {
 
-    private String LATITUDE = "Lat";
-    private String LONGITUDE = "Lon";
-    private String COMPOUND_MARK_ID = "CompoundMarkID";
-    private String TYPE = "Type";
-    private String YACHT = "Yacht";
-    private String MARK_NAME = "name";
-    private String MARK_COLOR = "color";
-    private String MARK_ID = "id";
-    private String MARK = "Mark";
-    private String GATE = "Gate";
-    private String GATE_ORDER = "gateOrder";
-    private String BOUNDARY = "boundary";
-    private String COURSE = "Course";
-    private String COURSE_LIMIT = "CourseLimit";
-    private String LIMIT = "Limit";
-    private String SEQ_ID = "SeqID";
-    private String NAME = "Name";
-    private String TARGETLAT = "TargetLat";
-    private String TARGETLON = "TargetLng";
-    private String SOURCEID = "SourceID";
-    private String SHORTNAME = "ShortName";
-    private String BOATNAME = "BoatName";
-    private String COUNTRY = "Country";
-    private String COMPOUND_MARK_SEQUENCE = "CompoundMarkSequence";
-    private String BOATS = "Boats";
-    private String BOAT = "Boat";
-    private String REGATTA = "RegattaConfig";
-    private final String REGATTA_ID = "RegattaID";
-    private final String REGATTA_NAME = "RegattaName";
-    private final String COURSE_NAME = "CourseName";
-    private final String UTC_OFFSET = "UtcOffset";
+    private static final String LATITUDE = "Lat";
+    private static final String LONGITUDE = "Lon";
+    private static final String COMPOUND_MARK_ID = "CompoundMarkID";
+    private static final String TYPE = "Type";
+    private static final String YACHT = "Yacht";
+    private static final String COURSE = "Course";
+    private static final String COURSE_LIMIT = "CourseLimit";
+    private static final String SEQ_ID = "SeqID";
+    private static final String NAME = "Name";
+    private static final String TARGETLAT = "TargetLat";
+    private static final String TARGETLON = "TargetLng";
+    private static final String SOURCEID = "SourceID";
+    private static final String SHORTNAME = "ShortName";
+    private static final String BOATNAME = "BoatName";
+    private static final String COUNTRY = "Country";
+    private static final String COMPOUND_MARK_SEQUENCE = "CompoundMarkSequence";
+    private static final String BOATS = "Boats";
+    private static final String REGATTA = "RegattaConfig";
+    private static final String REGATTA_ID = "RegattaID";
+    private static final String REGATTA_NAME = "RegattaName";
+    private static final String COURSE_NAME = "CourseName";
+    private static final String UTC_OFFSET = "UtcOffset";
 
     private String xmlString;
     private Document xmlDoc;
@@ -57,7 +47,7 @@ public class XMLParser {
      * @param xml the relative location of the course xml file
      */
     public XMLParser(String xml) throws IOException {
-        this.xmlString = xml;
+        this.xmlString = xml.trim();
         xmlDoc = convertStringToDocument();
     }
 
@@ -174,7 +164,7 @@ public class XMLParser {
                                 seqId = Integer.valueOf(nnm2.getNamedItem(SEQ_ID).getNodeValue());
                             }
                             positions.add(new Mark(lat, lon));
-                            System.out.println(String.format("Name: %s, Lat: %f, Long: %f, SrcId: %d, SeqId: %d", name, lat, lon, sourceId, seqId));
+//                            System.out.println(String.format("Name: %s, Lat: %f, Long: %f, SrcId: %d, SeqId: %d", name, lat, lon, sourceId, seqId));
                         }
                     }
                     String type = "Mark";
@@ -191,9 +181,9 @@ public class XMLParser {
         return courseObjects;
     }
 
-    public List<Boat> getBoats() {
+    public Map<Integer, Boat> getBoats() {
         NodeList nodes = xmlDoc.getElementsByTagName(BOATS).item(0).getChildNodes();
-        List<Boat> boats = new ArrayList<>();
+        Map<Integer, Boat> boats = new HashMap<>();
         try {
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
@@ -204,7 +194,7 @@ public class XMLParser {
                         String shortName = nnm.getNamedItem(SHORTNAME).getNodeValue();
                         String boatName = nnm.getNamedItem(BOATNAME).getNodeValue();
                         String country = nnm.getNamedItem(COUNTRY).getNodeValue();
-                        boats.add(new Boat(boatName, shortName, srcId, country));
+                        boats.put(srcId, new Boat(boatName, shortName, srcId, country));
                     }
                 }
             }
@@ -228,7 +218,7 @@ public class XMLParser {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
 //                    System.out.println(node.getNodeName());
                     NamedNodeMap nnm = node.getAttributes();
-                    System.out.println(node.getTextContent());
+//                    System.out.println(node.getTextContent());
                     switch (node.getNodeName()) {
                         case REGATTA_ID:
                             regattaId = Integer.parseInt(node.getTextContent());

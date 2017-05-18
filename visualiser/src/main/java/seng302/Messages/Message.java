@@ -1,20 +1,42 @@
 package seng302.Messages;
 
+import seng302.CompoundMark;
+import seng302.Race;
+import seng302.XMLParser;
+
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.List;
 
 /**
  * Class to read in packets from a socket stream and distribute them to their relative
  * message handler.
  */
 public class Message {
+    private static final int HEARTBEAT = 1;
+    private static final int RACE_STATUS = 12;
+    private static final int XML_MESSAGE = 26;
+    private static final int BOAT_LOCATION = 37;
+    private static final int DISPLAY = 20;
+    private static final int RACE_START = 27;
+    private final int REGATTA = 5;
+    private final int RACE = 6;
+    private final int BOAT = 7;
     private int syncByte1;
     private int syncByte2;
     private int messageType;
     private int messageLen;
     private byte body[];
     private byte crc[];
+    private Race race;
+
+    private static boolean boatsSet = false;
+    private static boolean regattaSet = false;
+    private static boolean raceSet = false;
+
+
 
     /**
      * Constructor for the class. Takes an array of bytes, extracts information from the header
@@ -22,7 +44,8 @@ public class Message {
      * along with the CRC, in preparation for the message to be given to it's relative handler.
      * @param data The array of bytes containing the header, message and CRC
      */
-    public Message(byte[] data){
+    public Message(byte[] data, Race race){
+        this.race = race;
         syncByte1 = byteArrayToInt(data, 0, 1);
         syncByte2 = byteArrayToInt(data, 1,1);
         messageType = byteArrayToInt(data, 2,1);
@@ -65,19 +88,20 @@ public class Message {
      * @throws UnsupportedEncodingException
      */
     public void parseMessage() throws UnsupportedEncodingException {
+//        System.out.println(messageType);
         switch (messageType) {
-            case 1:                                             //Heartbeat
+            case HEARTBEAT:
                 break;
-            case 12:                                            //Race Status
+            case RACE_STATUS:
                 RaceStatusMessage raceStatus = new RaceStatusMessage(body);
                 break;
-            case 20:                                            //Display
+            case DISPLAY:
                 break;
-            case 26:                                            //XML Message
+            case XML_MESSAGE:
                 XMLMessage xmlMessage = new XMLMessage(body);
+                passXML(xmlMessage.getXmlString(), xmlMessage.getXmlMessageSubtype());
                 break;
-            case 27:                                            //Race Start Status
-
+            case RACE_START:
                 break;
             case 29:                                            //Yacht Event Code
                 break;
@@ -85,7 +109,7 @@ public class Message {
                 break;
             case 36:                                            //Chatter Text
                 break;
-            case 37:                                            //Boat Location
+            case BOAT_LOCATION:                                            //Boat Location
                 LocationMessage location = new LocationMessage(body);
                 break;
             case 38:                                            //Mark Rounding
@@ -97,5 +121,35 @@ public class Message {
         }
     }
 
+    public void passXML(String xmlString, int subType) {
+        try {
+            XMLParser xmlParser = new XMLParser(xmlString);
+            switch(subType) {
+                case REGATTA:
+                    race.setRegatta(xmlParser.getRegatta());
+                    regattaSet = true;
+                    break;
+                case BOAT:
+                    race.setBoats(xmlParser.getBoats());
+                    boatsSet = true;
+                    break;
+                case RACE:
+                    race.setBoundaries(xmlParser.getCourseLimits());
+                    List<CompoundMark> compoundMarks = xmlParser.getCourseLayout();
+                    race.setCompoundMarks(compoundMarks);
+                    race.setGates(compoundMarks);
+                    race.setCourseOrder(xmlParser.getCourseOrder());
+                    raceSet = true;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (regattaSet && boatsSet && raceSet) {
+            race.setViewParams();
+            race.setRaceReady(true);
+            System.out.println("RACE READY SET");
 
+        }
+    }
 }

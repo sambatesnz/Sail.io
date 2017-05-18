@@ -25,7 +25,6 @@ public class Race {
     private int numFinishers = 0;
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
-    private List<Boat> boats;
     // Changing list of boats to hashmap. where key is boat SourceID, as retrieved from the xml message
 //    private List<Boat> boats;
     public Map<Integer, Boat> boats;
@@ -40,32 +39,50 @@ public class Race {
     private long expectedStartTime;
     private int raceStatus;
     public boolean finished = false;
+    private boolean raceReady = false;
+
+    public boolean isRaceReady() {
+        return raceReady;
+    }
+
+    public void setRaceReady(boolean raceReady) {
+        this.raceReady = raceReady;
+    }
 
     /**
      * Constructor for the race class.
      */
     public Race() {
-        java.util.Scanner s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("ExampleXMLs/Race.xml")).useDelimiter("\\A");
-        String xmlString = s.hasNext() ? s.next() : "";
-        parseRaceXML(xmlString);
+//        java.util.Scanner s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("ExampleXMLs/Race.xml")).useDelimiter("\\A");
+//        String xmlString = s.hasNext() ? s.next() : "";
+//        parseRaceXML(xmlString);
+////        parseXML("course.xml");
+//        setWindHeading(190);
+////        boats = getContestants();
+//
+//        s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("Boats.xml")).useDelimiter("\\A");
+//        xmlString = s.hasNext() ? s.next() : "";
+//        parseBoatsXML(xmlString);
+//
+//        s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("Regatta.xml")).useDelimiter("\\A");
+//        xmlString = s.hasNext() ? s.next() : "";
+//        parseRegattaXML(xmlString);
+
 //        parseXML("course.xml");
-        setWindHeading(190);
-//        boats = getContestants();
-
-        s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("Boats.xml")).useDelimiter("\\A");
-        xmlString = s.hasNext() ? s.next() : "";
-        parseBoatsXML(xmlString);
-
-        s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("Regatta.xml")).useDelimiter("\\A");
-        xmlString = s.hasNext() ? s.next() : "";
-        parseRegattaXML(xmlString);
-
-        parseXML("course.xml");
         // Contestants are now retrieved from the xml message
         //boats = getContestants();
         finishedBoats = new ArrayList<>();
         // TODO: Current order needs to be instantiated here. Get the list of boats in the race first. Then use the time to next gate in the race packet to decide race position
         positionStrings = FXCollections.observableArrayList();
+
+//        for (Boat boat : boats.values()) {
+//            boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
+//            boat.setX(legs.get(0).getStart().getX());
+//            boat.setY(legs.get(0).getStart().getY());
+//        }
+    }
+
+    public void setViewParams() {
         double minLat = boundaries.stream().min(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
         double minLon = boundaries.stream().min(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
         double maxLat = boundaries.stream().max(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
@@ -74,11 +91,6 @@ public class Race {
         Mark viewMax = new Mark(maxLat, maxLon);
         Coordinate.setViewMin(viewMin);
         Coordinate.setViewMax(viewMax);
-        for (Boat boat : boats) {
-            boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
-            boat.setX(legs.get(0).getStart().getX());
-            boat.setY(legs.get(0).getStart().getY());
-        }
     }
 
     /**
@@ -268,14 +280,14 @@ public class Race {
 //        return contestants;
 //    }
 
-    /**
-     * Reads an XML file to get the attributes of things on the course
-     * @param fileName the filename to parse
-     */
-    private void parseXML(String fileName) {
-
-        try {
-            CourseCreator cc = new CourseCreator(fileName);
+//    /**
+//     * Reads an XML file to get the attributes of things on the course
+//     * @param fileName the filename to parse
+//     */
+//    private void parseXML(String fileName) {
+//
+//        try {
+//            CourseCreator cc = new CourseCreator(fileName);
 
 //            compoundMarks = cc.getLandmarks();
 //            gates = new ArrayList<>();
@@ -304,66 +316,98 @@ public class Race {
 //                }
 //                legs.add(new Leg(start, dest));
 //            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    public void setCourseOrder(List<Integer> courseOrder) {
+        this.courseOrder = courseOrder;
     }
 
-    /**
-     * Reads an XML file to get the attributes of things on the course
-     * @param xmlString the XML string to parse
-     */
-    private void parseRaceXML(String xmlString) {
+//    /**
+//     * Reads an XML file to get the attributes of things on the course
+//     * @param xmlString the XML string to parse
+//     */
+//    private void parseRaceXML(String xmlString) {
+//
+//        try {
+//            XMLParser xmlParser = new XMLParser(xmlString);
+//
+//            compoundMarks = xmlParser.getCourseLayout();
+//            gates = new ArrayList<>();
+//            for (CompoundMark mark : compoundMarks) {
+//                if (mark.getType().equals("Gate")) {
+//                    gates.add(mark);
+//                }
+//            }
+////            boundaries = new ArrayList<>();
+////            List<CourseLimit> courseLimits = xmlParser.getCourseLimits();
+////            for (CourseLimit cl: courseLimits) {
+////                boundaries.add(new Mark(cl.getLat(), cl.getLon()));
+////            }
+//
+////            courseOrder = xmlParser.getCourseOrder();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-        try {
-            XMLParser xmlParser = new XMLParser(xmlString);
+    public void setCompoundMarks(List<CompoundMark> compoundMarks) {
+        this.compoundMarks = compoundMarks;
+    }
 
-            compoundMarks = xmlParser.getCourseLayout();
-            gates = new ArrayList<>();
-            for (CompoundMark mark : compoundMarks) {
-                if (mark.getType().equals("Gate")) {
-                    gates.add(mark);
-                }
+    public void setGates(List<CompoundMark> compoundMarks) {
+        gates = new ArrayList<>();
+        for (CompoundMark mark : compoundMarks) {
+            if (mark.getType().equals("Gate")) {
+                gates.add(mark);
             }
-            boundaries = new ArrayList<>();
-            List<CourseLimit> courseLimits = xmlParser.getCourseLimits();
-            for (CourseLimit cl: courseLimits) {
-                boundaries.add(new Mark(cl.getLat(), cl.getLon()));
-            }
-
-            courseOrder = xmlParser.getCourseOrder();
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    /**
-     * Reads an XML file to get the boat attributes
-     * @param xmlString the XML string to parse
-     */
-    private void parseBoatsXML(String xmlString) {
-        try {
-            XMLParser xmlParser = new XMLParser(xmlString);
-
-            boats = xmlParser.getBoats();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void setBoundaries(List<CourseLimit> courseLimits) {
+        boundaries = new ArrayList<>();
+        for (CourseLimit cl: courseLimits) {
+            boundaries.add(new Mark(cl.getLat(), cl.getLon()));
         }
     }
 
-    /**
-     * Reads an XML file to get the regatta attributes
-     * @param xmlString the XML string to parse
-     */
-    private void parseRegattaXML(String xmlString) {
-        try {
-            XMLParser xmlParser = new XMLParser(xmlString);
+//    /**
+//     * Reads an XML file to get the boat attributes
+//     * @param xmlString the XML string to parse
+//     */
+//    private void parseBoatsXML(String xmlString) {
+//        try {
+//            XMLParser xmlParser = new XMLParser(xmlString);
+//
+//            boats = xmlParser.getBoats();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-            regatta = xmlParser.getRegatta();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//    /**
+//     * Reads an XML file to get the regatta attributes
+//     * @param xmlString the XML string to parse
+//     */
+//    private void parseRegattaXML(String xmlString) {
+//        try {
+//            XMLParser xmlParser = new XMLParser(xmlString);
+//
+//            regatta = xmlParser.getRegatta();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    public void setRegatta(Regatta regatta) {
+        this.regatta = regatta;
+    }
+
+    public void setBoats(Map<Integer, Boat> boats) {
+        this.boats = boats;
     }
 
     /**
@@ -428,12 +472,11 @@ public class Race {
 //        }
 //    }
 
-    public List<Position> getBoundaries() {
     public List<Mark> getBoundaries() {
         return boundaries;
     }
 
-    public void setBoundaries(ArrayList<Mark> boundaries) {
-        this.boundaries = boundaries;
-    }
+//    public void setBoundaries(ArrayList<Mark> boundaries) {
+//        this.boundaries = boundaries;
+//    }
 }

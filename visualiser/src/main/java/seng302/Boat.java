@@ -16,7 +16,7 @@ public class Boat {
     private Long raceTime;
     private int position;
     private String abrv;
-    private int sourceID;
+    private int sourceId;
     private int status;
     private long timeToNextMark;
     private long timeToFinish;
@@ -73,7 +73,7 @@ public class Boat {
      * @param sourceID  boat source id
      */
     public Boat(Integer sourceID) {
-        this.sourceID = sourceID;
+        this.sourceId = sourceID;
     }
 
 
@@ -219,13 +219,13 @@ public class Boat {
      * Sets the source ID, or the identification number, of the boat
      * @param id The number that the boat will be identified by
      */
-    public void setSourceID(int id) { this.sourceID = id; }
+    public void setSourceID(int id) { this.sourceId = id; }
 
     /**
      * Getter for the source ID, or the identification number, of the boat
      * @return The number that the boat is identified by
      */
-    public int getSourceID() { return sourceID; }
+    public int getSourceID() { return sourceId; }
 
     /**
      * Getter for the status of the boat:
