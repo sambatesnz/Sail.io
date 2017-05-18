@@ -201,7 +201,6 @@ public class XMLParser {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-//        courseOrder.sort(Comparator.comparingInt(CourseLimit::getSeqId));
         return boats;
     }
 
@@ -211,7 +210,6 @@ public class XMLParser {
         String regattaName = "";
         String courseName = "";
         int utc = -1;
-
         try {
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);

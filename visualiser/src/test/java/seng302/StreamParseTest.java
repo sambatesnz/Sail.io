@@ -10,8 +10,7 @@ public class StreamParseTest {
 
     @Test
     public void ParseTest() {
-        client.connect();
-        client.retrieveData();
-
+//        client.connect();
+//        client.retrieveData();
     }
 }
