@@ -1,5 +1,6 @@
 package seng302.packetGeneration.BoatLocationGeneration;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import seng302.packetGeneration.PacketUtils;
 
@@ -10,7 +11,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test for BoatLocationMessageDeprecated class
+ * Test for BoatLocationMessage class
+ * Works by randomly generating a boat location message
+ * Checks if the values can be converted back into the expected type and are of the same value
+ *
  */
 public class BoatLocationMessageTest {
 
@@ -21,14 +25,14 @@ public class BoatLocationMessageTest {
     private int deviceType;
     private double latitude;
     private double longitude;
-    private long altitude;
+    private int altitude;
     private short heading;
     private int pitch;
     private int roll;
     private short boatSpeed;
     private short cog;
     private short sog;
-    private short apparantWindSpeed;
+    private short apparentWindSpeed;
     private short apparantWindAngle;
     private short trueWindSpeed;
     private short trueWindDirection;
@@ -57,7 +61,7 @@ public class BoatLocationMessageTest {
         this.boatSpeed = generateShort(generator);
         this.cog = generateShort(generator);
         this.sog = generateShort(generator);
-        this.apparantWindSpeed = generateShort(generator);
+        this.apparentWindSpeed = generateShort(generator);
         this.apparantWindAngle = generateShort(generator);
         this.trueWindSpeed = generateShort(generator);
         this.trueWindDirection = generateShort(generator);
@@ -68,7 +72,7 @@ public class BoatLocationMessageTest {
 
         this.boatLocationMessage= new BoatLocationMessage(versionNumber, time, sourceId, sequenceNum,
                 deviceType, latitude, longitude, altitude, heading, pitch, roll, boatSpeed, cog,
-        sog, apparantWindAngle, apparantWindAngle, trueWindSpeed, trueWindDirection, trueWindAngle, currentDrift, currentSet, rudderAngle);
+        sog, apparentWindSpeed, apparantWindAngle, trueWindSpeed, trueWindDirection, trueWindAngle, currentDrift, currentSet, rudderAngle);
 
         this.message = boatLocationMessage.getBoatLocationMessage();
     }
@@ -85,13 +89,6 @@ public class BoatLocationMessageTest {
 
     private short generateShort(Random generator){
         return (short) generator.nextInt(Short.MAX_VALUE + 1);
-    }
-
-
-    //This is just here to make it faster to add new tests by copying this as a default
-    @Test
-    public void t() throws Exception {
-        assertTrue(false); //Not implemented yet
     }
 
     @Test
@@ -166,38 +163,141 @@ public class BoatLocationMessageTest {
         assertEquals(longitude, convertedLongitude, 0.000001);
     }
 
+    @Test
+    public void altitude() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.ALTITUDE.getIndex();
+        int size = BoatLocationUtility.ALTITUDE.getSize();
+        int actualAltitude = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(altitude, actualAltitude);
+    }
 
+    @Test
+    public void heading() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.HEADING.getIndex();
+        int size = BoatLocationUtility.HEADING.getSize();
+        short actualHeading = (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(heading, actualHeading);
+    }
 
+    @Ignore @Test //Ignored because Not implemented yet
+    public void pitch() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.PITCH.getIndex();
+        int size = BoatLocationUtility.PITCH.getSize();
+        int actualPitch = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(pitch, actualPitch);
+    }
 
+    @Ignore @Test //Ignored because Not implemented yet
+    public void roll() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.ROLL.getIndex();
+        int size = BoatLocationUtility.ROLL.getSize();
+        int actualRoll = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(roll, actualRoll );
+    }
 
+    @Test
+    public void boatSpeed() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.BOAT_SPEED.getIndex();
+        int size = BoatLocationUtility.BOAT_SPEED.getSize();
+        short actualHeading = (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(boatSpeed, actualHeading);
+    }
 
+    @Test
+    public void cog() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.COG.getIndex();
+        int size = BoatLocationUtility.COG.getSize();
+        short actualCog = (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(cog, actualCog);
+    }
 
+    @Test
+    public void sog() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.SOG.getIndex();
+        int size = BoatLocationUtility.SOG.getSize();
+        short acutalSog = (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(sog, acutalSog);
+    }
 
+    @Test
+    public void apparentWindSpeed() throws Exception {
+        byte[] actualMessage = new byte[4];
+        int sourceIndex = BoatLocationUtility.APPARENT_WIND_SPEED.getIndex();
+        int size = BoatLocationUtility.APPARENT_WIND_SPEED.getSize();
+        System.out.println(sourceIndex);
+        System.out.println(size);
+        int actualApparentWindSpeed = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(apparentWindSpeed, actualApparentWindSpeed);
+    }
 
+    @Test
+    public void apparentWindAngle() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.APPARENT_WIND_ANGLE.getIndex();
+        int size = BoatLocationUtility.APPARENT_WIND_ANGLE.getSize();
+        short actualApparantWindAngle= (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(apparantWindAngle, actualApparantWindAngle);
+    }
 
+    @Test
+    public void trueWindSpeed() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.TRUE_WIND_SPEED.getIndex();
+        int size = BoatLocationUtility.TRUE_WIND_SPEED.getSize();
+        short actualTrueWindSpeed = (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(trueWindSpeed, actualTrueWindSpeed);
+    }
 
+    @Test
+    public void trueWindDirection() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.TRUE_WIND_DIRECTION.getIndex();
+        int size = BoatLocationUtility.TRUE_WIND_DIRECTION.getSize();
+        short actualTrueWindDirection = (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(trueWindDirection, actualTrueWindDirection);
+    }
 
+    @Test
+    public void trueWindAngle() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.TRUE_WIND_ANGLE.getIndex();
+        int size = BoatLocationUtility.TRUE_WIND_ANGLE.getSize();
+        short actualTrueWindAngle = (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(trueWindAngle, actualTrueWindAngle);
+    }
 
-//    @Test
-//    public void testBoatPositionMessage() throws Exception {
-//        Boat boat = new Boat("Boat1", 33.33, Color.BLUE, "USA");
-//        BoatLocationMessageDeprecated boatLocationMessage = new BoatLocationMessageDeprecated();
-//        byte[] bytes = boatLocationMessage.boatPositionMessage(boat);
-//        assertEquals(BoatLocationMessageDeprecated.BOAT_POSITION_LENGTH + BoatLocationMessageDeprecated.HEADER_LENGTH + BoatLocationMessageDeprecated.CRC_LENGTH, bytes.length);
-//
-//        byte[] bytesArray = new byte[bytes.length - 4];
-//        for (int i = 0; i < bytes.length - 4; i++) {
-//            bytesArray[i] = bytes[i];
-//        }
-//        byte[] realCRC = boatLocationMessage.calculateChecksum(bytesArray);
-//
-//        byte[] CRC = new byte[4];
-//        for (int i = 0; i < 4; i++) {
-//            CRC[i] = bytes[i + bytes.length - 4];
-//        }
-//
-//        assertArrayEquals(realCRC, CRC); // testing CRC (at end of boatLocationMessage)
-//    }
+    @Test
+    public void currentDrift() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.CURRENT_DRIFT.getIndex();
+        int size = BoatLocationUtility.CURRENT_DRIFT.getSize();
+        short actualCurrentDrift = (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(currentDrift, actualCurrentDrift);
+    }
 
+    @Test
+    public void currentSet() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.CURRENT_SET.getIndex();
+        int size = BoatLocationUtility.CURRENT_SET.getSize();
+        short actualCurrentSet = (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(currentSet, actualCurrentSet);
+    }
+
+    @Test
+    public void rudderAngle() throws Exception {
+        byte[] actualMessage = new byte[8];
+        int sourceIndex = BoatLocationUtility.RUDDER_ANGLE.getIndex();
+        int size = BoatLocationUtility.RUDDER_ANGLE.getSize();
+        short actualRudderAngle = (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(rudderAngle, actualRudderAngle);
+    }
 
 }

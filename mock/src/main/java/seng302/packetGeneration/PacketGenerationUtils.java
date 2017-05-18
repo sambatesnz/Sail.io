@@ -36,7 +36,7 @@ public final class PacketGenerationUtils {
         return Arrays.copyOfRange(wholeArray, 0, 4);
     }
 
-    public static byte[] shortToTwoBytes(short value) {
+    public static byte[] shortToTwoBytes(int value) {
         byte[] output = new byte[2];
         output[0] = (byte) value;
         output[1] = (byte) (value >>> 8);
