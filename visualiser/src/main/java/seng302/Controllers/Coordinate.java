@@ -7,7 +7,7 @@ import seng302.Mark;
  * Contains methods that get relative positions so that items are scaled when the window is resized.
  * Created by Matt Simpson on 20/03/2017.
  */
-public class  Coordinate {
+public class Coordinate {
 
     private static double windowX;
     private static double windowY;

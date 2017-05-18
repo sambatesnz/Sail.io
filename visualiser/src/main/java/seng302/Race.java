@@ -142,12 +142,6 @@ public class Race {
      * @return currentOrder as an observable list.
      */
     public ObservableList<Boat> getCurrentOrder() {
-//        int i = 1;
-//        for (Boat boat : currentOrder) {
-//            boat.setPosition(i);
-//            i++;
-//        }
-//        return currentOrder;
         return FXCollections.observableArrayList(boats.values());
     }
 
@@ -474,6 +468,10 @@ public class Race {
 
     public List<Mark> getBoundaries() {
         return boundaries;
+    }
+
+    public Map<Integer, Boat> getBoatsMap() {
+        return boats;
     }
 
 //    public void setBoundaries(ArrayList<Mark> boundaries) {

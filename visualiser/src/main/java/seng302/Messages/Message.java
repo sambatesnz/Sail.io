@@ -1,14 +1,14 @@
 package seng302.Messages;
 
-import seng302.CompoundMark;
-import seng302.Race;
-import seng302.XMLParser;
+import seng302.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class to read in packets from a socket stream and distribute them to their relative
@@ -31,6 +31,7 @@ public class Message {
     private byte body[];
     private byte crc[];
     private Race race;
+    private Map<Integer, Boat> boats;
 
     private static boolean boatsSet = false;
     private static boolean regattaSet = false;
@@ -88,7 +89,6 @@ public class Message {
      * @throws UnsupportedEncodingException
      */
     public void parseMessage() throws UnsupportedEncodingException {
-//        System.out.println(messageType);
         switch (messageType) {
             case HEARTBEAT:
                 break;
@@ -109,8 +109,9 @@ public class Message {
                 break;
             case 36:                                            //Chatter Text
                 break;
-            case BOAT_LOCATION:                                            //Boat Location
+            case BOAT_LOCATION:                                 //Boat Location
                 LocationMessage location = new LocationMessage(body);
+                setBoatLocationFromMessage(location);
                 break;
             case 38:                                            //Mark Rounding
                 break;
@@ -118,6 +119,20 @@ public class Message {
                 break;
             case 47:                                            //Avg Wind
                 break;
+        }
+    }
+
+    private void setBoatLocationFromMessage(LocationMessage location) {
+        if (boatsSet) {
+            int boatId = location.getSourceID();
+            boats = race.getBoatsMap();
+            if (boats.containsKey(boatId)) {
+                Boat movingBoat = boats.get(boatId);
+                movingBoat.setX(location.getLongitude());
+                movingBoat.setY(location.getLatitude());
+                movingBoat.setHeading(location.getHeading());
+                movingBoat.setSpeed(location.getSpeedOverGround());
+            }
         }
     }
 
@@ -148,8 +163,6 @@ public class Message {
         if (regattaSet && boatsSet && raceSet) {
             race.setViewParams();
             race.setRaceReady(true);
-            System.out.println("RACE READY SET");
-
         }
     }
 }

@@ -1,6 +1,8 @@
 package seng302.Controllers;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,12 +19,11 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Callback;
 import seng302.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -51,7 +52,7 @@ public class RaceController {
     @FXML
     private TableColumn<Boat, String> nameCol;
     @FXML
-    private TableColumn<Boat, Integer> speedCol;
+    private TableColumn<Boat, String> speedCol;
     @FXML
     private Label fpsLabel;
     @FXML
@@ -172,8 +173,6 @@ public class RaceController {
         // set the data types for the table columns.
         positionCol.setCellValueFactory(new PropertyValueFactory<>("position"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        speedCol.setCellValueFactory(new PropertyValueFactory<>("speed"));
-
         //Initialises compoundMarks
         for (CompoundMark lm : race.getCompoundMarks()) {
             for (Mark pos : lm.getMarks()){
@@ -377,7 +376,7 @@ public class RaceController {
             String speed = "";
             String name = "";
             if (showSpeed) {
-                speed = String.valueOf(boatSpeed) + " m/s";
+                speed = String.valueOf(boatSpeed) + " knots";
             }
             if (showName) {
                 name = race.getBoats().get(i).getShortName();
@@ -516,7 +515,7 @@ public class RaceController {
      * Given the bat source ID, will update the position of that boat as it is displayed in the GUi.
      * @param sourceID the key for the boat in te map of boats.
      */
-    private void updateBoatPositoion(int sourceID) {
+    private void updateBoatPosition(int sourceID) {
 
     }
 

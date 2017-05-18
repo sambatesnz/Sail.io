@@ -11,13 +11,11 @@ import java.util.HashMap;
 
 public class LocationMessage{
     private long time;
-    private long sourceID;
+    private int sourceID;
     private double latitude;
     private double longitude;
     private double heading;
     private int speedOverGround;
-
-    private HashMap<Integer, Boat> boatDict;
 
 
     /**
@@ -29,28 +27,33 @@ public class LocationMessage{
     public LocationMessage(byte[] bytes) {
 //        messageVersionNumber = data[0];
         time = Message.byteArrayToLong(bytes, 1, 6);
-        sourceID = Message.byteArrayToLong(bytes, 7, 4);
+        sourceID = Message.byteArrayToInt(bytes, 7, 4);
 //        seqNumber = Message.byteArrayToInt(bytes, 11, 6);
         latitude = Message.byteArrayToLong(bytes, 16, 4) * 180 / 2147483648.0;
         longitude = Message.byteArrayToLong(bytes, 20, 4) * 180 / 2147483648.0;
         heading = Message.byteArrayToInt(bytes, 28, 2) * 360 / 65536.0;
-        speedOverGround = Message.byteArrayToInt(bytes, 38, 2);
+        speedOverGround = Math.toIntExact((long) (Message.byteArrayToInt(bytes, 38, 2) * 1.9438444924574 / 1000));
 //        System.out.println(sourceID);
     }
 
-    /**
-     * Sets the following details of a specific boat (given by source ID):
-     * - Latitude
-     * - Longitude
-     * - Speed
-     * - Heading
-     */
-    public void setBoatLocation() {
-        boatDict.get(sourceID).setX(Mark.convertX(longitude));
-        boatDict.get(sourceID).setX(Mark.convertY(latitude));
-        boatDict.get(sourceID).setSpeed(speedOverGround);
-        boatDict.get(sourceID).setHeading(heading);
+    public int getSourceID() {
+        return sourceID;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getHeading() {
+        return heading;
+    }
+
+    public int getSpeedOverGround() {
+        return speedOverGround;
+    }
 }
 
