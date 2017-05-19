@@ -128,10 +128,9 @@ public class Message {
             boats = race.getBoatsMap();
             if (boats.containsKey(boatId)) {
                 Boat movingBoat = boats.get(boatId);
-                movingBoat.setX(location.getLongitude());
-                movingBoat.setY(location.getLatitude());
-                movingBoat.setHeading(location.getHeading());
+                movingBoat.setMark(new Mark(location.getLatitude(), location.getLongitude()));
                 movingBoat.setSpeed(location.getSpeedOverGround());
+                movingBoat.setHeading(location.getHeading());
             }
         }
     }

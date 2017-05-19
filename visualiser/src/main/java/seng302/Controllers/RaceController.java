@@ -1,8 +1,6 @@
 package seng302.Controllers;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,7 +17,6 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.util.Callback;
 import seng302.*;
 
 import java.util.ArrayList;
@@ -381,11 +378,12 @@ public class RaceController {
             if (showName) {
                 name = race.getBoats().get(i).getShortName();
             }
+
             boats.get(i).setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
             boats.get(i).setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
             boats.get(i).getChildren().get(0).setRotate(race.getBoats().get(i).getHeading()); //Sets rotation of boat
+            System.out.println(race.getBoats().get(i).getHeading());
 
-            //boats.get(i).getChildren().remove(2); //Sets the length of wake
             if(!raceStarted){
                 boats.get(i).getChildren().set(2, new Polyline());
             }else {

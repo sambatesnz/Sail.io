@@ -18,17 +18,27 @@ public class Mark {
     public Mark(double latitude, double longitude){
         this.latitude = latitude;
         this.longitude = longitude;
-        this.x = longitude * EARTH_CIRCUMFERENCE / 360;
-        this.y = latitude * EARTH_CIRCUMFERENCE / 180;
+        this.x = convertToX(longitude);
+        this.y = convertToY(latitude);
     }
 
-    public static double convertX(double x){
-        return x / EARTH_CIRCUMFERENCE * 360;
-    }
-    public static double convertY(double y){
-        return y / EARTH_CIRCUMFERENCE * 180;
+    /**
+     * Converts a longitude to x
+     * @param lon Longitude to convert
+     * @return converted x value
+     */
+    private double convertToX(double lon){
+        return lon * EARTH_CIRCUMFERENCE / 360;
     }
 
+    /**
+     * Converts a latitude to y
+     * @param lat Longitude to convert
+     * @return converted y value
+     */
+    private double convertToY(double lat){
+        return lat * EARTH_CIRCUMFERENCE / 180;
+    }
 
     /**
      * Getter for the latitude.

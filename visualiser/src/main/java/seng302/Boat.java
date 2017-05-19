@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
  * Represent a boat competing in yacht race
  */
 public class Boat {
+    private Mark mark = new Mark(0,0);
     private String boatName;
     private double currentLegDistance;
     private int currentLegIndex;
@@ -68,6 +69,10 @@ public class Boat {
         this.country = country;
     }
 
+    public void setMark(Mark mark) {
+        this.mark = mark;
+    }
+
     /**
      * Used to create a boat for testing purposes.
      * @param sourceID  boat source id
@@ -101,6 +106,7 @@ public class Boat {
         this.heading = heading;
     }
 
+
     /**
      * Set the current x. coordinate
      */
@@ -120,7 +126,7 @@ public class Boat {
      * @return the current x coordinate
      */
     public double getX() {
-        return x;
+        return mark.getX();
     }
 
     /**
@@ -128,7 +134,7 @@ public class Boat {
      * @return the current y coordinate
      */
     public double getY() {
-        return y;
+        return mark.getY();
     }
 
     /**
@@ -204,7 +210,7 @@ public class Boat {
      * @return the current latitude
      */
     public double getLatitude(){
-        return Mark.convertY(y);
+        return mark.getLatitude();
     }
 
     /**
@@ -212,7 +218,7 @@ public class Boat {
      * @return the current latitude
      */
     public double getLongitude(){
-        return Mark.convertX(x);
+        return mark.getLongitude();
     }
 
     /**
