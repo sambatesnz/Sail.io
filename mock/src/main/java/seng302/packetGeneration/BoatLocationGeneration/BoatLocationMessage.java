@@ -1,5 +1,6 @@
 package seng302.packetGeneration.BoatLocationGeneration;
 
+import seng302.MessageType;
 import seng302.packetGeneration.BinaryMessage;
 import seng302.packetGeneration.PacketGenerationUtils;
 
@@ -37,6 +38,8 @@ public class BoatLocationMessage extends BinaryMessage {
     public static int CURRENT_VERSION_NUMBER = 1;
     private static int MESSAGE_SIZE = 56;
     private byte[] boatLocationMessage;
+
+    public BoatLocationMessage(){};
 
     public BoatLocationMessage(int versionNumber, long time, int sourceId,
                                int sequenceNumber, int deviceType,
@@ -101,8 +104,8 @@ public class BoatLocationMessage extends BinaryMessage {
     }
 
     @Override
-    protected byte[] createMessage(int messageType){
+    protected int getMessageType() {
+        return MessageType.BOAT_LOCATION.getMessageType();
 
-        return new byte[8];
     }
 }

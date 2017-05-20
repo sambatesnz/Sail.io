@@ -36,6 +36,11 @@ public final class PacketGenerationUtils {
         return Arrays.copyOfRange(wholeArray, 0, 4);
     }
 
+    public static byte[] intToTwoBytes(int value) {
+        byte[] wholeArray = LEBuffer(4).putInt(value).array();
+        return Arrays.copyOfRange(wholeArray, 0, 2);
+    }
+
     public static byte[] shortToTwoBytes(int value) {
         byte[] output = new byte[2];
         output[0] = (byte) value;
@@ -58,4 +63,12 @@ public final class PacketGenerationUtils {
         int casted = (int) ((location+180)/360*(1L << 32L)-(1L << 31L));
         return intToFourBytes(casted);
     }
+
+    public static byte[] byteToByteArray(byte b) {
+        byte[] output = new byte[1];
+        output[0] = b;
+        return output;
+    }
+
+
 }

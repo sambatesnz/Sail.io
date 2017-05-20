@@ -2,6 +2,7 @@ package seng302.packetGeneration.BoatLocationGeneration;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import seng302.packetGeneration.BinaryMessage;
 import seng302.packetGeneration.PacketUtils;
 
 import java.util.Random;
@@ -299,5 +300,6 @@ public class BoatLocationMessageTest {
         short actualRudderAngle = (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(rudderAngle, actualRudderAngle);
     }
+
 
 }
