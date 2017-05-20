@@ -77,7 +77,7 @@ public class GeneratedData implements IServerData {
     class RSMSender extends TimerTask {
         @Override
         public void run() {
-            bytes.add(rsm.getRaceStatusMessage());
+            //bytes.add(rsm.getRaceStatusMessage());
             System.out.println("Race Status BoatLocationMessageDeprecated created");
         }
     }

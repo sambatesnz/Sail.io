@@ -6,7 +6,7 @@ import seng302.packetGeneration.PacketGenerationUtils;
 
 /**
  * Header of a packet as defined by the AC35 specification
- * Does not extend binary message otherwise you could create a message with a header and the body is also the header
+ * Does not extend binary message otherwise you could create a message with a header and the body that is also the header
  */
 public class MessageHeader {
     private static final byte SYNC_BYTE_1 = (byte) 0x47; //From specification
@@ -34,7 +34,7 @@ public class MessageHeader {
         this.messageHeader = new byte[MESSAGE_SIZE];
     }
 
-    protected byte[] getBody() {
+    public byte[] getBody() {
         int firstIndex = 0;
         System.arraycopy(syncByte1, firstIndex, messageHeader, HeaderByteValues.SYNC_BYTE_1.getIndex(), HeaderByteValues.SYNC_BYTE_1.getSize());
         System.arraycopy(syncByte2, firstIndex, messageHeader, HeaderByteValues.SYNC_BYTE_2.getIndex(), HeaderByteValues.SYNC_BYTE_2.getSize());

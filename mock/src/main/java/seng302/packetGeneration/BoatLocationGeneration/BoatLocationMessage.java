@@ -39,7 +39,6 @@ public class BoatLocationMessage extends BinaryMessage {
     private static int MESSAGE_SIZE = 56;
     private byte[] boatLocationMessage;
 
-    public BoatLocationMessage(){};
 
     public BoatLocationMessage(int versionNumber, long time, int sourceId,
                                int sequenceNumber, int deviceType,

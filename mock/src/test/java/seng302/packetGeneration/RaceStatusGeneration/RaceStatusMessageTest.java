@@ -35,7 +35,7 @@ public class RaceStatusMessageTest {
         );
 
         int expected =  headerSize + numBoatsInt * boatPacketSize;
-        int packetSize = raceStatusMessage.getRaceStatusMessage().length;
+        int packetSize = raceStatusMessage.getBody().length;
         assertEquals(packetSize, expected);
     }
 
@@ -56,7 +56,7 @@ public class RaceStatusMessageTest {
         );
 
 
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         byte[] actualMessage = new byte[8];
         int sourceIndex = RaceStatusUtility.MESSAGE_VERSION_POS;
         int size = RaceStatusUtility.MESSAGE_VERSION_SIZE;
@@ -80,7 +80,7 @@ public class RaceStatusMessageTest {
         );
 
 
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         byte[] actualMessage = new byte[8];
         int sourceIndex = RaceStatusUtility.MESSAGE_VERSION_POS;
         int size = RaceStatusUtility.MESSAGE_VERSION_SIZE;
@@ -105,7 +105,7 @@ public class RaceStatusMessageTest {
                 null
         );
 
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         int sourceIndex = RaceStatusUtility.CURRENT_TIME_POS;
         int size = RaceStatusUtility.CURRENT_TIME_SIZE;
         byte[] actualMessage = new byte[8];
@@ -129,7 +129,7 @@ public class RaceStatusMessageTest {
                 null
         );
 
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         int sourceIndex = RaceStatusUtility.RACE_ID_POS;
         int size = RaceStatusUtility.RACE_ID_SIZE;
         byte[] actualMessage = new byte[4];
@@ -154,7 +154,7 @@ public class RaceStatusMessageTest {
                 null
         );
 
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         int sourceIndex = RaceStatusUtility.RACE_STATUS_POS;
         int size = RaceStatusUtility.RACE_STATUS_SIZE;
         byte[] actualMessage = new byte[4];
@@ -178,7 +178,7 @@ public class RaceStatusMessageTest {
                 null
         );
 
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         int sourceIndex = RaceStatusUtility.EXPECTED_START_TIME_POS;
         int size = RaceStatusUtility.EXPECTED_START_TIME_SIZE;
         byte[] actualMessage = new byte[8];
@@ -200,7 +200,7 @@ public class RaceStatusMessageTest {
                 '0',
                 null
         );
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         byte[] actualMessage = new byte[4];
         int sourceIndex = RaceStatusUtility.WIND_DIRECTION_POS;
         int size = RaceStatusUtility.WIND_DIRECTION_SIZE;
@@ -222,7 +222,7 @@ public class RaceStatusMessageTest {
                 '0',
                 null
         );
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         byte[] actualMessage = new byte[4];
         int sourceIndex = RaceStatusUtility.WIND_SPEED_POS;
         int size = RaceStatusUtility.WIND_SPEED_SIZE;
@@ -247,7 +247,7 @@ public class RaceStatusMessageTest {
                 '0',
                 null
         );
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         int sourceIndex = RaceStatusUtility.NUM_BOATS_POS;
         int size = RaceStatusUtility.NUM_BOATS_SIZE;
         byte[] actualMessage = new byte[2];
@@ -272,7 +272,7 @@ public class RaceStatusMessageTest {
                 raceType,
                 null
         );
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         int sourceIndex = RaceStatusUtility.RACE_TYPE_POS;
         int size = RaceStatusUtility.RACE_TYPE_SIZE;
         byte[] actualMessage = new byte[2];

@@ -1,6 +1,8 @@
 package seng302.packetGeneration.RaceStatusGeneration;
 
 import seng302.Boat;
+import seng302.MessageType;
+import seng302.packetGeneration.BinaryMessage;
 import seng302.packetGeneration.PacketGenerationUtils;
 
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
  * The primary concern of this class is to copy byte arrays of info (eg currentTime
  * Into the correct location for the race status message packet
  */
-public class RaceStatusMessage {
+public class RaceStatusMessage extends BinaryMessage{
 
     private byte[] versionNumber;
     private byte[] currentTime;
@@ -82,7 +84,8 @@ public class RaceStatusMessage {
      * Gets the Race Status message as a byte Array
      * @return byte array containing the whole Race Status Message
      */
-    public byte[] getRaceStatusMessage(){
+    @Override
+    public byte[] getBody() {
         byte[] output = new byte[24 + numberOfBoatsInt * 20];
         //Copy specific bytes into here
         System.arraycopy(versionNumber, 0, output, RaceStatusUtility.MESSAGE_VERSION_POS, RaceStatusUtility.MESSAGE_VERSION_SIZE);
@@ -95,5 +98,12 @@ public class RaceStatusMessage {
         System.arraycopy(numberOfBoatsByte, 0, output, RaceStatusUtility.NUM_BOATS_POS, RaceStatusUtility.NUM_BOATS_SIZE);
         System.arraycopy(raceType, 0, output, RaceStatusUtility.RACE_TYPE_POS, RaceStatusUtility.RACE_TYPE_SIZE );
         return output;
+    }
+
+
+
+    @Override
+    protected int getMessageType() {
+        return MessageType.RACE_STATUS.getMessageType();
     }
 }

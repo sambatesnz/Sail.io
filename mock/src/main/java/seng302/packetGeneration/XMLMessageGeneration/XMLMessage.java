@@ -1,5 +1,7 @@
 package seng302.packetGeneration.XMLMessageGeneration;
 
+import seng302.MessageType;
+import seng302.packetGeneration.BinaryMessage;
 import seng302.packetGeneration.PacketGenerationUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -8,7 +10,7 @@ import java.util.Arrays;
 /**
  * Created by jhl79 on 16/05/17.
  */
-public class XMLMessageContainer {
+public class XMLMessage extends BinaryMessage{
 
     private byte[] versionNum;
     private byte[] ackNumber;
@@ -21,8 +23,8 @@ public class XMLMessageContainer {
     private byte[] xmlTextLenByte;
     private int xmlTextLenInt;
 
-    // Constructor for XMLMessageContainer.
-    public XMLMessageContainer(String xml, short ackN, short seqNum) {
+    // Constructor for XMLMessage.
+    public XMLMessage(String xml, short ackN, short seqNum) {
         this.versionNum = PacketGenerationUtils.intToOneByte(0x01);
         this.ackNumber = PacketGenerationUtils.shortToTwoBytes(ackN);
         this.time = PacketGenerationUtils.longToSixBytes(System.currentTimeMillis());
@@ -35,10 +37,9 @@ public class XMLMessageContainer {
         this.xmlTextLenInt = xml.length();
     }
 
-    // Returns a byte array of the XML message.
-    public byte[] getXMLMessage() {
+    @Override
+    public byte[] getBody() {
         byte[] output = new byte[14 + xmlTextLenInt];
-        System.out.println("Total XMLMessage length is: " + (14 + xmlTextLenInt));
         //Copy specific bytes into here
         System.arraycopy(versionNum, 0, output, XMLMessageUtility.MESSAGE_VERSION.getIndex(), XMLMessageUtility.MESSAGE_VERSION.getSize());
         System.arraycopy(ackNumber, 0, output, XMLMessageUtility.ACK_NUM.getIndex(), XMLMessageUtility.ACK_NUM.getSize());
@@ -47,6 +48,11 @@ public class XMLMessageContainer {
         System.arraycopy(xmlTextLenByte, 0, output, XMLMessageUtility.XML_MESSAGE.getIndex(), XMLMessageUtility.XML_MESSAGE_LENGTH.getSize());
         System.arraycopy(xmlBytes, 0, output, XMLMessageUtility.XML_MESSAGE.getIndex(), xmlTextLenInt);
         return output;
+    }
+
+    @Override
+    protected int getMessageType() {
+        return MessageType.XML_MESSAGE.getMessageType();
     }
 }
 

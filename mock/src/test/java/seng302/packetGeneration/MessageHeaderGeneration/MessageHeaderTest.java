@@ -1,12 +1,8 @@
 package seng302.packetGeneration.MessageHeaderGeneration;
 
 import org.junit.Test;
-import seng302.packetGeneration.BinaryMessage;
-import seng302.packetGeneration.BoatLocationGeneration.BoatLocationUtility;
 import seng302.packetGeneration.PacketUtils;
-
 import java.util.Random;
-
 import static org.junit.Assert.*;
 
 /**
