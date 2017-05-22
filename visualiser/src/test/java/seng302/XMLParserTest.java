@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -65,5 +66,13 @@ public class XMLParserTest {
     public void checkParticipants() throws IOException {
         List<Integer> participants = raceParser.getRaceParticipants();
         Assert.assertTrue(participants.size() == 2);
+    }
+
+    @Test
+    public void checkStartTime() throws IOException {
+        LocalDateTime startTime = raceParser.getRaceStartTime();
+        LocalDateTime trial = LocalDateTime.of(2012, 12, 31, 11, 59);
+        System.out.println(startTime.toString());
+        Assert.assertTrue(startTime.isBefore(trial));
     }
 }
