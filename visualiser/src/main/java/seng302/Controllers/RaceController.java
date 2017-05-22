@@ -3,6 +3,7 @@ package seng302.Controllers;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import seng302.*;
 
+import javax.security.auth.callback.Callback;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +88,8 @@ public class RaceController {
     private long lastTime = 0;
     private long timerUpdate = 1000;
     private boolean raceStarted = false;
-    private boolean countingDown = false;
+    // DEPRECATED
+    //private boolean countingDown = false;
     private int frameCount = 0;
 
     private TimeZoneWrapper timeZoneWrapper;
@@ -196,9 +199,14 @@ public class RaceController {
         mainBorderPane.setLeft(positionTable);
         mainBorderPane.setCenter(viewAnchorPane);
 
+
+
         // set the data types for the table columns.
-        positionCol.setCellValueFactory(new PropertyValueFactory<>("position"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        positionCol.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("position"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<Boat, String>("name"));
+        speedCol.setCellValueFactory(new PropertyValueFactory<Boat, String>("speed"));
+
+
 
         //Initialises compoundMarks
         for (CompoundMark lm : race.getCompoundMarks()) {
@@ -297,15 +305,17 @@ public class RaceController {
         return boundary;
     }
 
-    /**
-     * When the startButton is pressed, this method is called.
-     * Starts the race by changing the countingDown boolean to true
-     * Hides the startButton after being pressed
-     */
-    public void startButtonPressed() {
-        countingDown = true;
-        //startButton.setVisible(false);
-    }
+
+    // DEPRECATED AS THE BUTTTON IS NOW REMOVED
+//    /**
+//     * When the startButton is pressed, this method is called.
+//     * Starts the race by changing the countingDown boolean to true
+//     * Hides the startButton after being pressed
+//     */
+//    public void startButtonPressed() {
+//        countingDown = true;
+//        //startButton.setVisible(false);
+//    }
 
     /**
      * When the annotationBtn is clicked, this method is called.
@@ -391,6 +401,8 @@ public class RaceController {
      * across the new window size.
      */
     private void updateView() {
+
+        positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
 
         viewAnchorPane.setMinHeight(Coordinate.getWindowY());
         viewAnchorPane.setMaxHeight(Coordinate.getWindowY());
@@ -521,6 +533,7 @@ public class RaceController {
      * Increments the race clock, and updates the fps display
      */
     private void updateRaceClock() {
+
         if (currentTimeMillis() - lastTime >= timerUpdate) {
             raceSeconds++;
             fpsLabel.setText(frameCount + " fps");
@@ -558,6 +571,19 @@ public class RaceController {
     private void runRace() {
         updateView();
 
+        long start = race.getExpectedStartTime();
+        long startTime = currentTimeMillis() - start;
+        // If the race hasn't started yet
+        if (startTime < 0) {
+            raceStarted = false;
+            System.out.println(startTime);
+            // Show the time to the start of the race.
+            long minutes = (startTime / 1000) / 60;
+            long seconds = (startTime / 1000) % 60;
+            clock.setText(String.format("%02d:%02d:%02d", raceHours, minutes, seconds));
+        }
+
+
         new AnimationTimer() {
             //Message message = new Message();
             @Override
@@ -593,7 +619,13 @@ public class RaceController {
                     finishedListView.setItems(race.getPositionStrings());
 
                 } else {
-                    positionTable.setItems(race.getCurrentOrder());
+
+//                    for(Boat boat: race.getBoats()) {
+//                        System.out.println(boat.getSpeed());
+//                    }
+//
+//                    positionTable.setItems(FXCollections.observableArrayList(new ArrayList<Boat>()));
+//                    positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
                 }
             }
         }.start();

@@ -72,7 +72,7 @@ public class Race {
         // Contestants are now retrieved from the xml message
         //boats = getContestants();
         finishedBoats = new ArrayList<>();
-        // TODO: Current order needs to be instantiated here. Get the list of boats in the race first. Then use the time to next gate in the race packet to decide race Mark
+        // TODO: Current order needs to be instantiated here. Get the list of boats in the race first. Then use the time to next gate in the race packet to decide race order
         MarkStrings = FXCollections.observableArrayList();
 
 //        for (Boat boat : boats.values()) {
