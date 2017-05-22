@@ -3,6 +3,7 @@ package seng302.packetGeneration;
 import org.junit.Test;
 import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.packetGeneration.BoatLocationGeneration.BoatLocationUtility;
+import seng302.packetGeneration.XMLMessageGeneration.XMLMessage;
 
 import java.util.Random;
 
@@ -54,7 +55,6 @@ public class BinaryMessageTest {
         byte[] messageBody = message.createMessage();
 
         int expectedSize = headerSize + boatLocationSize + CRCSize;
-        System.out.println(expectedSize);
         assertEquals(expectedSize, messageBody.length); //Dont know how to validate crc yet
     }
 
@@ -68,8 +68,6 @@ public class BinaryMessageTest {
         assertEquals(-1, actualCrc); //Dont know how to validate crc yet
 
     }
-
-
 
     /**
      * Finds 2 to the power of the size of a section of a packet

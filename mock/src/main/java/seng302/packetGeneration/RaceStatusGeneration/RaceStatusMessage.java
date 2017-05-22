@@ -88,15 +88,15 @@ public class RaceStatusMessage extends BinaryMessage{
     public byte[] getBody() {
         byte[] output = new byte[24 + numberOfBoatsInt * 20];
         //Copy specific bytes into here
-        System.arraycopy(versionNumber, 0, output, RaceStatusUtility.MESSAGE_VERSION_POS, RaceStatusUtility.MESSAGE_VERSION_SIZE);
-        System.arraycopy(currentTime, 0, output, RaceStatusUtility.CURRENT_TIME_POS, RaceStatusUtility.CURRENT_TIME_SIZE);
-        System.arraycopy(raceID, 0, output, RaceStatusUtility.RACE_ID_POS, RaceStatusUtility.RACE_ID_SIZE);
-        System.arraycopy(raceStatus, 0, output, RaceStatusUtility.RACE_STATUS_POS, RaceStatusUtility.RACE_STATUS_SIZE);
-        System.arraycopy(startTime, 0, output, RaceStatusUtility.EXPECTED_START_TIME_POS, RaceStatusUtility.EXPECTED_START_TIME_SIZE);
-        System.arraycopy(windDirection, 0, output, RaceStatusUtility.WIND_DIRECTION_POS, RaceStatusUtility.WIND_DIRECTION_SIZE);
-        System.arraycopy(windSpeed, 0, output, RaceStatusUtility.WIND_SPEED_POS, RaceStatusUtility.WIND_SPEED_SIZE);
-        System.arraycopy(numberOfBoatsByte, 0, output, RaceStatusUtility.NUM_BOATS_POS, RaceStatusUtility.NUM_BOATS_SIZE);
-        System.arraycopy(raceType, 0, output, RaceStatusUtility.RACE_TYPE_POS, RaceStatusUtility.RACE_TYPE_SIZE );
+        System.arraycopy(versionNumber, 0, output, RaceStatusUtility.MESSAGE_VERSION.getIndex(), RaceStatusUtility.MESSAGE_VERSION.getSize());
+        System.arraycopy(currentTime, 0, output, RaceStatusUtility.CURRENT_TIME.getIndex(), RaceStatusUtility.CURRENT_TIME.getSize());
+        System.arraycopy(raceID, 0, output, RaceStatusUtility.RACE_ID.getIndex(), RaceStatusUtility.RACE_ID.getSize());
+        System.arraycopy(raceStatus, 0, output, RaceStatusUtility.RACE_STATUS.getIndex(), RaceStatusUtility.RACE_STATUS.getSize());
+        System.arraycopy(startTime, 0, output, RaceStatusUtility.EXPECTED_START_TIME.getIndex(), RaceStatusUtility.EXPECTED_START_TIME.getSize());
+        System.arraycopy(windDirection, 0, output, RaceStatusUtility.WIND_DIRECTION.getIndex(), RaceStatusUtility.WIND_DIRECTION.getSize());
+        System.arraycopy(windSpeed, 0, output, RaceStatusUtility.WIND_SPEED.getIndex(), RaceStatusUtility.WIND_SPEED.getSize());
+        System.arraycopy(numberOfBoatsByte, 0, output, RaceStatusUtility.NUM_BOATS.getIndex(), RaceStatusUtility.NUM_BOATS.getSize());
+        System.arraycopy(raceType, 0, output, RaceStatusUtility.RACE_TYPE.getIndex(), RaceStatusUtility.RACE_TYPE.getSize());
         return output;
     }
 
