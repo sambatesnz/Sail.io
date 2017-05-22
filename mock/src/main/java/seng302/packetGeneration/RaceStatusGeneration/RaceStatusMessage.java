@@ -3,9 +3,11 @@ package seng302.packetGeneration.RaceStatusGeneration;
 import seng302.Boat;
 import seng302.MessageType;
 import seng302.packetGeneration.BinaryMessage;
+import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.packetGeneration.PacketGenerationUtils;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,7 +27,8 @@ public class RaceStatusMessage extends BinaryMessage{
     private byte[] windSpeed;
     private byte[] numberOfBoatsByte;
     private byte[] raceType;
-    private List<byte[]> boats;
+    private byte[] boatsAsBytes;
+    private List<Boat> boats;
     private int numberOfBoatsInt;
 
     public static int CURRENT_VERSION_NUMBER= 2;
@@ -53,6 +56,8 @@ public class RaceStatusMessage extends BinaryMessage{
         this.numberOfBoatsByte = PacketGenerationUtils.charToOneByte(numberOfBoats);
         this.numberOfBoatsInt = Character.getNumericValue(numberOfBoats);
         this.raceType = PacketGenerationUtils.charToOneByte(raceType);
+        this.boats = boats;
+
     }
 
     /**
@@ -79,6 +84,8 @@ public class RaceStatusMessage extends BinaryMessage{
         this.numberOfBoatsByte = PacketGenerationUtils.charToOneByte(numberOfBoats);
         this.numberOfBoatsInt = Character.getNumericValue(numberOfBoats);
         this.raceType = PacketGenerationUtils.charToOneByte(raceType);
+
+        this.boats = boats;
     }
 
     /**
@@ -98,6 +105,12 @@ public class RaceStatusMessage extends BinaryMessage{
         body.put(windSpeed);
         body.put(numberOfBoatsByte);
         body.put(raceType);
+
+        for (Boat boat: boats){
+            BoatStatusMessage message = new BoatStatusMessage(1, (char)2, (char)boat.getCurrentLegIndex(), 1, 1);
+            body.put(message.getBoatStatusMessage());
+        }
+
         return body.array();
     }
 

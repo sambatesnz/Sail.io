@@ -3,6 +3,7 @@ package seng302.packetGeneration;
 
 import seng302.packetGeneration.MessageHeaderGeneration.MessageHeader;
 
+import java.util.Arrays;
 import java.util.zip.CRC32;
 
 
@@ -22,6 +23,8 @@ public abstract class BinaryMessage {
 
         MessageHeader messageHeader = new MessageHeader(messageType, -1, messageBody.length);
         byte[] header = messageHeader.getBody();
+
+        System.out.println(Arrays.toString(header));
 
         int crc = calculateCRC(header, messageBody);
         byte[] crcSection = PacketGenerationUtils.intToFourBytes(crc);

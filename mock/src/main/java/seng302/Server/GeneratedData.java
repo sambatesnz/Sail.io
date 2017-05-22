@@ -6,6 +6,7 @@ import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessageDeprecated;
 import seng302.DataGenerator;
 import seng302.Race;
+import seng302.packetGeneration.BoatLocationGeneration.BoatLocationUtility;
 import seng302.packetGeneration.RaceStatusGeneration.RaceStatusMessage;
 import seng302.packetGeneration.XMLMessageGeneration.XMLMessage;
 
@@ -20,7 +21,6 @@ public class GeneratedData implements IServerData {
     private Queue<byte[]> bytes = new LinkedList<>();
 
     private Race race = new Race();
-
     // Generate RaceStatusMessage from using properties of Race object.
     private BinaryMessage rsm = new RaceStatusMessage(currentTimeMillis(),
                                                             race.getRaceID(),
@@ -55,9 +55,11 @@ public class GeneratedData implements IServerData {
         @Override
         public void run() {
             DataGenerator dataGenerator = new DataGenerator();
-            System.out.println("XML Message created");
             BinaryMessage xmlMessage =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, (short) 0);
-            bytes.add(xmlMessage.getBody());
+            System.out.println("\n--------\nXML Message created");
+            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+            System.out.println("--------\n");
+            bytes.add(xmlMessage.createMessage());
         }
     }
 
@@ -65,9 +67,21 @@ public class GeneratedData implements IServerData {
         @Override
         public void run() {
             for (Boat boat : race.getBoats()) {
-                //BinaryMessage boatLocationMessage = new BoatLocationMessage
-                //bytes.add(boatLocationMessage.boatPositionMessage(boat));
-                System.out.println("Boat location message packet created");
+                BinaryMessage boatLocationMessage = new BoatLocationMessage(
+                        1, System.currentTimeMillis(), 1,
+                        1, 1,
+                        boat.getLatitude(), boat.getLongitude(), 0,
+                        (short) boat.getHeading(), 0, 0, (short) boat.getSpeed(),
+                        (short) 100, (short) 100,
+                        (short) 200, (short) 200,
+                        (short) 100, (short) 100, (short) 100,
+                        (short) 100, (short) 100, (short) 100
+                );
+                System.out.println("\n--------\nBoat location message packet created");
+                System.out.println(Arrays.toString(boatLocationMessage.createMessage()));
+                System.out.println("--------\n");
+                bytes.add(boatLocationMessage.createMessage());
+
             }
         }
     }
@@ -82,8 +96,10 @@ public class GeneratedData implements IServerData {
     class RSMSender extends TimerTask {
         @Override
         public void run() {
-            bytes.add(rsm.getBody());
-            System.out.println("Race Status Message created");
+            bytes.add(rsm.createMessage());
+            System.out.println("\n--------\nRace Status message packet created");
+            System.out.println(Arrays.toString(rsm.createMessage()));
+            System.out.println("--------\n");
         }
     }
 

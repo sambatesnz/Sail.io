@@ -60,6 +60,7 @@ public class StreamClient {
     }
 
     private void nextMessage() throws IOException{
+
         final int HEADER_LEN = 15;
         final int CRC_LEN = 4;
         if (streamInput.available() < HEADER_LEN){
@@ -68,6 +69,14 @@ public class StreamClient {
         byte[] head = new byte[HEADER_LEN];
         streamInput.mark(HEADER_LEN + 1);
         streamInput.read(head);
+        // if !sync bytes then reset + read one byte + return;
+        if (!(head[0] == (byte)0x47 && head[1] == (byte)0x83)){
+//            && head[1] == (byte)0x83)
+            streamInput.reset();
+            streamInput.read(new byte[1]);
+            return;
+        }
+        System.out.println(head[0] + " - " +  head[1]);
         byte[] lenBytes = new byte[4];
         System.arraycopy(head, 13, lenBytes, 0, 2);
 //        int messageLength = ((lenBytes[2] & 0xff) << 8) | (lenBytes[3] & 0xff);
@@ -78,6 +87,9 @@ public class StreamClient {
         }
         byte[] body = new byte[messageLength + CRC_LEN];
         streamInput.read(body);
+        //System.out.println(Arrays.toString(body));
+
+
 
 //
         //TODO: passmessage in to the thing

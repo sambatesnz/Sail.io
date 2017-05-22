@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,7 @@ public class Message {
         System.arraycopy(data,15, body,0, messageLen);
         crc = new byte[4];
         System.arraycopy(data,15 + messageLen, crc,0, 4);
+        System.out.println("Message type " + messageType);
     }
 
     /**

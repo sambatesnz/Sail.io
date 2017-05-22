@@ -4,6 +4,8 @@ package seng302.packetGeneration.MessageHeaderGeneration;
 import seng302.packetGeneration.BinaryMessage;
 import seng302.packetGeneration.PacketGenerationUtils;
 
+import java.util.Arrays;
+
 /**
  * Header of a packet as defined by the AC35 specification
  * Does not extend binary message otherwise you could create a message with a header and the body that is also the header
@@ -42,6 +44,7 @@ public class MessageHeader {
         System.arraycopy(timeStamp, firstIndex, messageHeader, HeaderByteValues.TIME_STAMP.getIndex(), HeaderByteValues.TIME_STAMP.getSize());
         System.arraycopy(sourceId, firstIndex, messageHeader, HeaderByteValues.SOURCE_ID.getIndex(), HeaderByteValues.SOURCE_ID.getSize());
         System.arraycopy(bodyLength, firstIndex, messageHeader, HeaderByteValues.MESSAGE_BODY_LENGTH.getIndex(), HeaderByteValues.MESSAGE_BODY_LENGTH.getSize());
+        System.out.println("Message Header: +" + Arrays.toString(messageHeader));
         return messageHeader;
     }
 
