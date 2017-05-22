@@ -232,8 +232,6 @@ public class BoatLocationMessageTest {
         byte[] actualMessage = new byte[4];
         int sourceIndex = BoatLocationUtility.APPARENT_WIND_SPEED.getIndex();
         int size = BoatLocationUtility.APPARENT_WIND_SPEED.getSize();
-        System.out.println(sourceIndex);
-        System.out.println(size);
         int actualApparentWindSpeed = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(apparentWindSpeed, actualApparentWindSpeed);
     }

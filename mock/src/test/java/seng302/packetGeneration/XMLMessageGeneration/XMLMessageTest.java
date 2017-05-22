@@ -80,7 +80,6 @@ public class XMLMessageTest {
         byte[] message = new byte[8];
         int actualMessageLength = PacketUtils.getIntFromByteArray(body, XMLMessageUtility.XML_MESSAGE_LENGTH.getIndex(), message, XMLMessageUtility.XML_MESSAGE_LENGTH.getSize());
         byte[] convertedXML = xml.getBytes();
-        System.out.println(actualMessageLength);
         assertEquals(convertedXML.length, actualMessageLength);
     }
 
