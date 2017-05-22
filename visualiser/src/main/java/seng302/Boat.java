@@ -6,24 +6,41 @@ import javafx.scene.paint.Color;
  * Represent a boat competing in yacht race
  */
 public class Boat {
-    private String name;
-    private double speed;
+    private Mark mark;
+    private String boatName;
     private double currentLegDistance;
     private int currentLegIndex;
     private double heading = 0;
-    private double x;
-    private double y;
     private Color colour;
     private Long raceTime;
     private int position;
     private String abrv;
+    private int sourceId;
+    private int status;
+    private long timeToNextMark;
+    private long timeToFinish;
+    private String shortName;
+    private String country;
+    private double speed;
 
     /**
      * Gets the abbreviation of the name of the team's boat
      * @return the boat's abbreviation string
      */
-    public String getAbrv() {
-        return abrv;
+    public String getShortName() {
+        return shortName;
+    }
+
+    public String getBoatName() {
+        return boatName;
+    }
+
+    public int getSourceId() {
+        return sourceId;
+    }
+
+    public String getCountry() {
+        return country;
     }
 
     /**
@@ -41,17 +58,28 @@ public class Boat {
     /**
      * Constructs a boat
      * @param name the name of the boat/team
-     * @param speed the speed of the boat
      */
-    public Boat(String name, double speed, Color colour, String abrv) {
-        this.name = name;
-        this.currentLegDistance = 0;
-        this.currentLegIndex = 0;
-        this.speed = speed;
-        this.colour = colour;
-        this.abrv = abrv;
-        this.raceTime = Integer.toUnsignedLong(0);
+    public Boat(String name, String shortName, int sourceId, String country) {
+        this.boatName = name;
+        this.colour = Color.color(Math.random(), Math.random(), Math.random());
+        this.shortName = shortName;
+        this.sourceId = sourceId;
+        this.country = country;
     }
+
+    public void setMark(Mark mark) {
+        this.mark = mark;
+    }
+
+    /**
+     * Used to create a boat for testing purposes.
+     * @param sourceID  boat source id
+     */
+    public Boat(Integer sourceID) {
+        this.sourceId = sourceID;
+    }
+
+
 
     /**
      * Get the boats colour
@@ -77,25 +105,11 @@ public class Boat {
     }
 
     /**
-     * Set the current x. coordinate
-     */
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    /**
-     * Set the current y coordinate
-     */
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    /**
      * Get the current x. coordinate
      * @return the current x coordinate
      */
     public double getX() {
-        return x;
+        return mark.getX();
     }
 
     /**
@@ -103,7 +117,7 @@ public class Boat {
      * @return the current y coordinate
      */
     public double getY() {
-        return y;
+        return mark.getY();
     }
 
     /**
@@ -159,7 +173,7 @@ public class Boat {
      * @return the name of the boat
      */
     public String getName() {
-        return name;
+        return boatName;
     }
 
     /**
@@ -170,7 +184,7 @@ public class Boat {
 
     /**
      * Sets the position of the boat.
-     * @param position1
+     * @param position1 the position of the boat in the race
      */
     public void setPosition(int position1) { position = position1; }
 
@@ -179,7 +193,7 @@ public class Boat {
      * @return the current latitude
      */
     public double getLatitude(){
-        return Position.convertY(y);
+        return mark.getLatitude();
     }
 
     /**
@@ -187,7 +201,83 @@ public class Boat {
      * @return the current latitude
      */
     public double getLongitude(){
-        return Position.convertX(x);
+        return mark.getLongitude();
+    }
+
+    /**
+     * Sets the source ID, or the identification number, of the boat
+     * @param id The number that the boat will be identified by
+     */
+    public void setSourceID(int id) { this.sourceId = id; }
+
+    /**
+     * Getter for the source ID, or the identification number, of the boat
+     * @return The number that the boat is identified by
+     */
+    public int getSourceID() { return sourceId; }
+
+    /**
+     * Getter for the status of the boat:
+     * 0: Undefined
+     * 1: Prestart
+     * 2: Racing
+     * 3: Finished
+     * 4: DNS (did not start)
+     * 5: DNF (did not finish)
+     * 6: DSQ (disqualified)
+     * 7: OCS (On Course Side – across start line early)
+     * @return the status of the boat
+     */
+    public int getStatus() {
+        return status;
+    }
+
+    /**
+     * Setter for the status of the boat:
+     * 0: Undefined
+     * 1: Prestart
+     * 2: Racing
+     * 3: Finished
+     * 4: DNS (did not start)
+     * 5: DNF (did not finish)
+     * 6: DSQ (disqualified)
+     * 7: OCS (On Course Side – across start line early)
+     * @param status the status of the boat
+     */
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    /**
+     * Getter for the estimated time that the boat will take to get to the next mark
+     * @return The estimated time to the next mark
+     */
+    public long getTimeToNextMark() {
+        return timeToNextMark;
+    }
+
+    /**
+     * Setter for the estimated time that the boat will take to get to the next mark
+     * @param timeToNextMark The estimated time to the next mark
+     */
+    public void setTimeToNextMark(long timeToNextMark) {
+        this.timeToNextMark = timeToNextMark;
+    }
+
+    /**
+     * Getter for the estimated time that the boat will take to finish
+     * @return The estimated time to finish
+     */
+    public long getTimeToFinish() {
+        return timeToFinish;
+    }
+
+    /**
+     * Setter for the estimated time that the boat will take to finish
+     * @param timeToFinish The estimated time to finish
+     */
+    public void setTimeToFinish(long timeToFinish) {
+        this.timeToFinish = timeToFinish;
     }
 }
 

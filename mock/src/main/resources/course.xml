@@ -5,6 +5,9 @@
     <windDirection>
         121
     </windDirection>
+    <windSpeed>
+        1500
+    </windSpeed>
     <compoundMarks>
         <compoundMark type="Gate" name="Start" id="1" color="Green">
             <mark>

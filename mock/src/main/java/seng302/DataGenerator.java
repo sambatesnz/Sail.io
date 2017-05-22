@@ -9,6 +9,4 @@ public class DataGenerator {
         java.util.Scanner s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream(xml)).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
     }
-
-
 }

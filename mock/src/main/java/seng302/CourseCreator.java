@@ -20,6 +20,7 @@ public class CourseCreator {
 
     private Document configDoc;
     private String WINDDIRECTION = "windDirection";
+    private String WINDSPEED = "windSpeed";
     private String LATITUDE = "latitude";
     private String LONGITUDE = "longitude";
     private String COMPOUND_MARK = "compoundMark";
@@ -128,21 +129,38 @@ public class CourseCreator {
         return courseOrder;
     }
 
-    public int getWindDirection() {
+    public short getWindDirection() {
         NodeList nodes = this.configDoc.getElementsByTagName(WINDDIRECTION);
-        int windDir = 0;
+        short windDir = 0;
 
         try
         {
             for (int i=0; i< nodes.getLength(); i++){
                 String strippedNode = nodes.item(i).getTextContent().replaceAll("\\s+", "");
-                windDir = Integer.parseInt(strippedNode);
+                windDir = Short.parseShort(strippedNode);
             }
         } catch (Exception e) {
-            System.out.println("Could not parse the windspeed.");
+            System.out.println("Could not parse the wind direction.");
             throw e;
         }
         return windDir;
+    }
+
+    public short getWindSpeed() {
+        NodeList nodes = this.configDoc.getElementsByTagName(WINDSPEED);
+        short windSpeed = 0;
+
+        try
+        {
+            for (int i=0; i< nodes.getLength(); i++){
+                String strippedNode = nodes.item(i).getTextContent().replaceAll("\\s+", "");
+                windSpeed = Short.parseShort(strippedNode);
+            }
+        } catch (Exception e) {
+            System.out.println("Could not parse the wind speed.");
+            throw e;
+        }
+        return windSpeed;
     }
 
     private Landmark createLandmarkFromElement(Element markElement) {

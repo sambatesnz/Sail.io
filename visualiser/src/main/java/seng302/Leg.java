@@ -5,15 +5,15 @@ package seng302;
  */
 public class Leg {
     private double distance;
-    private Landmark start;
-    private Landmark dest;
+    private CompoundMark start;
+    private CompoundMark dest;
     private double heading;
 
     /**
      * Setter for the start landmark of the leg
      * @param start, the landmark that is to be the start.
      */
-    public void setStart(Landmark start) {
+    public void setStart(CompoundMark start) {
         this.start = start;
     }
 
@@ -21,7 +21,7 @@ public class Leg {
      * Setter for the dest landmark of the leg
      * @param dest, the landmark that is to be the dest.
      */
-    public void setDest(Landmark dest) {
+    public void setDest(CompoundMark dest) {
         this.dest = dest;
     }
 
@@ -45,7 +45,7 @@ public class Leg {
      * Get the landmark at the end of a leg
      * @return the landmark at the end of a leg
      */
-    public Landmark getDest() {
+    public CompoundMark getDest() {
         return dest;
     }
 
@@ -53,7 +53,7 @@ public class Leg {
      * Get the landmark at the start of a leg
      * @return the landmark at the start of a leg
      */
-    public Landmark getStart() {
+    public CompoundMark getStart() {
         return start;
     }
 
@@ -97,7 +97,7 @@ public class Leg {
      * @param start landmark at the start of the leg
      * @param dest landmark at the end of the leg
      */
-    Leg(Landmark start, Landmark dest) {
+    Leg(CompoundMark start, CompoundMark dest) {
         this.start = start;
         this.dest = dest;
         distance = calculateDistance();

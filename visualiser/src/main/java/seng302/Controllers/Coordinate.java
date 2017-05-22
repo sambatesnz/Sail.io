@@ -1,7 +1,7 @@
 package seng302.Controllers;
 
+import seng302.Mark;
 import javafx.geometry.Pos;
-import seng302.Position;
 
 /**
  * Holds information relating to the coordinates within the window.
@@ -20,13 +20,15 @@ public final class  Coordinate {
     private static double BorderY = 0;
     private static double BorderConstant = 0;
     private static int sidePaneWidth = 248;
+
+    private static Mark viewMin;
+    private static Mark viewMax;
     private static double zoom = 0;
-    private static Position offset = new Position(0, 0);
-    private static Position defaultCourseMin;
-    private static Position defaultCourseMax;
-    private static Position center;
-    private static Position viewMin;
-    private static Position viewMax;
+    private static Mark offset = new Position(0, 0);
+    private static Mark defaultCourseMin;
+    private static Mark defaultCourseMax;
+    private static Mark center;
+
 
 
     private Coordinate(){}
@@ -35,7 +37,7 @@ public final class  Coordinate {
      * Set the coordinates of the minimum postion on the map to be displayed
      * @param min A minimum coordinate to be viewed
      */
-    public static void setDefaultCourseMin(Position min) {
+    public static void setDefaultCourseMin(Mark min) {
         defaultCourseMin = min;
     }
 
@@ -55,7 +57,7 @@ public final class  Coordinate {
         double sizeX = viewMax.getX() - viewMin.getX();
         double sizeY = viewMax.getY() - viewMin.getY();
 
-        if((windowX / sizeX) > windowY / sizeY ) {
+        if ((windowX / sizeX) > windowY / sizeY ) {
             BorderX = BorderConstant + (windowX - windowY / sizeY * sizeX) / 2;
         }else if((windowX / sizeX) < windowY / sizeY ) {
             BorderY = BorderConstant + (windowY - windowX / sizeX * sizeY) / 2;
