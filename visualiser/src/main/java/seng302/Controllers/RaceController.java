@@ -56,8 +56,6 @@ public class RaceController {
     @FXML
     private Label fpsLabel;
     @FXML
-    private Button startButton;
-    @FXML
     private Button annotationBtn;
     @FXML
     private Button fpsBtn;
@@ -81,10 +79,10 @@ public class RaceController {
     private boolean showFPS = true;
     private List<Path> paths = new ArrayList<>();
 
-    private int timeBeforeRace = 5;
+    //private int timeBeforeRace = 5;
     private int raceHours = 0;
     private int raceMinutes = 0;
-    private int raceSeconds = -timeBeforeRace - 1;
+    private int raceSeconds = 0;
     private long lastTime = 0;
     private long timerUpdate = 1000;
     private boolean raceStarted = false;
@@ -306,7 +304,7 @@ public class RaceController {
      */
     public void startButtonPressed() {
         countingDown = true;
-        startButton.setVisible(false);
+        //startButton.setVisible(false);
     }
 
     /**
@@ -478,8 +476,6 @@ public class RaceController {
             fpsLabel.setLayoutY(60);
         }
 
-        startButton.setLayoutX(14);
-        startButton.setLayoutY(Coordinate.getWindowY() - 100);
 
         fpsBtn.setLayoutX(14);
         fpsBtn.setLayoutY(Coordinate.getWindowY() - 125);
@@ -575,21 +571,21 @@ public class RaceController {
                     Coordinate.updateBorder();
                     updateRaceClock();
                 }
-                else if (countingDown){
-                    if (currentTimeMillis() - lastTime >= timerUpdate) {
-                        raceSeconds++;
-                        frameCount = 0;
-                        clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
-                        if (raceSeconds == -2) {
-                            RemoveRacersList();
-                        }
-                        lastTime = currentTimeMillis();
-                    }
-                    if (raceSeconds == 0) {
-                        clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
-                        raceStarted = true;
-                    }
+//                else if (countingDown){
+                if (currentTimeMillis() - lastTime >= timerUpdate) {
+                    raceSeconds++;
+                    frameCount = 0;
+                    clock.setText(String.format("%02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+                    //if (raceSeconds == -2) {
+                    //    RemoveRacersList();
+                    //}
+                    lastTime = currentTimeMillis();
                 }
+                if (raceSeconds == 0) {
+                    clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+                    raceStarted = true;
+                }
+//                }
                 if (race.finished) {
                     positionTable.setVisible(false);
                     mainBorderPane.setLeft(finishedListView);
