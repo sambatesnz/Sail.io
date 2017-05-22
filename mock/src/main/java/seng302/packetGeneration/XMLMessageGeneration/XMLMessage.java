@@ -23,11 +23,11 @@ public class XMLMessage extends BinaryMessage{
     private int xmlTextLenInt;
 
     // Constructor for XMLMessage.
-    public XMLMessage(String xml, short ackN, short seqNum) {
+    public XMLMessage(String xml, short ackN, int messageSubType, short seqNum) {
         this.versionNum = PacketGenerationUtils.intToOneByte(0x01);
         this.ackNumber = PacketGenerationUtils.shortToTwoBytes(ackN);
         this.timestamp = PacketGenerationUtils.longToSixBytes(System.currentTimeMillis());
-        this.xmlMsgSubType = PacketGenerationUtils.intToOneByte(0x00);
+        this.xmlMsgSubType = PacketGenerationUtils.intToOneByte(messageSubType);
         this.seqNumber = PacketGenerationUtils.shortToTwoBytes(seqNum);
         this.xmlBytes = xml.getBytes(StandardCharsets.UTF_8);
         this.xmlText = Arrays.copyOf(xmlBytes, xmlBytes.length);

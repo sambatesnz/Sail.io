@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Race>
     <RaceID>11080703</RaceID>
     <RaceType>Match</RaceType>
@@ -55,18 +56,17 @@
         <Limit SeqID="4" Lat="-64.856" Lon="32.277"/>
         <Limit SeqID="5" Lat="-64.830" Lon="32.277"/>
         <Limit SeqID="6" Lat="-64.825" Lon="32.290"/>
-        <Corner SeqID="5" CompoundMarkID="1" Rounding="SP" ZoneSize="3"/>
     </CourseLimit>
     <!--<CourseLimit>-->
-        <!--<Limit SeqID="1" Lat="-36.8325" Lon="174.8325"/>-->
-        <!--<Limit SeqID="2" Lat="-36.82883" Lon="174.81983"/>-->
-        <!--<Limit SeqID="3" Lat="-36.82067" Lon="174.81983"/>-->
-        <!--<Limit SeqID="4" Lat="-36.811" Lon="174.8265"/>-->
-        <!--<Limit SeqID="5" Lat="-36.81033" Lon="174.83833"/>-->
-        <!--<Limit SeqID="6" Lat="-36.81533" Lon="174.8525"/>-->
-        <!--<Limit SeqID="7" Lat="-36.81533" Lon="174.86733"/>-->
-        <!--<Limit SeqID="8" Lat="-36.81633" Lon="174.88217"/>-->
-        <!--<Limit SeqID="9" Lat="-36.83383" Lon="174.87117"/>-->
-        <!--<Limit SeqID="10" Lat="-36.83417" Lon="174.84767"/>-->
+    <!--<Limit SeqID="1" Lat="-36.8325" Lon="174.8325"/>-->
+    <!--<Limit SeqID="2" Lat="-36.82883" Lon="174.81983"/>-->
+    <!--<Limit SeqID="3" Lat="-36.82067" Lon="174.81983"/>-->
+    <!--<Limit SeqID="4" Lat="-36.811" Lon="174.8265"/>-->
+    <!--<Limit SeqID="5" Lat="-36.81033" Lon="174.83833"/>-->
+    <!--<Limit SeqID="6" Lat="-36.81533" Lon="174.8525"/>-->
+    <!--<Limit SeqID="7" Lat="-36.81533" Lon="174.86733"/>-->
+    <!--<Limit SeqID="8" Lat="-36.81633" Lon="174.88217"/>-->
+    <!--<Limit SeqID="9" Lat="-36.83383" Lon="174.87117"/>-->
+    <!--<Limit SeqID="10" Lat="-36.83417" Lon="174.84767"/>-->
     <!--</CourseLimit>-->
 </Race>

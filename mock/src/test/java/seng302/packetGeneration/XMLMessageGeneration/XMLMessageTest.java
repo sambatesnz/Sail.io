@@ -23,7 +23,7 @@ public class XMLMessageTest {
         this.ackNumber = 5;
         this.sequenceNumber = 42;
 
-        BinaryMessage message = new XMLMessage(xml, ackNumber, sequenceNumber);
+        BinaryMessage message = new XMLMessage(xml, ackNumber, XMLSubTypes.REGATTA.getSubType(), sequenceNumber);
         body = message.getBody();
     }
 
@@ -62,7 +62,7 @@ public class XMLMessageTest {
 
     @Test
     public void xmlMessageSubType() throws Exception {
-        int MESSAGE_SUB_TYPE = 0; //Currently 0
+        int MESSAGE_SUB_TYPE = XMLSubTypes.REGATTA.getSubType(); //Currently 0
         byte[] message = new byte[8];
         int actualMessageSubType = PacketUtils.getIntFromByteArray(body, XMLMessageUtility.XML_MESSAGE_SUB_TYPE.getIndex(), message, XMLMessageUtility.XML_MESSAGE_SUB_TYPE.getSize());
         assertEquals(MESSAGE_SUB_TYPE, actualMessageSubType);

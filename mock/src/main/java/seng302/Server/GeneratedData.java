@@ -9,6 +9,7 @@ import seng302.Race;
 import seng302.packetGeneration.BoatLocationGeneration.BoatLocationUtility;
 import seng302.packetGeneration.RaceStatusGeneration.RaceStatusMessage;
 import seng302.packetGeneration.XMLMessageGeneration.XMLMessage;
+import seng302.packetGeneration.XMLMessageGeneration.XMLSubTypes;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -55,11 +56,18 @@ public class GeneratedData implements IServerData {
         @Override
         public void run() {
             DataGenerator dataGenerator = new DataGenerator();
-            BinaryMessage xmlMessage =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, (short) 0);
-            System.out.println("\n--------\nXML Message created");
+            BinaryMessage xmlMessage =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
+            System.out.println("\n--------\nRace XML Message created");
             System.out.println(Arrays.toString(xmlMessage.createMessage()));
             System.out.println("--------\n");
             bytes.add(xmlMessage.createMessage());
+
+
+            BinaryMessage boatsXml =  new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
+            System.out.println("\n--------\nBoats XML Message created");
+            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+            System.out.println("--------\n");
+            bytes.add(boatsXml.createMessage());
         }
     }
 

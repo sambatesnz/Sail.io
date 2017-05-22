@@ -98,43 +98,43 @@
         <!--Not sure that we need these-->
 
         <!--<Boat Type="RC" SourceID="121" ShapeID="0" HullNum="RG01" StoweName="PRO" ShortName="PRO"-->
-              <!--BoatName="Regardless">-->
-            <!--<GPSposition Z="6.840" Y="7.800" X="0.000" />-->
-            <!--<FlagPosition Z="0.000" Y="7.800" X="0.000" />-->
+        <!--BoatName="Regardless">-->
+        <!--<GPSposition Z="6.840" Y="7.800" X="0.000" />-->
+        <!--<FlagPosition Z="0.000" Y="7.800" X="0.000" />-->
         <!--</Boat>-->
 
         <!--<Boat Type="Mark" SourceID="122" ShapeID="1" HullNum="LC05" StoweName="CON" ShortName="Constellation"-->
-              <!--BoatName="Constellation">-->
-            <!--<GPSposition Z="5.334" Y="3.804" X="0.000" />-->
-            <!--<FlagPosition Z="0.000" Y="3.426" X="0.000" />-->
+        <!--BoatName="Constellation">-->
+        <!--<GPSposition Z="5.334" Y="3.804" X="0.000" />-->
+        <!--<FlagPosition Z="0.000" Y="3.426" X="0.000" />-->
         <!--</Boat>-->
 
         <!--<Boat Type="Mark" SourceID="123" ShapeID="1" HullNum="LC04" StoweName="MIS" ShortName="Mischief"-->
-              <!--BoatName="Mischief">-->
-            <!--<GPSposition Z="5.334" Y="3.804" X="0.000" />-->
-            <!--<FlagPosition Z="0.000" Y="3.426" X="0.000" />-->
+        <!--BoatName="Mischief">-->
+        <!--<GPSposition Z="5.334" Y="3.804" X="0.000" />-->
+        <!--<FlagPosition Z="0.000" Y="3.426" X="0.000" />-->
         <!--</Boat>-->
 
         <!--<Boat Type="Mark" SourceID="124" ShapeID="1" HullNum="LC03" ShortName="Atalanta" BoatName="Atalanta">-->
-            <!--<GPSposition Z="5.334" Y="3.804" X="0.000" />-->
-            <!--<FlagPosition Z="0.000" Y="3.426" X="0.000" />-->
+        <!--<GPSposition Z="5.334" Y="3.804" X="0.000" />-->
+        <!--<FlagPosition Z="0.000" Y="3.426" X="0.000" />-->
         <!--</Boat>-->
 
         <!--<Boat SourceID="125" ShapeID="1" StoweName="VOL" HullNum="LC01" ShortName="Volunteer"-->
-              <!--BoatName="Volunteer">-->
-            <!--<GPSposition Z="5.334" Y="3.804" X="0.000" />-->
-            <!--<FlagPosition Z="0.000" Y="3.426" X="0.000" />-->
+        <!--BoatName="Volunteer">-->
+        <!--<GPSposition Z="5.334" Y="3.804" X="0.000" />-->
+        <!--<FlagPosition Z="0.000" Y="3.426" X="0.000" />-->
         <!--</Boat>-->
 
         <!--<Boat Type="Mark" SourceID="126" ShapeID="1" HullNum="LC13" StoweName="MS2" ShortName="Defender"-->
-              <!--BoatName="Defender">-->
-            <!--<GPSposition Z="5.334" Y="3.804" X="0.000" />-->
-            <!--<FlagPosition Z="0.000" Y="3.426" X="0.000" />-->
+        <!--BoatName="Defender">-->
+        <!--<GPSposition Z="5.334" Y="3.804" X="0.000" />-->
+        <!--<FlagPosition Z="0.000" Y="3.426" X="0.000" />-->
         <!--</Boat>-->
 
         <!--<Boat Type="Mark" SourceID="128" ShapeID="1" HullNum="LC01" ShortName="Shamrock" BoatName="Shamrock">-->
-            <!--<GPSposition Z="5.334" Y="3.804" X="0.000" />-->
-            <!--<FlagPosition Z="0.000" Y="3.426" X="0.000" />-->
+        <!--<GPSposition Z="5.334" Y="3.804" X="0.000" />-->
+        <!--<FlagPosition Z="0.000" Y="3.426" X="0.000" />-->
         <!--</Boat>-->
 
 
