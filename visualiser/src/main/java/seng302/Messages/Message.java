@@ -1,6 +1,7 @@
 package seng302.Messages;
 
 import seng302.*;
+import seng302.Controllers.Coordinate;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -32,6 +33,7 @@ public class Message {
     private byte crc[];
     private Race race;
     private Map<Integer, Boat> boats;
+
 
     private static boolean boatsSet = false;
     private static boolean regattaSet = false;
@@ -134,6 +136,7 @@ public class Message {
                     boatsSet = true;
                     break;
                 case RACE:
+                    race.setParticipants(xmlParser.getRaceParticipants());
                     race.setBoundaries(xmlParser.getCourseLimits());
                     List<CompoundMark> compoundMarks = xmlParser.getCourseLayout();
                     race.setCompoundMarks(compoundMarks);

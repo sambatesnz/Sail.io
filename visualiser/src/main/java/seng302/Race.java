@@ -2,18 +2,13 @@ package seng302;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.paint.Color;
 import seng302.Controllers.Coordinate;
-import seng302.Messages.LocationMessage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.*;
 
-import static java.lang.Math.*;
-import static java.lang.System.currentTimeMillis;
 import static javafx.collections.FXCollections.observableArrayList;
 
 /**
@@ -32,14 +27,19 @@ public class Race {
     private List<Leg> legs;
     private List<Mark> boundaries;
     private List<Integer> courseOrder;
+    private List<Integer> paricipants;
     private double windHeading;
     private double windSpeed;
     private ObservableList<Boat> currentOrder;
-    private ObservableList<String> positionStrings;
+    private ObservableList<String> MarkStrings;
     private long expectedStartTime;
     private int raceStatus;
     public boolean finished = false;
+    private Mark mapCenter;
     private boolean raceReady = false;
+    private Boat centerOfScreen;
+    private Boat boatToFollow;
+    private List<Integer> participants;
 
     public boolean isRaceReady() {
         return raceReady;
@@ -72,14 +72,22 @@ public class Race {
         // Contestants are now retrieved from the xml message
         //boats = getContestants();
         finishedBoats = new ArrayList<>();
-        // TODO: Current order needs to be instantiated here. Get the list of boats in the race first. Then use the time to next gate in the race packet to decide race position
-        positionStrings = FXCollections.observableArrayList();
+        // TODO: Current order needs to be instantiated here. Get the list of boats in the race first. Then use the time to next gate in the race packet to decide race Mark
+        MarkStrings = FXCollections.observableArrayList();
 
 //        for (Boat boat : boats.values()) {
 //            boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
 //            boat.setX(legs.get(0).getStart().getX());
 //            boat.setY(legs.get(0).getStart().getY());
 //        }
+    }
+
+    public Regatta getRegatta() {
+        return regatta;
+    }
+
+    public Mark getMapCenter() {
+        return mapCenter;
     }
 
     public void setViewParams() {
@@ -89,8 +97,20 @@ public class Race {
         double maxLon = boundaries.stream().max(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
         Mark viewMin = new Mark(minLat, minLon);
         Mark viewMax = new Mark(maxLat, maxLon);
-        Coordinate.setViewMin(viewMin);
-        Coordinate.setViewMax(viewMax);
+
+        Coordinate.setOffset(new Mark(0, 0));
+        Coordinate.setDefaultCourseMin(viewMin);
+        Coordinate.setDefaultCourseMax(viewMax);
+        Coordinate.setViewMin(viewMin.getCopy());
+        Coordinate.setViewMax(viewMax.getCopy());
+
+        mapCenter = getCenter(viewMin.getCopy(), viewMax.getCopy());
+        centerOfScreen = new Boat(-1);
+        centerOfScreen.setMark(mapCenter);
+
+        boatToFollow = centerOfScreen;
+        Coordinate.setCenter(getCenter(viewMin.getCopy(), viewMax.getCopy()));
+        Coordinate.updateViewCoordinates();
     }
 
     /**
@@ -99,6 +119,29 @@ public class Race {
      */
     public void setFinishedBoats(List<Boat> finishedBoats) {
         this.finishedBoats = finishedBoats;
+    }
+
+    public Mark getCenter(Mark min, Mark max) {
+        Mark center = new Mark();   // changing from setting lat/long to x/y
+        center.setX((max.getX() + min.getX()) / 2);
+        center.setY((max.getY() + min.getY()) / 2);
+        center.setLatitude((max.getLatitude() + min.getLatitude()) / 2);
+        center.setLongitude((max.getLongitude() + min.getLongitude()) / 2);
+        return center;
+}
+
+    public Mark calculateOffset(){
+//      TODO: calculate offset based on mapCenter and boat (boat - mapCenter)
+        Mark offset = new Mark();
+
+        offset.setX(boatToFollow.getX() - mapCenter.getX());
+        offset.setY(boatToFollow.getY() - mapCenter.getY());
+
+        return offset;
+    }
+
+    public void resetZoom() {
+        boatToFollow = centerOfScreen;
     }
 
     /**
@@ -121,24 +164,24 @@ public class Race {
 
     /**
      * Takes the list of finished boats and creates a list of strings.
-     * @return positionStrings, an OberservableList of strings with in the order of finishers.
+     * @return MarkStrings, an OberservableList of strings with in the order of finishers.
      */
     public ObservableList<String> getPositionStrings() {
-        if (!positionStrings.isEmpty()) {
-            positionStrings.clear();
+        if (!MarkStrings.isEmpty()) {
+            MarkStrings.clear();
         }
-        positionStrings.add("Race Results");
+        MarkStrings.add("Race Results");
         int i = 1;
         for (Boat boat : finishedBoats) {
-            positionStrings.add(i + ": " + boat.getName());
+            MarkStrings.add(i + ": " + boat.getName());
             i++;
         }
-        return positionStrings;
+        return MarkStrings;
     }
 
     /**
-     * Getter for the observableList currentOrder. Gets the current position of the boats and adds it to the boat
-     * position attribute.
+     * Getter for the observableList currentOrder. Gets the current Mark of the boats and adds it to the boat
+     * Mark attribute.
      * @return currentOrder as an observable list.
      */
     public ObservableList<Boat> getCurrentOrder() {
@@ -401,7 +444,11 @@ public class Race {
     }
 
     public void setBoats(Map<Integer, Boat> boats) {
-        this.boats = boats;
+        Map<Integer, Boat> actualBoats = new HashMap<>();
+        for (Integer boat : participants) {
+            actualBoats.put(boat, boats.get(boat));
+        }
+        this.boats = actualBoats;
     }
 
     /**
@@ -416,7 +463,7 @@ public class Race {
 //  BELOW IS DEPRECATED. INFORMATION NO LONGER APPLIES AS NOT ALL DATA IS ACCESSIBLE FROM DATA STREAM.
 
 //    /**
-//     * Runs a portion of the race, updating boat positions and leg status
+//     * Runs a portion of the race, updating boat Marks and leg status
 //     */
 //    public void updateBoats() {
 //        double distanceMultiplier = 1;
@@ -474,7 +521,16 @@ public class Race {
         return boats;
     }
 
-//    public void setBoundaries(ArrayList<Mark> boundaries) {
+
+    public void setBoatToFollow(Boat markToFollow) {
+        this.boatToFollow = markToFollow;
+    }
+
+    public void setParticipants(List<Integer> participants) {
+        this.participants = participants;
+    }
+
+    //    public void setBoundaries(ArrayList<Mark> boundaries) {
 //        this.boundaries = boundaries;
 //    }
 }

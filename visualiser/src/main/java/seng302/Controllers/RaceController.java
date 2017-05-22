@@ -4,14 +4,17 @@ import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
@@ -21,6 +24,7 @@ import seng302.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -59,6 +63,8 @@ public class RaceController {
     @FXML
     private Button fpsBtn;
     @FXML
+    private Button resetViewButton;
+    @FXML
     private ListView<String> startersList;
 
     @FXML private CheckBox BoatNameCheckBox;
@@ -89,6 +95,7 @@ public class RaceController {
     private int frameCount = 0;
 
     private TimeZoneWrapper timeZoneWrapper;
+    private final ImageView selectedImage = new ImageView();
 
     /**
      * initializes the race display.
@@ -112,12 +119,30 @@ public class RaceController {
                 e.printStackTrace();
             }
         }
-        System.out.println(race.isRaceReady());
+//        System.out.println(race.isRaceReady());
+
+        selectedImage.setPreserveRatio(true);
+        Image image = drawMap(String.valueOf(race.getMapCenter().getLatitude()), String.valueOf(race.getMapCenter().getLongitude()));
+//        System.out.println(String.valueOf(race.getMapCenter().getLatitude()) + ", " + String.valueOf(race.getMapCenter().getLongitude()));
+        selectedImage.setImage(image);
+        group.getChildren().add(selectedImage);
+
+        viewAnchorPane.setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                if (resetViewButton.visibleProperty().get()) {
+                    if (event.getDeltaY() < 0) {
+                        Coordinate.decreaseZoom();
+                    }
+                    if (event.getDeltaY() > 0) {
+                        Coordinate.increaseZoom();
+                    }
+                }
+            }
+        });
 
         //Where should we put this?
         this.timeZoneWrapper = new TimeZoneWrapper("Atlantic/Bermuda");
-
-
         finishedListView = new ListView<>();
         boundary = getBoundary(race);
         group.getChildren().add(boundary);
@@ -148,6 +173,24 @@ public class RaceController {
             text.relocate(155,2);
             text.setTextAlignment(TextAlignment.RIGHT);
             boatSprite.setStroke(race.getBoats().get(i).getColour());
+            boatSprite.setId(Integer.toString(i));
+
+            boatSprite.onMousePressedProperty().setValue(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
+                    resetViewButton.setVisible(true);
+                }
+            });
+            // to give the user more space to click on the boat
+            tc.onMousePressedProperty().setValue(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
+                    resetViewButton.setVisible(true);
+                }
+            });
+
             stack.getChildren().add(boatSprite);
             stack.getChildren().add(text);
             stack.getChildren().add(wake);
@@ -226,6 +269,37 @@ public class RaceController {
         runRace();
     }
 
+    /**
+     * draws the google maps image onto the screen
+     */
+    private Image drawMap(String centerLat, String centerLon) {
+        String key = "AIzaSyAAmj8rsEdHfH4WbXbqB4ugZEKVBrvCyaw";
+        int zoom = 12;
+        int sizeH = 640;
+        int sizeV = 640;
+//        String imageUrl = String.format("https://maps.googleapis.com/maps/api/staticmap?" +
+//                "center=%s,%s&size=%dx%d&scale=2&zoom=%d&key=%s", centerLat, centerLon, sizeH, sizeV, zoom, key);
+
+        StringBuilder sb = new StringBuilder("visible=");
+        for (Mark cl: race.getBoundaries()) {
+            sb.append(cl.getLatitude());
+            sb.append(',');
+            sb.append(cl.getLongitude());
+            sb.append('|');
+        }
+        sb.setLength(sb.length() - 1);
+        String imageUrl = String.format("https://maps.googleapis.com/maps/api/staticmap?" +
+                "center=%s,%s&size=%dx%d&%s&scale=2&key=%s", centerLat, centerLon, sizeH, sizeV, sb.toString(), key);
+
+//        System.out.println("imageURL: " + imageUrl);
+//        System.out.println("ez: " + viewAnchorPane.getBackground());
+//        BackgroundImage backgroundImage = new BackgroundImage(new Image(imageUrl),
+//                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+//                BackgroundSize.DEFAULT);
+//        viewAnchorPane.setBackground(new Background(backgroundImage));
+        return new Image(imageUrl);
+    }
+
     private void RacersListBeforeStart(Race race) {
         startersList.setVisible(true);
         ObservableList<String> listOfStarters = FXCollections.observableArrayList();
@@ -276,6 +350,12 @@ public class RaceController {
     public void startButtonPressed() {
         countingDown = true;
         startButton.setVisible(false);
+    }
+
+    public void resetViewButtonPressed() {
+        race.resetZoom();
+        Coordinate.setZoom(0);
+        resetViewButton.setVisible(false);
     }
 
     /**
@@ -362,6 +442,8 @@ public class RaceController {
      * across the new window size.
      */
     private void updateView() {
+        Coordinate.setOffset(race.calculateOffset());
+        Coordinate.updateViewCoordinates();
 
         viewAnchorPane.setMinHeight(Coordinate.getWindowY());
         viewAnchorPane.setMaxHeight(Coordinate.getWindowY());
@@ -369,6 +451,14 @@ public class RaceController {
         viewAnchorPane.setMaxWidth(Coordinate.getWindowX());
 
         Coordinate.updateBorder();
+        viewAnchorPane.setMinHeight(Coordinate.getWindowY());
+        viewAnchorPane.setMaxHeight(Coordinate.getWindowY());
+        viewAnchorPane.setMinWidth(Coordinate.getWindowX());
+        viewAnchorPane.setMaxWidth(Coordinate.getWindowX());
+
+//        System.out.println(Coordinate.getRelativeY(140));
+//        selectedImage.setFitHeight(Coordinate.getRelativeY(640));
+
         for (int i = 0; i < boats.size(); i++) {
             double boatSpeed = race.getBoats().get(i).getSpeed();
             String speed = "";
@@ -387,7 +477,7 @@ public class RaceController {
 
             if(!raceStarted){
                 boats.get(i).getChildren().set(2, new Polyline());
-            }else {
+            } else {
                 boats.get(i).getChildren().set(2, newWake(boatSpeed));
             }
             boats.get(i).getChildren().get(2).setRotate(race.getBoats().get(i).getHeading()); //Sets rotation of wake
@@ -441,6 +531,9 @@ public class RaceController {
             fpsLabel.setLayoutX(Coordinate.getWindowX() - 90);
             fpsLabel.setLayoutY(60);
         }
+
+        resetViewButton.setLayoutX(14);
+        resetViewButton.setLayoutY(Coordinate.getWindowY() - 75);
 
         startButton.setLayoutX(14);
         startButton.setLayoutY(Coordinate.getWindowY() - 100);

@@ -21,6 +21,7 @@ public class XMLParser {
     private static final String YACHT = "Yacht";
     private static final String COURSE = "Course";
     private static final String COURSE_LIMIT = "CourseLimit";
+    private static final String PARTICIPANTS = "Participants";
     private static final String SEQ_ID = "SeqID";
     private static final String NAME = "Name";
     private static final String TARGETLAT = "TargetLat";
@@ -120,6 +121,31 @@ public class XMLParser {
     }
 
 
+    /**
+     * Gets the gate order defined from the xml
+     *
+     * @return Arraylist containing the gate order
+     */
+    public List<Integer> getRaceParticipants() {
+        NodeList nodes = xmlDoc.getElementsByTagName(PARTICIPANTS).item(0).getChildNodes();
+        ArrayList<Integer> participants = new ArrayList<>();
+        try {
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Node node = nodes.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    NamedNodeMap nnm = node.getAttributes();
+                    int sourceID = Integer.valueOf(nnm.getNamedItem(SOURCEID).getNodeValue());
+                    System.out.println(sourceID);
+                    participants.add(sourceID);
+                }
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        Collections.sort(participants);
+        return participants;
+    }
+
     public List<Integer> getCourseOrder() {
         NodeList nodes = xmlDoc.getElementsByTagName(COMPOUND_MARK_SEQUENCE).item(0).getChildNodes();
         List<Integer> courseOrder = new ArrayList<>();
@@ -137,7 +163,6 @@ public class XMLParser {
 //        courseOrder.sort(Comparator.comparingInt(CourseLimit::getSeqId));
         return courseOrder;
     }
-
 
     public List<CompoundMark> getCourseLayout() {
         NodeList nodes = xmlDoc.getElementsByTagName(COURSE).item(0).getChildNodes();

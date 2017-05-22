@@ -10,6 +10,7 @@ public class Mark {
     private double x;
     private double y;
 
+    public Mark(){}
     /**
      * Generates X and Y positions on meters based on the Latitude and Longitude
      * @param longitude longitude of the position
@@ -22,6 +23,14 @@ public class Mark {
         this.y = convertToY(latitude);
     }
 
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     /**
      * Converts a longitude to x
      * @param lon Longitude to convert
@@ -29,6 +38,10 @@ public class Mark {
      */
     private double convertToX(double lon){
         return lon * EARTH_CIRCUMFERENCE / 360;
+    }
+
+    public Mark getCopy(){
+        return new Mark(this.latitude, this.longitude);
     }
 
     /**
@@ -71,4 +84,13 @@ public class Mark {
     public double getY() {
         return y;
     }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
 }

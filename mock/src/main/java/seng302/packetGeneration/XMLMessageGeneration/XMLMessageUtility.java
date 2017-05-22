@@ -8,23 +8,29 @@ import java.util.Arrays;
  * Utility Class for storing common functions
  * Used to generate packets/byte[array]
  */
-public final class XMLMessageUtility {
 
-    static int MESSAGE_VERSION_POS = 0;
-    static int MESSAGE_VERSION_SIZE = 1;
-    static int ACK_NUM_POS = 1;
-    static int ACK_NUM_SIZE = 2;
-    static int TIME_STAMP_POS = 3;
-    static int TIME_STAMP_SIZE = 6;
-    static int XML_MESSAGE_SUB_TYPE_POS = 9;
-    static int XML_MESSAGE_SUB_TYPE_SIZE = 1;
-    static int SEQUENCE_NUMBER_POS = 10;
-    static int SEQUENCE_NUMBER_SIZE = 2;
-    static int XML_MESSAGE_LENGTH_POS = 12;
-    static int XML_MESSAGE_LENGTH_SIZE = 2;
-    static int XML_MESSAGE_POS = 14;
-    static int XML_MESSAGE_SIZE;
+public enum XMLMessageUtility{
+    MESSAGE_VERSION(0, 1),
+    ACK_NUM(1, 2),
+    TIME_STAMP(3, 6),
+    XML_MESSAGE_SUB_TYPE(9, 1),
+    SEQUENCE_NUMBER(10, 2),
+    XML_MESSAGE_LENGTH(12, 2),
+    XML_MESSAGE(14, -1);
 
-    private XMLMessageUtility() {
+    private int index;
+    private int size;
+
+    XMLMessageUtility(int index, int size){
+        this.index= index;
+        this.size = size;
+    }
+
+    public int getIndex(){
+        return index;
+    }
+
+    public int getSize() {
+        return size;
     }
 }
