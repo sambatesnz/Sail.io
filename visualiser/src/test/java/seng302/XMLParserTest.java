@@ -60,4 +60,10 @@ public class XMLParserTest {
         Regatta reg = regattaParser.getRegatta();
         Assert.assertTrue(reg.getUtcOffset() == 12);
     }
+
+    @Test
+    public void checkParticipants() throws IOException {
+        List<Integer> participants = raceParser.getRaceParticipants();
+        Assert.assertTrue(participants.size() == 2);
+    }
 }

@@ -27,6 +27,7 @@ public class Race {
     private List<Leg> legs;
     private List<Mark> boundaries;
     private List<Integer> courseOrder;
+    private List<Integer> paricipants;
     private double windHeading;
     private double windSpeed;
     private ObservableList<Boat> currentOrder;
@@ -38,6 +39,7 @@ public class Race {
     private boolean raceReady = false;
     private Boat centerOfScreen;
     private Boat boatToFollow;
+    private List<Integer> participants;
 
     public boolean isRaceReady() {
         return raceReady;
@@ -426,7 +428,11 @@ public class Race {
     }
 
     public void setBoats(Map<Integer, Boat> boats) {
-        this.boats = boats;
+        Map<Integer, Boat> actualBoats = new HashMap<>();
+        for (Integer boat : participants) {
+            actualBoats.put(boat, boats.get(boat));
+        }
+        this.boats = actualBoats;
     }
 
     /**
@@ -502,6 +508,10 @@ public class Race {
 
     public void setBoatToFollow(Boat markToFollow) {
         this.boatToFollow = markToFollow;
+    }
+
+    public void setParticipants(List<Integer> participants) {
+        this.participants = participants;
     }
 
     //    public void setBoundaries(ArrayList<Mark> boundaries) {

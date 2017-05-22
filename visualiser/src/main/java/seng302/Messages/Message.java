@@ -34,6 +34,7 @@ public class Message {
     private Race race;
     private Map<Integer, Boat> boats;
 
+
     private static boolean boatsSet = false;
     private static boolean regattaSet = false;
     private static boolean raceSet = false;
@@ -151,6 +152,7 @@ public class Message {
                     boatsSet = true;
                     break;
                 case RACE:
+                    race.setParticipants(xmlParser.getRaceParticipants());
                     race.setBoundaries(xmlParser.getCourseLimits());
                     List<CompoundMark> compoundMarks = xmlParser.getCourseLayout();
                     race.setCompoundMarks(compoundMarks);
