@@ -2,7 +2,10 @@ package seng302.Messages;
 
 
 import seng302.Boat;
+import seng302.Race;
+
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class that holds and can update the details of boats within a yacht race,
@@ -10,13 +13,13 @@ import java.util.HashMap;
  */
 
 public class BoatStatusMessage {
-    private long sourceID;
+    private int sourceID;
     private int status;
     private int legNumber;
     private long estTimeToNextMark;
     private long estTimeToFinish;
 
-    private HashMap<Integer, Boat> boatDict;;
+    private Map<Integer, Boat> boatDict;
 
     /**
      * Constructor for the class. Takes the data extracted from the packet and prepares it
@@ -28,26 +31,29 @@ public class BoatStatusMessage {
      * @param estTimeToFinish The estimated time for the boat to finish (in ms)
      */
     public BoatStatusMessage(long sourceID, int status, int legNumber,
-                             long estTimeToNextMark, long estTimeToFinish) {
-        this.sourceID = sourceID;
+                             long estTimeToNextMark, long estTimeToFinish, Race race) {
+        this.sourceID = (int)sourceID;
         this.status = status;
         this.legNumber = legNumber;
         this.estTimeToNextMark = estTimeToNextMark;
         this.estTimeToFinish = estTimeToFinish;
+        this.boatDict = race.boats;
     }
 
-//    /**
-//     * Sets the following details of the boat based on the received information
-//     * from the race status packet:
-//     * - Status
-//     * - Leg number
-//     * - Estimated time to next mark
-//     * - Estimated time to finish
-//     */
-//    public void setBoatDetails() {
-//        boatDict.get(sourceID).setStatus(status);
-//        boatDict.get(sourceID).setCurrentLegIndex(legNumber);
-//        boatDict.get(sourceID).setTimeToNextMark(estTimeToNextMark);
-//        boatDict.get(sourceID).setTimeToFinish(estTimeToFinish);
-//    }
+    /**
+     * Sets the following details of the boat based on the received information
+     * from the race status packet:
+     * - Status
+     * - Leg number
+     * - Estimated time to next mark
+     * - Estimated time to finish
+     */
+    public void setBoatDetails() {
+        if (boatDict.containsKey(sourceID)) {
+            boatDict.get(sourceID).setStatus(status);
+            boatDict.get(sourceID).setCurrentLegIndex(legNumber);
+            boatDict.get(sourceID).setTimeToNextMark(estTimeToNextMark);
+            boatDict.get(sourceID).setTimeToFinish(estTimeToFinish);
+        }
+    }
 }
