@@ -30,6 +30,7 @@ public class Race {
     private ObservableList<String> positionStrings;
     public boolean finished = false;
     private Position center;
+    private Boat boatToFollow;
 
     /**
      * Constructor for the race class.
@@ -41,6 +42,7 @@ public class Race {
         finishedBoats = new ArrayList<>();
         currentOrder = observableArrayList(boats);
         positionStrings = FXCollections.observableArrayList();
+        boatToFollow = boats.get(0);
         Position courseMin = new Position(32.275, -64.855);
         Position courseMax = new Position(32.32, -64.831);
         Coordinate.setOffset(new Position(0, 0));
@@ -234,7 +236,7 @@ public class Race {
     public void updateBoats() {
         double distanceMultiplier = 1;
         double movementMultiplier = 1;
-        Coordinate.setOffset(calculateOffset(boats.get(0)));
+        Coordinate.setOffset(calculateOffset(boatToFollow));
         Coordinate.updateViewCoordinates();
         for (Boat boat : boats) {
             if (!finishedBoats.contains(boat)) {
@@ -278,6 +280,10 @@ public class Race {
                 }
             }
         }
+    }
+
+    public void setBoatToFollow(Boat boatToFollow) {
+        this.boatToFollow = boatToFollow;
     }
 
     public List<Position> getBoundaries() {

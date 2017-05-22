@@ -14,17 +14,20 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainBorderPane" maxHeight="600.0" maxWidth="800.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng302.Controllers.RaceController">
+<BorderPane fx:id="mainBorderPane" maxHeight="770.0" maxWidth="1208.0" minHeight="600.0" minWidth="800.0" prefHeight="728.0" prefWidth="1206.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng302.Controllers.RaceController">
     <left>
         <AnchorPane maxWidth="248" minWidth="248" prefWidth="248">
             <children>
 
-                <TableView fx:id="positionTable" layoutY="61.0" maxWidth="248" minWidth="248" prefHeight="539.0" prefWidth="248">
+                <TableView fx:id="positionTable" layoutY="-1.0" maxWidth="248" minWidth="248" prefHeight="728.0" prefWidth="248">
                     <columns>
                         <TableColumn fx:id="positionCol" maxWidth="31.0" prefWidth="20.0" sortable="false" />
                         <TableColumn fx:id="nameCol" maxWidth="200.0" prefWidth="150.0" sortable="false" text="Name" />
-                        <TableColumn fx:id="speedCol" maxWidth="200.0" prefWidth="77.0" sortable="false" text="Speed(m/s)" />
+                        <TableColumn fx:id="speedCol" maxWidth="200.0" prefWidth="78.0" sortable="false" text="Speed(m/s)" />
                     </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
                 </TableView>
             </children>
         </AnchorPane>

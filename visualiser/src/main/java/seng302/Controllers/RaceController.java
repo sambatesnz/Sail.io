@@ -4,11 +4,14 @@ import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -106,6 +109,18 @@ public class RaceController {
 
         race = new Race();
 
+        viewAnchorPane.setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                if (event.getDeltaY() < 0){
+                    Coordinate.decreaseZoom();
+                }
+                if(event.getDeltaY() > 0){
+                    Coordinate.increaseZoom();
+                }
+            }
+        });
+
         //Where should we put this?
         this.timeZoneWrapper = new TimeZoneWrapper("Atlantic/Bermuda");
 
@@ -140,6 +155,22 @@ public class RaceController {
             text.relocate(155,2);
             text.setTextAlignment(TextAlignment.RIGHT);
             boatSprite.setStroke(race.getBoats().get(i).getColour());
+            boatSprite.setId(Integer.toString(i));
+
+            boatSprite.onMousePressedProperty().setValue(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
+                }
+            });
+            // to give the user more space to click on the boat
+            tc.onMousePressedProperty().setValue(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
+                }
+            });
+
             stack.getChildren().add(boatSprite);
             stack.getChildren().add(text);
             stack.getChildren().add(wake);
