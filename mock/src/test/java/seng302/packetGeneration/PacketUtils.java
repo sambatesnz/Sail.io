@@ -50,8 +50,14 @@ public final class PacketUtils {
         return ByteBuffer.wrap(actualMessage).order(ByteOrder.LITTLE_ENDIAN).getLong();
     }
 
+    /**
+     * Converts a lat or long into a a an integer
+     * @param location that you wish to convert
+     * @return four bit int
+     */
     public static double locationToInt(int location){
         return ((double)location * 180 )/ 2147483648.0;
     }
+
 
 }

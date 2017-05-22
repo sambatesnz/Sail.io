@@ -29,7 +29,7 @@ public abstract class BinaryMessage {
         byte[] message = new byte[header.length + messageBody.length + CRC_SIZE];
         System.arraycopy(header, 0, message, 0, header.length);
         System.arraycopy(messageBody, 0, message, header.length, messageBody.length);
-        System.arraycopy(crcSection, 0, message, header.length, crcSection.length);
+        System.arraycopy(crcSection, 0, message, header.length + messageBody.length, crcSection.length);
 
         return message;
     }

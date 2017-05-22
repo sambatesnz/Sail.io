@@ -5,6 +5,7 @@ import seng302.MessageType;
 import seng302.packetGeneration.BinaryMessage;
 import seng302.packetGeneration.PacketGenerationUtils;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public class RaceStatusMessage extends BinaryMessage{
         this.versionNumber = PacketGenerationUtils.intToOneByte(CURRENT_VERSION_NUMBER);
         this.currentTime = PacketGenerationUtils.longToSixBytes(currentTime);
         this.raceID = PacketGenerationUtils.intToFourBytes(raceID);
-        this.raceStatus = PacketGenerationUtils.intToFourBytes(raceStatus);
+        this.raceStatus = PacketGenerationUtils.intToOneByte(raceStatus);
         this.startTime = PacketGenerationUtils.longToSixBytes(startTime);
         this.windDirection = PacketGenerationUtils.shortToTwoBytes(windDirection);
         this.windSpeed = PacketGenerationUtils.shortToTwoBytes(windSpeed);
@@ -71,7 +72,7 @@ public class RaceStatusMessage extends BinaryMessage{
         this.versionNumber = PacketGenerationUtils.intToOneByte(versionNumber);
         this.currentTime = PacketGenerationUtils.longToSixBytes(currentTime);
         this.raceID = PacketGenerationUtils.intToFourBytes(raceID);
-        this.raceStatus = PacketGenerationUtils.intToFourBytes(raceStatus);
+        this.raceStatus = PacketGenerationUtils.intToOneByte(raceStatus);
         this.startTime = PacketGenerationUtils.longToSixBytes(startTime);
         this.windDirection = PacketGenerationUtils.shortToTwoBytes(windDirection);
         this.windSpeed = PacketGenerationUtils.shortToTwoBytes(windSpeed);
@@ -86,18 +87,18 @@ public class RaceStatusMessage extends BinaryMessage{
      */
     @Override
     public byte[] getBody() {
-        byte[] output = new byte[24 + numberOfBoatsInt * 20];
+        ByteBuffer body = PacketGenerationUtils.LEBuffer(24 + numberOfBoatsInt * 20);
         //Copy specific bytes into here
-        System.arraycopy(versionNumber, 0, output, RaceStatusUtility.MESSAGE_VERSION.getIndex(), RaceStatusUtility.MESSAGE_VERSION.getSize());
-        System.arraycopy(currentTime, 0, output, RaceStatusUtility.CURRENT_TIME.getIndex(), RaceStatusUtility.CURRENT_TIME.getSize());
-        System.arraycopy(raceID, 0, output, RaceStatusUtility.RACE_ID.getIndex(), RaceStatusUtility.RACE_ID.getSize());
-        System.arraycopy(raceStatus, 0, output, RaceStatusUtility.RACE_STATUS.getIndex(), RaceStatusUtility.RACE_STATUS.getSize());
-        System.arraycopy(startTime, 0, output, RaceStatusUtility.EXPECTED_START_TIME.getIndex(), RaceStatusUtility.EXPECTED_START_TIME.getSize());
-        System.arraycopy(windDirection, 0, output, RaceStatusUtility.WIND_DIRECTION.getIndex(), RaceStatusUtility.WIND_DIRECTION.getSize());
-        System.arraycopy(windSpeed, 0, output, RaceStatusUtility.WIND_SPEED.getIndex(), RaceStatusUtility.WIND_SPEED.getSize());
-        System.arraycopy(numberOfBoatsByte, 0, output, RaceStatusUtility.NUM_BOATS.getIndex(), RaceStatusUtility.NUM_BOATS.getSize());
-        System.arraycopy(raceType, 0, output, RaceStatusUtility.RACE_TYPE.getIndex(), RaceStatusUtility.RACE_TYPE.getSize());
-        return output;
+        body.put(versionNumber);
+        body.put(currentTime);
+        body.put(raceID);
+        body.put(raceStatus);
+        body.put(startTime);
+        body.put(windDirection);
+        body.put(windSpeed);
+        body.put(numberOfBoatsByte);
+        body.put(raceType);
+        return body.array();
     }
 
 

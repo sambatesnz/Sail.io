@@ -3,9 +3,8 @@ package seng302.packetGeneration;
 import org.junit.Test;
 import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.packetGeneration.BoatLocationGeneration.BoatLocationUtility;
-import seng302.packetGeneration.XMLMessageGeneration.XMLMessage;
-
 import java.util.Random;
+import java.util.zip.CRC32;
 
 import static org.junit.Assert.*;
 
@@ -65,8 +64,11 @@ public class BinaryMessageTest {
         byte[] messageBody = message.createMessage();
         int sourceIndex = headerSize + boatLocationSize;
         int actualCrc = PacketUtils.getIntFromByteArray(messageBody, sourceIndex, actualMessage, CRCSize);
-        assertEquals(-1, actualCrc); //Dont know how to validate crc yet
-
+        long longCRC = Integer.toUnsignedLong(actualCrc);
+        CRC32 crc = new CRC32();
+        crc.update(messageBody, 0, messageBody.length - CRCSize);
+        long foundCRC = crc.getValue();
+        assertEquals(foundCRC, longCRC);
     }
 
     /**
