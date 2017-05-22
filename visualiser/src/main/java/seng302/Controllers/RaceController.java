@@ -9,12 +9,16 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -26,6 +30,8 @@ import seng302.*;
 import javax.security.auth.callback.Callback;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -63,6 +69,8 @@ public class RaceController {
     private Button fpsBtn;
     @FXML
     private ListView<String> startersList;
+    @FXML
+    private LineChart sparklinePlaceholderChart;
 
     @FXML private CheckBox BoatNameCheckBox;
     @FXML private CheckBox BoatSpeedCheckBox;
@@ -94,12 +102,25 @@ public class RaceController {
 
     private TimeZoneWrapper timeZoneWrapper;
 
+    // Sparkline variables
+    private NumberAxis xAxis;
+    private NumberAxis yAxis;
+    private ObservableList<XYChart.Series<Number, Number>> seriesList;
+    private LineChart <Number, Number> sparklinesChart;
+    private Integer secondCounter = 0;
+
+    private Timer sparklineTimer;
+
+
+
     /**
      * initializes the race display.
      */
     @FXML
     public void initialize() {
         race = new Race();
+
+        sparklinePlaceholderChart.setVisible(true);
 
         Thread serverThread = new Thread(() -> {
             StreamClient client = new StreamClient(race);
@@ -290,6 +311,61 @@ public class RaceController {
         return wake;
     }
 
+    // TODO: refactor FXML to allow the chart to be displayed somewhere in there.
+
+    /**
+     * Creates the chart that gets displayed in the sidebar. Created at first with no data.
+     * Creates a timer that calls the update sparklines every second, allowing the graph to continue to update
+     */
+    private void createChart() {
+        xAxis = new NumberAxis();
+        yAxis = new NumberAxis();
+        sparklinesChart = new LineChart<>(xAxis, yAxis);
+
+        // Hide the Y axis
+        sparklinesChart.getYAxis().setTickLabelsVisible(false);
+        sparklinesChart.getYAxis().setVisible(false);
+
+        // Hide the X axis
+        sparklinesChart.getXAxis().setTickLabelsVisible(false);
+        sparklinesChart.getXAxis().setVisible(false);
+
+        // May need to find way to hide background colour(s) or grid(s)
+
+        List<XYChart.Series<Number, Number>> series = new ArrayList<>();
+        for (Boat boat :race.getBoats()) {
+            XYChart.Series newSeries = new XYChart.Series();
+            newSeries.setName(boat.getName());
+            seriesList.add(newSeries);
+        }
+
+        seriesList = FXCollections.observableList(series);
+
+        sparklinesChart.setData(seriesList);
+
+        sparklineTimer = new Timer();
+        sparklineTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                updateSparkLineChart();
+            }
+        }, 2, 1000);
+    }
+
+    /**
+     * Called by a timer, updates the data displayed in the sparkline chart in the sidebar.
+     */
+    private void updateSparkLineChart() {
+        // Data should be of the whole class, but will work here for now during development
+        for (int i = 0; i < race.getBoats().size(); i++) {
+            // update the chart.
+            XYChart.Series series = seriesList.get(i);
+            series.getData().add(secondCounter, race.getBoats().get(i).getPosition());
+        }
+        secondCounter++;
+    }
+
+
     /**
      * Generates the boundary to be displayed around the race course
      * @param race the race being run
@@ -403,6 +479,7 @@ public class RaceController {
     private void updateView() {
 
         positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
+        positionTable.setPrefHeight(Coordinate.getWindowY() - 239);
 
         viewAnchorPane.setMinHeight(Coordinate.getWindowY());
         viewAnchorPane.setMaxHeight(Coordinate.getWindowY());
@@ -571,8 +648,8 @@ public class RaceController {
     private void runRace() {
         updateView();
 
-        long start = race.getExpectedStartTime();
-        long startTime = currentTimeMillis() - start;
+        long startTime = race.getExpectedStartTime();
+        long timeToStart = startTime - currentTimeMillis();
         // If the race hasn't started yet
         if (startTime < 0) {
             raceStarted = false;

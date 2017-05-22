@@ -2,6 +2,8 @@ package seng302;
 
 import javafx.scene.paint.Color;
 
+import java.util.Map;
+
 /**
  * Represent a boat competing in yacht race
  */
