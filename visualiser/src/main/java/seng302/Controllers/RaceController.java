@@ -62,6 +62,8 @@ public class RaceController {
     @FXML
     private Button fpsBtn;
     @FXML
+    private Button resetViewButton;
+    @FXML
     private ListView<String> startersList;
 
     @FXML private CheckBox BoatNameCheckBox;
@@ -120,11 +122,13 @@ public class RaceController {
         viewAnchorPane.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
             public void handle(ScrollEvent event) {
-                if (event.getDeltaY() < 0){
-                    Coordinate.decreaseZoom();
-                }
-                if(event.getDeltaY() > 0){
-                    Coordinate.increaseZoom();
+                if (resetViewButton.visibleProperty().get()) {
+                    if (event.getDeltaY() < 0) {
+                        Coordinate.decreaseZoom();
+                    }
+                    if (event.getDeltaY() > 0) {
+                        Coordinate.increaseZoom();
+                    }
                 }
             }
         });
@@ -169,6 +173,7 @@ public class RaceController {
                 @Override
                 public void handle(MouseEvent event) {
                     race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
+                    resetViewButton.setVisible(true);
                 }
             });
             // to give the user more space to click on the boat
@@ -176,6 +181,7 @@ public class RaceController {
                 @Override
                 public void handle(MouseEvent event) {
                     race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
+                    resetViewButton.setVisible(true);
                 }
             });
 
@@ -307,6 +313,12 @@ public class RaceController {
     public void startButtonPressed() {
         countingDown = true;
         startButton.setVisible(false);
+    }
+
+    public void resetViewButtonPressed() {
+        race.resetZoom();
+        Coordinate.setZoom(0);
+        resetViewButton.setVisible(false);
     }
 
     /**
@@ -477,6 +489,9 @@ public class RaceController {
             fpsLabel.setLayoutX(Coordinate.getWindowX() - 90);
             fpsLabel.setLayoutY(60);
         }
+
+        resetViewButton.setLayoutX(14);
+        resetViewButton.setLayoutY(Coordinate.getWindowY() - 75);
 
         startButton.setLayoutX(14);
         startButton.setLayoutY(Coordinate.getWindowY() - 100);

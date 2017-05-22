@@ -103,6 +103,10 @@ public final class  Coordinate {
                 (viewMax.getX() - viewMin.getX()) + BorderX;
     }
 
+    public static void setZoom(double zoom) {
+        Coordinate.zoom = zoom;
+    }
+
     public static void setCenter(Mark center) {
         Coordinate.center = center;
     }

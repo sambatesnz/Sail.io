@@ -128,6 +128,11 @@ public class Race {
 
         return offset;
     }
+
+    public void resetZoom() {
+        boatToFollow = centerOfScreen;
+    }
+
     /**
      * Setter for current order, mainly to allow for testing.
      * @param currentOrder sets the current order of boats
