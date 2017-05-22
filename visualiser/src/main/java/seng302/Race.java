@@ -35,7 +35,7 @@ public class Race {
     private long expectedStartTime;
     private int raceStatus;
     public boolean finished = false;
-    private Mark center;
+    private Mark mapCenter;
     private boolean raceReady = false;
     private Boat centerOfScreen;
     private Boat boatToFollow;
@@ -82,6 +82,14 @@ public class Race {
 //        }
     }
 
+    public Regatta getRegatta() {
+        return regatta;
+    }
+
+    public Mark getMapCenter() {
+        return mapCenter;
+    }
+
     public void setViewParams() {
         double minLat = boundaries.stream().min(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
         double minLon = boundaries.stream().min(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
@@ -96,9 +104,10 @@ public class Race {
         Coordinate.setViewMin(viewMin.getCopy());
         Coordinate.setViewMax(viewMax.getCopy());
 
-        center = getCenter(viewMin.getCopy(), viewMax.getCopy());
+        mapCenter = getCenter(viewMin.getCopy(), viewMax.getCopy());
         centerOfScreen = new Boat(-1);
-        centerOfScreen.setMark(center);
+        centerOfScreen.setMark(mapCenter);
+
         boatToFollow = centerOfScreen;
         Coordinate.setCenter(getCenter(viewMin.getCopy(), viewMax.getCopy()));
         Coordinate.updateViewCoordinates();
@@ -116,15 +125,17 @@ public class Race {
         Mark center = new Mark();   // changing from setting lat/long to x/y
         center.setX((max.getX() + min.getX()) / 2);
         center.setY((max.getY() + min.getY()) / 2);
+        center.setLatitude((max.getLatitude() + min.getLatitude()) / 2);
+        center.setLongitude((max.getLongitude() + min.getLongitude()) / 2);
         return center;
 }
 
     public Mark calculateOffset(){
-//      TODO: calculate offset based on center and boat (boat - center)
+//      TODO: calculate offset based on mapCenter and boat (boat - mapCenter)
         Mark offset = new Mark();
 
-        offset.setX(boatToFollow.getX() - center.getX());
-        offset.setY(boatToFollow.getY() - center.getY());
+        offset.setX(boatToFollow.getX() - mapCenter.getX());
+        offset.setY(boatToFollow.getY() - mapCenter.getY());
 
         return offset;
     }

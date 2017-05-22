@@ -36,18 +36,18 @@ public class BoatStatusMessage {
         this.estTimeToFinish = estTimeToFinish;
     }
 
-    /**
-     * Sets the following details of the boat based on the received information
-     * from the race status packet:
-     * - Status
-     * - Leg number
-     * - Estimated time to next mark
-     * - Estimated time to finish
-     */
-    public void setBoatDetails() {
-        boatDict.get(sourceID).setStatus(status);
-        boatDict.get(sourceID).setCurrentLegIndex(legNumber);
-        boatDict.get(sourceID).setTimeToNextMark(estTimeToNextMark);
-        boatDict.get(sourceID).setTimeToFinish(estTimeToFinish);
-    }
+//    /**
+//     * Sets the following details of the boat based on the received information
+//     * from the race status packet:
+//     * - Status
+//     * - Leg number
+//     * - Estimated time to next mark
+//     * - Estimated time to finish
+//     */
+//    public void setBoatDetails() {
+//        boatDict.get(sourceID).setStatus(status);
+//        boatDict.get(sourceID).setCurrentLegIndex(legNumber);
+//        boatDict.get(sourceID).setTimeToNextMark(estTimeToNextMark);
+//        boatDict.get(sourceID).setTimeToFinish(estTimeToFinish);
+//    }
 }

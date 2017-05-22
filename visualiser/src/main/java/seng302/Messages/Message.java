@@ -133,8 +133,6 @@ public class Message {
                 movingBoat.setMark(new Mark(location.getLatitude(), location.getLongitude()));
                 movingBoat.setSpeed(location.getSpeedOverGround());
                 movingBoat.setHeading(location.getHeading());
-                Coordinate.setOffset(race.calculateOffset());
-                Coordinate.updateViewCoordinates();
             }
         }
     }
