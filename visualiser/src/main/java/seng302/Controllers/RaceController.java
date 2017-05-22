@@ -170,6 +170,7 @@ public class RaceController {
         // set the data types for the table columns.
         positionCol.setCellValueFactory(new PropertyValueFactory<>("position"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+
         //Initialises compoundMarks
         for (CompoundMark lm : race.getCompoundMarks()) {
             for (Mark pos : lm.getMarks()){
@@ -382,7 +383,7 @@ public class RaceController {
             boats.get(i).setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
             boats.get(i).setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
             boats.get(i).getChildren().get(0).setRotate(race.getBoats().get(i).getHeading()); //Sets rotation of boat
-            System.out.println(race.getBoats().get(i).getHeading());
+//            System.out.println(race.getBoats().get(i).getHeading());
 
             if(!raceStarted){
                 boats.get(i).getChildren().set(2, new Polyline());
@@ -405,8 +406,8 @@ public class RaceController {
                 paths.get(i).getElements().set(paths.get(i).getElements().size() - 1, new LineTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
             }
 
-            ((MoveTo) paths.get(i).getElements().get(0)).setX(Coordinate.getRelativeX(compoundMarks.get(0).getX()));
-            ((MoveTo) paths.get(i).getElements().get(0)).setY(Coordinate.getRelativeY(compoundMarks.get(0).getY()));
+            ((MoveTo) paths.get(i).getElements().get(0)).setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
+            ((MoveTo) paths.get(i).getElements().get(0)).setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
             for (int j = 1; j < paths.get(i).getElements().size(); j++) {
                 ((LineTo) paths.get(i).getElements().get(j)).setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
                 ((LineTo) paths.get(i).getElements().get(j)).setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));

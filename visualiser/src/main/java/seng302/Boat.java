@@ -6,13 +6,11 @@ import javafx.scene.paint.Color;
  * Represent a boat competing in yacht race
  */
 public class Boat {
-    private Mark mark = new Mark(0,0);
+    private Mark mark;
     private String boatName;
     private double currentLegDistance;
     private int currentLegIndex;
     private double heading = 0;
-    private double x;
-    private double y;
     private Color colour;
     private Long raceTime;
     private int position;
@@ -104,21 +102,6 @@ public class Boat {
      */
     public void setHeading(double heading) {
         this.heading = heading;
-    }
-
-
-    /**
-     * Set the current x. coordinate
-     */
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    /**
-     * Set the current y coordinate
-     */
-    public void setY(double y) {
-        this.y = y;
     }
 
     /**
