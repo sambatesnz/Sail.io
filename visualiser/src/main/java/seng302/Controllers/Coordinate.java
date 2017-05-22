@@ -5,7 +5,7 @@ import javafx.geometry.Pos;
 
 /**
  * Holds information relating to the coordinates within the window.
- * Contains methods that get relative positions so that items are scaled when the window is resized.
+ * Contains methods that get relative Marks so that items are scaled when the window is resized.
  * Created by Matt Simpson on 20/03/2017.
  */
 public final class  Coordinate {
@@ -24,7 +24,7 @@ public final class  Coordinate {
     private static Mark viewMin;
     private static Mark viewMax;
     private static double zoom = 0;
-    private static Mark offset = new Position(0, 0);
+    private static Mark offset = new Mark(0, 0);
     private static Mark defaultCourseMin;
     private static Mark defaultCourseMax;
     private static Mark center;
@@ -103,27 +103,27 @@ public final class  Coordinate {
                 (viewMax.getX() - viewMin.getX()) + BorderX;
     }
 
-    public static void setCenter(Position center) {
+    public static void setCenter(Mark center) {
         Coordinate.center = center;
     }
 
-    public static void setOffset(Position offset) {
+    public static void setOffset(Mark offset) {
         Coordinate.offset = offset;
     }
 
-    public static void setViewMin(Position viewMin) {
+    public static void setViewMin(Mark viewMin) {
         Coordinate.viewMin = viewMin;
     }
 
-    public static void setViewMax(Position viewMax) {
+    public static void setViewMax(Mark viewMax) {
         Coordinate.viewMax = viewMax;
     }
 
     /**
-     * Set the coordinates of the maximum position on the map to be displayed
+     * Set the coordinates of the maximum Mark on the map to be displayed
      * @param max A maximum coordinate to be viewed
      */
-    public static void setDefaultCourseMax(Position max) {
+    public static void setDefaultCourseMax(Mark max) {
         defaultCourseMax = max;
     }
 

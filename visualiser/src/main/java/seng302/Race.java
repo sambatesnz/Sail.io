@@ -2,18 +2,13 @@ package seng302;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.paint.Color;
 import seng302.Controllers.Coordinate;
-import seng302.Messages.LocationMessage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.*;
 
-import static java.lang.Math.*;
-import static java.lang.System.currentTimeMillis;
 import static javafx.collections.FXCollections.observableArrayList;
 
 /**
@@ -35,12 +30,14 @@ public class Race {
     private double windHeading;
     private double windSpeed;
     private ObservableList<Boat> currentOrder;
-    private ObservableList<String> positionStrings;
+    private ObservableList<String> MarkStrings;
     private long expectedStartTime;
     private int raceStatus;
     public boolean finished = false;
     private Mark center;
     private boolean raceReady = false;
+    private Boat centerOfScreen;
+    private Boat boatToFollow;
 
     public boolean isRaceReady() {
         return raceReady;
@@ -73,8 +70,8 @@ public class Race {
         // Contestants are now retrieved from the xml message
         //boats = getContestants();
         finishedBoats = new ArrayList<>();
-        // TODO: Current order needs to be instantiated here. Get the list of boats in the race first. Then use the time to next gate in the race packet to decide race position
-        positionStrings = FXCollections.observableArrayList();
+        // TODO: Current order needs to be instantiated here. Get the list of boats in the race first. Then use the time to next gate in the race packet to decide race Mark
+        MarkStrings = FXCollections.observableArrayList();
 
 //        for (Boat boat : boats.values()) {
 //            boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
@@ -91,14 +88,17 @@ public class Race {
         Mark viewMin = new Mark(minLat, minLon);
         Mark viewMax = new Mark(maxLat, maxLon);
 
-        Coordinate.setOffset(new Position(0, 0));
+        Coordinate.setOffset(new Mark(0, 0));
         Coordinate.setDefaultCourseMin(viewMin);
         Coordinate.setDefaultCourseMax(viewMax);
         Coordinate.setViewMin(viewMin.getCopy());
         Coordinate.setViewMax(viewMax.getCopy());
 
         center = getCenter(viewMin.getCopy(), viewMax.getCopy());
-        Coordinate.setCenter(getCenter(courseMin.getCopy(), viewMax.getCopy()));
+        centerOfScreen = new Boat(-1);
+        centerOfScreen.setMark(center);
+        boatToFollow = centerOfScreen;
+        Coordinate.setCenter(getCenter(viewMin.getCopy(), viewMax.getCopy()));
         Coordinate.updateViewCoordinates();
     }
 
@@ -110,19 +110,19 @@ public class Race {
         this.finishedBoats = finishedBoats;
     }
 
-    public Position getCenter(Position min, Position max) {
-        Position center = new Position();   // changing from setting lat/long to x/y
+    public Mark getCenter(Mark min, Mark max) {
+        Mark center = new Mark();   // changing from setting lat/long to x/y
         center.setX((max.getX() + min.getX()) / 2);
         center.setY((max.getY() + min.getY()) / 2);
         return center;
 }
 
-    public Position calculateOffset(Boat boat){
+    public Mark calculateOffset(){
 //      TODO: calculate offset based on center and boat (boat - center)
-        Position offset = new Position();
+        Mark offset = new Mark();
 
-        offset.setX(boat.getX() - center.getX());
-        offset.setY(boat.getY() - center.getY());
+        offset.setX(boatToFollow.getX() - center.getX());
+        offset.setY(boatToFollow.getY() - center.getY());
 
         return offset;
     }
@@ -146,24 +146,24 @@ public class Race {
 
     /**
      * Takes the list of finished boats and creates a list of strings.
-     * @return positionStrings, an OberservableList of strings with in the order of finishers.
+     * @return MarkStrings, an OberservableList of strings with in the order of finishers.
      */
     public ObservableList<String> getPositionStrings() {
-        if (!positionStrings.isEmpty()) {
-            positionStrings.clear();
+        if (!MarkStrings.isEmpty()) {
+            MarkStrings.clear();
         }
-        positionStrings.add("Race Results");
+        MarkStrings.add("Race Results");
         int i = 1;
         for (Boat boat : finishedBoats) {
-            positionStrings.add(i + ": " + boat.getName());
+            MarkStrings.add(i + ": " + boat.getName());
             i++;
         }
-        return positionStrings;
+        return MarkStrings;
     }
 
     /**
-     * Getter for the observableList currentOrder. Gets the current position of the boats and adds it to the boat
-     * position attribute.
+     * Getter for the observableList currentOrder. Gets the current Mark of the boats and adds it to the boat
+     * Mark attribute.
      * @return currentOrder as an observable list.
      */
     public ObservableList<Boat> getCurrentOrder() {
@@ -441,7 +441,7 @@ public class Race {
 //  BELOW IS DEPRECATED. INFORMATION NO LONGER APPLIES AS NOT ALL DATA IS ACCESSIBLE FROM DATA STREAM.
 
 //    /**
-//     * Runs a portion of the race, updating boat positions and leg status
+//     * Runs a portion of the race, updating boat Marks and leg status
 //     */
 //    public void updateBoats() {
 //        double distanceMultiplier = 1;
@@ -491,10 +491,6 @@ public class Race {
 //        }
 //    }
 
-    public void setBoatToFollow(Boat boatToFollow) {
-        this.boatToFollow = boatToFollow;
-    }
-
     public List<Mark> getBoundaries() {
         return boundaries;
     }
@@ -503,7 +499,12 @@ public class Race {
         return boats;
     }
 
-//    public void setBoundaries(ArrayList<Mark> boundaries) {
+
+    public void setBoatToFollow(Boat markToFollow) {
+        this.boatToFollow = markToFollow;
+    }
+
+    //    public void setBoundaries(ArrayList<Mark> boundaries) {
 //        this.boundaries = boundaries;
 //    }
 }

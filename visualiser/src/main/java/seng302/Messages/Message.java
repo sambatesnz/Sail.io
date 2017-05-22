@@ -1,6 +1,7 @@
 package seng302.Messages;
 
 import seng302.*;
+import seng302.Controllers.Coordinate;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -131,6 +132,8 @@ public class Message {
                 movingBoat.setMark(new Mark(location.getLatitude(), location.getLongitude()));
                 movingBoat.setSpeed(location.getSpeedOverGround());
                 movingBoat.setHeading(location.getHeading());
+                Coordinate.setOffset(race.calculateOffset());
+                Coordinate.updateViewCoordinates();
             }
         }
     }
