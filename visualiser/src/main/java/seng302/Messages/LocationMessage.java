@@ -3,6 +3,7 @@ package seng302.Messages;
 
 import seng302.*;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class that holds and can update the location of a boat in a yacht race,
@@ -16,6 +17,9 @@ public class LocationMessage{
     private double longitude;
     private double heading;
     private int speedOverGround;
+    private Race race;
+
+    private Map<Integer, Boat> boatDict;
 
 
     /**
@@ -24,8 +28,7 @@ public class LocationMessage{
      * be passed on to the relevant boat.
      * @param bytes The array of bytes from the body of a boat location packet
      */
-    public LocationMessage(byte[] bytes) {
-//        messageVersionNumber = data[0];
+    public LocationMessage(byte[] bytes, Race race) {
         time = Message.byteArrayToLong(bytes, 1, 6);
         sourceID = Message.byteArrayToInt(bytes, 7, 4);
 //        seqNumber = Message.byteArrayToInt(bytes, 11, 6);
@@ -33,26 +36,26 @@ public class LocationMessage{
         longitude = Message.byteArrayToLong(bytes, 20, 4) * 180 / 2147483648.0;
         heading = Message.byteArrayToInt(bytes, 28, 2) * 360 / 65536.0;
         speedOverGround = Math.toIntExact((long) (Message.byteArrayToInt(bytes, 38, 2) * 1.9438444924574 / 1000));
+
+        this.race = race;
+        boatDict = race.boats;
+
+        setBoatLocation();
     }
 
-    public int getSourceID() {
-        return sourceID;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public double getHeading() {
-        return heading;
-    }
-
-    public int getSpeedOverGround() {
-        return speedOverGround;
+    /**
+     * Updates the following location values of the boat given by the source ID:
+     * - Latitude
+     * - Longitude
+     * - Speed (over ground)
+     * - Heading
+     */
+    private void setBoatLocation() {
+        if (boatDict.containsKey(sourceID)) {
+            boatDict.get(sourceID).setMark(new Mark(latitude, longitude));
+            boatDict.get(sourceID).setSpeed(speedOverGround);
+            boatDict.get(sourceID).setHeading(heading);
+        }
     }
 }
 

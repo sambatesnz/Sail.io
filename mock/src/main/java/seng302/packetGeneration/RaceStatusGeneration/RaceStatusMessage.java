@@ -1,8 +1,11 @@
 package seng302.packetGeneration.RaceStatusGeneration;
 
 import seng302.Boat;
+import seng302.MessageType;
+import seng302.packetGeneration.BinaryMessage;
 import seng302.packetGeneration.PacketGenerationUtils;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
@@ -11,7 +14,7 @@ import java.util.List;
  * The primary concern of this class is to copy byte arrays of info (eg currentTime
  * Into the correct location for the race status message packet
  */
-public class RaceStatusMessage {
+public class RaceStatusMessage extends BinaryMessage{
 
     private byte[] versionNumber;
     private byte[] currentTime;
@@ -43,7 +46,7 @@ public class RaceStatusMessage {
         this.versionNumber = PacketGenerationUtils.intToOneByte(CURRENT_VERSION_NUMBER);
         this.currentTime = PacketGenerationUtils.longToSixBytes(currentTime);
         this.raceID = PacketGenerationUtils.intToFourBytes(raceID);
-        this.raceStatus = PacketGenerationUtils.intToFourBytes(raceStatus);
+        this.raceStatus = PacketGenerationUtils.intToOneByte(raceStatus);
         this.startTime = PacketGenerationUtils.longToSixBytes(startTime);
         this.windDirection = PacketGenerationUtils.shortToTwoBytes(windDirection);
         this.windSpeed = PacketGenerationUtils.shortToTwoBytes(windSpeed);
@@ -69,7 +72,7 @@ public class RaceStatusMessage {
         this.versionNumber = PacketGenerationUtils.intToOneByte(versionNumber);
         this.currentTime = PacketGenerationUtils.longToSixBytes(currentTime);
         this.raceID = PacketGenerationUtils.intToFourBytes(raceID);
-        this.raceStatus = PacketGenerationUtils.intToFourBytes(raceStatus);
+        this.raceStatus = PacketGenerationUtils.intToOneByte(raceStatus);
         this.startTime = PacketGenerationUtils.longToSixBytes(startTime);
         this.windDirection = PacketGenerationUtils.shortToTwoBytes(windDirection);
         this.windSpeed = PacketGenerationUtils.shortToTwoBytes(windSpeed);
@@ -82,18 +85,26 @@ public class RaceStatusMessage {
      * Gets the Race Status message as a byte Array
      * @return byte array containing the whole Race Status Message
      */
-    public byte[] getRaceStatusMessage(){
-        byte[] output = new byte[24 + numberOfBoatsInt * 20];
+    @Override
+    public byte[] getBody() {
+        ByteBuffer body = PacketGenerationUtils.LEBuffer(24 + numberOfBoatsInt * 20);
         //Copy specific bytes into here
-        System.arraycopy(versionNumber, 0, output, RaceStatusUtility.MESSAGE_VERSION_POS, RaceStatusUtility.MESSAGE_VERSION_SIZE);
-        System.arraycopy(currentTime, 0, output, RaceStatusUtility.CURRENT_TIME_POS, RaceStatusUtility.CURRENT_TIME_SIZE);
-        System.arraycopy(raceID, 0, output, RaceStatusUtility.RACE_ID_POS, RaceStatusUtility.RACE_ID_SIZE);
-        System.arraycopy(raceStatus, 0, output, RaceStatusUtility.RACE_STATUS_POS, RaceStatusUtility.RACE_STATUS_SIZE);
-        System.arraycopy(startTime, 0, output, RaceStatusUtility.EXPECTED_START_TIME_POS, RaceStatusUtility.EXPECTED_START_TIME_SIZE);
-        System.arraycopy(windDirection, 0, output, RaceStatusUtility.WIND_DIRECTION_POS, RaceStatusUtility.WIND_DIRECTION_SIZE);
-        System.arraycopy(windSpeed, 0, output, RaceStatusUtility.WIND_SPEED_POS, RaceStatusUtility.WIND_SPEED_SIZE);
-        System.arraycopy(numberOfBoatsByte, 0, output, RaceStatusUtility.NUM_BOATS_POS, RaceStatusUtility.NUM_BOATS_SIZE);
-        System.arraycopy(raceType, 0, output, RaceStatusUtility.RACE_TYPE_POS, RaceStatusUtility.RACE_TYPE_SIZE );
-        return output;
+        body.put(versionNumber);
+        body.put(currentTime);
+        body.put(raceID);
+        body.put(raceStatus);
+        body.put(startTime);
+        body.put(windDirection);
+        body.put(windSpeed);
+        body.put(numberOfBoatsByte);
+        body.put(raceType);
+        return body.array();
+    }
+
+
+
+    @Override
+    protected int getMessageType() {
+        return MessageType.RACE_STATUS.getMessageType();
     }
 }

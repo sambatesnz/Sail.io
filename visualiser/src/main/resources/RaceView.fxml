@@ -57,11 +57,12 @@
                     </font>
                 </Label>
                 <Button fx:id="annotationBtn" layoutX="14.0" layoutY="600.0" mnemonicParsing="false" onAction="#annotationBtnClicked" text="Remove Annotations" />
-                <Button fx:id="fpsBtn" layoutX="14.0" layoutY="700.0" mnemonicParsing="false" onAction="#fpsBtnClicked" text="Remove FPS counter" />
+                <Button fx:id="fpsBtn" layoutX="14.0" layoutY="700.0" mnemonicParsing="false" onAction="#fpsBtnClicked" text="Remove FPS Counter" />
                 <Button fx:id="startButton" layoutX="14.0" layoutY="500.0" mnemonicParsing="false" onAction="#startButtonPressed" text="Start Race" />
                 <CheckBox fx:id="BoatSpeedCheckBox" layoutX="13.0" layoutY="439.0" mnemonicParsing="false" onAction="#ToggleBoatSpeedAnnotation" selected="true" text="Boat Speeds" />
                 <CheckBox fx:id="BoatNameCheckBox" layoutX="13.0" layoutY="421.0" mnemonicParsing="false" onAction="#ToggleBoatNameAnnotation" selected="true" text="Boat Names" />
             <ListView fx:id="startersList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="200.0" visible="false" />
+            <Button fx:id="resetViewButton" layoutX="14.0" layoutY="549.0" mnemonicParsing="false" onAction="#resetViewButtonPressed" text="Reset View" visible="false" />
 
             </children>
        </AnchorPane>

@@ -1,7 +1,7 @@
 package seng302.packetGeneration.BoatLocationGeneration;
 
 import seng302.Boat;
-import seng302.packetGeneration.XMLMessageGeneration.XMLMessageContainer;
+import seng302.packetGeneration.XMLMessageGeneration.XMLMessage;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -39,8 +39,9 @@ public class BoatLocationMessageDeprecated {
 
     public byte[] xmlMessage(String xml, short ackN, short seqNum) {
         //return message((byte) 26, xmlBody(xml, ackN, seqNum));
-        XMLMessageContainer xmc = new XMLMessageContainer(xml, ackN, seqNum);
-        return message((byte) 26, xmc.getXMLMessage());
+        XMLMessage xmc = new XMLMessage(xml, ackN, seqNum);
+        //return message((byte) 26, xmc.getXMLMessage());
+        return null;
     }
 
 

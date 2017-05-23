@@ -4,21 +4,35 @@ package seng302;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import seng302.Messages.Message;
 import seng302.Messages.RaceStatusMessage;
 
-public class MessageParseTest {
-    RaceStatusMessage raceStatus;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class RaceStatusMessageTest {
+    Message message;
+    Race race;
 
     @Before
     public void setup() {
         byte[] raceStatusTestMessage = {
+                (byte)0x47,                                         //Sync Byte 1
+                (byte)0x83,                                         //Sync Byte 2
+                (byte)0x0C,                                         //Message type (12)
+                (byte)0x00,(byte)0x00,(byte)0x00,                   //Timestamp 3/6
+                (byte)0x00,(byte)0x00,(byte)0x00,                   //Timestamp 6/6
+                (byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00,        //Source ID
+                (byte)0x54,(byte)0x00,                              //Message Length (84 [24 + 20 * 4])
+
                 (byte)0x02,                                         //MessageVersionNumber
                 (byte)0x00, (byte)0x00, (byte)0x00,                 //Current Time 3/6
                 (byte)0x00, (byte)0x00, (byte)0x00,                 //Current Time 6/6
                 (byte)0xA0, (byte)0x02, (byte)0x00, (byte)0x00,     //RaceID (672)
                 (byte)0x03,                                         //Race Status (3)
-                (byte)0x00, (byte)0x00, (byte)0x00,                 //Expected Start Time 3/6
-                (byte)0x00, (byte)0x00, (byte)0x00,                 //Expected Start Time 6/6
+                (byte)0xAD, (byte)0xDF, (byte)0x00,                 //Expected Start Time 3/6
+                (byte)0x00, (byte)0x00, (byte)0x00,                 //Expected Start Time 6/6 (57261)
                 (byte)0x00, (byte)0x80,                             //Wind Direction (180)
                 (byte)0x88, (byte)0x13,                             //Wind Speed (5000)
                 (byte)0x03,                                         //Number of Boats in Race (3)
@@ -53,14 +67,68 @@ public class MessageParseTest {
                 (byte)0x00, (byte)0x00, (byte)0x00,                 //Time to next mark Boat 3 6/6 (1276)
                 (byte)0x4E, (byte)0x5E, (byte)0x01,                 //Time to Finish Boat 3 3/6
                 (byte)0x00, (byte)0x00, (byte)0x00,                 //Time to Finish Boat 3 6/6 (89678)
+
+                (byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00         //CRC
         };
-        raceStatus = new RaceStatusMessage(raceStatusTestMessage);
+
+        race = new Race();
+        List participants = new ArrayList<Integer>();
+        participants.add(101);
+        participants.add(102);
+        participants.add(103);
+        race.setParticipants(participants);
+        HashMap<Integer, Boat> testBoatMap = new HashMap<Integer, Boat>();
+        testBoatMap.put(101, new Boat("Test_1", "Test_1", 101, "Country_1"));
+        testBoatMap.put(102, new Boat("Test_2", "Test_2", 102, "Country_2"));
+        testBoatMap.put(103, new Boat("Test_3", "Test_3", 103, "Country_3"));
+        race.setBoats(testBoatMap);
+        message = new Message(raceStatusTestMessage, race);
+        try {
+            message.parseMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void messageVersionTest() {
-        // TODO Make a new race and boat objects, set variables to those from the above data, and test for equality.
-        Assert.assertEquals(true, true);
+    public void raceWindHeadingTest() {
+        Assert.assertEquals(180.0, race.getWindHeading(), 0.1);
+    }
+
+    @Test
+    public void raceWindSpeedTest() {
+        Assert.assertEquals(5000.0, race.getWindSpeed(), 0.1);
+    }
+
+    @Test
+    public void raceStartTimeTest() {
+        Assert.assertEquals(57261.0, race.getExpectedStartTime(), 0.1);
+    }
+
+    @Test
+    public void raceStatusTest() {
+        Assert.assertEquals(3, race.getRaceStatus());
+    }
+
+    @Test
+    public void boatLegIndexTest() {
+        Assert.assertEquals(6, race.boats.get(101).getCurrentLegIndex());
+        Assert.assertEquals(5, race.boats.get(102).getCurrentLegIndex());
+        Assert.assertEquals(7, race.boats.get(103).getCurrentLegIndex());
+    }
+
+    @Test
+    public void boatTimeToNextMarkTest() {
+        Assert.assertEquals(6200, race.boats.get(101).getTimeToNextMark());
+        Assert.assertEquals(7300, race.boats.get(102).getTimeToNextMark());
+        Assert.assertEquals(1276, race.boats.get(103).getTimeToNextMark());
+    }
+
+    @Test
+    public void boatTimeToFinishTest() {
+        Assert.assertEquals(98622, race.boats.get(101).getTimeToFinish());
+        Assert.assertEquals(96475, race.boats.get(102).getTimeToFinish());
+        Assert.assertEquals(89678, race.boats.get(103).getTimeToFinish());
     }
 
 
