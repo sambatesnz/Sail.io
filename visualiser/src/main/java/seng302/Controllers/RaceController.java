@@ -344,33 +344,29 @@ public class RaceController {
      * Creates a timer that calls the update sparklines every second, allowing the graph to continue to update
      */
     private void createChart() {
-//        xAxis = new NumberAxis();
-//        yAxis = new NumberAxis();
-//        sparklinesChart = new LineChart<>(xAxis, yAxis);
+
+        // TODO: fix colours and look of linechart. Remove dots from line. Remove graphing squares from backgrounds
 
         // Hide the Y axis
-//        sparklinesChart.getYAxis().setTickLabelsVisible(false);
- //       sparklinesChart.getYAxis().setVisible(false);
+        sparklinesChart.getYAxis().setTickLabelsVisible(false);
+        sparklinesChart.getYAxis().setVisible(false);
 
         // Hide the X axis
-//        sparklinesChart.getXAxis().setTickLabelsVisible(false);
-//        sparklinesChart.getXAxis().setVisible(false);
+        sparklinesChart.getXAxis().setTickLabelsVisible(false);
+        sparklinesChart.getXAxis().setVisible(false);
 
-        // May need to find way to hide background colour(s) or grid(s)
+        sparklinesChart.setCreateSymbols(false);
 
         List<XYChart.Series<Number, Number>> series = new ArrayList<>();
         for (Boat boat :race.getBoats()) {
             XYChart.Series newSeries = new XYChart.Series();
+//            newSeries.getData().add(new XYChart.Data(counter, counter2));
             newSeries.setName(boat.getName());
+//            newSeries.setData(FXCollections.observableArrayList(array));
             series.add(newSeries);
         }
 
         seriesList = FXCollections.observableList(series);
-
-        System.out.println(sparklinesChart);
-        System.out.println("ye");
-        System.out.println(seriesList);
-
         sparklinesChart.setData(seriesList);
 
         sparklineTimer = new Timer();
@@ -379,7 +375,7 @@ public class RaceController {
             public void run() {
                 updateSparkLineChart();
             }
-        }, 2, 1000);
+        }, 2, 500);
     }
 
     /**
@@ -393,8 +389,9 @@ public class RaceController {
         for (int i = 0; i < race.getBoats().size(); i++) {
             // update the chart.
             XYChart.Series series = seriesList.get(i);
-            series.getData().add(secondCounter, (Number) race.getBoats().get(i).getPosition());
+            series.getData().add(new XYChart.Data(secondCounter, (Number) race.getBoats().get(i).getPosition()));
         }
+        sparklinesChart.setData(seriesList);
         secondCounter++;
     }
 
@@ -512,7 +509,8 @@ public class RaceController {
     private void updateView() {
 
         positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
-//        positionTable.setPrefHeight(Coordinate.getWindowY() - 239);
+        positionTable.setPrefHeight(Coordinate.getWindowY() - 239);
+
 
         viewAnchorPane.setMinHeight(Coordinate.getWindowY());
         viewAnchorPane.setMaxHeight(Coordinate.getWindowY());

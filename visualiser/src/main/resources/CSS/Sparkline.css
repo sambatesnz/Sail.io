@@ -1,0 +1,31 @@
+
+
+.chart {
+    -fx-background-color: transparent;
+}
+
+.chart-content {
+    -fx-progress-color: transparent;
+    -fx-progress-color: transparent;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.axis-tick-mark {
+    -fx-stroke-line-join: round;
+}
+
+.chart-series-line {
+    -fx-stroke-width: 2px;
+    -fx-effect: null;
+}
