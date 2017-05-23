@@ -24,8 +24,6 @@ public abstract class BinaryMessage {
         MessageHeader messageHeader = new MessageHeader(messageType, -1, messageBody.length);
         byte[] header = messageHeader.getBody();
 
-        System.out.println(Arrays.toString(header));
-
         int crc = calculateCRC(header, messageBody);
         byte[] crcSection = PacketGenerationUtils.intToFourBytes(crc);
 
@@ -58,7 +56,7 @@ public abstract class BinaryMessage {
      * Gets the body of a message as defined by the AC35 specification
      * @return byte array of the body
      */
-    public abstract byte[] getBody();
+    protected abstract byte[] getBody();
 
     /**
      * Gets the type of message as defined by the AC35 specification

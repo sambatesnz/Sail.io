@@ -63,11 +63,17 @@ public class GeneratedData implements IServerData {
             bytes.add(xmlMessage.createMessage());
 
 
-            BinaryMessage boatsXml =  new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
+            BinaryMessage boatsXml = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
             System.out.println("\n--------\nBoats XML Message created");
             System.out.println(Arrays.toString(xmlMessage.createMessage()));
             System.out.println("--------\n");
             bytes.add(boatsXml.createMessage());
+
+            BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);
+            System.out.println("\n--------\nREGATTA XML Message created");
+            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+            System.out.println("--------\n");
+            bytes.add(regattaXML.createMessage());
         }
     }
 

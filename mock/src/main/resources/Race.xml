@@ -6,8 +6,8 @@
     <RaceStartTime Time="2011-08-06T13:30:00-0700" Postpone="false" />
 
     <Participants>
-        <Yacht SourceID="1" Entry="Port" />
-        <Yacht SourceID="2" Entry="Stbd" />
+        <Yacht SourceID="101" Entry="Port" />
+        <Yacht SourceID="102" Entry="Stbd" />
     </Participants>
 
     <Course>
