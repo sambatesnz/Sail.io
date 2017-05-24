@@ -17,7 +17,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
@@ -28,10 +30,8 @@ import seng302.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 
 import static java.lang.System.currentTimeMillis;
-import static java.lang.System.setOut;
 
 /**
  * Class that controls the race window and updates the race as it proceeds
@@ -101,6 +101,8 @@ public class RaceController {
 
     private TimeZoneWrapper timeZoneWrapper;
     private final ImageView selectedImage = new ImageView();
+    private Mark imagePos;
+    private final double IMAGE_SCALE = 1.5;
 
     /**
      * initializes the race display.
@@ -125,10 +127,20 @@ public class RaceController {
         }
 
         selectedImage.setPreserveRatio(true);
-        Image image = drawMap(String.valueOf(race.getMapCenter().getLatitude()), String.valueOf(race.getMapCenter().getLongitude()));
+        Image image = drawMap(race.getMapCenter().getLatitude(), race.getMapCenter().getLongitude());
 //        System.out.println(String.valueOf(race.getMapCenter().getLatitude()) + ", " + String.valueOf(race.getMapCenter().getLongitude()));
         selectedImage.setImage(image);
+        imagePos = new Mark(race.getMapCenter().getLatitude(), race.getMapCenter().getLongitude());
+//        Circle c = new Circle(Coordinate.getRelativeX(imagePos.getX()), Coordinate.getRelativeY(imagePos.getY()), 50);
+//        c.setFill(Color.BLACK);
+
+//        System.out.println(selectedImage.getFitWidth());
+        selectedImage.setFitWidth(image.getWidth()*IMAGE_SCALE);
+//        selectedImage.setFitWidth(2000);
+//        selectedImage.setX(Coordinate.getRelativeX(imagePos.getX())-image.getWidth()/2);
+//        selectedImage.setY(Coordinate.getRelativeY(imagePos.getY())-image.getHeight()/2);
         group.getChildren().add(selectedImage);
+//        group.getChildren().add(c);
 
         // handles zooming when a boat is selected
         viewAnchorPane.setOnScroll(new EventHandler<ScrollEvent>() {
@@ -284,31 +296,33 @@ public class RaceController {
     /**
      * draws the google maps image onto the screen
      */
-    private Image drawMap(String centerLat, String centerLon) {
+    private Image drawMap(double centerLat, double centerLon) {
         String key = "AIzaSyAAmj8rsEdHfH4WbXbqB4ugZEKVBrvCyaw";
-        int zoom = 12;
         int sizeH = 640;
         int sizeV = 640;
-//        String imageUrl = String.format("https://maps.googleapis.com/maps/api/staticmap?" +
-//                "center=%s,%s&size=%dx%d&scale=2&zoom=%d&key=%s", centerLat, centerLon, sizeH, sizeV, zoom, key);
-
+        double difLon = race.getViewMax().convertToLon() - race.getViewMin().convertToLon();
+        double difLat = race.getViewMax().convertToLat() - race.getViewMin().convertToLat();
         StringBuilder sb = new StringBuilder("visible=");
+        sb.append(centerLat + (centerLat>0?1:-1)*difLat/2*IMAGE_SCALE).append(',').append(centerLon + (centerLon>0?1:-1)*difLon/2*IMAGE_SCALE)
+                .append('|')
+                .append(centerLat - (centerLat>0?1:-1)*difLat/2*IMAGE_SCALE).append(',').append(centerLon - (centerLon>0?1:-1)*difLon/2*IMAGE_SCALE).append('|');
         for (Mark cl: race.getBoundaries()) {
-            sb.append(cl.getLatitude());
+            if (cl.getLatitude() > 0) {
+                sb.append(cl.getLatitude());// + 0.01);
+            } else {
+                sb.append(cl.getLatitude());// - 0.01);
+            }
             sb.append(',');
-            sb.append(cl.getLongitude());
+            if (cl.getLongitude() > 0) {
+                sb.append(cl.getLongitude());// + 0.01);
+            } else {
+                sb.append(cl.getLongitude());// - 0.01);
+            }
             sb.append('|');
         }
         sb.setLength(sb.length() - 1);
         String imageUrl = String.format("https://maps.googleapis.com/maps/api/staticmap?" +
-                "center=%s,%s&size=%dx%d&%s&scale=2&key=%s", centerLat, centerLon, sizeH, sizeV, sb.toString(), key);
-
-//        System.out.println("imageURL: " + imageUrl);
-//        System.out.println("ez: " + viewAnchorPane.getBackground());
-//        BackgroundImage backgroundImage = new BackgroundImage(new Image(imageUrl),
-//                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-//                BackgroundSize.DEFAULT);
-//        viewAnchorPane.setBackground(new Background(backgroundImage));
+                "center=%f,%f&size=%dx%d&scale=2&%s&key=%s", centerLat, centerLon, sizeH, sizeV, sb, key);
         return new Image(imageUrl);
     }
 
@@ -351,6 +365,7 @@ public class RaceController {
             boundary.getPoints().add(Coordinate.getRelativeY(race.getBoundaries().get(i).getY()));
         }
         boundary.setFill(Color.LIGHTBLUE);
+        boundary.setOpacity(0.5);
         return boundary;
     }
 
@@ -459,6 +474,10 @@ public class RaceController {
     private void updateView() {
         Coordinate.setOffset(race.calculateOffset());
         Coordinate.updateViewCoordinates();
+
+        selectedImage.setX(Coordinate.getRelativeX(imagePos.getX())-selectedImage.getImage().getWidth()*IMAGE_SCALE/2);
+        selectedImage.setY(Coordinate.getRelativeY(imagePos.getY())-selectedImage.getImage().getHeight()*IMAGE_SCALE/2);
+        updateNodeScale(selectedImage);
 
         positionTable.refresh();
 
