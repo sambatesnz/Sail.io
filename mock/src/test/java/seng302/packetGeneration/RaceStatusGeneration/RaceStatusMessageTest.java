@@ -3,8 +3,7 @@ package seng302.packetGeneration.RaceStatusGeneration;
 import org.junit.Test;
 import seng302.packetGeneration.PacketUtils;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test class for testing the race status messages
@@ -35,7 +34,7 @@ public class RaceStatusMessageTest {
         );
 
         int expected =  headerSize + numBoatsInt * boatPacketSize;
-        int packetSize = raceStatusMessage.getRaceStatusMessage().length;
+        int packetSize = raceStatusMessage.getBody().length;
         assertEquals(packetSize, expected);
     }
 
@@ -56,10 +55,10 @@ public class RaceStatusMessageTest {
         );
 
 
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         byte[] actualMessage = new byte[8];
-        int sourceIndex = RaceStatusUtility.MESSAGE_VERSION_POS;
-        int size = RaceStatusUtility.MESSAGE_VERSION_SIZE;
+        int sourceIndex = RaceStatusUtility.MESSAGE_VERSION.getIndex();
+        int size = RaceStatusUtility.MESSAGE_VERSION.getSize();
         int expectedVNumber = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(versionNumber, expectedVNumber);
     }
@@ -80,10 +79,10 @@ public class RaceStatusMessageTest {
         );
 
 
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         byte[] actualMessage = new byte[8];
-        int sourceIndex = RaceStatusUtility.MESSAGE_VERSION_POS;
-        int size = RaceStatusUtility.MESSAGE_VERSION_SIZE;
+        int sourceIndex = RaceStatusUtility.MESSAGE_VERSION.getIndex();
+        int size = RaceStatusUtility.MESSAGE_VERSION.getSize();
         int expectedVNumber = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(versionNumber, expectedVNumber);
 
@@ -105,9 +104,9 @@ public class RaceStatusMessageTest {
                 null
         );
 
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
-        int sourceIndex = RaceStatusUtility.CURRENT_TIME_POS;
-        int size = RaceStatusUtility.CURRENT_TIME_SIZE;
+        byte[] message = raceStatusMessage.getBody();
+        int sourceIndex = RaceStatusUtility.CURRENT_TIME.getIndex();
+        int size = RaceStatusUtility.CURRENT_TIME.getSize();
         byte[] actualMessage = new byte[8];
         long expectedTime = PacketUtils.getLongFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(time, expectedTime);
@@ -129,9 +128,9 @@ public class RaceStatusMessageTest {
                 null
         );
 
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
-        int sourceIndex = RaceStatusUtility.RACE_ID_POS;
-        int size = RaceStatusUtility.RACE_ID_SIZE;
+        byte[] message = raceStatusMessage.getBody();
+        int sourceIndex = RaceStatusUtility.RACE_ID.getIndex();
+        int size = RaceStatusUtility.RACE_ID.getSize();
         byte[] actualMessage = new byte[4];
         int expectedRaceId = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(raceId, expectedRaceId);
@@ -154,9 +153,9 @@ public class RaceStatusMessageTest {
                 null
         );
 
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
-        int sourceIndex = RaceStatusUtility.RACE_STATUS_POS;
-        int size = RaceStatusUtility.RACE_STATUS_SIZE;
+        byte[] message = raceStatusMessage.getBody();
+        int sourceIndex = RaceStatusUtility.RACE_STATUS.getIndex();
+        int size = RaceStatusUtility.RACE_STATUS.getSize();
         byte[] actualMessage = new byte[4];
         int expectedRaceStatus = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(raceStatus, expectedRaceStatus);
@@ -178,9 +177,9 @@ public class RaceStatusMessageTest {
                 null
         );
 
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
-        int sourceIndex = RaceStatusUtility.EXPECTED_START_TIME_POS;
-        int size = RaceStatusUtility.EXPECTED_START_TIME_SIZE;
+        byte[] message = raceStatusMessage.getBody();
+        int sourceIndex = RaceStatusUtility.EXPECTED_START_TIME.getIndex();
+        int size = RaceStatusUtility.EXPECTED_START_TIME.getSize();
         byte[] actualMessage = new byte[8];
         long expectedTime = PacketUtils.getLongFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(startTime, expectedTime);
@@ -200,10 +199,10 @@ public class RaceStatusMessageTest {
                 '0',
                 null
         );
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         byte[] actualMessage = new byte[4];
-        int sourceIndex = RaceStatusUtility.WIND_DIRECTION_POS;
-        int size = RaceStatusUtility.WIND_DIRECTION_SIZE;
+        int sourceIndex = RaceStatusUtility.WIND_DIRECTION.getIndex();
+        int size = RaceStatusUtility.WIND_DIRECTION.getSize();
         int expectedWindDirection = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(windDirection, expectedWindDirection);
     }
@@ -222,10 +221,10 @@ public class RaceStatusMessageTest {
                 '0',
                 null
         );
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
+        byte[] message = raceStatusMessage.getBody();
         byte[] actualMessage = new byte[4];
-        int sourceIndex = RaceStatusUtility.WIND_SPEED_POS;
-        int size = RaceStatusUtility.WIND_SPEED_SIZE;
+        int sourceIndex = RaceStatusUtility.WIND_SPEED.getIndex();
+        int size = RaceStatusUtility.WIND_SPEED.getSize();
         int expectedWindSpeed = PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(windSpeed, expectedWindSpeed);
     }
@@ -247,9 +246,9 @@ public class RaceStatusMessageTest {
                 '0',
                 null
         );
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
-        int sourceIndex = RaceStatusUtility.NUM_BOATS_POS;
-        int size = RaceStatusUtility.NUM_BOATS_SIZE;
+        byte[] message = raceStatusMessage.getBody();
+        int sourceIndex = RaceStatusUtility.NUM_BOATS.getIndex();
+        int size = RaceStatusUtility.NUM_BOATS.getSize();
         byte[] actualMessage = new byte[2];
         char actualNumBoats = PacketUtils.getCharFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(numBoats, actualNumBoats);
@@ -272,9 +271,9 @@ public class RaceStatusMessageTest {
                 raceType,
                 null
         );
-        byte[] message = raceStatusMessage.getRaceStatusMessage();
-        int sourceIndex = RaceStatusUtility.RACE_TYPE_POS;
-        int size = RaceStatusUtility.RACE_TYPE_SIZE;
+        byte[] message = raceStatusMessage.getBody();
+        int sourceIndex = RaceStatusUtility.RACE_TYPE.getIndex();
+        int size = RaceStatusUtility.RACE_TYPE.getSize();
         byte[] actualMessage = new byte[2];
         char actualRaceType = PacketUtils.getCharFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(raceType, actualRaceType);

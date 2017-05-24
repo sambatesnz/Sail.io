@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,7 +98,7 @@ public class Message {
             case HEARTBEAT:
                 break;
             case RACE_STATUS:
-                RaceStatusMessage raceStatus = new RaceStatusMessage(race, body);
+                RaceStatusMessage raceStatus = new RaceStatusMessage(body, race);
                 raceStatus.updateRaceDetails();
                 break;
             case DISPLAY:
@@ -115,8 +116,7 @@ public class Message {
             case 36:                                            //Chatter Text
                 break;
             case BOAT_LOCATION:                                 //Boat Location
-                LocationMessage location = new LocationMessage(body);
-                setBoatLocationFromMessage(location);
+                LocationMessage location = new LocationMessage(body, race);
                 break;
             case 38:                                            //Mark Rounding
                 break;
@@ -124,21 +124,6 @@ public class Message {
                 break;
             case 47:                                            //Avg Wind
                 break;
-        }
-    }
-
-    private void setBoatLocationFromMessage(LocationMessage location) {
-        if (boatsSet) {
-            int boatId = location.getSourceID();
-            boats = race.getBoatsMap();
-            if (boats.containsKey(boatId)) {
-                Boat movingBoat = boats.get(boatId);
-                movingBoat.setMark(new Mark(location.getLatitude(), location.getLongitude()));
-                movingBoat.setSpeed(location.getSpeedOverGround());
-                movingBoat.setHeading(location.getHeading());
-                Coordinate.setOffset(race.calculateOffset());
-                Coordinate.updateViewCoordinates();
-            }
         }
     }
 

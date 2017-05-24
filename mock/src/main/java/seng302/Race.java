@@ -173,12 +173,12 @@ public class Race {
      */
     private ArrayList<Boat> getContestants() {
         ArrayList<Boat> contestants = new ArrayList<>();
-        contestants.add(new Boat("ORACLE TEAM USA", 5.8, Color.RED, "USA"));
-        contestants.add(new Boat("Artemis Racing", 7.1, Color.BLUE, "SWE"));
-        contestants.add(new Boat("Emirates Team New Zealand", 11.2, Color.BLACK, "NZL"));
-        contestants.add(new Boat("Groupama Team France", 6.7, Color.WHEAT, "FRA"));
-        contestants.add(new Boat("Land Rover BAR", 7.6, Color.AQUAMARINE, "GBR"));
-        contestants.add(new Boat("SoftBank Team Japan", 9.3, Color.DARKSALMON, "JPN"));
+        contestants.add(new Boat("ORACLE TEAM USA", 5.8, Color.RED, "USA", 101));
+        contestants.add(new Boat("Artemis Racing", 7.1, Color.BLUE, "SWE", 102));
+        contestants.add(new Boat("Emirates Team New Zealand", 11.2, Color.BLACK, "NZL", 103));
+        contestants.add(new Boat("Groupama Team France", 6.7, Color.WHEAT, "FRA", 105));
+        contestants.add(new Boat("Land Rover BAR", 7.6, Color.AQUAMARINE, "GBR", 106));
+        contestants.add(new Boat("SoftBank Team Japan", 9.3, Color.DARKSALMON, "JPN", 104));
         return contestants;
     }
 

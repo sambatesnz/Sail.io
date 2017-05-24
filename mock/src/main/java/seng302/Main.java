@@ -1,19 +1,15 @@
 package seng302;
 
-import seng302.Server.GeneratedData;
-import seng302.Server.StreamServer;
+import seng302.Server.Server;
 
 import java.io.IOException;
 
 /**
- * Runs the non javafx program
+ * Runs the Mock server
  */
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        StreamServer server = new StreamServer(9090);
-        GeneratedData genData = new GeneratedData();
-        genData.runServerTimers();
-        server.start(genData);
+        Server server = new Server(4941);
     }
-}
+}   

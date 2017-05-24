@@ -11,8 +11,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.*;
 
-import static javafx.collections.FXCollections.observableArrayList;
-
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
  * This displays a text-based play by play commentary of the race as it happens
@@ -29,7 +27,6 @@ public class Race {
     private List<Leg> legs;
     private List<Mark> boundaries;
     private List<Integer> courseOrder;
-    private List<Integer> paricipants;
     private double windHeading;
     private double windSpeed;
     private ObservableList<Boat> currentOrder;
@@ -37,7 +34,7 @@ public class Race {
     private long expectedStartTime;
     private int raceStatus;
     public boolean finished = false;
-    private Mark center;
+    private Mark mapCenter;
     private boolean raceReady = false;
     private Boat centerOfScreen;
     private Boat boatToFollow;
@@ -56,33 +53,17 @@ public class Race {
      * Constructor for the race class.
      */
     public Race() {
-//        java.util.Scanner s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("ExampleXMLs/Race.xml")).useDelimiter("\\A");
-//        String xmlString = s.hasNext() ? s.next() : "";
-//        parseRaceXML(xmlString);
-////        parseXML("course.xml");
-//        setWindHeading(190);
-////        boats = getContestants();
-//
-//        s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("Boats.xml")).useDelimiter("\\A");
-//        xmlString = s.hasNext() ? s.next() : "";
-//        parseBoatsXML(xmlString);
-//
-//        s = new java.util.Scanner(getClass().getClassLoader().getResourceAsStream("Regatta.xml")).useDelimiter("\\A");
-//        xmlString = s.hasNext() ? s.next() : "";
-//        parseRegattaXML(xmlString);
-
-//        parseXML("course.xml");
-        // Contestants are now retrieved from the xml message
-        //boats = getContestants();
         finishedBoats = new ArrayList<>();
-        // TODO: Current order needs to be instantiated here. Get the list of boats in the race first. Then use the time to next gate in the race packet to decide race order
-        MarkStrings = FXCollections.observableArrayList();
 
-//        for (Boat boat : boats.values()) {
-//            boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
-//            boat.setX(legs.get(0).getStart().getX());
-//            boat.setY(legs.get(0).getStart().getY());
-//        }
+        MarkStrings = FXCollections.observableArrayList();
+    }
+
+    public Regatta getRegatta() {
+        return regatta;
+    }
+
+    public Mark getMapCenter() {
+        return mapCenter;
     }
 
     public long getCurrentTime() {
@@ -107,9 +88,10 @@ public class Race {
         Coordinate.setViewMin(viewMin.getCopy());
         Coordinate.setViewMax(viewMax.getCopy());
 
-        center = getCenter(viewMin.getCopy(), viewMax.getCopy());
+        mapCenter = getCenter(viewMin.getCopy(), viewMax.getCopy());
         centerOfScreen = new Boat(-1);
-        centerOfScreen.setMark(center);
+        centerOfScreen.setMark(mapCenter);
+
         boatToFollow = centerOfScreen;
         Coordinate.setCenter(getCenter(viewMin.getCopy(), viewMax.getCopy()));
         Coordinate.updateViewCoordinates();
@@ -123,22 +105,39 @@ public class Race {
         this.finishedBoats = finishedBoats;
     }
 
+
+    /**
+     * @param min viewMin of the course boundary
+     * @param max viewMax of the course boundary
+     * @return the center of these points
+     */
     public Mark getCenter(Mark min, Mark max) {
         Mark center = new Mark();   // changing from setting lat/long to x/y
         center.setX((max.getX() + min.getX()) / 2);
         center.setY((max.getY() + min.getY()) / 2);
+        center.setLatitude((max.getLatitude() + min.getLatitude()) / 2);
+        center.setLongitude((max.getLongitude() + min.getLongitude()) / 2);
         return center;
 }
 
+    /**
+     * calculates the offset of the currently selected boat to follow
+     * Note that if no boats selected that boat to follow is set to a 'dummy' default boat at the center
+     * @return a mark representing the current boat to follows offset with the original center
+     */
     public Mark calculateOffset(){
-//      TODO: calculate offset based on center and boat (boat - center)
         Mark offset = new Mark();
 
-        offset.setX(boatToFollow.getX() - center.getX());
-        offset.setY(boatToFollow.getY() - center.getY());
+        offset.setX(boatToFollow.getX() - mapCenter.getX());
+        offset.setY(boatToFollow.getY() - mapCenter.getY());
 
         return offset;
     }
+
+    public void resetZoom() {
+        boatToFollow = centerOfScreen;
+    }
+
     /**
      * Setter for current order, mainly to allow for testing.
      * @param currentOrder sets the current order of boats
@@ -346,6 +345,10 @@ public class Race {
     }
 
 
+    /**
+     * If no boat has been selected this will be a 'dummy' boat whose position is the center
+     * @param markToFollow is a boat which the view will track round the course
+     */
     public void setBoatToFollow(Boat markToFollow) {
         this.boatToFollow = markToFollow;
     }

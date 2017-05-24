@@ -1,4 +1,4 @@
-package seng302.Server;
+package seng302.DataGeneration;
 
 
 public interface IServerData {

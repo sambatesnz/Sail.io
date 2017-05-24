@@ -3,7 +3,7 @@ package seng302.packetGeneration.RaceStatusGeneration;
 import org.junit.Test;
 import seng302.packetGeneration.PacketUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for the Boat Status message as a part of the Race Status Message Class
@@ -40,7 +40,7 @@ public class BoatStatusMessageTest {
         byte[] message = boatStatusMessage.getBoatStatusMessage();
 
         byte[] actualMessage = new byte[4];
-        int actualBoatID = PacketUtils.getIntFromByteArray(message, RaceStatusUtility.SOURCE_ID_INDEX, actualMessage, 4);
+        int actualBoatID = PacketUtils.getIntFromByteArray(message, RaceStatusUtility.SOURCE_ID.getIndex(), actualMessage, RaceStatusUtility.SOURCE_ID.getSize());
         assertEquals(sourceBoatID, actualBoatID);
     }
 
@@ -58,7 +58,7 @@ public class BoatStatusMessageTest {
         byte[] message = boatStatusMessage.getBoatStatusMessage();
 
         byte[] actualMessage = new byte[2];
-        char actualBoatStatus = PacketUtils.getCharFromByteArray(message, RaceStatusUtility.BOAT_STATUS_INDEX, actualMessage, 1);
+        char actualBoatStatus = PacketUtils.getCharFromByteArray(message, RaceStatusUtility.BOAT_STATUS.getIndex(), actualMessage, RaceStatusUtility.BOAT_STATUS.getSize());
         assertEquals(boatStatus, actualBoatStatus);
     }
 
@@ -76,7 +76,7 @@ public class BoatStatusMessageTest {
         byte[] message = boatStatusMessage.getBoatStatusMessage();
 
         byte[] actualMessage = new byte[2];
-        char actualLegNumber = PacketUtils.getCharFromByteArray(message, RaceStatusUtility.LEG_NUMBER_INDEX, actualMessage, 1);
+        char actualLegNumber = PacketUtils.getCharFromByteArray(message, RaceStatusUtility.LEG_NUMBER.getIndex(), actualMessage, RaceStatusUtility.LEG_NUMBER.getSize());
         assertEquals(legNumber, actualLegNumber);
     }
 
@@ -94,7 +94,7 @@ public class BoatStatusMessageTest {
         byte[] message = boatStatusMessage.getBoatStatusMessage();
 
         byte[] actualMessage = new byte[8];
-        long actualEstTimeAtNextMark = PacketUtils.getLongFromByteArray(message, RaceStatusUtility.EST_TIME_AT_NEXT_MARK_INDEX, actualMessage, 6);
+        long actualEstTimeAtNextMark = PacketUtils.getLongFromByteArray(message, RaceStatusUtility.EST_TIME_AT_NEXT_MARK.getIndex(), actualMessage, RaceStatusUtility.EST_TIME_AT_NEXT_MARK.getSize());
         assertEquals(estTimeAtNextMark, actualEstTimeAtNextMark);
     }
 
@@ -112,7 +112,7 @@ public class BoatStatusMessageTest {
         byte[] message = boatStatusMessage.getBoatStatusMessage();
 
         byte[] actualMessage = new byte[8];
-        long actualEstTimeAtFinish = PacketUtils.getLongFromByteArray(message, RaceStatusUtility.EST_TIME_AT_FINISH_INDEX, actualMessage, 6);
+        long actualEstTimeAtFinish = PacketUtils.getLongFromByteArray(message, RaceStatusUtility.EST_TIME_AT_FINISH.getIndex(), actualMessage, RaceStatusUtility.EST_TIME_AT_FINISH.getSize());
         assertEquals(estTimeAtFinish, actualEstTimeAtFinish);
     }
 

@@ -1,6 +1,19 @@
 junit:
   stage: test
   script:
+    - cd mock/
+    - mvn -B clean test
+
+generate_artifacts:
+  stage: deploy
+  script:
+    - cd mock/
+    - mvn -B clean site package
+
+
+junit:
+  stage: test
+  script:
     - cd visualiser/
     - mvn -B clean test
 

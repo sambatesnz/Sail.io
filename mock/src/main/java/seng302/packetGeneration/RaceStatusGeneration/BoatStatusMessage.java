@@ -42,7 +42,7 @@ public class BoatStatusMessage {
      * @return the byte[] packet for a boatsStatus
      */
     byte[] getBoatStatusMessage(){
-        ByteBuffer boatStatus = PacketGenerationUtils.LEBuffer(20);
+        ByteBuffer boatStatus = PacketGenerationUtils.LEBuffer(RaceStatusUtility.BOATS.getSize());
         boatStatus.put(sourceBoatID);
         boatStatus.put(status);
         boatStatus.put(legNumber);

@@ -1,7 +1,6 @@
 package seng302.Controllers;
 
 import seng302.Mark;
-import javafx.geometry.Pos;
 
 /**
  * Holds information relating to the coordinates within the window.
@@ -78,7 +77,7 @@ public final class  Coordinate {
      * Zooming out increases zoom value until a minimum zoom is reached
      */
     public static void decreaseZoom(){
-        if (zoom < 1) {
+        if (zoom < -0.05) {
             zoom += 0.05;
         }
     }
@@ -103,6 +102,15 @@ public final class  Coordinate {
                 (viewMax.getX() - viewMin.getX()) + BorderX;
     }
 
+
+    /**
+     * If needing to reset zoom set this value to 0
+     * @param zoom used to set the current zoom
+     */
+    public static void setZoom(double zoom) {
+        Coordinate.zoom = zoom;
+    }
+
     public static void setCenter(Mark center) {
         Coordinate.center = center;
     }
@@ -125,6 +133,14 @@ public final class  Coordinate {
      */
     public static void setDefaultCourseMax(Mark max) {
         defaultCourseMax = max;
+    }
+
+
+    /**
+     * @return the current zoom level
+     */
+    public static double getZoom() {
+        return zoom;
     }
 
     /**

@@ -1,6 +1,7 @@
+
 <?xml version="1.0" encoding="utf-8"?>
 <Race>
-    <CreationTimeDate>2017-05-16T16:00:45-03:00</CreationTimeDate>
+    <CreationTimeDate>2017-05-16T15:57:00-03:00</CreationTimeDate>
     <RaceStartTime Start="2017-05-16T16:00:00-03:00" Postpone="False" />
     <RaceID>17051610</RaceID>
     <RaceType>Match</RaceType>
@@ -58,9 +59,13 @@
     <CourseLimit name="Boundary" draw="1" avoid="1" fill="1" lock="0" colour="000000FF" notes="5,45">
         <Limit SeqID="1" Lat="32.3090300" Lon="-64.8466850" />
         <Limit SeqID="2" Lat="32.3121800" Lon="-64.8424450" />
-        <Limit SeqID="3" Lat="32.3000020" Lon="-64.8270390" />
-        <Limit SeqID="4" Lat="32.2962360" Lon="-64.8299680" />
-        <Limit SeqID="5" Lat="32.2934570" Lon="-64.8338660" />
-        <Limit SeqID="6" Lat="32.3054160" Lon="-64.8498380" />
+        <Limit SeqID="3" Lat="32.3110800" Lon="-64.8409810" />
+        <Limit SeqID="4" Lat="32.3161740" Lon="-64.8352140" />
+        <Limit SeqID="5" Lat="32.3120670" Lon="-64.8300040" />
+        <Limit SeqID="6" Lat="32.3067830" Lon="-64.8358330" />
+        <Limit SeqID="7" Lat="32.3000020" Lon="-64.8270390" />
+        <Limit SeqID="8" Lat="32.2962360" Lon="-64.8299680" />
+        <Limit SeqID="9" Lat="32.2934570" Lon="-64.8338660" />
+        <Limit SeqID="10" Lat="32.3054160" Lon="-64.8498380" />
     </CourseLimit>
 </Race>

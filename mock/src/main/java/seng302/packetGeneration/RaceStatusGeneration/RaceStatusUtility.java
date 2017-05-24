@@ -1,44 +1,44 @@
 package seng302.packetGeneration.RaceStatusGeneration;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.Arrays;
-
 /**
  * Utility Class for storing common functions
  * Used to generate packets/byte[array]
  */
-public final class RaceStatusUtility {
+public enum RaceStatusUtility {
 
-    static int OFFSET = 1;
-    static int MESSAGE_VERSION_POS = 0;
-    static int MESSAGE_VERSION_SIZE = 1;
-    static int CURRENT_TIME_POS = 1;
-    static int CURRENT_TIME_SIZE = 6;
-    static int RACE_ID_POS = 7;
-    static int RACE_ID_SIZE = 4;
-    static int RACE_STATUS_POS = 11;
-    static int RACE_STATUS_SIZE = 1;
-    static int EXPECTED_START_TIME_POS =  12;
-    static int EXPECTED_START_TIME_SIZE = 6;
-    static int WIND_DIRECTION_POS = 18;
-    static int WIND_DIRECTION_SIZE = 2;
-    static int WIND_SPEED_POS = 20;
-    static int WIND_SPEED_SIZE = 2;
-    static int NUM_BOATS_POS = 22;
-    static int NUM_BOATS_SIZE = 1;
-    static int RACE_TYPE_POS = 23;
-    static int RACE_TYPE_SIZE = 1;
-    static int BOATS_POS = 0;
-    static int BOATS_SIZE = 20;
+    MESSAGE_VERSION(0, 1),
+    CURRENT_TIME(1, 6),
+    RACE_ID(7, 4),
+    RACE_STATUS(11, 1),
+    EXPECTED_START_TIME(12, 6),
+    WIND_DIRECTION(18, 2),
+    WIND_SPEED(20, 2),
+    NUM_BOATS(22, 1),
+    RACE_TYPE(23, 1),
+    BOATS(0, 20),
+    SOURCE_ID(0, 4),
+    BOAT_STATUS(4, 1),
+    LEG_NUMBER(5, 1),
+    NUMBER_PENALTIES_AWARDED(6, 1),
+    NUMBER_PENALTIES_SERVED(7, 1),
+    EST_TIME_AT_NEXT_MARK(8, 6),
+    EST_TIME_AT_FINISH(14, 6);
 
-    static int SOURCE_ID_INDEX = 0;
-    static int BOAT_STATUS_INDEX = 4;
-    static int LEG_NUMBER_INDEX = 5;
-    static int NUMBER_PENALTIES_AWARDED_INDEX = 6;
-    static int NUMBER_PENALTIES_SERVED_INDEX = 7;
-    static int EST_TIME_AT_NEXT_MARK_INDEX = 8;
-    static int EST_TIME_AT_FINISH_INDEX = 14;
+    private int index;
+    private int size;
+
+    RaceStatusUtility(int index, int size){
+        this.index= index;
+        this.size = size;
+    }
+
+    public int getIndex(){
+        return index;
+    }
+
+    public int getSize() {
+        return size;
+    }
 
 
 

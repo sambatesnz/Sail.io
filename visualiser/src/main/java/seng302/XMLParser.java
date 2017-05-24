@@ -143,7 +143,6 @@ public class XMLParser {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     NamedNodeMap nnm = node.getAttributes();
                     int sourceID = Integer.valueOf(nnm.getNamedItem(SOURCEID).getNodeValue());
-                    System.out.println(sourceID);
                     participants.add(sourceID);
                 }
             }
