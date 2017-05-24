@@ -2,8 +2,10 @@ package seng302.packetGeneration.MessageHeaderGeneration;
 
 import org.junit.Test;
 import seng302.packetGeneration.PacketUtils;
+
 import java.util.Random;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for the header of a packet

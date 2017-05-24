@@ -18,6 +18,12 @@ public class Boat {
     private int position;
     private String abrv;
 
+    public int getSourceId() {
+        return sourceId;
+    }
+
+    private int sourceId;
+
     /**
      * Gets the abbreviation of the name of the team's boat
      * @return the boat's abbreviation string
@@ -42,8 +48,9 @@ public class Boat {
      * Constructs a boat
      * @param name the name of the boat/team
      * @param speed the speed of the boat
+     * @param sourceId
      */
-    public Boat(String name, double speed, Color colour, String abrv) {
+    public Boat(String name, double speed, Color colour, String abrv, int sourceId) {
         this.name = name;
         this.currentLegDistance = 0;
         this.currentLegIndex = 0;
@@ -51,6 +58,7 @@ public class Boat {
         this.colour = colour;
         this.abrv = abrv;
         this.raceTime = Integer.toUnsignedLong(0);
+        this.sourceId = sourceId;
     }
 
     /**

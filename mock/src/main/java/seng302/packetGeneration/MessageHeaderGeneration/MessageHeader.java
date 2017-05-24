@@ -1,10 +1,7 @@
 package seng302.packetGeneration.MessageHeaderGeneration;
 
 
-import seng302.packetGeneration.BinaryMessage;
 import seng302.packetGeneration.PacketGenerationUtils;
-
-import java.util.Arrays;
 
 /**
  * Header of a packet as defined by the AC35 specification

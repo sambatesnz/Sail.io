@@ -3,10 +3,11 @@ package seng302.packetGeneration;
 import org.junit.Test;
 import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.packetGeneration.BoatLocationGeneration.BoatLocationUtility;
+
 import java.util.Random;
 import java.util.zip.CRC32;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests the creation of binary message packets

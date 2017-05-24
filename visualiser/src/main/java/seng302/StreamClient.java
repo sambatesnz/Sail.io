@@ -78,7 +78,6 @@ public class StreamClient {
             }
         }
 
-        System.out.println(head[0] + " - " +  head[1]);
         byte[] lenBytes = new byte[4];
         System.arraycopy(head, 13, lenBytes, 0, 2);
 //        int messageLength = ((lenBytes[2] & 0xff) << 8) | (lenBytes[3] & 0xff);

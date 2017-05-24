@@ -3,7 +3,7 @@ package seng302.packetGeneration.RaceStatusGeneration;
 import org.junit.Test;
 import seng302.packetGeneration.PacketUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for the Boat Status message as a part of the Race Status Message Class

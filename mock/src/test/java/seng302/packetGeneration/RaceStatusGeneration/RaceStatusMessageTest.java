@@ -3,8 +3,7 @@ package seng302.packetGeneration.RaceStatusGeneration;
 import org.junit.Test;
 import seng302.packetGeneration.PacketUtils;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test class for testing the race status messages

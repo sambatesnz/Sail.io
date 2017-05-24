@@ -1,9 +1,5 @@
 package seng302.packetGeneration.RaceStatusGeneration;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.Arrays;
-
 /**
  * Utility Class for storing common functions
  * Used to generate packets/byte[array]

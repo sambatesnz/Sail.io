@@ -2,14 +2,11 @@ package seng302.packetGeneration.BoatLocationGeneration;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import seng302.packetGeneration.BinaryMessage;
 import seng302.packetGeneration.PacketUtils;
 
 import java.util.Random;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Test for BoatLocationMessage class

@@ -3,7 +3,6 @@ package seng302.packetGeneration;
 
 import seng302.packetGeneration.MessageHeaderGeneration.MessageHeader;
 
-import java.util.Arrays;
 import java.util.zip.CRC32;
 
 

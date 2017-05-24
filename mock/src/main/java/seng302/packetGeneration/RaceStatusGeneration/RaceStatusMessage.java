@@ -3,11 +3,9 @@ package seng302.packetGeneration.RaceStatusGeneration;
 import seng302.Boat;
 import seng302.MessageType;
 import seng302.packetGeneration.BinaryMessage;
-import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.packetGeneration.PacketGenerationUtils;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -106,9 +104,11 @@ public class RaceStatusMessage extends BinaryMessage{
         body.put(numberOfBoatsByte);
         body.put(raceType);
 
-        for (Boat boat: boats){
-            BoatStatusMessage message = new BoatStatusMessage(1, (char)2, (char)boat.getCurrentLegIndex(), 1, 1);
-            body.put(message.getBoatStatusMessage());
+        if (boats != null){
+            for (Boat boat: boats){
+                BoatStatusMessage message = new BoatStatusMessage(boat.getSourceId(), (char)2, (char)boat.getCurrentLegIndex(), 1, 1);
+                body.put(message.getBoatStatusMessage());
+            }
         }
 
         return body.array();

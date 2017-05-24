@@ -1,18 +1,17 @@
 package seng302.DataGeneration;
 
 import seng302.Boat;
-import seng302.DataGeneration.IServerData;
-import seng302.packetGeneration.BinaryMessage;
-import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.DataGenerator;
 import seng302.Race;
+import seng302.packetGeneration.BinaryMessage;
+import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.packetGeneration.RaceStatusGeneration.RaceStatusMessage;
 import seng302.packetGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.packetGeneration.XMLMessageGeneration.XMLSubTypes;
 
-import static java.lang.System.currentTimeMillis;
-
 import java.util.*;
+
+import static java.lang.System.currentTimeMillis;
 
 /**
  * Created by sba136 on 3/05/17.
@@ -83,7 +82,7 @@ public class MockRace implements IServerData {
         public void run() {
             for (Boat boat : race.getBoats()) {
                 BinaryMessage boatLocationMessage = new BoatLocationMessage(
-                        1, System.currentTimeMillis(), 1,
+                        1, System.currentTimeMillis(), boat.getSourceId(),
                         1, 1,
                         boat.getLatitude(), boat.getLongitude(), 0,
                         (short) boat.getHeading(), 0, 0, (short) boat.getSpeed(),
@@ -123,10 +122,10 @@ public class MockRace implements IServerData {
      *
      */
     public void runServerTimers() {
-        timer.schedule(new RSMSender(), 0, 2000);
         timer.schedule(new XMLSender(), 0, 2000);
-        timer.schedule(new BoatPosSender(), 0, 500);
-        timer.schedule(new RaceRunner(), 0, 17);
+        timer.schedule(new RSMSender(), 100, 2000);
+        timer.schedule(new BoatPosSender(), 1000, 10);
+        timer.schedule(new RaceRunner(), 2000, 100);
     }
 
     /**
