@@ -11,14 +11,14 @@ generate_artifacts:
     - mvn -B clean site package
 
 
-junit:
-  stage: test
-  script:
-    - cd visualiser/
-    - mvn -B clean test
-
-generate_artifacts:
-  stage: deploy
-  script:
-    - cd visualiser/
-    - mvn -B clean site package
+#junit:
+#  stage: test
+#  script:
+#    - cd visualiser/
+#    - mvn -B clean test
+#
+#generate_artifacts:
+#  stage: deploy
+#  script:
+#    - cd visualiser/
+#    - mvn -B clean site package
