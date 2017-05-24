@@ -156,7 +156,12 @@ public class Message {
             e.printStackTrace();
         }
         if (regattaSet && boatsSet && raceSet) {
-            ZoneId zoneId = ZoneId.of(String.valueOf(race.getRegatta().getUtcOffset()));
+            int zid = race.getRegatta().getUtcOffset();
+            String zidStr = String.valueOf(zid);
+            if (zid > 0) {
+                zidStr = "+" + String.valueOf(zid);
+            }
+            ZoneId zoneId = ZoneId.of(zidStr);
             long epoch = startTime.atZone(zoneId).toEpochSecond();
             race.setExpectedStartTime(epoch);
             race.setViewParams();
