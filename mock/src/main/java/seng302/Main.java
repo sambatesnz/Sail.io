@@ -1,7 +1,7 @@
 package seng302;
 
 import seng302.Server.GeneratedData;
-import seng302.Server.StreamServer;
+import seng302.Server.TempServer.Server;
 
 import java.io.IOException;
 
@@ -11,9 +11,12 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        StreamServer server = new StreamServer(9090);
-        GeneratedData genData = new GeneratedData();
-        genData.runServerTimers();
-        server.start(genData);
+//        ServerStream server = new ServerStream(9090);
+//        GeneratedData genData = new GeneratedData();
+//        genData.runServerTimers();
+
+        GeneratedData data = new GeneratedData();
+        Server server = new Server(9090);
+
     }
 }

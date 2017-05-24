@@ -56,7 +56,7 @@ public abstract class BinaryMessage {
      * Gets the body of a message as defined by the AC35 specification
      * @return byte array of the body
      */
-    protected abstract byte[] getBody();
+    public abstract byte[] getBody();
 
     /**
      * Gets the type of message as defined by the AC35 specification

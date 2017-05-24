@@ -9,12 +9,12 @@ import java.net.Socket;
  * Server seng302.Client based off implementation from this website:
  * http://cs.lmu.edu/~ray/notes/javanetexamples/
  */
-public class StreamServer {
+public class ServerStream {
 
     private ServerSocket listener;
     private Socket socket;
 
-    public StreamServer(int port) throws IOException {
+    public ServerStream(int port) throws IOException {
         this.listener = new ServerSocket(port);
     }
 

@@ -28,7 +28,7 @@ public class StreamServerTest {
         data.add(testByteData2);
         data.add(testByteData);
 
-        StreamServer server = new StreamServer(9091);
+        ServerStream server = new ServerStream(9091);
 
         Thread serverThread = new Thread(() -> {
             try {
@@ -56,7 +56,7 @@ public class StreamServerTest {
     @Test
     public void serverWithGeneratedMessage() throws Exception {
 //
-//        StreamServer server = new StreamServer(9090);
+//        ServerStream server = new ServerStream(9090);
 //        Thread serverThread = new Thread(() -> {
 //            try {
 //                server.start(data);

@@ -21,6 +21,8 @@ import java.util.*;
 public class GeneratedData implements IServerData {
     private Queue<byte[]> bytes = new LinkedList<>();
 
+    Timer timer = new Timer();
+
     private Race race = new Race();
     // Generate RaceStatusMessage from using properties of Race object.
     private BinaryMessage rsm = new RaceStatusMessage(currentTimeMillis(),
@@ -118,10 +120,16 @@ public class GeneratedData implements IServerData {
     }
 
     public void runServerTimers() {
-        Timer timer = new Timer();
         timer.schedule(new RSMSender(), 0, 2000);
         timer.schedule(new XMLSender(), 0, 2000);
         timer.schedule(new BoatPosSender(), 0, 500);
         timer.schedule(new RaceRunner(), 0, 17);
     }
+
+    public void cancelServerTimers(){
+        System.out.println("Threads cancelled");
+        timer.cancel();
+    }
+
+
 }
