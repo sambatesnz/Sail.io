@@ -1,6 +1,8 @@
 package seng302.Controllers;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +23,7 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Callback;
 import seng302.*;
 
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import static java.lang.System.currentTimeMillis;
+import static java.lang.System.setOut;
 
 /**
  * Class that controls the race window and updates the race as it proceeds
@@ -214,6 +218,12 @@ public class RaceController {
         // set the data types for the table columns.
         positionCol.setCellValueFactory(new PropertyValueFactory<>("position"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        speedCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Boat, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Boat, String> p) {
+                String speed = String.valueOf(p.getValue().getSpeed());
+                return new ReadOnlyObjectWrapper<String>(speed);
+            }
+        });
 
         //Initialises compoundMarks
         for (CompoundMark lm : race.getCompoundMarks()) {
@@ -446,6 +456,8 @@ public class RaceController {
         Coordinate.setOffset(race.calculateOffset());
         Coordinate.updateViewCoordinates();
 
+        positionTable.refresh();
+
         viewAnchorPane.setMinHeight(Coordinate.getWindowY());
         viewAnchorPane.setMaxHeight(Coordinate.getWindowY());
         viewAnchorPane.setMinWidth(Coordinate.getWindowX());
@@ -457,9 +469,17 @@ public class RaceController {
         viewAnchorPane.setMinWidth(Coordinate.getWindowX());
         viewAnchorPane.setMaxWidth(Coordinate.getWindowX());
 
-//        selectedImage.setFitHeight(Coordinate.getRelativeY(640));
+
+        for (int i = 0; i < absolutePaths.size(); i++) {
+            if (absolutePaths.get(i).size() > 500) {
+                paths.get(i).getElements().remove(1);
+                absolutePaths.get(i).remove(0);
+            }
+        }
+
 
         for (int i = 0; i < boats.size(); i++) {
+
             double boatSpeed = race.getBoats().get(i).getSpeed();
             String speed = "";
             String name = "";
@@ -499,12 +519,15 @@ public class RaceController {
                 paths.get(i).getElements().set(paths.get(i).getElements().size() - 1, new LineTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
             }
 
+
             ((MoveTo) paths.get(i).getElements().get(0)).setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
             ((MoveTo) paths.get(i).getElements().get(0)).setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
             for (int j = 1; j < paths.get(i).getElements().size(); j++) {
                 ((LineTo) paths.get(i).getElements().get(j)).setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
                 ((LineTo) paths.get(i).getElements().get(j)).setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
             }
+
+
         }
 
         ArrayList<Mark> marks = new ArrayList<>();
@@ -633,7 +656,29 @@ public class RaceController {
             @Override
             public void handle(long currentNanoTime) {
                 frameCount++;
+
+//                for (Path path : paths){
+//                    if (path.getElements().size() >= 30) {
+//                        path.getElements().remove(0);
+//                    }
+//                }
+
+//                for (int i = 0; i < absolutePaths.size(); i++){
+//                    if (paths.get(i).getElements().size() >= 30) {
+//                        paths.get(i).getElements().remove(0);
+//                        absolutePaths.get(i).remove(0);
+//                    }
+//                }
+
                 updateView();
+
+//                if (paths != null) {
+//                    System.out.println(paths.get(i).getElements().size());
+//                    if (paths.get(i).getElements().size() >= 200) {
+//                        paths.get(i).getElements().remove(0);
+//                    }
+//                    System.out.println(paths.get(i).getElements().size());
+//                }
 
                 if (raceStarted) {
 //                    race.updateBoats();
@@ -663,7 +708,7 @@ public class RaceController {
                     finishedListView.setItems(race.getPositionStrings());
 
                 } else {
-                    positionTable.setItems(race.getCurrentOrder());
+                    positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
                 }
             }
         }.start();
