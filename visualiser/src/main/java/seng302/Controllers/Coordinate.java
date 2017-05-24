@@ -102,6 +102,11 @@ public final class  Coordinate {
                 (viewMax.getX() - viewMin.getX()) + BorderX;
     }
 
+
+    /**
+     * If needing to reset zoom set this value to 0
+     * @param zoom used to set the current zoom
+     */
     public static void setZoom(double zoom) {
         Coordinate.zoom = zoom;
     }
@@ -130,6 +135,10 @@ public final class  Coordinate {
         defaultCourseMax = max;
     }
 
+
+    /**
+     * @return the current zoom level
+     */
     public static double getZoom() {
         return zoom;
     }

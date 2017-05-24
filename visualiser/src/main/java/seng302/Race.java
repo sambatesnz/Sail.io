@@ -94,6 +94,12 @@ public class Race {
         this.finishedBoats = finishedBoats;
     }
 
+
+    /**
+     * @param min viewMin of the course boundary
+     * @param max viewMax of the course boundary
+     * @return the center of these points
+     */
     public Mark getCenter(Mark min, Mark max) {
         Mark center = new Mark();   // changing from setting lat/long to x/y
         center.setX((max.getX() + min.getX()) / 2);
@@ -103,8 +109,12 @@ public class Race {
         return center;
 }
 
+    /**
+     * calculates the offset of the currently selected boat to follow
+     * Note that if no boats selected that boat to follow is set to a 'dummy' default boat at the center
+     * @return a mark representing the current boat to follows offset with the original center
+     */
     public Mark calculateOffset(){
-//      TODO: calculate offset based on mapCenter and boat (boat - mapCenter)
         Mark offset = new Mark();
 
         offset.setX(boatToFollow.getX() - mapCenter.getX());
@@ -316,6 +326,10 @@ public class Race {
     }
 
 
+    /**
+     * If no boat has been selected this will be a 'dummy' boat whose position is the center
+     * @param markToFollow is a boat which the view will track round the course
+     */
     public void setBoatToFollow(Boat markToFollow) {
         this.boatToFollow = markToFollow;
     }

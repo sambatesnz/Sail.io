@@ -130,6 +130,7 @@ public class RaceController {
         selectedImage.setImage(image);
         group.getChildren().add(selectedImage);
 
+        // handles zooming when a boat is selected
         viewAnchorPane.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
             public void handle(ScrollEvent event) {
@@ -148,7 +149,6 @@ public class RaceController {
         this.timeZoneWrapper = new TimeZoneWrapper("Atlantic/Bermuda");
         finishedListView = new ListView<>();
         boundary = getBoundary(race);
-
         group.getChildren().add(boundary);
 
         //Initialises boats
@@ -180,6 +180,7 @@ public class RaceController {
             boatSprite.setFill(race.getBoats().get(i).getColour().saturate().saturate());
             boatSprite.setId(Integer.toString(i));
 
+            // Used when selecting a boat to follow
             boatSprite.onMousePressedProperty().setValue(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -363,6 +364,9 @@ public class RaceController {
         startButton.setVisible(false);
     }
 
+    /**
+     * resets the view back to its original state
+     */
     public void resetViewButtonPressed() {
         race.resetZoom();
         Coordinate.setZoom(0);
@@ -638,6 +642,9 @@ public class RaceController {
 
     }
 
+    /**
+     * @param nodeToScale node to scale based on current level of zoom
+     */
     private void updateNodeScale(Node nodeToScale) {
         nodeToScale.setScaleX(1/(1+Coordinate.getZoom()*0.9));
         nodeToScale.setScaleY(1/(1+Coordinate.getZoom()*0.9));
