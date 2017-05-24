@@ -24,6 +24,7 @@ public class Boat {
     private String shortName;
     private String country;
     private double speed;
+    private double distanceToNextMark;
 
     /**
      * Gets the abbreviation of the name of the team's boat
@@ -104,6 +105,14 @@ public class Boat {
      */
     public void setHeading(double heading) {
         this.heading = heading;
+    }
+
+    public double getDistanceToNextMark() {
+        return distanceToNextMark;
+    }
+
+    public void setDistanceToNextMark(double distanceToNextMark) {
+        this.distanceToNextMark = distanceToNextMark;
     }
 
     /**

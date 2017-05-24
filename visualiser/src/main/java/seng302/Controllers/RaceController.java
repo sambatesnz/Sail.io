@@ -69,7 +69,7 @@ public class RaceController {
     @FXML
     private TableView<Boat> positionTable;
     @FXML
-    private TableColumn<Boat, Integer> positionCol;
+    private TableColumn<Boat, String> positionCol;
     @FXML
     private TableColumn<Boat, String> nameCol;
     @FXML
@@ -125,6 +125,9 @@ public class RaceController {
     private Integer sparkCounter = 0;
     private List<Boat> sortedBoats;
     private List<Boat> otherSortedBoats;
+
+    private int EARTH_RADIUS = 6371;
+    private int METERS_CONVERSION = 1000;
 
 
     /**
@@ -249,19 +252,22 @@ public class RaceController {
         mainBorderPane.setCenter(viewAnchorPane);
 
         // set the data types for the table columns.
-        positionCol.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("position"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<Boat, String>("name"));
-        speedCol.setCellValueFactory(new PropertyValueFactory<Boat, String>("speed"));
-
+//        positionCol.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("position"));
 //
-//        positionCol.setCellValueFactory(new PropertyValueFactory<>("position"));
-//        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-//        speedCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Boat, String>, ObservableValue<String>>() {
-//            public ObservableValue<String> call(TableColumn.CellDataFeatures<Boat, String> p) {
-//                String speed = String.valueOf(p.getValue().getSpeed());
-//                return new ReadOnlyObjectWrapper<String>(speed);
-//            }
-//        });
+        positionCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Boat, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Boat, String> p) {
+                String pos = String.valueOf(p.getValue().getPosition());
+//                System.out.println(p.getValue().getPosition() + ", " + p.getValue().getName() + ", " + p.getValue().getTimeToFinish());
+                return new ReadOnlyObjectWrapper<String>(pos);
+            }
+        });
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        speedCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Boat, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Boat, String> p) {
+                String speed = String.valueOf(p.getValue().getSpeed());
+                return new ReadOnlyObjectWrapper<String>(speed);
+            }
+        });
 
         //Initialises compoundMarks
         for (CompoundMark lm : race.getCompoundMarks()) {
@@ -372,15 +378,66 @@ public class RaceController {
 
         List<Boat> boats = race.getBoats();
 
-        // Sorts by time to next mark property
-        Collections.sort(boats, (o1, o2) -> {
-            return o1.getTimeToFinish() < o2.getTimeToFinish()?-1 :
-                    o1.getTimeToNextMark() < o2.getTimeToNextMark()? 1 : 0;
-        });
-        for (int i = 0; i < boats.size(); i++) {
-            boats.get(i).setPosition(i + 1);
+        for (Boat boat : boats) {
+            int leg = boat.getCurrentLegIndex();
+            double boatLat = boat.getLatitude();
+            double boatLong = boat.getLongitude();
+
+            CompoundMark compundMark = race.getCompoundMarks().get(leg);
+            Mark mark = compundMark.getMarks().get(0);
+            double markLat = mark.getLatitude();
+            double markLong = mark.getLongitude();
+
+            double distance = calculateDistance(boatLat, markLat, boatLong, markLong);
+
+            boat.setDistanceToNextMark(distance);
         }
+
+        Comparator<Boat> sortPosition = Comparator.comparing(Boat::getDistanceToNextMark).thenComparing(Boat::getCurrentLegIndex);
+
+        boats.sort((o1, o2) -> o1.getCurrentLegIndex()>o2.getCurrentLegIndex()?-1:o1.getCurrentLegIndex()<=o2.getCurrentLegIndex()?1: 0);
+        System.out.println("1:" + boats.get(0).getCurrentLegIndex() + "      2:" + boats.get(1).getCurrentLegIndex());
+        for (int i = 0; i < boats.size(); i++) {
+            int position = i + 1;
+            boats.get(i).setPosition(position);
+        }
+
     }
+//
+//        List<Boat> boats = race.getBoats();
+//
+////        // Sorts by time to next mark property
+////        Collections.sort(boats, (o1, o2) -> {
+//////            System.out.println(o1.getBoatName());
+//////            o1.
+//////            System.out.println(o1.getTimeToNextMark() - o2.getTimeToNextMark());
+////            return o1.getTimeToFinish() < o2.getTimeToFinish()? -1 : 1;
+////        });
+//
+//        // Sorts by time to next mark property
+//
+////        boats.sort((o1, o2) -> o1.getCurrentLegIndex() <= o2.getCurrentLegIndex()? -1 : 1);
+////        for (int i = 0; i < boats.size(); i++) {
+////            boats.get(i).setPosition(i + 1);
+//        }
+////        System.out.println(boats.get(0).getPosition());
+////        System.out.println(boats);
+//    }
+
+
+    private double calculateDistance(double sourceLat, double destLat, double sourceLong, double destLong) {
+
+        double latDist = Math.toRadians(destLat - sourceLat);
+        double longDist = Math.toRadians(destLong - sourceLong);
+
+        double a = Math.sin(latDist / 2) * Math.sin(latDist / 2) + Math.cos(Math.toRadians(sourceLat))
+                * Math.cos(Math.toRadians(destLat)) * Math.sin(longDist / 2) * Math.sin(longDist / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double dist = EARTH_RADIUS * c * METERS_CONVERSION;
+
+        return dist;
+    }
+
 
     /**
      * Generates a line used for a wake
@@ -431,18 +488,19 @@ public class RaceController {
         // Check the data is up to date.
         // Retrieve the boat position data.
 
-        if (!(race.getBoats().equals(sortedBoats) && race.getBoats().equals(otherSortedBoats))) {
+//        if (!(race.getBoats().equals(sortedBoats) && race.getBoats().equals(otherSortedBoats))) {
             for (int i = 0; i < race.getBoats().size(); i++) {
                 // update the chart.
 //            XYChart.Series<Number, Number> series = seriesList.get(i);
                 Number reversedOrder = race.getBoats().size() - race.getBoats().get(i).getPosition() + 1;
                 seriesList.get(i).getData().add(new XYChart.Data<>(secondCounter, reversedOrder));
             }
-        }
+//        }
 
         otherSortedBoats = sortedBoats;
         sortedBoats = race.getBoats();
         sparklinesChart.setData(seriesList);
+        positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
         secondCounter++;
     }
 
@@ -664,7 +722,7 @@ public class RaceController {
         }
 
         resetViewButton.setLayoutX(14);
-        resetViewButton.setLayoutY(Coordinate.getWindowY() - 75);
+        resetViewButton.setLayoutY(Coordinate.getWindowY() - 100);
 
         fpsBtn.setLayoutX(14);
         fpsBtn.setLayoutY(Coordinate.getWindowY() - 125);
@@ -764,14 +822,6 @@ public class RaceController {
             }
             lastTime = currentTimeMillis();
         }
-    }
-
-    /**
-     * Given the bat source ID, will update the position of that boat as it is displayed in the GUi.
-     * @param sourceID the key for the boat in te map of boats.
-     */
-    private void updateBoatPosition(int sourceID) {
-
     }
 
     /**
