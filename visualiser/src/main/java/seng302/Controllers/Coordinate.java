@@ -28,7 +28,7 @@ public final class  Coordinate {
     private static Mark defaultCourseMax;
     private static Mark center;
 
-
+    private static boolean trackingBoat = false;
 
     private Coordinate(){}
 
@@ -80,6 +80,14 @@ public final class  Coordinate {
         if (zoom < -0.05) {
             zoom += 0.05;
         }
+    }
+
+    public static void setTrackingBoat(boolean value){
+        trackingBoat = value;
+    }
+
+    public static boolean isTrackingBoat(){
+        return trackingBoat;
     }
 
     /**

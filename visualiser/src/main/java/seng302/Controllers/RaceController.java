@@ -136,7 +136,7 @@ public class RaceController {
         viewAnchorPane.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
             public void handle(ScrollEvent event) {
-                if (resetViewButton.visibleProperty().get()) {
+                if (Coordinate.isTrackingBoat()) {
                     if (event.getDeltaY() < 0) {
                        Coordinate.decreaseZoom();
                     }
@@ -189,6 +189,7 @@ public class RaceController {
                 public void handle(MouseEvent event) {
                     race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
                     resetViewButton.setVisible(true);
+                    Coordinate.setTrackingBoat(true);
                 }
             });
             // to give the user more space to click on the boat
@@ -197,6 +198,7 @@ public class RaceController {
                 public void handle(MouseEvent event) {
                     race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
                     resetViewButton.setVisible(true);
+                    Coordinate.setTrackingBoat(true);
                 }
             });
 
@@ -374,6 +376,7 @@ public class RaceController {
         race.resetZoom();
         Coordinate.setZoom(0);
         resetViewButton.setVisible(false);
+        Coordinate.setTrackingBoat(false);
     }
 
     /**
