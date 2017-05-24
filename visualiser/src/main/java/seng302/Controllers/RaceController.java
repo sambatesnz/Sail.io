@@ -363,14 +363,6 @@ public class RaceController {
 
         seriesList = FXCollections.observableList(series);
         sparklinesChart.setData(seriesList);
-
-//        sparklineTimer = new Timer();
-//        sparklineTimer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                updateSparkLineChart();
-//            }
-//        }, 2, 20);
     }
 
     /**
@@ -411,18 +403,6 @@ public class RaceController {
         boundary.setFill(Color.LIGHTBLUE);
         return boundary;
     }
-
-
-    // DEPRECATED AS THE BUTTTON IS NOW REMOVED
-//    /**
-//     * When the startButton is pressed, this method is called.
-//     * Starts the race by changing the countingDown boolean to true
-//     * Hides the startButton after being pressed
-//     */
-//    public void startButtonPressed() {
-//        countingDown = true;
-//        //startButton.setVisible(false);
-//    }
 
     /**
      * When the annotationBtn is clicked, this method is called.
@@ -708,11 +688,6 @@ public class RaceController {
 
         updateView();
 
-
-
-//        long startTime = race.getExpectedStartTime().atZone(new ZoneOffset(race.getRegatta().getUtcOffset()));
-//        ZoneId zoneId = ZoneId.of(race.getRegatta().getUtcOffset());
-//        long startTime =  race.getExpectedStartTime().atZone(zoneId).toEpochSecond();
         long startTime = race.getExpectedStartTime();
 
         long timeToStart = startTime - race.getCurrentTime();
@@ -754,7 +729,6 @@ public class RaceController {
                 } else {
                     updateRaceClockCountDown();
                 }
-                // TODO: Update clock counting down before race
 
 //                if (race.finished) {
 //                    positionTable.setVisible(false);
