@@ -80,8 +80,10 @@ public class Race {
         mapCenter = getCenter(viewMin.getCopy(), viewMax.getCopy());
         centerOfScreen = new Boat(-1);
         centerOfScreen.setMark(mapCenter);
+        if (!isRaceReady()) {
+            boatToFollow = centerOfScreen;
+        }
 
-        boatToFollow = centerOfScreen;
         Coordinate.setCenter(getCenter(viewMin.getCopy(), viewMax.getCopy()));
         Coordinate.updateViewCoordinates();
     }
