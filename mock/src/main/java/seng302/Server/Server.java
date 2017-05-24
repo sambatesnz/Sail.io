@@ -1,14 +1,14 @@
-package seng302.Server.TempServer;
+package seng302.Server;
 
-import seng302.Server.GeneratedData;
-import seng302.Server.IServerData;
+import seng302.DataGeneration.MockRace;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Created by sha162 on 24/05/17.
+ * Server to n client implementation from this website:
+ * http://cs.lmu.edu/~ray/notes/javanetexamples/
  */
 public class Server {
 
@@ -34,7 +34,7 @@ public class Server {
 
         public void run(){
             System.out.println("Connection established");
-            GeneratedData genData = new GeneratedData();
+            MockRace genData = new MockRace();
             genData.runServerTimers();
             while (!genData.finished() && !socket.isClosed()){
                 System.out.flush();  // Need to flush output stream to send packets
@@ -54,7 +54,7 @@ public class Server {
 
             genData.cancelServerTimers();
             try {
-                socket.close();
+                close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

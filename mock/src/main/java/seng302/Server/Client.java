@@ -1,4 +1,4 @@
-package seng302.Server.TempServer;
+package seng302.Server;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

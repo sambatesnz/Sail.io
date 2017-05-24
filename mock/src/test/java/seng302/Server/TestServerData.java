@@ -1,5 +1,7 @@
 package seng302.Server;
 
+import seng302.DataGeneration.IServerData;
+
 import java.util.ArrayList;
 
 /**

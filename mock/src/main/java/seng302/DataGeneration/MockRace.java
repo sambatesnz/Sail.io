@@ -1,12 +1,11 @@
-package seng302.Server;
+package seng302.DataGeneration;
 
 import seng302.Boat;
+import seng302.DataGeneration.IServerData;
 import seng302.packetGeneration.BinaryMessage;
 import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
-import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessageDeprecated;
 import seng302.DataGenerator;
 import seng302.Race;
-import seng302.packetGeneration.BoatLocationGeneration.BoatLocationUtility;
 import seng302.packetGeneration.RaceStatusGeneration.RaceStatusMessage;
 import seng302.packetGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.packetGeneration.XMLMessageGeneration.XMLSubTypes;
@@ -18,7 +17,7 @@ import java.util.*;
 /**
  * Created by sba136 on 3/05/17.
  */
-public class GeneratedData implements IServerData {
+public class MockRace implements IServerData {
     private Queue<byte[]> bytes = new LinkedList<>();
 
     Timer timer = new Timer();
@@ -119,6 +118,10 @@ public class GeneratedData implements IServerData {
         }
     }
 
+    /**
+     * Schedules data to be generated for a race at intervals
+     *
+     */
     public void runServerTimers() {
         timer.schedule(new RSMSender(), 0, 2000);
         timer.schedule(new XMLSender(), 0, 2000);
@@ -126,6 +129,10 @@ public class GeneratedData implements IServerData {
         timer.schedule(new RaceRunner(), 0, 17);
     }
 
+    /**
+     * Cancels the timers running in the current thread
+     * Used to free resources
+     */
     public void cancelServerTimers(){
         System.out.println("Threads cancelled");
         timer.cancel();
