@@ -112,6 +112,9 @@ public class RaceController {
     private ObservableList<XYChart.Series<Number, Number>> seriesList;
     //private LineChart <Number, Number> sparklinesChart;
     private Integer secondCounter = 1;
+    private Integer sparkCounter = 0;
+    private List<Boat> sortedBoats;
+    private List<Boat> otherSortedBoats;
 
     private Timer sparklineTimer;
 
@@ -132,14 +135,12 @@ public class RaceController {
         serverThread.start();
 
         while (!race.isRaceReady()) {
-//            System.out.println(race.isRaceReady());
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println(race.isRaceReady());
 
         viewAnchorPane.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
@@ -360,10 +361,10 @@ public class RaceController {
             series.add(newSeries);
         }
 
-//        seriesList = FXCollections.observableList(series);
-//        sparklinesChart.setData(seriesList);
+        seriesList = FXCollections.observableList(series);
+        sparklinesChart.setData(seriesList);
 
-        sparklineTimer = new Timer();
+//        sparklineTimer = new Timer();
 //        sparklineTimer.scheduleAtFixedRate(new TimerTask() {
 //            @Override
 //            public void run() {
@@ -376,15 +377,21 @@ public class RaceController {
      * Called by a timer, updates the data displayed in the sparkline chart in the sidebar.
      */
     private void updateSparkLineChart() {
-//        System.out.println("checked");
+        checkPositions();
         // Check the data is up to date.
         // Retrieve the boat position data.
-        for (int i = 0; i < race.getBoats().size(); i++) {
-            // update the chart.
+
+        if (!(race.getBoats().equals(sortedBoats) && race.getBoats().equals(otherSortedBoats))) {
+            for (int i = 0; i < race.getBoats().size(); i++) {
+                // update the chart.
 //            XYChart.Series<Number, Number> series = seriesList.get(i);
-            Number reversedOrder = race.getBoats().size() - race.getBoats().get(i).getPosition() + 1;
-            seriesList.get(i).getData().add(new XYChart.Data<>(secondCounter, reversedOrder));
+                Number reversedOrder = race.getBoats().size() - race.getBoats().get(i).getPosition() + 1;
+                seriesList.get(i).getData().add(new XYChart.Data<>(secondCounter, reversedOrder));
+            }
         }
+
+        otherSortedBoats = sortedBoats;
+        sortedBoats = race.getBoats();
         sparklinesChart.setData(seriesList);
         secondCounter++;
     }
@@ -698,8 +705,9 @@ public class RaceController {
      * updateView. Also displays the current position that the boats are in
      */
     private void runRace() {
+
         updateView();
-        checkPositions();
+
 
 
 //        long startTime = race.getExpectedStartTime().atZone(new ZoneOffset(race.getRegatta().getUtcOffset()));
@@ -719,7 +727,6 @@ public class RaceController {
                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeToStart)));
         } else {
             long raceRunning = - timeToStart;
-            System.out.println(raceRunning);
             raceStarted = true;
 
             raceHours = (int) TimeUnit.MILLISECONDS.toHours(raceRunning);
@@ -735,6 +742,11 @@ public class RaceController {
             public void handle(long currentNanoTime) {
                 frameCount++;
                 updateView();
+                sparkCounter++;
+                if (sparkCounter > 50) {
+                    sparkCounter = 0;
+                    updateSparkLineChart();
+                }
 
                 Coordinate.updateBorder();
                 if (race.started()) {
