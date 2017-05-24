@@ -58,9 +58,6 @@ public class Race {
         MarkStrings = FXCollections.observableArrayList();
     }
 
-    public Regatta getRegatta() {
-        return regatta;
-    }
 
     public Mark getMapCenter() {
         return mapCenter;
