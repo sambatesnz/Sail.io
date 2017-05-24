@@ -23,6 +23,14 @@ public class Mark {
         this.y = convertToY(latitude);
     }
 
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     /**
      * Converts a longitude to x
      * @param lon Longitude to convert

@@ -28,7 +28,7 @@ public class RaceStatusMessage {
      * update the status of the race, and create Boat Status Messages for each boat in the race.
      * @param bytes The array of bytes from the body of a race status packet
      */
-    public RaceStatusMessage(byte[] bytes) {
+    public RaceStatusMessage(byte[] bytes, Race race) {
         currentTime = Message.byteArrayToLong(bytes, 1, 6);
         raceID = Message.byteArrayToLong(bytes, 7, 4);
         raceStatus = Message.byteArrayToInt(bytes, 11, 1);
@@ -37,6 +37,7 @@ public class RaceStatusMessage {
         windSpeed = Message.byteArrayToInt(bytes, 20, 2);
         numBoatsInRace = Message.byteArrayToInt(bytes, 22, 1);
         raceType = Message.byteArrayToInt(bytes, 23, 1);
+        this.race = race;
 
         int indent = 24;
 
@@ -50,15 +51,16 @@ public class RaceStatusMessage {
             long boatTimeToFinish = Message.byteArrayToLong(bytes, indent + 14, 6);
 
             BoatStatusMessage boatDetails = new BoatStatusMessage(boatSourceID, boatStatus,
-                    boatLegNumber, boatTimeToNextMark, boatTimeToFinish);
+                    boatLegNumber, boatTimeToNextMark, boatTimeToFinish, race);
             boatDetailsList[i] = boatDetails;
 
             indent += 20;
         }
 
-//        for (BoatStatusMessage boatInfo : boatDetailsList) {
-//            boatInfo.setBoatDetails();
-//        }
+        updateRaceDetails();
+        for (BoatStatusMessage boatInfo : boatDetailsList) {
+            boatInfo.setBoatDetails();
+        }
     }
 
     /**
