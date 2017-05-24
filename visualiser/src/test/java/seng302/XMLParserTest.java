@@ -40,13 +40,13 @@ public class XMLParserTest {
     @Test
     public void checkCourseLayoutsCorrect() throws IOException {
         List<CompoundMark> compoundMarks = raceParser.getCourseLayout();
-        Assert.assertTrue(compoundMarks.size() == 5);
+        Assert.assertTrue(compoundMarks.size() == 9);
     }
 
     @Test
     public void checkCourseOrderCorrect() throws IOException {
         List<Integer> courseOrder = raceParser.getCourseOrder();
-        Assert.assertTrue(courseOrder.size() == 6);
+        Assert.assertTrue(courseOrder.size() == 9);
     }
 
     @Test
@@ -58,7 +58,7 @@ public class XMLParserTest {
     @Test
     public void checkRegatta() throws IOException {
         Regatta reg = regattaParser.getRegatta();
-        Assert.assertTrue(reg.getUtcOffset() == 12);
+        Assert.assertTrue(reg.getUtcOffset() == -3);
     }
 
     @Test

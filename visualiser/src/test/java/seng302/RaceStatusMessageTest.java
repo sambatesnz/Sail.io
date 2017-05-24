@@ -35,7 +35,7 @@ public class RaceStatusMessageTest {
                 (byte)0x00, (byte)0x00, (byte)0x00,                 //Expected Start Time 6/6 (57261)
                 (byte)0x00, (byte)0x80,                             //Wind Direction (180)
                 (byte)0x88, (byte)0x13,                             //Wind Speed (5000)
-                (byte)0x03,                                         //Number of Boats in Race (3)
+                (byte)0x33,                                         //Number of Boats in Race (3)
                 (byte)0x01,                                         //Race Type (1)
 
                 (byte)0x65, (byte)0x00, (byte)0x00, (byte)0x00,     //SourceID Boat 1 (101)
@@ -72,12 +72,12 @@ public class RaceStatusMessageTest {
         };
 
         race = new Race();
-        List participants = new ArrayList<Integer>();
+        List<Integer> participants = new ArrayList<>();
         participants.add(101);
         participants.add(102);
         participants.add(103);
         race.setParticipants(participants);
-        HashMap<Integer, Boat> testBoatMap = new HashMap<Integer, Boat>();
+        HashMap<Integer, Boat> testBoatMap = new HashMap<>();
         testBoatMap.put(101, new Boat("Test_1", "Test_1", 101, "Country_1"));
         testBoatMap.put(102, new Boat("Test_2", "Test_2", 102, "Country_2"));
         testBoatMap.put(103, new Boat("Test_3", "Test_3", 103, "Country_3"));
@@ -92,6 +92,7 @@ public class RaceStatusMessageTest {
 
     @Test
     public void raceWindHeadingTest() {
+        System.out.println(race.getWindHeading());
         Assert.assertEquals(180.0, race.getWindHeading(), 0.1);
     }
 
