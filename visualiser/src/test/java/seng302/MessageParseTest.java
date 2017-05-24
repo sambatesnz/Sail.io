@@ -54,7 +54,7 @@ public class MessageParseTest {
                 (byte)0x4E, (byte)0x5E, (byte)0x01,                 //Time to Finish Boat 3 3/6
                 (byte)0x00, (byte)0x00, (byte)0x00,                 //Time to Finish Boat 3 6/6 (89678)
         };
-        raceStatus = new RaceStatusMessage(raceStatusTestMessage);
+        raceStatus = new RaceStatusMessage(new Race(), raceStatusTestMessage);
     }
 
     @Test

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +97,8 @@ public class Message {
             case HEARTBEAT:
                 break;
             case RACE_STATUS:
-                RaceStatusMessage raceStatus = new RaceStatusMessage(body);
+                RaceStatusMessage raceStatus = new RaceStatusMessage(race, body);
+                raceStatus.updateRaceDetails();
                 break;
             case DISPLAY:
                 break;
@@ -140,6 +143,7 @@ public class Message {
     }
 
     public void passXML(String xmlString, int subType) {
+        LocalDateTime startTime = LocalDateTime.now();
         try {
             XMLParser xmlParser = new XMLParser(xmlString);
             switch(subType) {
@@ -158,6 +162,8 @@ public class Message {
                     race.setCompoundMarks(compoundMarks);
                     race.setGates(compoundMarks);
                     race.setCourseOrder(xmlParser.getCourseOrder());
+                    startTime = xmlParser.getRaceStartTime();
+//                    race.setExpectedStartTime(xmlParser.getRaceStartTime());
                     raceSet = true;
                     break;
             }
@@ -165,6 +171,9 @@ public class Message {
             e.printStackTrace();
         }
         if (regattaSet && boatsSet && raceSet) {
+            ZoneId zoneId = ZoneId.of(String.valueOf(race.getRegatta().getUtcOffset()));
+            long epoch = startTime.atZone(zoneId).toEpochSecond();
+            race.setExpectedStartTime(epoch);
             race.setViewParams();
             race.setRaceReady(true);
         }

@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seng302.Controllers.Coordinate;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -40,6 +42,7 @@ public class Race {
     private Boat centerOfScreen;
     private Boat boatToFollow;
     private List<Integer> participants;
+    private long currentTime;
 
     public boolean isRaceReady() {
         return raceReady;
@@ -80,6 +83,14 @@ public class Race {
 //            boat.setX(legs.get(0).getStart().getX());
 //            boat.setY(legs.get(0).getStart().getY());
 //        }
+    }
+
+    public long getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(long currentTime) {
+        this.currentTime = currentTime;
     }
 
     public void setViewParams() {
@@ -231,6 +242,10 @@ public class Race {
         return raceStatus;
     }
 
+    public boolean started() {
+        return raceStatus == 3;
+    }
+
     /**
      * Sets the current status of the race
      * 0: Not active
@@ -300,6 +315,10 @@ public class Race {
 
     public void setRegatta(Regatta regatta) {
         this.regatta = regatta;
+    }
+
+    public Regatta getRegatta() {
+        return regatta;
     }
 
     public void setBoats(Map<Integer, Boat> boats) {
