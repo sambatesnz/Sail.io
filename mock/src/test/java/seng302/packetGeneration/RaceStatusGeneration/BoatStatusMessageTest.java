@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for the Boat Status message as a part of the Race Status Message Class
- * Specification as defined on page 8 of https://docs.google.com/a/acracemgt.com/viewer?a=v&pid=sites&srcid=YWNyYWNlbWd0LmNvbXxub3RpY2Vib2FyZHxneDoyYTExNTQ4Yzg3ZGRmNTQ1
  */
 public class BoatStatusMessageTest {
 

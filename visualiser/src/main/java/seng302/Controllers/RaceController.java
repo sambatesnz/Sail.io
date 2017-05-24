@@ -57,6 +57,8 @@ public class RaceController {
     @FXML
     private Group group;
     @FXML
+    private Group boundaryGroup;
+    @FXML
     private Label clock;
     @FXML
     private Label localTimeZone;
@@ -151,7 +153,7 @@ public class RaceController {
         Image image = drawMap(String.valueOf(race.getMapCenter().getLatitude()), String.valueOf(race.getMapCenter().getLongitude()));
 //        System.out.println(String.valueOf(race.getMapCenter().getLatitude()) + ", " + String.valueOf(race.getMapCenter().getLongitude()));
         selectedImage.setImage(image);
-        group.getChildren().add(selectedImage);
+        //group.getChildren().add(selectedImage);
 
         // handles zooming when a boat is selected
         viewAnchorPane.setOnScroll(new EventHandler<ScrollEvent>() {
@@ -177,8 +179,9 @@ public class RaceController {
         }
 
         finishedListView = new ListView<>();
+
         boundary = getBoundary(race);
-        group.getChildren().add(boundary);
+        boundaryGroup.getChildren().add(boundary);
 
         //Initialises boats
         for (int i = 0; i < race.getBoats().size(); i++) {
@@ -694,13 +697,17 @@ public class RaceController {
     }
 
     /**
-     Updates the course boundaries on the view
+     *Updates the course boundaries on the view,
+     * clears and re-draws boundary to avoid problem when course bounds change
      */
     private void updateBoundary(){
+        boundaryGroup.getChildren().clear();
+        boundary.getPoints().clear();
         for (int i=0; i<race.getBoundaries().size(); i++) {
-            boundary.getPoints().set(2*i, Coordinate.getRelativeX(race.getBoundaries().get(i).getX()));
-            boundary.getPoints().set(2*i + 1, Coordinate.getRelativeY(race.getBoundaries().get(i).getY()));
+            boundary.getPoints().add(2*i, Coordinate.getRelativeX(race.getBoundaries().get(i).getX()));
+            boundary.getPoints().add(2*i + 1, Coordinate.getRelativeY(race.getBoundaries().get(i).getY()));
         }
+        boundaryGroup.getChildren().add(boundary);
     }
 
     /**

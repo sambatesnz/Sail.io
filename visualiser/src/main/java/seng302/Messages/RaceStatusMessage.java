@@ -35,7 +35,7 @@ public class RaceStatusMessage {
         expectedStartTime = Message.byteArrayToLong(bytes, 12, 6);
         windDirection = Message.byteArrayToInt(bytes, 18, 2) * 360 / 65536.0;
         windSpeed = Message.byteArrayToInt(bytes, 20, 2);
-        numBoatsInRace = Message.byteArrayToInt(bytes, 22, 1) - 48; //To convert from char to int
+        numBoatsInRace = Message.byteArrayToInt(bytes, 22, 1); //To convert from char to int
         raceType = Message.byteArrayToInt(bytes, 23, 1);
         this.race = race;
 

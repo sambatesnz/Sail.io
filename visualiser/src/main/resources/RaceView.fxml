@@ -61,6 +61,7 @@
     <center>
        <AnchorPane fx:id="viewAnchorPane" style="-fx-background-color: #26c6d8;" BorderPane.alignment="CENTER">
             <children>
+            <Group fx:id="boundaryGroup" autoSizeChildren="false" />
                 <Group fx:id="group" autoSizeChildren="false" />
                 <Label fx:id="clock" layoutX="663.0" text="00:00:00" textAlignment="RIGHT" visible="false">
                     <font>

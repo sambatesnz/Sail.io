@@ -35,7 +35,7 @@ public class RaceStatusMessageTest {
                 (byte)0x00, (byte)0x00, (byte)0x00,                 //Expected Start Time 6/6 (57261)
                 (byte)0x00, (byte)0x80,                             //Wind Direction (180)
                 (byte)0x88, (byte)0x13,                             //Wind Speed (5000)
-                (byte)0x33,                                         //Number of Boats in Race (3)
+                (byte)0x03,                                         //Number of Boats in Race (3)
                 (byte)0x01,                                         //Race Type (1)
 
                 (byte)0x65, (byte)0x00, (byte)0x00, (byte)0x00,     //SourceID Boat 1 (101)
