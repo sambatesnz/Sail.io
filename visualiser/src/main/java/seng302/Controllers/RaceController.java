@@ -662,7 +662,7 @@ public class RaceController {
 
         windArrow.setLayoutX(50);
         windArrow.setLayoutY(50);
-        windArrow.setRotate(race.getWindHeading());
+        windArrow.setRotate(race.getWindHeading() + 180);
 
         if (showFPS) {
             fpsLabel.setLayoutX(Coordinate.getWindowX() - 90);
