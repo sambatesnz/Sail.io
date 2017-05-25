@@ -109,7 +109,7 @@ public class RaceController {
     private TimeZoneWrapper timeZoneWrapper;
     private final ImageView selectedImage = new ImageView();
     private Mark imagePos;
-    private final double IMAGE_SCALE = 1.5;
+    private final double IMAGE_SCALE = 1.7;
 
     // Sparkline variables
     @FXML    private NumberAxis xAxis;
@@ -238,12 +238,10 @@ public class RaceController {
         // set the data types for the table columns.
 //        positionCol.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("position"));
 //
-        positionCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Boat, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Boat, String> p) {
-                String pos = String.valueOf(p.getValue().getPosition());
+        positionCol.setCellValueFactory(p -> {
+            String pos = String.valueOf(p.getValue().getPosition());
 //                System.out.println(p.getValue().getPosition() + ", " + p.getValue().getName() + ", " + p.getValue().getTimeToFinish());
-                return new ReadOnlyObjectWrapper<String>(pos);
-            }
+            return new ReadOnlyObjectWrapper<>(pos);
         });
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         speedCol.setCellValueFactory(p -> {
@@ -327,6 +325,7 @@ public class RaceController {
      */
     private Image createMap(double centerLat, double centerLon) {
         String key = "AIzaSyAAmj8rsEdHfH4WbXbqB4ugZEKVBrvCyaw";
+        String style = "style=feature:all|element:labels|visibility:off";
         int sizeH = 640;
         int sizeV = 640;
         double difLon = race.getViewMax().convertToLon() - race.getViewMin().convertToLon();
@@ -340,7 +339,7 @@ public class RaceController {
         }
         sb.setLength(sb.length() - 1);
         String imageUrl = String.format("https://maps.googleapis.com/maps/api/staticmap?" +
-                "center=%f,%f&size=%dx%d&scale=2&%s&key=%s", centerLat, centerLon, sizeH, sizeV, sb, key);
+                "center=%f,%f&size=%dx%d&scale=2&%s&%s&key=%s", centerLat, centerLon, sizeH, sizeV, sb, style, key);
         return new Image(imageUrl);
     }
 
