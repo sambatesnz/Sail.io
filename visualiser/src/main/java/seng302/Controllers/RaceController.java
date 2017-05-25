@@ -102,7 +102,7 @@ public class RaceController {
     private int raceMinutes = 0;
     private int raceSeconds = 0;
     private long lastTime = 0;
-    private long timerUpdate = 1000;
+    private long timerUpdate = 1000000000;
     private boolean raceStarted = false;
     private int frameCount = 0;
 
@@ -720,57 +720,72 @@ public class RaceController {
      * Increments the race clock, and updates the fps display
      */
     private void updateRaceClock() {
-        if (currentTimeMillis() - lastTime >= timerUpdate) {
-            raceSeconds++;
-            fpsLabel.setText(frameCount + " fps");
-            frameCount = 0;
-            if ((raceSeconds / 60) >= 1) {
-                raceSeconds = 0;
-                raceMinutes++;
-                if ((raceMinutes / 60) >= 1) {
-                    raceMinutes = 0;
-                    raceHours++;
-                }
-            }
-            if (raceSeconds < 0) {
-                clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
-            } else {
-                clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
-            }
-            lastTime = currentTimeMillis();
+        long raceTime;
+        if (race.started()) {
+            raceTime = race.getCurrentTime() - race.getExpectedStartTime();
+        } else {
+            raceTime = race.getExpectedStartTime() - race.getCurrentTime();
         }
+
+        raceHours = (int) TimeUnit.MILLISECONDS.toHours(raceTime);
+        raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(raceTime) -
+                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(raceTime)));
+        raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceTime) -
+                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
+
+
+        clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+//        if (race.getCurrentTime() - lastTime >= timerUpdate) {
+//            raceSeconds++;
+//            fpsLabel.setText(frameCount + " fps");
+//            frameCount = 0;
+//            if ((raceSeconds / 60) >= 1) {
+//                raceSeconds = 0;
+//                raceMinutes++;
+//                if ((raceMinutes / 60) >= 1) {
+//                    raceMinutes = 0;
+//                    raceHours++;
+//                }
+//            }
+//            if (raceSeconds < 0) {
+//                clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
+//            } else {
+//                clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+//            }
+//            lastTime = currentTimeMillis();
+//        }
     }
 
-    /**
-     * Decrements the race clock, and updates the fps display
-     */
-    private void updateRaceClockCountDown() {
-        if (currentTimeMillis() - lastTime >= timerUpdate) {
-            if (raceSeconds != 0) {
-                raceSeconds--;
-            }
-            fpsLabel.setText(frameCount + " fps");
-            frameCount = 0;
-            if (raceSeconds == 0) {
-                if (raceMinutes != 0) {
-                    raceSeconds = 60;
-                    raceMinutes--;
-                    if (raceMinutes == 0) {
-                        if (raceHours != 0) {
-                            raceMinutes = 60;
-                            raceHours--;
-                        }
-                    }
-                }
-            }
-            if (raceSeconds < 0) {
-                clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
-            } else {
-                clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
-            }
-            lastTime = currentTimeMillis();
-        }
-    }
+//    /**
+//     * Decrements the race clock, and updates the fps display
+//     */
+//    private void updateRaceClockCountDown() {
+//        if (race.getCurrentTime() - lastTime >= timerUpdate) {
+//            if (raceSeconds != 0) {
+//                raceSeconds--;
+//            }
+//            fpsLabel.setText(frameCount + " fps");
+//            frameCount = 0;
+//            if (raceSeconds == 0) {
+//                if (raceMinutes != 0) {
+//                    raceSeconds = 60;
+//                    raceMinutes--;
+//                    if (raceMinutes == 0) {
+//                        if (raceHours != 0) {
+//                            raceMinutes = 60;
+//                            raceHours--;
+//                        }
+//                    }
+//                }
+//            }
+//            if (raceSeconds < 0) {
+//                clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
+//            } else {
+//                clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+//            }
+//            lastTime = currentTimeMillis();
+//        }
+//    }
 
     /**
      * @param nodeToScale node to scale based on current level of zoom
@@ -812,10 +827,14 @@ public class RaceController {
         }
 
         new AnimationTimer() {
-            //Message message = new Message();
             @Override
             public void handle(long currentNanoTime) {
                 frameCount++;
+                if (currentNanoTime - lastTime >= timerUpdate) {
+                    fpsLabel.setText(frameCount + " fps");
+                    frameCount = 0;
+                    lastTime = currentNanoTime;
+                }
 
                 updateView();
                 sparkCounter++;
@@ -825,12 +844,7 @@ public class RaceController {
                 }
 
                 Coordinate.updateBorder();
-                if (race.started()) {
-                    updateRaceClock();
-                } else {
-                    updateRaceClockCountDown();
-                }
-
+                updateRaceClock();
             }
         }.start();
     }

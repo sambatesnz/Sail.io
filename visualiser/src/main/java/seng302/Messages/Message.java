@@ -99,7 +99,7 @@ public class Message {
                 break;
             case RACE_STATUS:
                 RaceStatusMessage raceStatus = new RaceStatusMessage(body, race);
-                raceStatus.updateRaceDetails();
+//                raceStatus.updateRaceDetails();
                 break;
             case DISPLAY:
                 break;
