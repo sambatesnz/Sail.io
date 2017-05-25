@@ -137,7 +137,10 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    race.setBoats(xmlParser.getBoats());
+                    // TODO Bug fix so we can connect to csse stream 4941. Need to throttle the rate packets get processed to properly fix this
+                    if (!race.isRaceReady()) {
+                        race.setBoats(xmlParser.getBoats());
+                    }
                     boatsSet = true;
                     break;
                 case RACE:

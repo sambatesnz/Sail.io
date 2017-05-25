@@ -24,7 +24,7 @@
     <left>
         <AnchorPane maxWidth="248" minWidth="248" prefWidth="248">
          <children>
-            <SplitPane fx:id="sidePanelSplit" dividerPositions="0.6804" orientation="VERTICAL" prefHeight="728.0" prefWidth="249.0">
+            <SplitPane fx:id="sidePanelSplit" dividerPositions="0.8804" orientation="VERTICAL" prefHeight="728.0" prefWidth="249.0">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                      <children>

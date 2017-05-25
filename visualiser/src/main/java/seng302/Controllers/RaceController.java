@@ -5,7 +5,6 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,10 +20,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -36,15 +33,10 @@ import seng302.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.currentTimeMillis;
-import static java.lang.System.setOut;
 
 /**
  * Class that controls the race window and updates the race as it proceeds
@@ -128,6 +120,7 @@ public class RaceController {
 
     private int EARTH_RADIUS = 6371;
     private int METERS_CONVERSION = 1000;
+    private final int SPARKLINEHEIGHT = 239;
 
 
     /**
@@ -378,23 +371,6 @@ public class RaceController {
 
         List<Boat> boats = race.getBoats();
 
-        for (Boat boat : boats) {
-            int leg = boat.getCurrentLegIndex();
-            double boatLat = boat.getLatitude();
-            double boatLong = boat.getLongitude();
-
-            CompoundMark compundMark = race.getCompoundMarks().get(leg);
-            Mark mark = compundMark.getMarks().get(0);
-            double markLat = mark.getLatitude();
-            double markLong = mark.getLongitude();
-
-            double distance = calculateDistance(boatLat, markLat, boatLong, markLong);
-
-            boat.setDistanceToNextMark(distance);
-        }
-
-        Comparator<Boat> sortPosition = Comparator.comparing(Boat::getDistanceToNextMark).thenComparing(Boat::getCurrentLegIndex);
-
         boats.sort((o1, o2) -> o1.getCurrentLegIndex()>o2.getCurrentLegIndex()?-1:o1.getCurrentLegIndex()<=o2.getCurrentLegIndex()?1: 0);
         System.out.println("1:" + boats.get(0).getCurrentLegIndex() + "      2:" + boats.get(1).getCurrentLegIndex());
         for (int i = 0; i < boats.size(); i++) {
@@ -403,41 +379,19 @@ public class RaceController {
         }
 
     }
+
+//    private double calculateDistance(double sourceLat, double destLat, double sourceLong, double destLong) {
 //
-//        List<Boat> boats = race.getBoats();
+//        double latDist = Math.toRadians(destLat - sourceLat);
+//        double longDist = Math.toRadians(destLong - sourceLong);
 //
-////        // Sorts by time to next mark property
-////        Collections.sort(boats, (o1, o2) -> {
-//////            System.out.println(o1.getBoatName());
-//////            o1.
-//////            System.out.println(o1.getTimeToNextMark() - o2.getTimeToNextMark());
-////            return o1.getTimeToFinish() < o2.getTimeToFinish()? -1 : 1;
-////        });
+//        double a = Math.sin(latDist / 2) * Math.sin(latDist / 2) + Math.cos(Math.toRadians(sourceLat))
+//                * Math.cos(Math.toRadians(destLat)) * Math.sin(longDist / 2) * Math.sin(longDist / 2);
+//        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//        double dist = EARTH_RADIUS * c * METERS_CONVERSION;
 //
-//        // Sorts by time to next mark property
-//
-////        boats.sort((o1, o2) -> o1.getCurrentLegIndex() <= o2.getCurrentLegIndex()? -1 : 1);
-////        for (int i = 0; i < boats.size(); i++) {
-////            boats.get(i).setPosition(i + 1);
-//        }
-////        System.out.println(boats.get(0).getPosition());
-////        System.out.println(boats);
+//        return dist;
 //    }
-
-
-    private double calculateDistance(double sourceLat, double destLat, double sourceLong, double destLong) {
-
-        double latDist = Math.toRadians(destLat - sourceLat);
-        double longDist = Math.toRadians(destLong - sourceLong);
-
-        double a = Math.sin(latDist / 2) * Math.sin(latDist / 2) + Math.cos(Math.toRadians(sourceLat))
-                * Math.cos(Math.toRadians(destLat)) * Math.sin(longDist / 2) * Math.sin(longDist / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double dist = EARTH_RADIUS * c * METERS_CONVERSION;
-
-        return dist;
-    }
-
 
     /**
      * Generates a line used for a wake
@@ -457,6 +411,8 @@ public class RaceController {
      * Creates a timer that calls the update sparklines every second, allowing the graph to continue to update
      */
     private void createChart() {
+
+        sparklinesChart.setLegendVisible(false);
 
         // Hide the Y axis
         sparklinesChart.getYAxis().setTickLabelsVisible(false);
@@ -487,15 +443,11 @@ public class RaceController {
         checkPositions();
         // Check the data is up to date.
         // Retrieve the boat position data.
-
-//        if (!(race.getBoats().equals(sortedBoats) && race.getBoats().equals(otherSortedBoats))) {
-            for (int i = 0; i < race.getBoats().size(); i++) {
-                // update the chart.
-//            XYChart.Series<Number, Number> series = seriesList.get(i);
-                Number reversedOrder = race.getBoats().size() - race.getBoats().get(i).getPosition() + 1;
-                seriesList.get(i).getData().add(new XYChart.Data<>(secondCounter, reversedOrder));
-            }
-//        }
+        for (int i = 0; i < race.getBoats().size(); i++) {
+            // update the chart
+            Number reversedOrder = race.getBoats().size() - race.getBoats().get(i).getPosition() + 1;
+            seriesList.get(i).getData().add(new XYChart.Data<>(secondCounter, reversedOrder));
+        }
 
         otherSortedBoats = sortedBoats;
         sortedBoats = race.getBoats();
@@ -503,7 +455,6 @@ public class RaceController {
         positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
         secondCounter++;
     }
-
 
     /**
      * Generates the boundary to be displayed around the race course
@@ -618,7 +569,7 @@ public class RaceController {
         positionTable.refresh();
 
         positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
-        positionTable.setPrefHeight(Coordinate.getWindowY() - 239);
+        positionTable.setPrefHeight(Coordinate.getWindowY() - SPARKLINEHEIGHT);
 
         viewAnchorPane.setMinHeight(Coordinate.getWindowY());
         viewAnchorPane.setMaxHeight(Coordinate.getWindowY());
@@ -631,6 +582,8 @@ public class RaceController {
         viewAnchorPane.setMinWidth(Coordinate.getWindowX());
         viewAnchorPane.setMaxWidth(Coordinate.getWindowX());
 
+        double position = 1 - (SPARKLINEHEIGHT / Coordinate.getWindowY());
+        sidePanelSplit.setDividerPosition(0, position);
 
         for (int i = 0; i < absolutePaths.size(); i++) {
             if (absolutePaths.get(i).size() > 500) {
@@ -871,7 +824,7 @@ public class RaceController {
 
                 updateView();
                 sparkCounter++;
-                if (sparkCounter > 50) {
+                if (sparkCounter > 100 && race.started()) {
                     sparkCounter = 0;
                     updateSparkLineChart();
                 }

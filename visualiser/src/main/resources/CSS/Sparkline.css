@@ -29,3 +29,15 @@
     -fx-stroke-width: 2px;
     -fx-effect: null;
 }
+
+/*yellow, blue, pink, orange, green, purple, red, poo brown*/
+/*"#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300"*/
+
+.default-color0.chart-series-line { -fx-stroke: #ffff00; }
+.default-color1.chart-series-line { -fx-stroke: #0033cc; }
+.default-color2.chart-series-line { -fx-stroke: #cc00ff; }
+.default-color4.chart-series-line { -fx-stroke: #ff6600; }
+.default-color5.chart-series-line { -fx-stroke: #00cc00; }
+.default-color6.chart-series-line { -fx-stroke: #6600cc; }
+.default-color7.chart-series-line { -fx-stroke: #ff0000; }
+.default-color8.chart-series-line { -fx-stroke: #663300; }

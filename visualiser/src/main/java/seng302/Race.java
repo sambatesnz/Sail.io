@@ -2,6 +2,7 @@ package seng302;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
 import seng302.Controllers.Coordinate;
 
 import java.time.LocalDate;
@@ -40,6 +41,9 @@ public class Race {
     private Boat boatToFollow;
     private List<Integer> participants;
     private long currentTime;
+
+    // yellow, blue, pink, orange, green, purple, red, poo brown
+    private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300");
 
     public boolean isRaceReady() {
         return raceReady;
@@ -321,8 +325,11 @@ public class Race {
 
     public void setBoats(Map<Integer, Boat> boats) {
         Map<Integer, Boat> actualBoats = new HashMap<>();
-        for (Integer boat : participants) {
-            actualBoats.put(boat, boats.get(boat));
+        for (int i = 0; i < participants.size(); i++) {
+            Integer boatId = participants.get(i);
+            Boat boat = boats.get(boatId);
+            boat.setColour(Color.valueOf(colourList.get(i)));
+            actualBoats.put(boatId, boat);
         }
         this.boats = actualBoats;
     }

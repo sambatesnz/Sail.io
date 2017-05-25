@@ -24,7 +24,6 @@ public class Boat {
     private String shortName;
     private String country;
     private double speed;
-    private double distanceToNextMark;
 
     /**
      * Gets the abbreviation of the name of the team's boat
@@ -64,7 +63,7 @@ public class Boat {
      */
     public Boat(String name, String shortName, int sourceId, String country) {
         this.boatName = name;
-        this.colour = Color.color(Math.random(), Math.random(), Math.random());
+        //this.colour = Color.color(Math.random(), Math.random(), Math.random());
         this.shortName = shortName;
         this.sourceId = sourceId;
         this.country = country;
@@ -92,6 +91,10 @@ public class Boat {
         return colour;
     }
 
+    public void setColour(Color colour) {
+        this.colour = colour;
+    }
+
     /**
      * Get the current heading
      * @return the current heading
@@ -105,14 +108,6 @@ public class Boat {
      */
     public void setHeading(double heading) {
         this.heading = heading;
-    }
-
-    public double getDistanceToNextMark() {
-        return distanceToNextMark;
-    }
-
-    public void setDistanceToNextMark(double distanceToNextMark) {
-        this.distanceToNextMark = distanceToNextMark;
     }
 
     /**
