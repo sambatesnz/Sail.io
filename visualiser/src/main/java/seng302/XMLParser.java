@@ -173,10 +173,8 @@ public class XMLParser {
         } catch (NullPointerException e) {
             timeString = nnm.getNamedItem(START).getNodeValue();
         }
-        System.out.println(timeString);
 
         timeString = timeString.substring(0,19);
-        System.out.println(timeString);
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         LocalDateTime raceStartTime = LocalDateTime.parse(timeString, formatter);
         return raceStartTime;

@@ -374,7 +374,6 @@ public class RaceController {
         List<Boat> boats = race.getBoats();
 
         boats.sort((o1, o2) -> o1.getCurrentLegIndex()>o2.getCurrentLegIndex()?-1:o1.getCurrentLegIndex()<=o2.getCurrentLegIndex()?1: 0);
-        System.out.println("1:" + boats.get(0).getCurrentLegIndex() + "      2:" + boats.get(1).getCurrentLegIndex());
         for (int i = 0; i < boats.size(); i++) {
             int position = i + 1;
             boats.get(i).setPosition(position);
@@ -382,6 +381,7 @@ public class RaceController {
 
     }
 
+//    Deactivated distance calculator
 //    private double calculateDistance(double sourceLat, double destLat, double sourceLong, double destLong) {
 //
 //        double latDist = Math.toRadians(destLat - sourceLat);
