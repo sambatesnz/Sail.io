@@ -742,6 +742,11 @@ public class RaceController {
         raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceTime) -
                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
 
+        if (race.notGoing()) {
+            raceHours = 0;
+            raceMinutes = 0;
+            raceSeconds = 0;
+        }
 
         clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
     }

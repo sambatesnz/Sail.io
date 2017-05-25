@@ -260,6 +260,10 @@ public class Race {
         return raceStatus == 3;
     }
 
+    public boolean notGoing() {
+        return !started() && raceStatus != 1 && raceStatus != 2 && raceStatus != 3 && raceStatus != 10;
+    }
+
     /**
      * Sets the current status of the race
      * 0: Not active
