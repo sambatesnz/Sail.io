@@ -131,16 +131,13 @@ public class RaceController {
         initializeMap();
 
         // handles zooming when a boat is selected
-        viewAnchorPane.setOnScroll(new EventHandler<ScrollEvent>() {
-            @Override
-            public void handle(ScrollEvent event) {
-                if (Coordinate.isTrackingBoat()) {
-                    if (event.getDeltaY() < 0) {
-                       Coordinate.decreaseZoom();
-                    }
-                    if (event.getDeltaY() > 0) {
-                       Coordinate.increaseZoom();
-                    }
+        viewAnchorPane.setOnScroll(event -> {
+            if (Coordinate.isTrackingBoat()) {
+                if (event.getDeltaY() < 0) {
+                   Coordinate.decreaseZoom();
+                }
+                if (event.getDeltaY() > 0) {
+                   Coordinate.increaseZoom();
                 }
             }
         });
@@ -182,22 +179,16 @@ public class RaceController {
             boatSprite.setId(Integer.toString(i));
 
             // Used when selecting a boat to follow
-            boatSprite.onMousePressedProperty().setValue(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
-                    resetViewButton.setVisible(true);
-                    Coordinate.setTrackingBoat(true);
-                }
+            boatSprite.onMousePressedProperty().setValue(event -> {
+                race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
+                resetViewButton.setVisible(true);
+                Coordinate.setTrackingBoat(true);
             });
             // to give the user more space to click on the boat
-            tc.onMousePressedProperty().setValue(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
-                    resetViewButton.setVisible(true);
-                    Coordinate.setTrackingBoat(true);
-                }
+            tc.onMousePressedProperty().setValue(event -> {
+                race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
+                resetViewButton.setVisible(true);
+                Coordinate.setTrackingBoat(true);
             });
 
             stack.getChildren().add(boatSprite);
@@ -213,7 +204,7 @@ public class RaceController {
             paths.add(path);
             absolutePaths.add(new ArrayList<>());
 
-            lastHeadings.add(race.getBoats().get(i).getHeading() + 21);  // guarantee its different
+            lastHeadings.add(race.getBoats().get(i).getHeading() + 1);  // guarantee its different
         }
 
         mainBorderPane.setLeft(positionTable);
@@ -222,11 +213,9 @@ public class RaceController {
         // set the data types for the table columns.
         positionCol.setCellValueFactory(new PropertyValueFactory<>("position"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        speedCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Boat, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Boat, String> p) {
-                String speed = String.valueOf(p.getValue().getSpeed());
-                return new ReadOnlyObjectWrapper<String>(speed);
-            }
+        speedCol.setCellValueFactory(p -> {
+            String speed = String.valueOf(p.getValue().getSpeed());
+            return new ReadOnlyObjectWrapper<>(speed);
         });
 
         //Initialises compoundMarks
@@ -293,7 +282,7 @@ public class RaceController {
         selectedImage.setImage(image);
         imagePos = new Mark(race.getMapCenter().getLatitude(), race.getMapCenter().getLongitude());
         selectedImage.setFitWidth(image.getWidth()*IMAGE_SCALE);
-        group.getChildren().add(selectedImage);
+        viewAnchorPane.getChildren().add(0, selectedImage);
     }
 
     /**
@@ -430,11 +419,7 @@ public class RaceController {
      */
     @FXML
     private void ToggleBoatNameAnnotation() {
-        if (BoatNameCheckBox.isSelected()) {
-            showName = true;
-        } else {
-            showName = false;
-        }
+        showName = BoatNameCheckBox.isSelected();
 
         if (BoatNameCheckBox.isSelected() && BoatSpeedCheckBox.isSelected()) {
             annotationBtn.setText("Remove Annotations");
@@ -448,11 +433,7 @@ public class RaceController {
      */
     @FXML
     private void ToggleBoatSpeedAnnotation() {
-        if (BoatSpeedCheckBox.isSelected()) {
-            showSpeed = true;
-        } else {
-            showSpeed = false;
-        }
+        showSpeed = BoatSpeedCheckBox.isSelected();
 
         if (BoatNameCheckBox.isSelected() && BoatSpeedCheckBox.isSelected()) {
             annotationBtn.setText("Remove Annotations");
