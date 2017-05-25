@@ -77,7 +77,7 @@ public class RaceController {
     @FXML
     private ListView<String> startersList;
     @FXML
-    private LineChart sparklinesChart;
+    private LineChart<Number, Number> sparklinesChart;
     @FXML
     private SplitPane sidePanelSplit;
 
@@ -105,6 +105,7 @@ public class RaceController {
     private long timerUpdate = 1000000000;
     private boolean raceStarted = false;
     private int frameCount = 0;
+    private int viewUpdateCount = 0;
 
     private TimeZoneWrapper timeZoneWrapper;
     private final ImageView selectedImage = new ImageView();
@@ -251,7 +252,7 @@ public class RaceController {
 
         //Initialises compoundMarks
         for (CompoundMark lm : race.getCompoundMarks()) {
-            for (Mark pos : lm.getMarks()){
+            for (int n=0; n < lm.getMarks().size(); n++){
                 Rectangle square = new Rectangle(10, 10, lm.getColor());
                 compoundMarks.add(square);
             }
@@ -420,8 +421,8 @@ public class RaceController {
 
         List<XYChart.Series<Number, Number>> series = new ArrayList<>();
         for (Boat boat :race.getBoats()) {
-            XYChart.Series newSeries = new XYChart.Series();
-            newSeries.getData().add(new XYChart.Data(0,0));
+            XYChart.Series<Number, Number> newSeries = new XYChart.Series<>();
+            newSeries.getData().add(new XYChart.Data<>(0,0));
             newSeries.setName(boat.getName());
             series.add(newSeries);
         }
@@ -552,6 +553,7 @@ public class RaceController {
      * across the new window size.
      */
     private void updateView() {
+        viewUpdateCount++;
         Coordinate.setOffset(race.calculateOffset());
         Coordinate.updateViewCoordinates();
 
@@ -579,12 +581,12 @@ public class RaceController {
         double position = 1 - (SPARKLINEHEIGHT / Coordinate.getWindowY());
         sidePanelSplit.setDividerPosition(0, position);
 
-        for (int i = 0; i < absolutePaths.size(); i++) {
-            if (absolutePaths.get(i).size() > 500) {
-                paths.get(i).getElements().remove(1);
-                absolutePaths.get(i).remove(0);
-            }
-        }
+//        for (int i = 0; i < absolutePaths.size(); i++) {
+//            if (absolutePaths.get(i).size() > 150) {
+//                paths.get(i).getElements().remove(1);
+//                absolutePaths.get(i).remove(0);
+//            }
+//        }
 
 
         for (int i = 0; i < boats.size(); i++) {
@@ -619,21 +621,28 @@ public class RaceController {
             boats.get(i).getChildren().get(1).setTranslateX(10);
             boats.get(i).getChildren().get(1).setTranslateY(0);
 
-            if (!lastHeadings.get(i).equals(race.getBoats().get(i).getHeading())) {
-                absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-                paths.get(i).getElements().add(new LineTo());
-                lastHeadings.set(i, race.getBoats().get(i).getHeading());
-            } else {
-                absolutePaths.get(i).set(absolutePaths.get(i).size() - 1, new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-                paths.get(i).getElements().set(paths.get(i).getElements().size() - 1, new LineTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-            }
+            if (viewUpdateCount % 5 == 1) {
+                if (absolutePaths.get(i).size() > 150) {
+                    paths.get(i).getElements().remove(1);
+                    absolutePaths.get(i).remove(0);
+                }
+
+                if (!lastHeadings.get(i).equals(race.getBoats().get(i).getHeading())) {
+                    absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+                    paths.get(i).getElements().add(new LineTo());
+                    lastHeadings.set(i, race.getBoats().get(i).getHeading());
+                } else {
+                    absolutePaths.get(i).set(absolutePaths.get(i).size() - 1, new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+                    paths.get(i).getElements().set(paths.get(i).getElements().size() - 1, new LineTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+                }
 
 
-            ((MoveTo) paths.get(i).getElements().get(0)).setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
-            ((MoveTo) paths.get(i).getElements().get(0)).setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
-            for (int j = 1; j < paths.get(i).getElements().size(); j++) {
-                ((LineTo) paths.get(i).getElements().get(j)).setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
-                ((LineTo) paths.get(i).getElements().get(j)).setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
+                ((MoveTo) paths.get(i).getElements().get(0)).setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
+                ((MoveTo) paths.get(i).getElements().get(0)).setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
+                for (int j = 1; j < paths.get(i).getElements().size(); j++) {
+                    ((LineTo) paths.get(i).getElements().get(j)).setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
+                    ((LineTo) paths.get(i).getElements().get(j)).setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
+                }
             }
 
 
@@ -734,57 +743,7 @@ public class RaceController {
 
 
         clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
-//        if (race.getCurrentTime() - lastTime >= timerUpdate) {
-//            raceSeconds++;
-//            fpsLabel.setText(frameCount + " fps");
-//            frameCount = 0;
-//            if ((raceSeconds / 60) >= 1) {
-//                raceSeconds = 0;
-//                raceMinutes++;
-//                if ((raceMinutes / 60) >= 1) {
-//                    raceMinutes = 0;
-//                    raceHours++;
-//                }
-//            }
-//            if (raceSeconds < 0) {
-//                clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
-//            } else {
-//                clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
-//            }
-//            lastTime = currentTimeMillis();
-//        }
     }
-
-//    /**
-//     * Decrements the race clock, and updates the fps display
-//     */
-//    private void updateRaceClockCountDown() {
-//        if (race.getCurrentTime() - lastTime >= timerUpdate) {
-//            if (raceSeconds != 0) {
-//                raceSeconds--;
-//            }
-//            fpsLabel.setText(frameCount + " fps");
-//            frameCount = 0;
-//            if (raceSeconds == 0) {
-//                if (raceMinutes != 0) {
-//                    raceSeconds = 60;
-//                    raceMinutes--;
-//                    if (raceMinutes == 0) {
-//                        if (raceHours != 0) {
-//                            raceMinutes = 60;
-//                            raceHours--;
-//                        }
-//                    }
-//                }
-//            }
-//            if (raceSeconds < 0) {
-//                clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
-//            } else {
-//                clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
-//            }
-//            lastTime = currentTimeMillis();
-//        }
-//    }
 
     /**
      * @param nodeToScale node to scale based on current level of zoom
