@@ -10,6 +10,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.io.StringReader;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalField;
 import java.util.*;
 
 public class XMLParser {
@@ -22,6 +27,9 @@ public class XMLParser {
     private static final String COURSE = "Course";
     private static final String COURSE_LIMIT = "CourseLimit";
     private static final String PARTICIPANTS = "Participants";
+    private static final String RACESTARTTIME = "RaceStartTime";
+    private static final String TIME = "Time";
+    private static final String START = "Start";
     private static final String SEQ_ID = "SeqID";
     private static final String NAME = "Name";
     private static final String TARGETLAT = "TargetLat";
@@ -143,6 +151,33 @@ public class XMLParser {
         }
         Collections.sort(participants);
         return participants;
+    }
+
+    // TODO: Refactor to return the expected start time as a long
+//    public LocalDateTime getRaceStartTime() {
+//        Node node = xmlDoc.getElementsByTagName(RACESTARTTIME).item(0);
+//        NamedNodeMap nnm = node.getAttributes();
+//        String timeString = nnm.getNamedItem(TIME).getNodeValue();
+//        timeString = timeString.substring(0,19);
+//        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+//        LocalDateTime raceStartTime = LocalDateTime.parse(timeString, formatter);
+//        return raceStartTime;
+//    }
+
+    public LocalDateTime getRaceStartTime() {
+        Node node = xmlDoc.getElementsByTagName(RACESTARTTIME).item(0);
+        NamedNodeMap nnm = node.getAttributes();
+        String timeString;
+        try {
+            timeString = nnm.getNamedItem(TIME).getNodeValue();
+        } catch (NullPointerException e) {
+            timeString = nnm.getNamedItem(START).getNodeValue();
+        }
+
+        timeString = timeString.substring(0,19);
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        LocalDateTime raceStartTime = LocalDateTime.parse(timeString, formatter);
+        return raceStartTime;
     }
 
     public List<Integer> getCourseOrder() {

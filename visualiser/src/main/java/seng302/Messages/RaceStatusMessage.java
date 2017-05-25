@@ -75,6 +75,7 @@ public class RaceStatusMessage {
         race.setWindSpeed(windSpeed);
         race.setExpectedStartTime(expectedStartTime);
         race.setRaceStatus(raceStatus);
+        race.setCurrentTime(currentTime);
     }
 
 

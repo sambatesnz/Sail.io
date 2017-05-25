@@ -2,6 +2,8 @@ package seng302;
 
 import javafx.scene.paint.Color;
 
+import java.util.Map;
+
 /**
  * Represent a boat competing in yacht race
  */
@@ -61,7 +63,7 @@ public class Boat {
      */
     public Boat(String name, String shortName, int sourceId, String country) {
         this.boatName = name;
-        this.colour = Color.color(Math.random(), Math.random(), Math.random());
+        //this.colour = Color.color(Math.random(), Math.random(), Math.random());
         this.shortName = shortName;
         this.sourceId = sourceId;
         this.country = country;
@@ -87,6 +89,10 @@ public class Boat {
      */
     public Color getColour() {
         return colour;
+    }
+
+    public void setColour(Color colour) {
+        this.colour = colour;
     }
 
     /**

@@ -10,6 +10,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -30,6 +33,8 @@ import seng302.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -56,15 +61,13 @@ public class RaceController {
     @FXML
     private TableView<Boat> positionTable;
     @FXML
-    private TableColumn<Boat, Integer> positionCol;
+    private TableColumn<Boat, String> positionCol;
     @FXML
     private TableColumn<Boat, String> nameCol;
     @FXML
     private TableColumn<Boat, String> speedCol;
     @FXML
     private Label fpsLabel;
-    @FXML
-    private Button startButton;
     @FXML
     private Button annotationBtn;
     @FXML
@@ -73,6 +76,10 @@ public class RaceController {
     private Button resetViewButton;
     @FXML
     private ListView<String> startersList;
+    @FXML
+    private LineChart sparklinesChart;
+    @FXML
+    private SplitPane sidePanelSplit;
 
     @FXML private CheckBox BoatNameCheckBox;
     @FXML private CheckBox BoatSpeedCheckBox;
@@ -91,20 +98,32 @@ public class RaceController {
     private boolean showFPS = true;
     private List<Path> paths = new ArrayList<>();
 
-    private int timeBeforeRace = 5;
     private int raceHours = 0;
     private int raceMinutes = 0;
-    private int raceSeconds = -timeBeforeRace - 1;
+    private int raceSeconds = 0;
     private long lastTime = 0;
     private long timerUpdate = 1000;
     private boolean raceStarted = false;
-    private boolean countingDown = false;
     private int frameCount = 0;
 
     private TimeZoneWrapper timeZoneWrapper;
     private final ImageView selectedImage = new ImageView();
     private Mark imagePos;
     private final double IMAGE_SCALE = 1.5;
+
+    // Sparkline variables
+    @FXML    private NumberAxis xAxis;
+    @FXML    private NumberAxis yAxis;
+    private ObservableList<XYChart.Series<Number, Number>> seriesList;
+    private Integer secondCounter = 1;
+    private Integer sparkCounter = 0;
+    private List<Boat> sortedBoats;
+    private List<Boat> otherSortedBoats;
+
+    private int EARTH_RADIUS = 6371;
+    private int METERS_CONVERSION = 1000;
+    private final int SPARKLINEHEIGHT = 239;
+
 
     /**
      * initializes the race display.
@@ -143,7 +162,13 @@ public class RaceController {
         });
 
         //Where should we put this?
-        this.timeZoneWrapper = new TimeZoneWrapper("Atlantic/Bermuda");
+        int utc = race.getRegatta().getUtcOffset();
+        if (utc < 0) {
+            this.timeZoneWrapper = new TimeZoneWrapper(String.valueOf(utc));
+        } else {
+            this.timeZoneWrapper = new TimeZoneWrapper("+" + String.valueOf(utc));
+        }
+
         finishedListView = new ListView<>();
 
         boundary = getBoundary(race);
@@ -207,11 +232,19 @@ public class RaceController {
             lastHeadings.add(race.getBoats().get(i).getHeading() + 1);  // guarantee its different
         }
 
-        mainBorderPane.setLeft(positionTable);
+        mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
         // set the data types for the table columns.
-        positionCol.setCellValueFactory(new PropertyValueFactory<>("position"));
+//        positionCol.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("position"));
+//
+        positionCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Boat, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Boat, String> p) {
+                String pos = String.valueOf(p.getValue().getPosition());
+//                System.out.println(p.getValue().getPosition() + ", " + p.getValue().getName() + ", " + p.getValue().getTimeToFinish());
+                return new ReadOnlyObjectWrapper<String>(pos);
+            }
+        });
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         speedCol.setCellValueFactory(p -> {
             String speed = String.valueOf(p.getValue().getSpeed());
@@ -270,6 +303,7 @@ public class RaceController {
 
 //        RacersListBeforeStart(race);
 
+        createChart();
         runRace();
     }
 
@@ -324,6 +358,36 @@ public class RaceController {
         startersList.setVisible(false);
     }
 
+
+    /**
+     * When called, checks the boats time to finish, updating positions based on that.
+     */
+    private void checkPositions() {
+
+        List<Boat> boats = race.getBoats();
+
+        boats.sort((o1, o2) -> o1.getCurrentLegIndex()>o2.getCurrentLegIndex()?-1:o1.getCurrentLegIndex()<=o2.getCurrentLegIndex()?1: 0);
+        for (int i = 0; i < boats.size(); i++) {
+            int position = i + 1;
+            boats.get(i).setPosition(position);
+        }
+
+    }
+
+//    Deactivated distance calculator
+//    private double calculateDistance(double sourceLat, double destLat, double sourceLong, double destLong) {
+//
+//        double latDist = Math.toRadians(destLat - sourceLat);
+//        double longDist = Math.toRadians(destLong - sourceLong);
+//
+//        double a = Math.sin(latDist / 2) * Math.sin(latDist / 2) + Math.cos(Math.toRadians(sourceLat))
+//                * Math.cos(Math.toRadians(destLat)) * Math.sin(longDist / 2) * Math.sin(longDist / 2);
+//        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//        double dist = EARTH_RADIUS * c * METERS_CONVERSION;
+//
+//        return dist;
+//    }
+
     /**
      * Generates a line used for a wake
      * @param speed speed of the boat
@@ -335,6 +399,56 @@ public class RaceController {
                 0.0, speed);
         wake.setStroke(Color.CYAN);
         return wake;
+    }
+
+    /**
+     * Creates the chart that gets displayed in the sidebar. Created at first with no data.
+     * Creates a timer that calls the update sparklines every second, allowing the graph to continue to update
+     */
+    private void createChart() {
+
+        sparklinesChart.setLegendVisible(false);
+
+        // Hide the Y axis
+        sparklinesChart.getYAxis().setTickLabelsVisible(false);
+        sparklinesChart.getYAxis().setVisible(false);
+
+        // Hide the X axis
+        sparklinesChart.getXAxis().setTickLabelsVisible(false);
+        sparklinesChart.getXAxis().setVisible(false);
+
+        sparklinesChart.setCreateSymbols(false);
+
+        List<XYChart.Series<Number, Number>> series = new ArrayList<>();
+        for (Boat boat :race.getBoats()) {
+            XYChart.Series newSeries = new XYChart.Series();
+            newSeries.getData().add(new XYChart.Data(0,0));
+            newSeries.setName(boat.getName());
+            series.add(newSeries);
+        }
+
+        seriesList = FXCollections.observableList(series);
+        sparklinesChart.setData(seriesList);
+    }
+
+    /**
+     * Called by a timer, updates the data displayed in the sparkline chart in the sidebar.
+     */
+    private void updateSparkLineChart() {
+        checkPositions();
+        // Check the data is up to date.
+        // Retrieve the boat position data.
+        for (int i = 0; i < race.getBoats().size(); i++) {
+            // update the chart
+            Number reversedOrder = race.getBoats().size() - race.getBoats().get(i).getPosition() + 1;
+            seriesList.get(i).getData().add(new XYChart.Data<>(secondCounter, reversedOrder));
+        }
+
+        otherSortedBoats = sortedBoats;
+        sortedBoats = race.getBoats();
+        sparklinesChart.setData(seriesList);
+        positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
+        secondCounter++;
     }
 
     /**
@@ -351,16 +465,6 @@ public class RaceController {
         boundary.setFill(Color.LIGHTBLUE);
         boundary.setOpacity(0.5);
         return boundary;
-    }
-
-    /**
-     * When the startButton is pressed, this method is called.
-     * Starts the race by changing the countingDown boolean to true
-     * Hides the startButton after being pressed
-     */
-    public void startButtonPressed() {
-        countingDown = true;
-        startButton.setVisible(false);
     }
 
     /**
@@ -459,6 +563,9 @@ public class RaceController {
 
         positionTable.refresh();
 
+        positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
+        positionTable.setPrefHeight(Coordinate.getWindowY() - SPARKLINEHEIGHT);
+
         viewAnchorPane.setMinHeight(Coordinate.getWindowY());
         viewAnchorPane.setMaxHeight(Coordinate.getWindowY());
         viewAnchorPane.setMinWidth(Coordinate.getWindowX());
@@ -470,6 +577,8 @@ public class RaceController {
         viewAnchorPane.setMinWidth(Coordinate.getWindowX());
         viewAnchorPane.setMaxWidth(Coordinate.getWindowX());
 
+        double position = 1 - (SPARKLINEHEIGHT / Coordinate.getWindowY());
+        sidePanelSplit.setDividerPosition(0, position);
 
         for (int i = 0; i < absolutePaths.size(); i++) {
             if (absolutePaths.get(i).size() > 500) {
@@ -561,10 +670,7 @@ public class RaceController {
         }
 
         resetViewButton.setLayoutX(14);
-        resetViewButton.setLayoutY(Coordinate.getWindowY() - 75);
-
-        startButton.setLayoutX(14);
-        startButton.setLayoutY(Coordinate.getWindowY() - 100);
+        resetViewButton.setLayoutY(Coordinate.getWindowY() - 100);
 
         fpsBtn.setLayoutX(14);
         fpsBtn.setLayoutY(Coordinate.getWindowY() - 125);
@@ -636,11 +742,34 @@ public class RaceController {
     }
 
     /**
-     * Given the bat source ID, will update the position of that boat as it is displayed in the GUi.
-     * @param sourceID the key for the boat in te map of boats.
+     * Decrements the race clock, and updates the fps display
      */
-    private void updateBoatPosition(int sourceID) {
-
+    private void updateRaceClockCountDown() {
+        if (currentTimeMillis() - lastTime >= timerUpdate) {
+            if (raceSeconds != 0) {
+                raceSeconds--;
+            }
+            fpsLabel.setText(frameCount + " fps");
+            frameCount = 0;
+            if (raceSeconds == 0) {
+                if (raceMinutes != 0) {
+                    raceSeconds = 60;
+                    raceMinutes--;
+                    if (raceMinutes == 0) {
+                        if (raceHours != 0) {
+                            raceMinutes = 60;
+                            raceHours--;
+                        }
+                    }
+                }
+            }
+            if (raceSeconds < 0) {
+                clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
+            } else {
+                clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+            }
+            lastTime = currentTimeMillis();
+        }
     }
 
     /**
@@ -659,65 +788,49 @@ public class RaceController {
     private void runRace() {
         updateView();
 
+        long startTime = race.getExpectedStartTime();
+
+        long timeToStart = startTime - race.getCurrentTime();
+        // If the race hasn't started yet
+        if (timeToStart > 0) {
+            raceStarted = false;
+            // Show the time to the start of the race.
+            raceHours = (int) TimeUnit.MILLISECONDS.toHours(timeToStart);
+            raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(timeToStart) -
+                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeToStart)));
+            raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(timeToStart) -
+                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeToStart)));
+        } else {
+            long raceRunning = - timeToStart;
+            raceStarted = true;
+
+            raceHours = (int) TimeUnit.MILLISECONDS.toHours(raceRunning);
+            raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(raceRunning) -
+                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(raceRunning)));
+            raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceRunning) -
+                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceRunning)));
+        }
+
         new AnimationTimer() {
             //Message message = new Message();
             @Override
             public void handle(long currentNanoTime) {
                 frameCount++;
 
-//                for (Path path : paths){
-//                    if (path.getElements().size() >= 30) {
-//                        path.getElements().remove(0);
-//                    }
-//                }
-
-//                for (int i = 0; i < absolutePaths.size(); i++){
-//                    if (paths.get(i).getElements().size() >= 30) {
-//                        paths.get(i).getElements().remove(0);
-//                        absolutePaths.get(i).remove(0);
-//                    }
-//                }
-
                 updateView();
+                sparkCounter++;
+                if (sparkCounter > 100 && race.started()) {
+                    sparkCounter = 0;
+                    updateSparkLineChart();
+                }
 
-//                if (paths != null) {
-//                    System.out.println(paths.get(i).getElements().size());
-//                    if (paths.get(i).getElements().size() >= 200) {
-//                        paths.get(i).getElements().remove(0);
-//                    }
-//                    System.out.println(paths.get(i).getElements().size());
-//                }
-
-                if (raceStarted) {
-//                    race.updateBoats();
-
-                    Coordinate.updateBorder();
+                Coordinate.updateBorder();
+                if (race.started()) {
                     updateRaceClock();
-                }
-                else if (countingDown){
-                    if (currentTimeMillis() - lastTime >= timerUpdate) {
-                        raceSeconds++;
-                        frameCount = 0;
-                        clock.setText(String.format("-%02d:%02d:%02d", raceHours, raceMinutes, -raceSeconds));
-                        if (raceSeconds == -2) {
-                            RemoveRacersList();
-                        }
-                        lastTime = currentTimeMillis();
-                    }
-                    if (raceSeconds == 0) {
-                        clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
-                        raceStarted = true;
-                    }
-                }
-                if (race.finished) {
-                    positionTable.setVisible(false);
-                    mainBorderPane.setLeft(finishedListView);
-                    finishedListView.setVisible(true);
-                    finishedListView.setItems(race.getPositionStrings());
-
                 } else {
-                    positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
+                    updateRaceClockCountDown();
                 }
+
             }
         }.start();
     }

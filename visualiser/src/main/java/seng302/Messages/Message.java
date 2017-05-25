@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -97,6 +99,7 @@ public class Message {
                 break;
             case RACE_STATUS:
                 RaceStatusMessage raceStatus = new RaceStatusMessage(body, race);
+                raceStatus.updateRaceDetails();
                 break;
             case DISPLAY:
                 break;
@@ -125,6 +128,7 @@ public class Message {
     }
 
     public void passXML(String xmlString, int subType) {
+        LocalDateTime startTime = LocalDateTime.now();
         try {
             XMLParser xmlParser = new XMLParser(xmlString);
             switch(subType) {
@@ -133,7 +137,10 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    race.setBoats(xmlParser.getBoats());
+                    // TODO Bug fix so we can connect to csse stream 4941. Need to throttle the rate packets get processed to properly fix this
+                    if (!race.isRaceReady()) {
+                        race.setBoats(xmlParser.getBoats());
+                    }
                     boatsSet = true;
                     break;
                 case RACE:
@@ -143,6 +150,8 @@ public class Message {
                     race.setCompoundMarks(compoundMarks);
                     race.setGates(compoundMarks);
                     race.setCourseOrder(xmlParser.getCourseOrder());
+                    startTime = xmlParser.getRaceStartTime();
+//                    race.setExpectedStartTime(xmlParser.getRaceStartTime());
                     raceSet = true;
                     break;
             }
@@ -150,6 +159,14 @@ public class Message {
             e.printStackTrace();
         }
         if (regattaSet && boatsSet && raceSet) {
+            int zid = race.getRegatta().getUtcOffset();
+            String zidStr = String.valueOf(zid);
+            if (zid > 0) {
+                zidStr = "+" + String.valueOf(zid);
+            }
+            ZoneId zoneId = ZoneId.of(zidStr);
+            long epoch = startTime.atZone(zoneId).toEpochSecond();
+            race.setExpectedStartTime(epoch);
             race.setViewParams();
             race.setRaceReady(true);
         }

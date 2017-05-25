@@ -2,8 +2,11 @@ package seng302;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
 import seng302.Controllers.Coordinate;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -37,8 +40,12 @@ public class Race {
     private Boat centerOfScreen;
     private Boat boatToFollow;
     private List<Integer> participants;
+    private long currentTime;
     private Mark viewMin;
     private Mark viewMax;
+
+    // yellow, blue, pink, orange, green, purple, red, poo brown
+    private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300");
 
     public boolean isRaceReady() {
         return raceReady;
@@ -53,13 +60,10 @@ public class Race {
      */
     public Race() {
         finishedBoats = new ArrayList<>();
-        // TODO: Current order needs to be instantiated here. Get the list of boats in the race first. Then use the time to next gate in the race packet to decide race Mark
+
         MarkStrings = FXCollections.observableArrayList();
     }
 
-    public Regatta getRegatta() {
-        return regatta;
-    }
 
     public Mark getMapCenter() {
         return mapCenter;
@@ -71,6 +75,14 @@ public class Race {
 
     public Mark getViewMax() {
         return viewMax;
+    }
+
+    public long getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(long currentTime) {
+        this.currentTime = currentTime;
     }
 
     public void setViewParams() {
@@ -244,6 +256,10 @@ public class Race {
         return raceStatus;
     }
 
+    public boolean started() {
+        return raceStatus == 3;
+    }
+
     /**
      * Sets the current status of the race
      * 0: Not active
@@ -315,10 +331,17 @@ public class Race {
         this.regatta = regatta;
     }
 
+    public Regatta getRegatta() {
+        return regatta;
+    }
+
     public void setBoats(Map<Integer, Boat> boats) {
         Map<Integer, Boat> actualBoats = new HashMap<>();
-        for (Integer boat : participants) {
-            actualBoats.put(boat, boats.get(boat));
+        for (int i = 0; i < participants.size(); i++) {
+            Integer boatId = participants.get(i);
+            Boat boat = boats.get(boatId);
+            boat.setColour(Color.valueOf(colourList.get(i)));
+            actualBoats.put(boatId, boat);
         }
         this.boats = actualBoats;
     }
@@ -351,4 +374,5 @@ public class Race {
     public void setParticipants(List<Integer> participants) {
         this.participants = participants;
     }
+
 }
