@@ -33,7 +33,7 @@
         </AnchorPane>
     </left>
     <center>
-       <AnchorPane fx:id="viewAnchorPane" style="-fx-background-color: #26c6d8;" BorderPane.alignment="CENTER">
+       <AnchorPane fx:id="viewAnchorPane" style="-fx-background-color: #a3ccff;" BorderPane.alignment="CENTER">
             <children>
             <Group fx:id="boundaryGroup" autoSizeChildren="false" />
                 <Group fx:id="group" autoSizeChildren="false" />

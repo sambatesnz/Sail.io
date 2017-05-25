@@ -37,6 +37,8 @@ public class Race {
     private Boat centerOfScreen;
     private Boat boatToFollow;
     private List<Integer> participants;
+    private Mark viewMin;
+    private Mark viewMax;
 
     public boolean isRaceReady() {
         return raceReady;
@@ -63,13 +65,21 @@ public class Race {
         return mapCenter;
     }
 
+    public Mark getViewMin() {
+        return viewMin;
+    }
+
+    public Mark getViewMax() {
+        return viewMax;
+    }
+
     public void setViewParams() {
         double minLat = boundaries.stream().min(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
         double minLon = boundaries.stream().min(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
         double maxLat = boundaries.stream().max(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
         double maxLon = boundaries.stream().max(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
-        Mark viewMin = new Mark(minLat, minLon);
-        Mark viewMax = new Mark(maxLat, maxLon);
+        viewMin = new Mark(minLat, minLon);
+        viewMax = new Mark(maxLat, maxLon);
 
         Coordinate.setOffset(new Mark(0, 0));
         Coordinate.setDefaultCourseMin(viewMin);
@@ -111,7 +121,7 @@ public class Race {
         center.setLatitude((max.getLatitude() + min.getLatitude()) / 2);
         center.setLongitude((max.getLongitude() + min.getLongitude()) / 2);
         return center;
-}
+    }
 
     /**
      * calculates the offset of the currently selected boat to follow

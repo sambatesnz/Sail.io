@@ -31,6 +31,17 @@ public class Mark {
         this.longitude = longitude;
     }
 
+    public Mark getCopy(){
+        return new Mark(this.latitude, this.longitude);
+    }
+
+    public double convertToLon(){
+        return x / EARTH_CIRCUMFERENCE * 360;
+    }
+    public double convertToLat(){
+        return y / EARTH_CIRCUMFERENCE * 180;
+    }
+
     /**
      * Converts a longitude to x
      * @param lon Longitude to convert
@@ -38,10 +49,6 @@ public class Mark {
      */
     private double convertToX(double lon){
         return lon * EARTH_CIRCUMFERENCE / 360;
-    }
-
-    public Mark getCopy(){
-        return new Mark(this.latitude, this.longitude);
     }
 
     /**
