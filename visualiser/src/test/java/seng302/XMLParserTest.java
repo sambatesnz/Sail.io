@@ -72,7 +72,6 @@ public class XMLParserTest {
     public void checkStartTime() throws IOException {
         LocalDateTime startTime = raceParser.getRaceStartTime();
         LocalDateTime trial = LocalDateTime.of(2012, 12, 31, 11, 59);
-//        System.out.println(startTime.toString());
-        Assert.assertTrue(startTime.isBefore(trial));
+        Assert.assertTrue(startTime.isAfter(trial));
     }
 }
