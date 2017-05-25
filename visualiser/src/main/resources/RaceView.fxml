@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -20,7 +14,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainBorderPane" maxHeight="770.0" maxWidth="1208.0" minHeight="600.0" minWidth="800.0" prefHeight="728.0" prefWidth="1206.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng302.Controllers.RaceController">
+<BorderPane fx:id="mainBorderPane" maxHeight="770.0" maxWidth="1208.0" minHeight="600.0" minWidth="800.0" prefHeight="728.0" prefWidth="1206.0" stylesheets="@CSS/GeneralStyle.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng302.Controllers.RaceController">
     <left>
         <AnchorPane maxWidth="248" minWidth="248" prefWidth="248">
          <children>

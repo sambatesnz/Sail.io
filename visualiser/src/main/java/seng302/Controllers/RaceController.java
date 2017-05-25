@@ -282,7 +282,8 @@ public class RaceController {
         windArrow.setScaleX(2);
         windArrow.setScaleY(2);
         group.getChildren().add(windArrow);
-        windArrow.setStroke(Color.BLACK);
+        windArrow.setStroke(Color.WHITE);
+        windArrow.setFill(Color.WHITE);
 
         //Initialises race clock
         clock.setFont(new Font("Arial", 30));
@@ -673,16 +674,16 @@ public class RaceController {
         resetViewButton.setLayoutY(Coordinate.getWindowY() - 100);
 
         fpsBtn.setLayoutX(14);
-        fpsBtn.setLayoutY(Coordinate.getWindowY() - 125);
+        fpsBtn.setLayoutY(Coordinate.getWindowY() - 75);
 
         annotationBtn.setLayoutX(14);
-        annotationBtn.setLayoutY(Coordinate.getWindowY() - 150);
+        annotationBtn.setLayoutY(Coordinate.getWindowY() - 50);
 
         BoatNameCheckBox.setLayoutX(14);
-        BoatNameCheckBox.setLayoutY(Coordinate.getWindowY() - 275);
+        BoatNameCheckBox.setLayoutY(Coordinate.getWindowY() - 150);
 
         BoatSpeedCheckBox.setLayoutX(14);
-        BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowY() - 250);
+        BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowY() - 125);
 
         clock.setLayoutY(20);
         clock.setLayoutX(Coordinate.getWindowX() - 155);
