@@ -144,7 +144,8 @@ public class Message {
                     race.setCompoundMarks(compoundMarks);
                     race.setGates(compoundMarks);
                     race.setCourseOrder(xmlParser.getCourseOrder());
-                    startTime = xmlParser.getRaceStartTime();;
+                    startTime = xmlParser.getRaceStartTime();
+                    race.setRaceXMLReceived(true);
                     raceSet = true;
                     break;
             }

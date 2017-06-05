@@ -43,8 +43,29 @@ public class Race {
     private Mark viewMin;
     private Mark viewMax;
 
+    private boolean raceXMLReceived;
+
     // yellow, blue, pink, orange, green, purple, red, brown
     private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300");
+
+
+    /**
+     * Constructor for the race class.
+     */
+    public Race() {
+        finishedBoats = new ArrayList<>();
+        raceXMLReceived = false;
+
+        MarkStrings = FXCollections.observableArrayList();
+    }
+
+    public boolean isRaceXMLReceived() {
+        return raceXMLReceived;
+    }
+
+    public void setRaceXMLReceived(boolean raceXMLReceived) {
+        this.raceXMLReceived = raceXMLReceived;
+    }
 
     public boolean isRaceReady() {
         return raceReady;
@@ -52,15 +73,6 @@ public class Race {
 
     public void setRaceReady(boolean raceReady) {
         this.raceReady = raceReady;
-    }
-
-    /**
-     * Constructor for the race class.
-     */
-    public Race() {
-        finishedBoats = new ArrayList<>();
-
-        MarkStrings = FXCollections.observableArrayList();
     }
 
 

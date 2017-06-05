@@ -29,6 +29,7 @@ import seng302.Race.Boat;
 import seng302.Race.CompoundMark;
 import seng302.Race.Mark;
 import seng302.Race.Race;
+import seng302.Visualiser.WindArrow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,7 @@ public class RaceController {
     private List<List<Point2D>> absolutePaths = new ArrayList<>();
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
-    private Polyline windArrow = new Polyline();
+    private Polyline windArrow = new WindArrow();
     private boolean showName = true;
     private boolean showSpeed = true;
     private boolean showFPS = true;
@@ -136,15 +137,35 @@ public class RaceController {
         });
         serverThread.start();
 
-        while (!race.isRaceReady()) {
+
+        System.out.println("Here");
+
+        mainBorderPane.setLeft(sidePanelSplit);
+        mainBorderPane.setCenter(viewAnchorPane);
+
+
+        group.getChildren().add(windArrow);
+
+        runInfiniteLoop();
+
+
+
+
+
+
+
+
+
+        /*while (!race.isRaceReady()) {
+            System.out.println(race.isRaceXMLReceived());
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
-        initializeMap();
+        /*initializeMap();
 
         // handles zooming when a boat is selected
         viewAnchorPane.setOnScroll(event -> {
@@ -300,7 +321,35 @@ public class RaceController {
 //        RacersListBeforeStart(race);
 
         createChart();
-        runRace();
+        runRace();*/
+    }
+
+    private void runInfiniteLoop() {
+        new AnimationTimer() {
+            @Override
+            public void handle(long currentNanoTime) {
+
+                rotateWindArrow();
+
+
+
+                frameCount++;
+                if (currentNanoTime - lastTime >= timerUpdate) {
+                    fpsLabel.setText(frameCount + " fps");
+                    frameCount = 0;
+                    lastTime = currentNanoTime;
+                }
+            }
+        }.start();
+
+    }
+
+
+    /**
+     * Rotates the wind arrow based on the heading
+     */
+    private void rotateWindArrow() {
+        windArrow.setRotate(race.getWindHeading() + 180);
     }
 
     /**
@@ -550,6 +599,7 @@ public class RaceController {
      * across the new window size.
      */
     private void updateView() {
+        System.out.println("View being potentially updated");
         viewUpdateCount++;
         Coordinate.setOffset(race.calculateOffset());
         Coordinate.updateViewCoordinates();
