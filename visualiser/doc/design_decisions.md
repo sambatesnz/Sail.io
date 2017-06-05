@@ -11,5 +11,8 @@ Currently looking into refactoring the race controller. Have decided to refactor
 
 
 
+##Things that need to be done
+* Write a manual test for mock which creates a spinny arrow to verify that the arrow updates correctly
+* Write a manual test for mock which cycles through some time zones and displays them on visualiser (It should handle it when the race isnt set)
 
     

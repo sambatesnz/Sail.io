@@ -11,7 +11,7 @@ public class TimeZoneWrapperTest {
     @Test
     public void raceTimeZoneConversion() {
         String NZDT = "UTC+12:00";
-        TimeZoneWrapper timeZoneWrapper = new TimeZoneWrapper("Pacific/Auckland");
+        TimeZoneWrapper timeZoneWrapper = new TimeZoneWrapper(12);
         String actualTimeZone = timeZoneWrapper.getRaceTimeZoneString();
         Assert.assertEquals(NZDT, actualTimeZone);
     }

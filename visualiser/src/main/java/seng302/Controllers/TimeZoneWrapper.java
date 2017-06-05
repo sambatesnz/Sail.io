@@ -14,13 +14,19 @@ public class TimeZoneWrapper {
 
     /**
      * Constructor for TimeZone Wrapper Class
-     * @param raceTimeZone String of the timeZone you are setting
+     * @param utc int of the timeZone you are setting
      */
-    public TimeZoneWrapper(String raceTimeZone) {
-        this.raceTimeZoneId = ZoneId.of(raceTimeZone);
+    public TimeZoneWrapper(int utc) {
+        String utcValue = String.valueOf(utc);
+        if (utc > 0) {
+            utcValue = "+" + utcValue;
+        }
+        this.raceTimeZoneId = ZoneId.of(utcValue);
         this.raceTimeStringFormat = DateTimeFormatter.ofPattern("hh:mm:ss");
         this.utcOffset = calculateOffset();
     }
+
+
 
     public String getLocalTimeString(){
         return getLocalTime().format(raceTimeStringFormat);

@@ -29,6 +29,7 @@ import seng302.Race.Boat;
 import seng302.Race.CompoundMark;
 import seng302.Race.Mark;
 import seng302.Race.Race;
+import seng302.Visualiser.LocalTime;
 import seng302.Visualiser.WindArrow;
 
 import java.util.ArrayList;
@@ -129,6 +130,8 @@ public class RaceController {
     @FXML
     public void initialize() {
         race = new Race();
+
+
 
         Thread serverThread = new Thread(() -> {
             Client client = new Client(race);
@@ -330,7 +333,7 @@ public class RaceController {
             public void handle(long currentNanoTime) {
 
                 rotateWindArrow();
-
+                setUTC();
 
 
                 frameCount++;
@@ -341,6 +344,20 @@ public class RaceController {
                 }
             }
         }.start();
+
+    }
+
+    private void setUTC() {
+        localTime.setFont(new Font("Arial", 15));
+        localTime.setVisible(true); //TODO This should be set to visible only when utc is set correctly
+
+        localTime.setLayoutX(Coordinate.getWindowX() - 110);
+        localTime.setLayoutY(100);
+
+        int utc = race.getRegatta().getUtcOffset();
+        TimeZoneWrapper timeZoneWrapper = new TimeZoneWrapper(utc);
+        String text = timeZoneWrapper.getLocalTimeString();
+        localTime.setText(text);
 
     }
 
