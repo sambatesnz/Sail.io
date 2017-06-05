@@ -4,8 +4,9 @@ package seng302;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import seng302.Messages.Message;
-import seng302.Messages.RaceStatusMessage;
+import seng302.Client.Messages.Message;
+import seng302.Race.Boat;
+import seng302.Race.Race;
 
 import java.util.ArrayList;
 import java.util.HashMap;

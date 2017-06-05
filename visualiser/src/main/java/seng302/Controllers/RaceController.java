@@ -2,11 +2,9 @@ package seng302.Controllers;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -18,8 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -28,15 +24,15 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.util.Callback;
-import seng302.*;
+import seng302.Client.Client;
+import seng302.Race.Boat;
+import seng302.Race.CompoundMark;
+import seng302.Race.Mark;
+import seng302.Race.Race;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
 import java.util.concurrent.TimeUnit;
-
-import static java.lang.System.currentTimeMillis;
 
 /**
  * Class that controls the race window and updates the race as it proceeds
@@ -134,7 +130,7 @@ public class RaceController {
         race = new Race();
 
         Thread serverThread = new Thread(() -> {
-            StreamClient client = new StreamClient(race);
+            Client client = new Client(race);
             client.connect();
             client.retrieveData();
         });
@@ -581,14 +577,6 @@ public class RaceController {
 
         double position = 1 - (SPARKLINEHEIGHT / Coordinate.getWindowY());
         sidePanelSplit.setDividerPosition(0, position);
-
-//        for (int i = 0; i < absolutePaths.size(); i++) {
-//            if (absolutePaths.get(i).size() > 150) {
-//                paths.get(i).getElements().remove(1);
-//                absolutePaths.get(i).remove(0);
-//            }
-//        }
-
 
         for (int i = 0; i < boats.size(); i++) {
 

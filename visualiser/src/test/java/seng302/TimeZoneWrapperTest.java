@@ -2,6 +2,7 @@ package seng302;
 
 import org.junit.Assert;
 import org.junit.Test;
+import seng302.Controllers.TimeZoneWrapper;
 
 /**
  * Created by sha162 on 22/05/17.
