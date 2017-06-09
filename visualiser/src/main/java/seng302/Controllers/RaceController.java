@@ -29,6 +29,8 @@ import seng302.Race.Boat;
 import seng302.Race.CompoundMark;
 import seng302.Race.Mark;
 import seng302.Race.Race;
+import seng302.Visualiser.FPSCounter;
+import seng302.Visualiser.FPSView;
 import seng302.Visualiser.LocalTime;
 import seng302.Visualiser.WindArrow;
 
@@ -123,7 +125,10 @@ public class RaceController {
     private int METERS_CONVERSION = 1000;
     private final int SPARKLINEHEIGHT = 239;
 
+    private FPSCounter fpsCounter;
 
+
+    private Label secondFPSCounter;
     /**
      * initializes the race display.
      */
@@ -150,6 +155,12 @@ public class RaceController {
         group.getChildren().add(windArrow);
 
         runInfiniteLoop();
+
+        clock.setFont(new Font("Arial", 30));
+        clock.setText(" 00:00:00");
+        clock.setVisible(true);
+
+        fpsCounter = new FPSCounter(fpsLabel);
 
 
 
@@ -183,12 +194,6 @@ public class RaceController {
         });
 
         //Where should we put this?
-        int utc = race.getRegatta().getUtcOffset();
-        if (utc < 0) {
-            this.timeZoneWrapper = new TimeZoneWrapper(String.valueOf(utc));
-        } else {
-            this.timeZoneWrapper = new TimeZoneWrapper("+" + String.valueOf(utc));
-        }
 
         finishedListView = new ListView<>();
 
@@ -292,18 +297,6 @@ public class RaceController {
             group.getChildren().add(path);
         }
 
-        //Initialises wind arrow
-        windArrow.getPoints().addAll(0.0, 0.0,
-                -5.0, 15.0,
-                5.0, 15.0,
-                0.0, 0.0,
-                0.0, 30.0);
-        windArrow.setScaleX(2);
-        windArrow.setScaleY(2);
-        group.getChildren().add(windArrow);
-        windArrow.setStroke(Color.WHITE);
-        windArrow.setFill(Color.WHITE);
-
         //Initialises race clock
         clock.setFont(new Font("Arial", 30));
         clock.setText(" 00:00:00");
@@ -334,17 +327,36 @@ public class RaceController {
 
                 rotateWindArrow();
                 setUTC();
+                updateClock();
+                fpsCounter.update(currentNanoTime);
 
+                if (showFPS) {
+                    fpsLabel.setLayoutX(Coordinate.getWindowX() - 90);
+                    fpsLabel.setLayoutY(60);
+                }
+
+
+//                FPSCounter.update(currentNanoTime);
+//                fpsLabel.setText(FPSCounter.getFPS() + " fps");
+
+
+
+
+               /* fpsLabel.update(currentNanoTime);
 
                 frameCount++;
                 if (currentNanoTime - lastTime >= timerUpdate) {
                     fpsLabel.setText(frameCount + " fps");
                     frameCount = 0;
                     lastTime = currentNanoTime;
-                }
+                }*/
             }
         }.start();
 
+    }
+
+    private void updateClock() {
+        updateRaceClock();
     }
 
     private void setUTC() {
