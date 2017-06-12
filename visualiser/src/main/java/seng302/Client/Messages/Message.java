@@ -147,6 +147,7 @@ public class Message {
                     startTime = xmlParser.getRaceStartTime();
                     race.setRaceXMLReceived(true);
                     raceSet = true;
+                    race.setReceivedRaceXML(true);
                     break;
             }
         } catch (IOException e) {
