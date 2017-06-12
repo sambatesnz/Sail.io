@@ -123,9 +123,6 @@ public class RaceController {
     private FPSCounter fpsCounter;
 
 
-    private Label secondFPSCounter;
-
-    private boolean TEMPORAL_COUPLING = false;
     /**
      * initializes the race display.
      */
@@ -369,28 +366,55 @@ public class RaceController {
 
     private void updateCourseLayout() {
         if (race.isRaceXMLReceived()){
-            group.getChildren().removeAll(compoundMarks);
-            compoundMarks = new ArrayList<>();
-            for (CompoundMark lm : race.getCompoundMarks()) {
-                for (int n=0; n < lm.getMarks().size(); n++){
-                    Rectangle square = new Rectangle(10, 10, lm.getColor());
-                    compoundMarks.add(square);
-                }
-            }
-            group.getChildren().addAll(compoundMarks);
+            updateMarks();
+            updateGates();
+        }
+    }
 
-            ArrayList<Mark> marks = new ArrayList<>();
-            for (CompoundMark lm : race.getCompoundMarks()){
-                for (Mark pos : lm.getMarks()){
-                    marks.add(pos);
-                }
+    private void updateMarks() {
+        group.getChildren().removeAll(compoundMarks);
+        compoundMarks = new ArrayList<>();
+        for (CompoundMark lm : race.getCompoundMarks()) {
+            for (int n=0; n < lm.getMarks().size(); n++){
+                Rectangle square = new Rectangle(10, 10, lm.getColor());
+                compoundMarks.add(square);
             }
+        }
+        group.getChildren().addAll(compoundMarks);
 
-            for (int i = 0; i < compoundMarks.size(); i++) {
-                compoundMarks.get(i).setX(Coordinate.getRelativeX(marks.get(i).getX()) - compoundMarks.get(i).getWidth() / 2);
-                compoundMarks.get(i).setY(Coordinate.getRelativeY(marks.get(i).getY()) - compoundMarks.get(i).getHeight() / 2);
-                updateNodeScale(compoundMarks.get(i));
+        ArrayList<Mark> marks = new ArrayList<>();
+        for (CompoundMark lm : race.getCompoundMarks()){
+            for (Mark pos : lm.getMarks()){
+                marks.add(pos);
             }
+        }
+
+        for (int i = 0; i < compoundMarks.size(); i++) {
+            compoundMarks.get(i).setX(Coordinate.getRelativeX(marks.get(i).getX()) - compoundMarks.get(i).getWidth() / 2);
+            compoundMarks.get(i).setY(Coordinate.getRelativeY(marks.get(i).getY()) - compoundMarks.get(i).getHeight() / 2);
+            updateNodeScale(compoundMarks.get(i));
+        }
+    }
+
+    private void updateGates() {
+        group.getChildren().removeAll(gates);
+        gates = new ArrayList<>();
+        for (int i = 0; i < race.getGates().size(); i++) {
+            CompoundMark gate = race.getGates().get(i);
+            Mark gateHead = gate.getMarks().get(0);
+            Mark gateTail = gate.getMarks().get(1);
+            Line line = new Line(gateHead.getX(), gateHead.getY(), gateTail.getX(), gateTail.getY());
+            line.setStrokeWidth(3);
+            gates.add(line);
+        }
+        group.getChildren().addAll(gates);
+
+
+        for (int i = 0; i < gates.size(); i++) {
+            gates.get(i).setStartX(Coordinate.getRelativeX(race.getGates().get(i).getMarks().get(0).getX()));
+            gates.get(i).setStartY(Coordinate.getRelativeY(race.getGates().get(i).getMarks().get(0).getY()));
+            gates.get(i).setEndX(Coordinate.getRelativeX(race.getGates().get(i).getMarks().get(1).getX()));
+            gates.get(i).setEndY(Coordinate.getRelativeY(race.getGates().get(i).getMarks().get(1).getY()));
         }
     }
 
