@@ -26,8 +26,6 @@ public class FPSCounter {
         }
     }
 
-
-
     private void resetFrameCount(){
         frameCount = 0;
     }

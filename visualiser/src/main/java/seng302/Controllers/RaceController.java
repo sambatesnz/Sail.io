@@ -1,7 +1,6 @@
 package seng302.Controllers;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,7 +12,6 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -23,15 +21,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import seng302.Client.Client;
 import seng302.Race.Boat;
 import seng302.Race.CompoundMark;
 import seng302.Race.Mark;
 import seng302.Race.Race;
 import seng302.Visualiser.FPSCounter;
-import seng302.Visualiser.FPSView;
-import seng302.Visualiser.LocalTime;
 import seng302.Visualiser.WindArrow;
 
 import java.util.ArrayList;
@@ -160,7 +155,14 @@ public class RaceController {
         clock.setText(" 00:00:00");
         clock.setVisible(true);
 
+
+
         fpsCounter = new FPSCounter(fpsLabel);
+
+
+
+
+
 
 
 
@@ -330,10 +332,7 @@ public class RaceController {
                 updateClock();
                 fpsCounter.update(currentNanoTime);
 
-                if (showFPS) {
-                    fpsLabel.setLayoutX(Coordinate.getWindowX() - 90);
-                    fpsLabel.setLayoutY(60);
-                }
+                updateLayout();
 
 
 //                FPSCounter.update(currentNanoTime);
@@ -353,6 +352,16 @@ public class RaceController {
             }
         }.start();
 
+    }
+
+    private void updateLayout(){
+        //Ideally this should only happen on a resize event (currently just every animation count
+
+        fpsLabel.setLayoutX(Coordinate.getWindowX() - 90);
+        fpsLabel.setLayoutY(60);
+
+        clock.setLayoutY(20);
+        clock.setLayoutX(Coordinate.getWindowX() - 155);
     }
 
     private void updateClock() {
