@@ -22,6 +22,11 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>seng302</groupId>
+            <artifactId>mock</artifactId>
+            <version>0.0</version>
+        </dependency>
         <!--<dependency>-->
         <!--<groupId>junit</groupId>-->
         <!--<artifactId>junit</artifactId>-->
