@@ -11,7 +11,7 @@ import seng302.packetGeneration.PacketGenerationUtils;
 public class BoatActionMessage extends BinaryMessage {
 
     private byte[] action;
-    private static int MESSAGE_SIZE = 1;
+    private static final int MESSAGE_SIZE = 1;
     private byte[] boatActionMessage;
 
     public BoatActionMessage(int action){

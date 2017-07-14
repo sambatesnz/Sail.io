@@ -1,9 +1,14 @@
 package seng302.UserInputController;
 
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import seng302.packetGeneration.BinaryMessage;
+
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.Queue;
 
 /**
  * Created by tjg73 on 13/07/17.
@@ -11,6 +16,8 @@ import seng302.packetGeneration.BinaryMessage;
 public class KeyBindingUtility {
 
     private static boolean sailStatus;
+    private static Queue<byte[]> bytes = new LinkedList<>();
+
 
     private KeyBindingUtility(){
         sailStatus = false;
@@ -18,7 +25,7 @@ public class KeyBindingUtility {
 
     public static void setKeyBindings(Scene rootScene) {
 
-        rootScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        rootScene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 BinaryMessage boatActionMessage;
@@ -43,11 +50,27 @@ public class KeyBindingUtility {
                     case PAGE_DOWN:
                         boatActionMessage = new BoatActionMessage(BoatAction.DOWNWIND.getBoatAction());
                         break;
+                    default:
+                        return;
                 }
-                // Send newly created message
+                System.out.println(event.getCode().getName());
+                event.consume();
+                bytes.add(boatActionMessage.createMessage());
             }
         });
 
+    }
+
+    public static byte[] getUserInputData() {
+        try {
+            return bytes.remove();
+        } catch (NoSuchElementException e) {
+            return new byte[0];
+        }
+    }
+
+    public static boolean keyPressed() {
+        return !bytes.isEmpty();
     }
 
     private static void alternateSailStatus(){

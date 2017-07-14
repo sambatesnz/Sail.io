@@ -25,7 +25,7 @@ public class MockRace implements IServerData {
     // Generate RaceStatusMessage from using properties of Race object.
     private BinaryMessage rsm = new RaceStatusMessage(currentTimeMillis(),
                                                             race.getRaceID(),
-                                                            race.getRaceStatus()    ,
+                                                            race.getRaceStatus(),
                                                             currentTimeMillis(),
                                                             race.getWindDirection(),
                                                             race.getWindSpeed(),

@@ -70,7 +70,7 @@ public class Client {
         // Get the server address from a dialog box.
 
         // Make connection and initialize streams
-        Socket socket = new Socket("127.0.0.1", 9090);
+        Socket socket = new Socket("127.0.0.1", 4941);
         in = new BufferedReader(
                 new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(), true);
