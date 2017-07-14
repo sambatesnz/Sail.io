@@ -12,10 +12,10 @@ public class RaceViewController {
      * @param mainStage the main stage of the application.
      */
     public RaceViewController(Stage mainStage) {
-        Coordinate.setWindowX(800);
-        Coordinate.setWindowY(600);
+        Coordinate.setWindowWidthX(800);
+        Coordinate.setWindowHeightY(600);
 
-        mainStage.widthProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowX((newValue).doubleValue()));
-        mainStage.heightProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowY(newValue.doubleValue()));
+        mainStage.widthProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowWidthX((newValue).doubleValue()));
+        mainStage.heightProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowHeightY(newValue.doubleValue()));
     }
 }

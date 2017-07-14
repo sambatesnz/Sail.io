@@ -342,11 +342,9 @@ public class RaceController {
                 updateLayout();
                 updateCourseLayout();
 
-//                boundary = getBoundary(race);
-//                boundaryGroup.getChildren().clear();
-//                boundaryGroup.getChildren().add(boundary);
-
                 updateBoundary();
+                Coordinate.updateBorder();
+
 
 
 
@@ -432,11 +430,11 @@ public class RaceController {
     private void updateLayout(){
         //Ideally this should only happen on a resize event (currently just every animation count
 
-        fpsLabel.setLayoutX(Coordinate.getWindowX() - 90);
+        fpsLabel.setLayoutX(Coordinate.getWindowWidthX() - 90);
         fpsLabel.setLayoutY(60);
 
         clock.setLayoutY(20);
-        clock.setLayoutX(Coordinate.getWindowX() - 155);
+        clock.setLayoutX(Coordinate.getWindowWidthX() - 155);
     }
 
     private void updateClock() {
@@ -447,7 +445,7 @@ public class RaceController {
         localTime.setFont(new Font("Arial", 15));
         localTime.setVisible(true); //TODO This should be set to visible only when utc is set correctly
 
-        localTime.setLayoutX(Coordinate.getWindowX() - 110);
+        localTime.setLayoutX(Coordinate.getWindowWidthX() - 110);
         localTime.setLayoutY(100);
 
         int utc = race.getRegatta().getUtcOffset();
@@ -725,20 +723,20 @@ public class RaceController {
         positionTable.refresh();
 
         positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
-        positionTable.setPrefHeight(Coordinate.getWindowY() - SPARKLINEHEIGHT);
+        positionTable.setPrefHeight(Coordinate.getWindowHeightY() - SPARKLINEHEIGHT);
 
-        viewAnchorPane.setMinHeight(Coordinate.getWindowY());
-        viewAnchorPane.setMaxHeight(Coordinate.getWindowY());
-        viewAnchorPane.setMinWidth(Coordinate.getWindowX());
-        viewAnchorPane.setMaxWidth(Coordinate.getWindowX());
+        viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
+        viewAnchorPane.setMaxHeight(Coordinate.getWindowHeightY());
+        viewAnchorPane.setMinWidth(Coordinate.getWindowWidthX());
+        viewAnchorPane.setMaxWidth(Coordinate.getWindowWidthX());
 
         Coordinate.updateBorder();
-        viewAnchorPane.setMinHeight(Coordinate.getWindowY());
-        viewAnchorPane.setMaxHeight(Coordinate.getWindowY());
-        viewAnchorPane.setMinWidth(Coordinate.getWindowX());
-        viewAnchorPane.setMaxWidth(Coordinate.getWindowX());
+        viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
+        viewAnchorPane.setMaxHeight(Coordinate.getWindowHeightY());
+        viewAnchorPane.setMinWidth(Coordinate.getWindowWidthX());
+        viewAnchorPane.setMaxWidth(Coordinate.getWindowWidthX());
 
-        double position = 1 - (SPARKLINEHEIGHT / Coordinate.getWindowY());
+        double position = 1 - (SPARKLINEHEIGHT / Coordinate.getWindowHeightY());
         sidePanelSplit.setDividerPosition(0, position);
 
         for (int i = 0; i < boats.size(); i++) {
@@ -825,36 +823,36 @@ public class RaceController {
         windArrow.setRotate(race.getWindHeading() + 180);
 
         if (showFPS) {
-            fpsLabel.setLayoutX(Coordinate.getWindowX() - 90);
+            fpsLabel.setLayoutX(Coordinate.getWindowWidthX() - 90);
             fpsLabel.setLayoutY(60);
         }
 
         resetViewButton.setLayoutX(14);
-        resetViewButton.setLayoutY(Coordinate.getWindowY() - 100);
+        resetViewButton.setLayoutY(Coordinate.getWindowHeightY() - 100);
 
         fpsBtn.setLayoutX(14);
-        fpsBtn.setLayoutY(Coordinate.getWindowY() - 75);
+        fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 75);
 
         annotationBtn.setLayoutX(14);
-        annotationBtn.setLayoutY(Coordinate.getWindowY() - 50);
+        annotationBtn.setLayoutY(Coordinate.getWindowHeightY() - 50);
 
         BoatNameCheckBox.setLayoutX(14);
-        BoatNameCheckBox.setLayoutY(Coordinate.getWindowY() - 150);
+        BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 150);
 
         BoatSpeedCheckBox.setLayoutX(14);
-        BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowY() - 125);
+        BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 125);
 
         clock.setLayoutY(20);
-        clock.setLayoutX(Coordinate.getWindowX() - 155);
+        clock.setLayoutX(Coordinate.getWindowWidthX() - 155);
 
-        localTimeZone.setLayoutX(Coordinate.getWindowX() - 115);
+        localTimeZone.setLayoutX(Coordinate.getWindowWidthX() - 115);
         localTimeZone.setLayoutY(80);
 
-        localTime.setLayoutX(Coordinate.getWindowX() - 110);
+        localTime.setLayoutX(Coordinate.getWindowWidthX() - 110);
         localTime.setLayoutY(100);
         localTime.setText(timeZoneWrapper.getLocalTimeString());
 
-        startersList.setPrefSize(Coordinate.getWindowX() - 400, Coordinate.getWindowY() - 200);
+        startersList.setPrefSize(Coordinate.getWindowWidthX() - 400, Coordinate.getWindowHeightY() - 200);
 
         startersList.setLayoutX(200);
         startersList.setLayoutY(100);

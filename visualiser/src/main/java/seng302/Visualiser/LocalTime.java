@@ -20,7 +20,7 @@ public class LocalTime extends Label {
       setFont(new Font("Arial", 15));
       setVisible(true); //TODO This should be set to visible only when utc is set correctly
 
-      setLayoutX(Coordinate.getWindowX() - 110);
+      setLayoutX(Coordinate.getWindowWidthX() - 110);
       setLayoutY(100);
       setText(getLocalTimeString());
   }
