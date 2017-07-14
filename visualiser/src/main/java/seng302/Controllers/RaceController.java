@@ -148,17 +148,22 @@ public class RaceController {
 
         group.getChildren().add(windArrow);
 
-        runInfiniteLoop();
-
         clock.setFont(new Font("Arial", 30));
         clock.setText(" 00:00:00");
         clock.setVisible(true);
 
-
-
-
-
         fpsCounter = new FPSCounter(fpsLabel);
+
+
+        runInfiniteLoop();
+
+
+
+
+
+
+
+
 
 
 
@@ -336,6 +341,12 @@ public class RaceController {
 
                 updateLayout();
                 updateCourseLayout();
+
+//                boundary = getBoundary(race);
+//                boundaryGroup.getChildren().clear();
+//                boundaryGroup.getChildren().add(boundary);
+
+                updateBoundary();
 
 
 
@@ -856,12 +867,8 @@ public class RaceController {
      * clears and re-draws boundary to avoid problem when course bounds change
      */
     private void updateBoundary(){
+        boundary = getBoundary(race);
         boundaryGroup.getChildren().clear();
-        boundary.getPoints().clear();
-        for (int i=0; i<race.getBoundaries().size(); i++) {
-            boundary.getPoints().add(2*i, Coordinate.getRelativeX(race.getBoundaries().get(i).getX()));
-            boundary.getPoints().add(2*i + 1, Coordinate.getRelativeY(race.getBoundaries().get(i).getY()));
-        }
         boundaryGroup.getChildren().add(boundary);
     }
 
