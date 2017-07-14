@@ -317,7 +317,11 @@ public class Race {
      * @return the boats competing
      */
     public List<Boat> getBoats() {
-        return new ArrayList<Boat>(boats.values());
+        if (!raceReady){
+            return new ArrayList<Boat>();
+        } else {
+            return new ArrayList<Boat>(boats.values());
+        }
     }
 
     public void setCourseOrder(List<Integer> courseOrder) {
