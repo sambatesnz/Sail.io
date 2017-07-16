@@ -298,46 +298,37 @@ public class RaceController {
                 setUTC();
                 updateClock();
                 fpsCounter.update(currentNanoTime);
-
                 updateViewLayout();
-
                 updateCourseLayout();
-
-
                 updateBoundary();
                 Coordinate.updateBorder();
 
 
                 if (race.isRaceReady() && !boatsInitialised){
                     initialiseBoats();
+                    createChart();
                     boatsInitialised = true;
                 }
 
-//                updateBoundary();
-
 
                 updateBoatPositions();
+                viewUpdateCount++;
+
+
+                positionTable.refresh();
+                positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
+                System.out.println(positionTable.getItems());
+                positionTable.setPrefHeight(Coordinate.getWindowHeightY() - SPARKLINEHEIGHT);
+
+                sparkCounter++;
+                if (sparkCounter > 100 && race.started()) {
+                    sparkCounter = 0;
+                    updateSparkLineChart();
+
+                }
 
 
 
-
-                //System.out.println("\n\n------- ");
-
-
-//                FPSCounter.update(currentNanoTime);
-//                fpsLabel.setText(FPSCounter.getFPS() + " fps");
-
-
-
-
-               /* fpsLabel.update(currentNanoTime);
-
-                frameCount++;
-                if (currentNanoTime - lastTime >= timerUpdate) {
-                    fpsLabel.setText(frameCount + " fps");
-                    frameCount = 0;
-                    lastTime = currentNanoTime;
-                }*/
             }
         }.start();
 
@@ -375,6 +366,7 @@ public class RaceController {
             boats.get(i).getChildren().set(1, new Text(name + " " + speed));
             boats.get(i).getChildren().get(1).setTranslateX(10);
             boats.get(i).getChildren().get(1).setTranslateY(0);
+
 
             if (viewUpdateCount % 5 == 1) {
                 if (absolutePaths.get(i).size() > 150) {
@@ -464,6 +456,9 @@ public class RaceController {
 
         }
         group.getChildren().addAll(boats);
+        for (Path path: paths) {
+            group.getChildren().add(path);
+        }
     }
 
     private void updateCourseLayout() {
