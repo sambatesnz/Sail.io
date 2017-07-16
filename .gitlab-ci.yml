@@ -10,7 +10,7 @@ generate_artifacts:
   script:
     - mvn -B clean site package
   artifacts:
-    name: "test"
+    name: "FullMast_sprint5"
     paths:
       - ./mock/target/mock*.jar
       - ./visualiser/target/visualiser*.jar
