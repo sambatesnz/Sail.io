@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>seng302</groupId>
     <artifactId>FullMast</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <version>0.0</version>
     <modules>
         <module>mock</module>
