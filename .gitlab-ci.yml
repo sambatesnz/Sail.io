@@ -8,7 +8,7 @@ junit:
 generate_artifacts:
   stage: deploy
   script:
-    - cd ../visualiser/
+    - mvn -B clean site package
 
 
 
