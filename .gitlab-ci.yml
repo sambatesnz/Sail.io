@@ -9,6 +9,11 @@ generate_artifacts:
   stage: deploy
   script:
     - mvn -B clean site package
+  artifacts:
+    name: "test"
+    paths:
+      - ./mock/target/mock*.jar
+      - ./visualiser/target/visualiser*.jar
 
 
 
