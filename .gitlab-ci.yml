@@ -3,18 +3,13 @@
 junit:
   stage: test
   script:
-    - cd mock/
-    - mvn -B clean test
-    - cd ../visualiser/
     - mvn -B clean test
 
 generate_artifacts:
   stage: deploy
   script:
-    - cd mock/
-    - mvn -B clean site package
     - cd ../visualiser/
-    - mvn -B clean site package
+
 
 
 #junit:
