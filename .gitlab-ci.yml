@@ -1,5 +1,3 @@
-
-
 junit:
   stage: test
   script:
@@ -14,17 +12,3 @@ generate_artifacts:
     paths:
       - ./mock/target/mock*.jar
       - ./visualiser/target/visualiser*.jar
-
-
-
-#junit:
-#  stage: test
-#  script:
-#    - cd visualiser/
-#    - mvn -B clean test
-#
-#generate_artifacts:
-#  stage: deploy
-#  script:
-#    - cd visualiser/
-#    - mvn -B clean site package
