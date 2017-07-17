@@ -330,13 +330,12 @@ public class RaceController {
                 updateBoundary();
                 Coordinate.updateBorder();
 
-                System.out.println(race.isRaceReady() + " && " + !boatsInitialised + " && ");
+                //System.out.println(race.isRaceReady() + " && " + !boatsInitialised + " && ");
                 if (race.isRaceReady() && !boatsInitialised){
                     initialiseBoats();
                     createChart();
                     boatsInitialised = true;
                 }
-
 
                 updateBoatPositions();
                 viewUpdateCount++;
@@ -376,27 +375,31 @@ public class RaceController {
                 name = race.getBoats().get(i).getShortName();
             }
 
+            //Position of boat, wake and annotations.
             boats.get(i).setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
             boats.get(i).setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
             updateNodeScale(boats.get(i).getChildren().get(0));
-            boats.get(i).getChildren().get(0).setRotate(race.getBoats().get(i).getHeading()); //Sets rotation of boat
+            boats.get(i).getChildren().get(0).setRotate(race.getBoats().get(i).getHeading());
 
-            if(!raceStarted){
+
+            //Boats wake
+            if(!race.started()){
                 boats.get(i).getChildren().set(2, new Polyline());
             } else {
                 boats.get(i).getChildren().set(2, newWake(boatSpeed));
             }
 
             updateNodeScale(boats.get(i).getChildren().get(2));
-
-            boats.get(i).getChildren().get(2).setRotate(race.getBoats().get(i).getHeading()); //Sets rotation of wake
+            boats.get(i).getChildren().get(2).setRotate(race.getBoats().get(i).getHeading());
             boats.get(i).getChildren().get(2).setLayoutX(((9 + boatSpeed) *(1/(1+Coordinate.getZoom()*0.9))) * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
             boats.get(i).getChildren().get(2).setLayoutY(((9 + boatSpeed) *(1/(1+Coordinate.getZoom()*0.9))) * Math.cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
+
+            //Boat annotations (name and speed)
             boats.get(i).getChildren().set(1, new Text(name + " " + speed));
             boats.get(i).getChildren().get(1).setTranslateX(10);
             boats.get(i).getChildren().get(1).setTranslateY(0);
 
-
+            //boat paths
             if (viewUpdateCount % 5 == 1) {
                 if (absolutePaths.get(i).size() > 150) {
                     paths.get(i).getElements().remove(1);
@@ -546,10 +549,25 @@ public class RaceController {
 
     private void updateViewLayout(){
         //Ideally this should only happen on a resize event (currently just every animation count
+        viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
+        viewAnchorPane.setMaxHeight(Coordinate.getWindowHeightY());
+        viewAnchorPane.setMinWidth(Coordinate.getWindowWidthX());
+        viewAnchorPane.setMaxWidth(Coordinate.getWindowWidthX());
+
         fpsLabel.setLayoutX(Coordinate.getWindowWidthX() - 90);
         fpsLabel.setLayoutY(60);
         clock.setLayoutY(20);
         clock.setLayoutX(Coordinate.getWindowWidthX() - 155);
+        resetViewButton.setLayoutX(14);
+        resetViewButton.setLayoutY(Coordinate.getWindowHeightY() - 100);
+        fpsBtn.setLayoutX(14);
+        fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 75);
+        annotationBtn.setLayoutX(14);
+        annotationBtn.setLayoutY(Coordinate.getWindowHeightY() - 50);
+        BoatNameCheckBox.setLayoutX(14);
+        BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 150);
+        BoatSpeedCheckBox.setLayoutX(14);
+        BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 125);
     }
 
     private void updateClock() {
