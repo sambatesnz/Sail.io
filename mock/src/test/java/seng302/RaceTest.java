@@ -12,9 +12,9 @@ import static junit.framework.TestCase.assertEquals;
 public class RaceTest {
 
     private Race race = new Race();
-    private int TEN_KNOTS = 5145;
-    private int FORTY_KNOTS = 20577;
-    private int FIVE_KNOTS = 2573;
+    private static final int TEN_KNOTS = 5145;
+    private static final int FORTY_KNOTS = 20577;
+    private static final int FIVE_KNOTS = 2573;
 
 
     @Test

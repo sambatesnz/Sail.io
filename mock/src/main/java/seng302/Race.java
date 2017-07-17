@@ -34,10 +34,10 @@ public class Race {
     private ObservableList<Boat> currentOrder;
     private ObservableList<String> positionStrings;
     public boolean finished = false;
-    private int TEN_KNOTS = 5145;
-    private int FORTY_KNOTS = 20577;
-    private int FIVE_KNOTS = 2573;
-    private int DIRECTION_CHANGE_PROB = 10;
+    private static final int TEN_KNOTS = 5145;
+    private static final int FORTY_KNOTS = 20577;
+    private static final int FIVE_KNOTS = 2573;
+    private static final int DIRECTION_CHANGE_PROB = 10;
 
     /**
      * Constructor for the race class.
@@ -140,7 +140,7 @@ public class Race {
             if (up) {
                 return 5;
             } else {
-                 return - 5;
+                return - 5;
             }
         }
         return 0;
