@@ -329,7 +329,8 @@ public class RaceController {
                 updateCourseLayout();
                 updateBoundary();
                 Coordinate.updateBorder();
-
+                Coordinate.setOffset(race.calculateOffset());
+                Coordinate.updateViewCoordinates();
                 //System.out.println(race.isRaceReady() + " && " + !boatsInitialised + " && ");
                 if (race.isRaceReady() && !boatsInitialised){
                     initialiseBoats();
@@ -845,8 +846,6 @@ public class RaceController {
     private void updateView() {
         System.out.println("View being potentially updated");
         viewUpdateCount++;
-        Coordinate.setOffset(race.calculateOffset());
-        Coordinate.updateViewCoordinates();
 
         selectedImage.setX(Coordinate.getRelativeX(imagePos.getX())-selectedImage.getImage().getWidth()*IMAGE_SCALE/2);
         selectedImage.setY(Coordinate.getRelativeY(imagePos.getY())-selectedImage.getImage().getHeight()*IMAGE_SCALE/2);

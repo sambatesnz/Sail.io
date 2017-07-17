@@ -389,6 +389,7 @@ public class Race {
      * @param markToFollow is a boat which the view will track round the course
      */
     public void setBoatToFollow(Boat markToFollow) {
+        System.out.println("Setting boat to follow" + markToFollow);
         this.boatToFollow = markToFollow;
     }
 
