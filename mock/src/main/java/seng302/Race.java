@@ -107,8 +107,20 @@ public class Race {
 //        return windHeading;
 //    }
 
+    /**
+     * Get the wind direction.
+     * Chooses to take a gamble on whether or not to change the wind direction.
+     * @return
+     */
     public short getWindDirection() {
         this.windHeading = (short) (windHeading + gambleWindDirection());
+        if (this.windHeading > 359) {
+            // if the wind heading is greater than or equal to 360, reset it back down to 0
+            this.windHeading = (short)(this.windHeading - 360);
+        } else if (this.windHeading < 0) {
+            // if the wind heading is less than 0, it needs to be reset back up to 360
+            this.windHeading = (short)(this.windHeading + 360);
+        }
         return this.windHeading;
     }
 
@@ -145,7 +157,6 @@ public class Race {
         Random random = new Random();
         int low = startingWindSpeed - 2600;
         int high = startingWindSpeed + 2600;
-
         int windVal = random.nextInt(high - low) + low;
 
         return (short) windVal;
