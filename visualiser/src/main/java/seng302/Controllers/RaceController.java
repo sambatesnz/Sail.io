@@ -104,6 +104,8 @@ public class RaceController {
     private boolean raceStarted = false;
     private int frameCount = 0;
     private int viewUpdateCount = 0;
+    private double windowWidth = 0;
+    private double windowHeight = 0;
 
     private TimeZoneWrapper timeZoneWrapper;
     private final ImageView selectedImage = new ImageView();
@@ -325,12 +327,15 @@ public class RaceController {
                 setUTC();
                 updateClock();
                 fpsCounter.update(currentNanoTime);
-                updateViewLayout();
+                if(Coordinate.getWindowHeightY() != windowHeight || Coordinate.getWindowWidthX() != windowWidth){
+                    updateViewLayout();
+                    windowHeight = Coordinate.getWindowHeightY();
+                    windowWidth = Coordinate.getWindowWidthX();
+                }
                 updateCourseLayout();
                 updateBoundary();
                 Coordinate.updateBorder();
-                Coordinate.setOffset(race.calculateOffset());
-                Coordinate.updateViewCoordinates();
+
                 //System.out.println(race.isRaceReady() + " && " + !boatsInitialised + " && ");
                 if (race.isRaceReady() && !boatsInitialised){
                     initialiseBoats();
@@ -340,7 +345,6 @@ public class RaceController {
 
                 updateBoatPositions();
                 viewUpdateCount++;
-
 
                 if (race.isRaceReady()){
                     positionTable.refresh();
@@ -355,9 +359,6 @@ public class RaceController {
                     updateSparkLineChart();
 
                 }
-
-
-
             }
         }.start();
 
@@ -569,6 +570,7 @@ public class RaceController {
         BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 150);
         BoatSpeedCheckBox.setLayoutX(14);
         BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 125);
+        System.out.println("view updated");
     }
 
     private void updateClock() {
@@ -846,6 +848,8 @@ public class RaceController {
     private void updateView() {
         System.out.println("View being potentially updated");
         viewUpdateCount++;
+        Coordinate.setOffset(race.calculateOffset());
+        Coordinate.updateViewCoordinates();
 
         selectedImage.setX(Coordinate.getRelativeX(imagePos.getX())-selectedImage.getImage().getWidth()*IMAGE_SCALE/2);
         selectedImage.setY(Coordinate.getRelativeY(imagePos.getY())-selectedImage.getImage().getHeight()*IMAGE_SCALE/2);
