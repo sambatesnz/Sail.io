@@ -124,7 +124,7 @@ public class MockRace implements IServerData {
     public void runServerTimers() {
         timer.schedule(new XMLSender(), 0, 2000);
         timer.schedule(new RSMSender(), 100, 2000);
-        timer.schedule(new BoatPosSender(), 1000, 10);
+        //timer.schedule(new BoatPosSender(), 1000, 10);
         timer.schedule(new RaceRunner(), 2000, 100);
     }
 

@@ -146,22 +146,25 @@ public class Message {
                     race.setCourseOrder(xmlParser.getCourseOrder());
                     startTime = xmlParser.getRaceStartTime();
                     race.setRaceXMLReceived(true);
+                    race.setViewParams();
+//                    race.setRaceReady(true);
                     raceSet = true;
                     break;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         if (regattaSet && boatsSet && raceSet) {
-            int zid = race.getRegatta().getUtcOffset();
-            String zidStr = String.valueOf(zid);
-            if (zid > 0) {
-                zidStr = "+" + String.valueOf(zid);
-            }
-            ZoneId zoneId = ZoneId.of(zidStr);
-            long epoch = startTime.atZone(zoneId).toEpochSecond();
-            race.setExpectedStartTime(epoch);
-            race.setViewParams();
+//            int zid = race.getRegatta().getUtcOffset();
+//            String zidStr = String.valueOf(zid);
+//            if (zid > 0) {
+//                zidStr = "+" + String.valueOf(zid);
+//            }
+//            ZoneId zoneId = ZoneId.of(zidStr);
+//            long epoch = startTime.atZone(zoneId).toEpochSecond();
+//            race.setExpectedStartTime(epoch);
+//            race.setViewParams();
             race.setRaceReady(true);
         }
     }

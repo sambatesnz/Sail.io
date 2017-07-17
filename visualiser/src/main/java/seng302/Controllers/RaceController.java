@@ -146,8 +146,6 @@ public class RaceController {
         serverThread.start();
 
 
-        System.out.println("Here");
-
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
@@ -170,8 +168,22 @@ public class RaceController {
         initialisePositionsTable();
 
 
+        viewAnchorPane.setOnScroll(event -> {
+            System.out.println(Coordinate.isTrackingBoat());
+            if (Coordinate.isTrackingBoat()) {
+                if (event.getDeltaY() < 0) {
+                    Coordinate.decreaseZoom();
+                }
+                if (event.getDeltaY() > 0) {
+                    Coordinate.increaseZoom();
+                }
+            }
+        });
+
+
 
         runInfiniteLoop();
+        //runAnotherInfiniteLoop();
 
 
 //        System.out.println(race.getBoats());
@@ -212,7 +224,7 @@ public class RaceController {
         mainBorderPane.setCenter(viewAnchorPane);
 
         // set the data types for the table columns.
-//        positionCol.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("position"));
+        positionCol.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("position"));
 //
         positionCol.setCellValueFactory(p -> {
             String pos = String.valueOf(p.getValue().getPosition());
@@ -271,6 +283,8 @@ public class RaceController {
     }
 
     private void initialisePositionsTable() {
+//        positionCol.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("position")); //TODO Sam figure out if we need this?
+
         positionCol.setCellValueFactory(p -> {
             String pos = String.valueOf(p.getValue().getPosition());
             return new ReadOnlyObjectWrapper<>(pos);
@@ -282,14 +296,30 @@ public class RaceController {
         });
     }
 
+    private void runAnotherInfiniteLoop() {
+        new AnimationTimer() {
+
+            @Override
+            public void handle(long now) {
+                rotateWindArrow();
+                setUTC();
+                updateClock();
+                fpsCounter.update(now);
+                updateViewLayout();
+                updateCourseLayout();
+                updateBoundary();
+                Coordinate.updateBorder();
+//                Coordinate.updateBorder();
+            }
+        }.start();
+    }
+
     private void runInfiniteLoop() {
 
 
         new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
-
-                System.out.println("Looping ...");
 
                 rotateWindArrow();
                 setUTC();
@@ -300,7 +330,7 @@ public class RaceController {
                 updateBoundary();
                 Coordinate.updateBorder();
 
-
+                System.out.println(race.isRaceReady() + " && " + !boatsInitialised + " && ");
                 if (race.isRaceReady() && !boatsInitialised){
                     initialiseBoats();
                     createChart();
@@ -312,9 +342,12 @@ public class RaceController {
                 viewUpdateCount++;
 
 
-                positionTable.refresh();
-                positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
-                positionTable.setPrefHeight(Coordinate.getWindowHeightY() - SPARKLINEHEIGHT);
+                if (race.isRaceReady()){
+                    positionTable.refresh();
+                    positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
+                    positionTable.setPrefHeight(Coordinate.getWindowHeightY() - SPARKLINEHEIGHT);
+                }
+
 
                 sparkCounter++;
                 if (sparkCounter > 100 && race.started()) {

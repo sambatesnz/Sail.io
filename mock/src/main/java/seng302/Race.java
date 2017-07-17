@@ -39,7 +39,7 @@ public class Race {
     public Race() {
         parseCourseXML("course.xml");
         parseRaceXML("Race.xml");
-        // setWindHeading(190);
+        // zsetWindHeading(190);
         boats = getContestants();
         finishedBoats = new ArrayList<>();
         currentOrder = observableArrayList(boats);
