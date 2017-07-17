@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static java.lang.Math.*;
 import static java.lang.System.currentTimeMillis;
@@ -25,13 +26,18 @@ public class Race {
     private List<Leg> legs;
     private List<Position> boundaries;
     private short windHeading;
-    private short windSpeed;
+    private short startingWindSpeed;
+    private short windSpeed = 1700;
     private int raceID;
     private char raceType;
     private int raceStatus = 0;
     private ObservableList<Boat> currentOrder;
     private ObservableList<String> positionStrings;
     public boolean finished = false;
+    private int TEN_KNOTS = 5145;
+    private int FORTY_KNOTS = 20577;
+    private int FIVE_KNOTS = 2573;
+    private int DIRECTION_CHANGE_PROB = 10;
 
     /**
      * Constructor for the race class.
@@ -40,6 +46,10 @@ public class Race {
         parseCourseXML("course.xml");
         parseRaceXML("Race.xml");
         // setWindHeading(190);
+
+        setStartingWindSpeed();
+        instantiateWindHeading();
+
         boats = getContestants();
         finishedBoats = new ArrayList<>();
         currentOrder = observableArrayList(boats);
@@ -54,6 +64,23 @@ public class Race {
             boat.setY(legs.get(0).getStart().getY());
         }
     }
+
+    /**
+     * Sets the starting wind speed of the race. Randomly selects the wind speed from
+     * between valid race wind speeds, between 40 knots (approx. 20,600 mm/s) and 5 knots
+     * (approx. 2,600 mm/s)
+     */
+    private void setStartingWindSpeed() {
+        Random random = new Random();
+        int startWindVal = random.nextInt(FORTY_KNOTS - FIVE_KNOTS) + FIVE_KNOTS;
+        startingWindSpeed = (short) startWindVal;
+    }
+
+    private void instantiateWindHeading() {
+        Random random = new Random();
+        windHeading = (short) random.nextInt(360);
+    }
+
     /**
      * Setter for finishedBoat, mainly to allow for testing.
      * @param finishedBoats set the finished list of boats
@@ -81,11 +108,47 @@ public class Race {
 //    }
 
     public short getWindDirection() {
+        this.windHeading = (short) (windHeading + gambleWindDirection());
         return this.windHeading;
     }
 
-    public short getWindSpeed() {
-        return this.windSpeed;
+    /**
+     * Take the current wind direction and decide whether or not it should change based upon a basic mutation
+     * probability value
+     */
+    private int gambleWindDirection() {
+        Random random = new Random();
+        // temporarily use a 10% chance
+        boolean changeVal = random.nextInt(DIRECTION_CHANGE_PROB) == 0;
+
+        if (changeVal) {
+            // binary up or down decision
+            boolean up = random.nextInt(2) == 0;
+
+            if (up) {
+                return 5;
+            } else {
+                 return - 5;
+            }
+        }
+        return 0;
+    }
+
+    public short getWindSpeed() {   return this.windSpeed;    }
+
+    /**
+     *  Randomly selects a new wind speed ranging from five knots below and five knots above the
+     *  original wind speed
+     * @return windVal, the new wind speed value
+     */
+    public short retrieveWindSpeed() {
+        Random random = new Random();
+        int low = startingWindSpeed - 2600;
+        int high = startingWindSpeed + 2600;
+
+        int windVal = random.nextInt(high - low) + low;
+
+        return (short) windVal;
     }
 
     public int getRaceID() {
@@ -218,8 +281,8 @@ public class Race {
                 legs.add(new Leg(start, dest));
             }
 
-            windHeading = cc.getWindDirection();
-            windSpeed = cc.getWindSpeed();
+//            windHeading = cc.getWindDirection();
+//            windSpeed = cc.getWindSpeed();
         } catch (IOException e) {
             e.printStackTrace();
         }

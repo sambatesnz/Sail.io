@@ -28,7 +28,8 @@ public class MockRace implements IServerData {
                                                             race.getRaceStatus()    ,
                                                             currentTimeMillis(),
                                                             race.getWindDirection(),
-                                                            race.getWindSpeed(),
+//                                                            race.getWindSpeed(),      // no longer required as the race wind speed is never updated
+                                                            race.retrieveWindSpeed(),   // retrieve a new randomly generated wind speed
                                                             (char)(race.getBoats().size() + 48),
                                                             race.getRaceType(),
                                                             race.getBoats());
@@ -61,7 +62,6 @@ public class MockRace implements IServerData {
             System.out.println(Arrays.toString(xmlMessage.createMessage()));
             System.out.println("--------\n");
             bytes.add(xmlMessage.createMessage());
-
 
             BinaryMessage boatsXml = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
             System.out.println("\n--------\nBoats XML Message created");
