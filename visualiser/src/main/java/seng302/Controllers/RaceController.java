@@ -1,6 +1,7 @@
 package seng302.Controllers;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -164,32 +166,15 @@ public class RaceController {
         resetViewButton.setVisible(true);
 
 
+
+        initialisePositionsTable();
+
+
+
         runInfiniteLoop();
 
 
 //        System.out.println(race.getBoats());
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         /*while (!race.isRaceReady()) {
             System.out.println(race.isRaceXMLReceived());
@@ -285,6 +270,18 @@ public class RaceController {
         runRace();*/
     }
 
+    private void initialisePositionsTable() {
+        positionCol.setCellValueFactory(p -> {
+            String pos = String.valueOf(p.getValue().getPosition());
+            return new ReadOnlyObjectWrapper<>(pos);
+        });
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        speedCol.setCellValueFactory(p -> {
+            String speed = String.valueOf(p.getValue().getSpeed());
+            return new ReadOnlyObjectWrapper<>(speed);
+        });
+    }
+
     private void runInfiniteLoop() {
 
 
@@ -317,7 +314,6 @@ public class RaceController {
 
                 positionTable.refresh();
                 positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
-                System.out.println(positionTable.getItems());
                 positionTable.setPrefHeight(Coordinate.getWindowHeightY() - SPARKLINEHEIGHT);
 
                 sparkCounter++;
