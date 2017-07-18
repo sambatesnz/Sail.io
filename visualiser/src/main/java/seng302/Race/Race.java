@@ -20,6 +20,7 @@ public class Race {
     private int numFinishers = 0;
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
+    private Map<Integer, Mark> marks;
     // Changing list of boats to hashmap. where key is boat SourceID, as retrieved from the xml message
 //    private List<Boat> boats;
     public Map<Integer, Boat> boats;
@@ -330,6 +331,14 @@ public class Race {
 
     public void setCompoundMarks(List<CompoundMark> compoundMarks) {
         this.compoundMarks = compoundMarks;
+    }
+
+    public void setMarks(Map<Integer, Mark> marks) {
+        this.marks = marks;
+    }
+
+    public Map<Integer, Mark> getMarks() {
+        return marks;
     }
 
     public void setGates(List<CompoundMark> compoundMarks) {

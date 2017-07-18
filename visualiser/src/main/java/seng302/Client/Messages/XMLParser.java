@@ -49,6 +49,7 @@ public class XMLParser {
 
     private String xmlString;
     private Document xmlDoc;
+    private Map<Integer, Mark> markMap;
 
 
     /**
@@ -206,6 +207,7 @@ public class XMLParser {
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
                 ArrayList<Mark> positions = new ArrayList<>();
+                markMap = new HashMap<>();
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     NamedNodeMap nnm = node.getAttributes();
                     String compoundMarkName = nnm.getNamedItem(NAME).getNodeValue();
@@ -223,7 +225,9 @@ public class XMLParser {
                             if (nnm2.getLength() >= 5) {
                                 seqId = Integer.valueOf(nnm2.getNamedItem(SEQ_ID).getNodeValue());
                             }
-                            positions.add(new Mark(lat, lon));
+                            Mark m = new Mark(lat, lon);
+                            positions.add(m);
+                            markMap.put(sourceId, m);
 //                            System.out.println(String.format("Name: %s, Lat: %f, Long: %f, SrcId: %d, SeqId: %d", name, lat, lon, sourceId, seqId));
                         }
                     }
@@ -239,6 +243,10 @@ public class XMLParser {
         }
         courseObjects.sort(Comparator.comparingInt(CompoundMark::getId));
         return courseObjects;
+    }
+
+    public Map<Integer, Mark> getMarks() {
+        return markMap;
     }
 
     public Map<Integer, Boat> getBoats() {

@@ -2,10 +2,12 @@ package seng302.Client.Messages;
 
 
 import seng302.Race.Boat;
+import seng302.Race.CompoundMark;
 import seng302.Race.Mark;
 import seng302.Race.Race;
 
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * Class that holds and can update the location of a boat in a yacht race,
@@ -57,6 +59,12 @@ public class LocationMessage{
             boatDict.get(sourceID).setMark(new Mark(latitude, longitude));
             boatDict.get(sourceID).setSpeed(speedOverGround);
             boatDict.get(sourceID).setHeading(heading);
+        } else if (race.getMarks().containsKey(sourceID)) {
+            Mark mark = race.getMarks().get(sourceID);
+            mark.setLatitude(latitude);
+            mark.setLongitude(longitude);
+            mark.setX(mark.convertToY(latitude));
+            mark.setX(mark.convertToX(longitude));
         }
     }
 }

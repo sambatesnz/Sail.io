@@ -47,7 +47,7 @@ public class Mark {
      * @param lon Longitude to convert
      * @return converted x value
      */
-    private double convertToX(double lon){
+    public double convertToX(double lon){
         return lon * EARTH_CIRCUMFERENCE / 360;
     }
 
@@ -56,7 +56,7 @@ public class Mark {
      * @param lat Longitude to convert
      * @return converted y value
      */
-    private double convertToY(double lat){
+    public double convertToY(double lat){
         return lat * EARTH_CIRCUMFERENCE / 180;
     }
 
