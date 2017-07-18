@@ -1,7 +1,7 @@
-package seng302.packetGeneration.MessageHeaderGeneration;
+package PacketGeneration.MessageHeaderGenerations;
 
 
-import seng302.packetGeneration.PacketGenerationUtils;
+import PacketGeneration.PacketGenerationUtils;
 
 /**
  * Header of a packet as defined by the AC35 specification

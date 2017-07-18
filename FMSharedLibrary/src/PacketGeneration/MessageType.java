@@ -1,4 +1,4 @@
-package seng302;
+package PacketGeneration;
 
 /**
  * Message Type designators as defined by the AC35 specfication

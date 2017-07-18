@@ -1,4 +1,4 @@
-package seng302.packetGeneration.MessageHeaderGeneration;
+package PacketGeneration.MessageHeaderGenerations;
 
 /**
  * Stored the index and size of all info inside the Message Header

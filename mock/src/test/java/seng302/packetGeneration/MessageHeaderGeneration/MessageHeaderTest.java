@@ -1,6 +1,9 @@
 package seng302.packetGeneration.MessageHeaderGeneration;
 
+import PacketGeneration.MessageHeaderGenerations.HeaderByteValues;
+import PacketGeneration.MessageHeaderGenerations.MessageHeader;
 import org.junit.Test;
+
 import seng302.packetGeneration.PacketUtils;
 
 import java.util.Random;

@@ -1,10 +1,10 @@
 package seng302.UserInputController;
 
+import PacketGeneration.BinaryMessage;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
-import seng302.packetGeneration.BinaryMessage;
+
 
 import java.util.LinkedList;
 import java.util.NoSuchElementException;

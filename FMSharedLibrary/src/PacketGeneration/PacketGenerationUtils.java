@@ -1,4 +1,4 @@
-package seng302.packetGeneration;
+package PacketGeneration;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

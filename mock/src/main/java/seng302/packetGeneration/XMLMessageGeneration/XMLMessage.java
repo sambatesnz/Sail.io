@@ -1,8 +1,9 @@
 package seng302.packetGeneration.XMLMessageGeneration;
 
-import seng302.MessageType;
-import seng302.packetGeneration.BinaryMessage;
-import seng302.packetGeneration.PacketGenerationUtils;
+import PacketGeneration.BinaryMessage;
+import PacketGeneration.PacketGenerationUtils;
+import PacketGeneration.MessageType;
+
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -10,7 +11,7 @@ import java.util.Arrays;
 /**
  * Implemention of the xml section of a binary message
  */
-public class XMLMessage extends BinaryMessage{
+public class XMLMessage extends BinaryMessage {
 
     private byte[] versionNum;
     private byte[] ackNumber;

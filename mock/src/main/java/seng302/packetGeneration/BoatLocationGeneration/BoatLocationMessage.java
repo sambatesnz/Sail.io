@@ -1,8 +1,9 @@
 package seng302.packetGeneration.BoatLocationGeneration;
 
-import seng302.MessageType;
-import seng302.packetGeneration.BinaryMessage;
-import seng302.packetGeneration.PacketGenerationUtils;
+import PacketGeneration.BinaryMessage;
+import PacketGeneration.PacketGenerationUtils;
+import PacketGeneration.MessageType;
+
 
 /**
  * For the Creation of the Boat Location Message Packets
