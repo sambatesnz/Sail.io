@@ -74,20 +74,13 @@ public class Race {
     }
 
     public void setRaceReady(boolean raceReady) {
+        //setViewParams();
         this.raceReady = raceReady;
     }
 
 
     public Mark getMapCenter() {
         return mapCenter;
-    }
-
-    public Mark getViewMin() {
-        return viewMin;
-    }
-
-    public Mark getViewMax() {
-        return viewMax;
     }
 
     public long getCurrentTime() {
@@ -98,13 +91,44 @@ public class Race {
         this.currentTime = currentTime;
     }
 
-    public void setViewParams() {
+    public void setViewMinMax(Mark min, Mark max){
+        viewMin = min;
+        viewMax = max;
+    }
+
+    public Mark getViewMin(){
+        double minLat = boundaries.stream().min(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
+        double minLon = boundaries.stream().min(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
+
+        viewMin = new Mark(minLat, minLon);
+        return viewMin;
+
+    }
+    public Mark getViewMax(){
+        double maxLat = boundaries.stream().max(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
+        double maxLon = boundaries.stream().max(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
+
+        viewMax = new Mark(maxLat, maxLon);
+        return viewMax;
+    }
+
+    public void updateViewMinMax(){
         double minLat = boundaries.stream().min(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
         double minLon = boundaries.stream().min(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
         double maxLat = boundaries.stream().max(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
         double maxLon = boundaries.stream().max(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
         viewMin = new Mark(minLat, minLon);
         viewMax = new Mark(maxLat, maxLon);
+        mapCenter = getCenter(viewMin.getCopy(), viewMax.getCopy());
+    }
+
+    public void setViewParams() {
+//        double minLat = boundaries.stream().min(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
+//        double minLon = boundaries.stream().min(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
+//        double maxLat = boundaries.stream().max(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
+//        double maxLon = boundaries.stream().max(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
+//        viewMin = new Mark(minLat, minLon);
+//        viewMax = new Mark(maxLat, maxLon);
 
         Coordinate.setOffset(new Mark(0, 0));
         Coordinate.setDefaultCourseMin(viewMin);
@@ -117,8 +141,7 @@ public class Race {
         centerOfScreen.setMark(mapCenter);
 
         if (!Coordinate.isTrackingBoat()) {
-            boatToFollow = centerOfScreen;
-
+            setBoatToFollow(centerOfScreen);
         }
 
         Coordinate.setCenter(getCenter(viewMin.getCopy(), viewMax.getCopy()));
@@ -153,18 +176,6 @@ public class Race {
      * Note that if no boats selected that boat to follow is set to a 'dummy' default boat at the center
      * @return a mark representing the current boat to follows offset with the original center
      */
-    public Mark calculateOffset(){
-        Mark offset = new Mark();
-
-        offset.setX(boatToFollow.getX() - mapCenter.getX());
-        offset.setY(boatToFollow.getY() - mapCenter.getY());
-
-        return offset;
-    }
-
-    public void resetZoom() {
-        boatToFollow = centerOfScreen;
-    }
 
     /**
      * Setter for current order, mainly to allow for testing.

@@ -146,7 +146,7 @@ public class Message {
                     race.setCourseOrder(xmlParser.getCourseOrder());
                     startTime = xmlParser.getRaceStartTime();
                     race.setRaceXMLReceived(true);
-                    race.setViewParams();
+                    //race.setViewParams();
 //                    race.setRaceReady(true);
                     raceSet = true;
                     break;

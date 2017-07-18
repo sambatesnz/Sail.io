@@ -33,6 +33,7 @@ import seng302.Visualiser.FPSCounter;
 import seng302.Visualiser.WindArrow;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -95,7 +96,8 @@ public class RaceController {
     private boolean showSpeed = true;
     private boolean showFPS = true;
     private List<Path> paths = new ArrayList<>();
-
+    private Boat boatToFollow;
+    private Boat centerOfScreen;
     private int raceHours = 0;
     private int raceMinutes = 0;
     private int raceSeconds = 0;
@@ -120,7 +122,6 @@ public class RaceController {
     private Integer sparkCounter = 0;
     private List<Boat> sortedBoats;
     private List<Boat> otherSortedBoats;
-
     private int EARTH_RADIUS = 6371;
     private int METERS_CONVERSION = 1000;
     private final int SPARKLINEHEIGHT = 239;
@@ -164,7 +165,6 @@ public class RaceController {
         resetViewButton.setLayoutX(14);
         resetViewButton.setLayoutY(Coordinate.getWindowHeightY() - 100);
         resetViewButton.setVisible(true);
-
 
 
         initialisePositionsTable();
@@ -330,19 +330,20 @@ public class RaceController {
                     windowHeight = Coordinate.getWindowHeightY();
                     windowWidth = Coordinate.getWindowWidthX();
                 }
-
-                updateCourseLayout();
-                updateBoundary();
-                Coordinate.updateBorder();
-                Coordinate.setOffset(race.calculateOffset());
-                Coordinate.updateViewCoordinates();
-
-                //System.out.println(race.isRaceReady() + " && " + !boatsInitialised + " && ");
                 if (race.isRaceReady() && !boatsInitialised){
+                    setViewParameters();
                     initialiseBoats();
                     createChart();
                     boatsInitialised = true;
                 }
+                updateCourseLayout();
+                updateBoundary();
+                Coordinate.updateBorder();
+                Coordinate.setOffset(calculateOffset());
+                Coordinate.updateViewCoordinates();
+
+                //System.out.println(race.isRaceReady() + " && " + !boatsInitialised + " && ");
+
 
                 updateBoatPositions();
                 updateBoatPaths();
@@ -542,6 +543,37 @@ public class RaceController {
             gates.get(i).setEndX(Coordinate.getRelativeX(race.getGates().get(i).getMarks().get(1).getX()));
             gates.get(i).setEndY(Coordinate.getRelativeY(race.getGates().get(i).getMarks().get(1).getY()));
         }
+    }
+    private void setViewParameters(){;
+        race.updateViewMinMax();
+
+        Coordinate.setOffset(new Mark(0, 0));
+        Coordinate.setDefaultCourseMin(race.getViewMin());
+        Coordinate.setDefaultCourseMax(race.getViewMax());
+        Coordinate.setViewMin(race.getViewMin().getCopy());
+        Coordinate.setViewMax(race.getViewMax().getCopy());
+
+        centerOfScreen = new Boat(-1);
+        centerOfScreen.setMark(race.getMapCenter());
+
+        if (!Coordinate.isTrackingBoat()) {
+            boatToFollow = centerOfScreen;
+        }
+
+        Coordinate.setCenter(race.getCenter(race.getViewMin().getCopy(), race.getViewMax().getCopy()));
+        Coordinate.updateViewCoordinates();
+    }
+    public Mark calculateOffset(){
+        Mark offset = new Mark();
+
+        offset.setX(boatToFollow.getX() - race.getMapCenter().getX());
+        offset.setY(boatToFollow.getY() - race.getMapCenter().getY());
+
+        return offset;
+    }
+
+    public void resetZoom() {
+        boatToFollow = centerOfScreen;
     }
 
     private void updateViewLayout(){
@@ -759,7 +791,7 @@ public class RaceController {
      * resets the view back to its original state
      */
     public void resetViewButtonPressed() {
-        race.resetZoom();
+        resetZoom();
         Coordinate.setZoom(0);
         resetViewButton.setVisible(false);
         Coordinate.setTrackingBoat(false);
