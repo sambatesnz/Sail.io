@@ -91,6 +91,7 @@ public class StreamClient {
         if (KeyBindingUtility.keyPressed()){
             byte[] packetToSend = KeyBindingUtility.getUserInputData();
             streamOutput.write(packetToSend);
+            streamOutput.flush();
         }
     }
 
