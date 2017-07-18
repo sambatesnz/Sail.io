@@ -25,7 +25,9 @@ public class FPSCounter {
             previousTime = currentTime;
         }
     }
-
+    public long getFrameCount() {
+        return frameCount;
+    }
     private void resetFrameCount(){
         frameCount = 0;
     }

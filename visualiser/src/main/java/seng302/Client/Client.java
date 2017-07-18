@@ -37,9 +37,10 @@ public class Client {
         }
     }
 
-    public void retrieveData() {
+    public void retrieveData(){
         while (clientSocket != null && streamInput != null) {
             try {
+                Thread.sleep(10);
                 nextMessage();
             } catch (Exception e) {
                 e.printStackTrace();
