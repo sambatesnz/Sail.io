@@ -457,13 +457,13 @@ public class RaceController {
 
             // Used when selecting a boat to follow
             boatSprite.onMousePressedProperty().setValue(event -> {
-                race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
+                boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
                 resetViewButton.setVisible(true);
                 Coordinate.setTrackingBoat(true);
             });
             // to give the user more space to click on the boat
             tc.onMousePressedProperty().setValue(event -> {
-                race.setBoatToFollow(race.getBoats().get(Integer.parseInt(boatSprite.getId())));
+                boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
                 resetViewButton.setVisible(true);
                 Coordinate.setTrackingBoat(true);
             });
