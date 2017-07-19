@@ -22,7 +22,7 @@ public class Race {
     private List<CompoundMark> gates;
     // Changing list of boats to hashmap. where key is boat SourceID, as retrieved from the xml message
 //    private List<Boat> boats;
-    public Map<Integer, Boat> boats;
+    private Map<Integer, Boat> boats;
     private List<Boat> finishedBoats;
     private List<Leg> legs;
     private List<Mark> boundaries;
@@ -36,8 +36,6 @@ public class Race {
     public boolean finished = false;
     private Mark mapCenter;
     private boolean raceReady = false;
-    private Boat centerOfScreen;
-    private Boat boatToFollow;
     private List<Integer> participants;
     private long currentTime;
     private Mark viewMin;
@@ -70,6 +68,9 @@ public class Race {
     }
 
     public boolean isRaceReady() {
+        return raceReady;
+    }
+    public boolean isViewReady() {
         return raceReady;
     }
 
@@ -120,32 +121,6 @@ public class Race {
         viewMin = new Mark(minLat, minLon);
         viewMax = new Mark(maxLat, maxLon);
         mapCenter = getCenter(viewMin.getCopy(), viewMax.getCopy());
-    }
-
-    public void setViewParams() {
-//        double minLat = boundaries.stream().min(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
-//        double minLon = boundaries.stream().min(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
-//        double maxLat = boundaries.stream().max(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
-//        double maxLon = boundaries.stream().max(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
-//        viewMin = new Mark(minLat, minLon);
-//        viewMax = new Mark(maxLat, maxLon);
-
-        Coordinate.setOffset(new Mark(0, 0));
-        Coordinate.setDefaultCourseMin(viewMin);
-        Coordinate.setDefaultCourseMax(viewMax);
-        Coordinate.setViewMin(viewMin.getCopy());
-        Coordinate.setViewMax(viewMax.getCopy());
-
-        mapCenter = getCenter(viewMin.getCopy(), viewMax.getCopy());
-        centerOfScreen = new Boat(-1);
-        centerOfScreen.setMark(mapCenter);
-
-        if (!Coordinate.isTrackingBoat()) {
-            setBoatToFollow(centerOfScreen);
-        }
-
-        Coordinate.setCenter(getCenter(viewMin.getCopy(), viewMax.getCopy()));
-        Coordinate.updateViewCoordinates();
     }
 
     /**
@@ -378,6 +353,10 @@ public class Race {
         this.boats = actualBoats;
     }
 
+    public boolean boatsReady(){
+        return boats != null;
+    }
+
     /**
      * Get the gates
      * @return the gates
@@ -392,16 +371,6 @@ public class Race {
 
     public Map<Integer, Boat> getBoatsMap() {
         return boats;
-    }
-
-
-    /**
-     * If no boat has been selected this will be a 'dummy' boat whose position is the center
-     * @param markToFollow is a boat which the view will track round the course
-     */
-    public void setBoatToFollow(Boat markToFollow) {
-        System.out.println("Setting boat to follow" + markToFollow);
-        this.boatToFollow = markToFollow;
     }
 
     public void setParticipants(List<Integer> participants) {

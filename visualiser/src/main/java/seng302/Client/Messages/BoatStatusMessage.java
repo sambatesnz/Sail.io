@@ -36,7 +36,7 @@ public class BoatStatusMessage {
         this.legNumber = legNumber;
         this.estTimeToNextMark = estTimeToNextMark;
         this.estTimeToFinish = estTimeToFinish;
-        this.boatDict = race.boats;
+        this.boatDict = race.getBoatsMap();
     }
 
     /**

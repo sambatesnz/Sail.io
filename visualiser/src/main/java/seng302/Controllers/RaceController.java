@@ -130,6 +130,7 @@ public class RaceController {
 
 
     private boolean boatsInitialised = false;
+    private boolean viewInitialised = false;
 
 
     /**
@@ -325,25 +326,14 @@ public class RaceController {
                 setUTC();
                 updateClock();
                 fpsCounter.update(currentNanoTime);
-                if(Coordinate.getWindowHeightY() != windowHeight || Coordinate.getWindowWidthX() != windowWidth){
-                    updateViewLayout();
-                    windowHeight = Coordinate.getWindowHeightY();
-                    windowWidth = Coordinate.getWindowWidthX();
-                }
-                if (race.isRaceReady() && !boatsInitialised){
-                    setViewParameters();
-                    initialiseBoats();
-                    createChart();
-                    boatsInitialised = true;
-                }
+                updateViewLayout();
+                setViewParameters();
+                initialiseBoats();
                 updateCourseLayout();
                 updateBoundary();
                 Coordinate.updateBorder();
                 Coordinate.setOffset(calculateOffset());
                 Coordinate.updateViewCoordinates();
-
-                //System.out.println(race.isRaceReady() + " && " + !boatsInitialised + " && ");
-
 
                 updateBoatPositions();
                 updateBoatPaths();
@@ -355,7 +345,7 @@ public class RaceController {
                     positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
                     positionTable.setPrefHeight(Coordinate.getWindowHeightY() - SPARKLINEHEIGHT);
                 }
-                sparkCounter++;
+
                 if (sparkCounter > 100 && race.started()) {
                     sparkCounter = 0;
                     updateSparkLineChart();
@@ -427,67 +417,72 @@ public class RaceController {
         }
     }
     private void initialiseBoats() {
-        for (int i = 0; i < race.getBoats().size(); i++) {
-            Pane stack = new Pane();
-            Text text = new Text();
-            Polyline boatSprite = new Polyline();
-            Polyline wake = new Polyline();
+        if(race.boatsReady() && !boatsInitialised){
+            for (int i = 0; i < race.getBoats().size(); i++) {
+                Pane stack = new Pane();
+                Text text = new Text();
+                Polyline boatSprite = new Polyline();
+                Polyline wake = new Polyline();
 
-            //creates a boat sprite
-            boatSprite.getPoints().addAll(0.0, 0.0,
-                    0.0, -8.0,
-                    0.0, 8.0,
-                    -5.0, 8.0,
-                    0.0, -8.0,
-                    5.0, 8.0,
-                    -5.0, 8.0);
+                //creates a boat sprite
+                boatSprite.getPoints().addAll(0.0, 0.0,
+                        0.0, -8.0,
+                        0.0, 8.0,
+                        -5.0, 8.0,
+                        0.0, -8.0,
+                        5.0, 8.0,
+                        -5.0, 8.0);
 
-            wake.getPoints().addAll(0.0, 0.0,
-                    0.0, 1.0);
+                wake.getPoints().addAll(0.0, 0.0,
+                        0.0, 1.0);
 
-            Circle tc = new Circle(2);
-            tc.setCenterX(0);
-            tc.setCenterY(0);
-            wake.setStroke(Color.CYAN);
-            text.relocate(155,2);
-            text.setTextAlignment(TextAlignment.RIGHT);
-            boatSprite.setStroke(race.getBoats().get(i).getColour().desaturate().desaturate());
-            boatSprite.setFill(race.getBoats().get(i).getColour().saturate().saturate());
-            boatSprite.setId(Integer.toString(i));
+                Circle tc = new Circle(2);
+                tc.setCenterX(0);
+                tc.setCenterY(0);
+                wake.setStroke(Color.CYAN);
+                text.relocate(155, 2);
+                text.setTextAlignment(TextAlignment.RIGHT);
+                boatSprite.setStroke(race.getBoats().get(i).getColour().desaturate().desaturate());
+                boatSprite.setFill(race.getBoats().get(i).getColour().saturate().saturate());
+                boatSprite.setId(Integer.toString(i));
 
-            // Used when selecting a boat to follow
-            boatSprite.onMousePressedProperty().setValue(event -> {
-                boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
-                resetViewButton.setVisible(true);
-                Coordinate.setTrackingBoat(true);
-            });
-            // to give the user more space to click on the boat
-            tc.onMousePressedProperty().setValue(event -> {
-                boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
-                resetViewButton.setVisible(true);
-                Coordinate.setTrackingBoat(true);
-            });
+                // Used when selecting a boat to follow
+                boatSprite.onMousePressedProperty().setValue(event -> {
+                    boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
+                    resetViewButton.setVisible(true);
+                    Coordinate.setTrackingBoat(true);
+                });
+                // to give the user more space to click on the boat
+                tc.onMousePressedProperty().setValue(event -> {
+                    boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
+                    resetViewButton.setVisible(true);
+                    Coordinate.setTrackingBoat(true);
+                });
 
-            stack.getChildren().add(boatSprite);
-            stack.getChildren().add(text);
-            stack.getChildren().add(wake);
-            stack.getChildren().add(tc);
-            boats.add(stack);
+                stack.getChildren().add(boatSprite);
+                stack.getChildren().add(text);
+                stack.getChildren().add(wake);
+                stack.getChildren().add(tc);
+                boats.add(stack);
 
-            Path path = new Path();
-            path.setStroke(race.getBoats().get(i).getColour());
-            path.getElements().add(new MoveTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-            path.setFill(Color.TRANSPARENT);
-            paths.add(path);
-            absolutePaths.add(new ArrayList<>());
+                Path path = new Path();
+                path.setStroke(race.getBoats().get(i).getColour());
+                path.getElements().add(new MoveTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+                path.setFill(Color.TRANSPARENT);
+                paths.add(path);
+                absolutePaths.add(new ArrayList<>());
 
-            lastHeadings.add(race.getBoats().get(i).getHeading() + 1);  // guarantee its different
+                lastHeadings.add(race.getBoats().get(i).getHeading() + 1);  // guarantee its different
 
+            }
 
-        }
-        group.getChildren().addAll(boats);
-        for (Path path: paths) {
-            group.getChildren().add(path);
+            group.getChildren().addAll(boats);
+            for (Path path: paths) {
+                group.getChildren().add(path);
+            }
+
+            createChart();
+            boatsInitialised = true;
         }
     }
 
@@ -511,9 +506,7 @@ public class RaceController {
 
         ArrayList<Mark> marks = new ArrayList<>();
         for (CompoundMark lm : race.getCompoundMarks()){
-            for (Mark pos : lm.getMarks()){
-                marks.add(pos);
-            }
+            marks.addAll(lm.getMarks());
         }
 
         for (int i = 0; i < compoundMarks.size(); i++) {
@@ -544,26 +537,30 @@ public class RaceController {
             gates.get(i).setEndY(Coordinate.getRelativeY(race.getGates().get(i).getMarks().get(1).getY()));
         }
     }
-    private void setViewParameters(){;
-        race.updateViewMinMax();
+    private void setViewParameters(){
+        if(race.isViewReady() && !viewInitialised) {
 
-        Coordinate.setOffset(new Mark(0, 0));
-        Coordinate.setDefaultCourseMin(race.getViewMin());
-        Coordinate.setDefaultCourseMax(race.getViewMax());
-        Coordinate.setViewMin(race.getViewMin().getCopy());
-        Coordinate.setViewMax(race.getViewMax().getCopy());
+            race.updateViewMinMax();
 
-        centerOfScreen = new Boat(-1);
-        centerOfScreen.setMark(race.getMapCenter());
+            Coordinate.setOffset(new Mark(0, 0));
+            Coordinate.setDefaultCourseMin(race.getViewMin());
+            Coordinate.setDefaultCourseMax(race.getViewMax());
+            Coordinate.setViewMin(race.getViewMin().getCopy());
+            Coordinate.setViewMax(race.getViewMax().getCopy());
 
-        if (!Coordinate.isTrackingBoat()) {
-            boatToFollow = centerOfScreen;
+            centerOfScreen = new Boat(-1);
+            centerOfScreen.setMark(race.getMapCenter());
+
+            if (!Coordinate.isTrackingBoat()) {
+                boatToFollow = centerOfScreen;
+            }
+
+            Coordinate.setCenter(race.getCenter(race.getViewMin().getCopy(), race.getViewMax().getCopy()));
+            Coordinate.updateViewCoordinates();
         }
-
-        Coordinate.setCenter(race.getCenter(race.getViewMin().getCopy(), race.getViewMax().getCopy()));
-        Coordinate.updateViewCoordinates();
+        viewInitialised = true;
     }
-    public Mark calculateOffset(){
+    private Mark calculateOffset(){
         Mark offset = new Mark();
 
         offset.setX(boatToFollow.getX() - race.getMapCenter().getX());
@@ -572,32 +569,35 @@ public class RaceController {
         return offset;
     }
 
-    public void resetZoom() {
+    private void resetZoom() {
         boatToFollow = centerOfScreen;
     }
 
     private void updateViewLayout(){
-        //Ideally this should only happen on a resize event (currently just every animation count
-        viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
-        viewAnchorPane.setMaxHeight(Coordinate.getWindowHeightY());
-        viewAnchorPane.setMinWidth(Coordinate.getWindowWidthX());
-        viewAnchorPane.setMaxWidth(Coordinate.getWindowWidthX());
+        if(Coordinate.getWindowHeightY() != windowHeight || Coordinate.getWindowWidthX() != windowWidth) {
+            viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
+            viewAnchorPane.setMaxHeight(Coordinate.getWindowHeightY());
+            viewAnchorPane.setMinWidth(Coordinate.getWindowWidthX());
+            viewAnchorPane.setMaxWidth(Coordinate.getWindowWidthX());
 
-        fpsLabel.setLayoutX(Coordinate.getWindowWidthX() - 90);
-        fpsLabel.setLayoutY(60);
-        clock.setLayoutY(20);
-        clock.setLayoutX(Coordinate.getWindowWidthX() - 155);
-        resetViewButton.setLayoutX(14);
-        resetViewButton.setLayoutY(Coordinate.getWindowHeightY() - 100);
-        fpsBtn.setLayoutX(14);
-        fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 75);
-        annotationBtn.setLayoutX(14);
-        annotationBtn.setLayoutY(Coordinate.getWindowHeightY() - 50);
-        BoatNameCheckBox.setLayoutX(14);
-        BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 150);
-        BoatSpeedCheckBox.setLayoutX(14);
-        BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 125);
-        System.out.println("view updated");
+            fpsLabel.setLayoutX(Coordinate.getWindowWidthX() - 90);
+            fpsLabel.setLayoutY(60);
+            clock.setLayoutY(20);
+            clock.setLayoutX(Coordinate.getWindowWidthX() - 155);
+            resetViewButton.setLayoutX(14);
+            resetViewButton.setLayoutY(Coordinate.getWindowHeightY() - 100);
+            fpsBtn.setLayoutX(14);
+            fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 75);
+            annotationBtn.setLayoutX(14);
+            annotationBtn.setLayoutY(Coordinate.getWindowHeightY() - 50);
+            BoatNameCheckBox.setLayoutX(14);
+            BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 150);
+            BoatSpeedCheckBox.setLayoutX(14);
+            BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 125);
+
+            windowHeight = Coordinate.getWindowHeightY();
+            windowWidth = Coordinate.getWindowWidthX();
+        }
     }
 
     private void updateClock() {

@@ -40,7 +40,7 @@ public class LocationMessage{
         speedOverGround = Math.toIntExact((long) (Message.byteArrayToInt(bytes, 38, 2) * 1.9438444924574 / 1000));
 
         this.race = race;
-        boatDict = race.boats;
+        boatDict = race.getBoatsMap();
 
         setBoatLocation();
     }
