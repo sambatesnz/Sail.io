@@ -38,6 +38,9 @@ public class StreamClient {
         }
     }
 
+    /**
+     * Handles both incoming and outgoing packets
+     */
     public void processStreams() {
         while (clientSocket != null && streamInput != null && streamOutput != null) {
             try {
@@ -87,6 +90,10 @@ public class StreamClient {
         packet.parseMessage();
     }
 
+    /**
+     * Sends BoatActionMessages over a socket stream
+     * @throws IOException
+     */
     private void sendMessage() throws IOException {
         if (KeyBindingUtility.keyPressed()){
             byte[] packetToSend = KeyBindingUtility.getUserInputData();

@@ -1,7 +1,7 @@
 package seng302.UserInputController;
 
 /**
- * Created by tjg73 on 13/07/17.
+ * Enum for Boat Actions
  */
 public enum BoatAction {
 

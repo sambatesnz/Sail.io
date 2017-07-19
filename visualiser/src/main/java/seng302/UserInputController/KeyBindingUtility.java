@@ -11,7 +11,9 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 
 /**
- * Created by tjg73 on 13/07/17.
+ * Key bindings as defined by the SENG302 API Specification
+ * Turn key presses in to BoatActionMessages
+ * Can only be instantiated once
  */
 public class KeyBindingUtility {
 
@@ -23,6 +25,10 @@ public class KeyBindingUtility {
         sailStatus = false;
     }
 
+    /**
+     * Apples the key bindings to the scene and adds an event listener for key presses
+     * @param rootScene the scene you wish to key bind presses too
+     */
     public static void setKeyBindings(Scene rootScene) {
 
         rootScene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
@@ -36,7 +42,7 @@ public class KeyBindingUtility {
                     case SHIFT:
                         if(sailStatus){
                             boatActionMessage = new BoatActionMessage(BoatAction.SAILS_IN.getBoatAction());
-                        }else {
+                        } else {
                             boatActionMessage = new BoatActionMessage(BoatAction.SAILS_OUT.getBoatAction());
                         }
                         alternateSailStatus();
@@ -61,6 +67,10 @@ public class KeyBindingUtility {
 
     }
 
+    /**
+     * Checks the input buffer to see if specific keys have been pressed
+     * @return byte[] of any key presses that have been pressed othewise and empty byte array
+     */
     public static byte[] getUserInputData() {
         try {
             return bytes.remove();
@@ -69,6 +79,9 @@ public class KeyBindingUtility {
         }
     }
 
+    /**
+     * Checks whether any keys have been pressed
+     */
     public static boolean keyPressed() {
         return !bytes.isEmpty();
     }
