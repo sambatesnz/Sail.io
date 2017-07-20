@@ -8,6 +8,7 @@
     <modules>
         <module>mock</module>
         <module>visualiser</module>
+        <module>common</module>
     </modules>
     <name>FullMast</name>
     <url>https://eng-git.canterbury.ac.nz/SENG302-2017/team-4</url>
