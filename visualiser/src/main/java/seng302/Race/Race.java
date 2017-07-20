@@ -47,6 +47,7 @@ public class Race {
     private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300");
     private boolean receivedRaceXML;
     private boolean viewReady;
+    private boolean hasRegatta;
 
 
     /**
@@ -59,6 +60,7 @@ public class Race {
 
         MarkStrings = FXCollections.observableArrayList();
         this.receivedRaceXML = false;
+        hasRegatta = false;
     }
 
     public boolean isRaceXMLReceived() {
@@ -78,8 +80,11 @@ public class Race {
     }
 
     public void setRaceReady(boolean raceReady) {
-        //setViewParams();
         this.raceReady = raceReady;
+    }
+
+    public boolean getHasRegatta(){
+        return hasRegatta;
     }
 
 
@@ -339,6 +344,7 @@ public class Race {
 
     public void setRegatta(Regatta regatta) {
         this.regatta = regatta;
+        this.hasRegatta = true;
     }
 
     public Regatta getRegatta() {

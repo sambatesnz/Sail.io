@@ -208,17 +208,19 @@ public class RaceController {
                 setUTC();
                 updateClock();
                 fpsCounter.update(currentNanoTime);
-                updateViewLayout();
                 setViewParameters();
+
+                updateViewLayout();
+
                 initialiseBoats();
                 updateCourseLayout();
                 updateBoundary();
-                Coordinate.updateBorder();
-                Coordinate.setOffset(calculateOffset());
-                Coordinate.updateViewCoordinates();
 
-                updateBoatPositions();
-                updateBoatPaths();
+                if (race.isRaceReady() && boatsInitialised) {
+                    updateBoatPositions();
+                    updateBoatPaths();
+
+                }
                 viewUpdateCount++;
 
                 if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0){
@@ -298,7 +300,7 @@ public class RaceController {
         }
     }
     private void initialiseBoats() {
-        if(race.boatsReady() && !boatsInitialised){
+        if(race.boatsReady() && !boatsInitialised && race.isRaceReady()){
             for (int i = 0; i < race.getBoats().size(); i++) {
                 Pane stack = new Pane();
                 Text text = new Text();
@@ -455,6 +457,13 @@ public class RaceController {
     }
 
     private void updateViewLayout(){
+        if(race.isViewReady() && viewInitialised){
+            Coordinate.updateBorder();
+            Coordinate.setOffset(calculateOffset());
+            Coordinate.updateViewCoordinates();
+
+        }
+
         if(Coordinate.getWindowHeightY() != windowHeight || Coordinate.getWindowWidthX() != windowWidth) {
             viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
             viewAnchorPane.setMaxHeight(Coordinate.getWindowHeightY());
@@ -475,10 +484,16 @@ public class RaceController {
             BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 150);
             BoatSpeedCheckBox.setLayoutX(14);
             BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 125);
+            localTime.setLayoutX(Coordinate.getWindowWidthX() - 110);
+            localTime.setLayoutY(100);
+            localTimeZone.setLayoutX(Coordinate.getWindowWidthX() - 115);
+            localTimeZone.setLayoutY(80);
 
             windowHeight = Coordinate.getWindowHeightY();
             windowWidth = Coordinate.getWindowWidthX();
         }
+
+
     }
 
     private void updateClock() {
@@ -486,23 +501,19 @@ public class RaceController {
     }
 
     private void setUTC() {
-        Font font = new Font("Arial", 15);
-        localTime.setFont(font);
-        localTime.setVisible(true);
+        if (race.getHasRegatta()){
+            Font font = new Font("Arial", 15);
+            localTime.setFont(font);
+            localTime.setVisible(true);
+            int utc = race.getRegatta().getUtcOffset();
+            TimeZoneWrapper timeZoneWrapper = new TimeZoneWrapper(utc);
+            String text = timeZoneWrapper.getLocalTimeString();
+            localTime.setText(text);
+            localTimeZone.setFont(font);
+            localTimeZone.setText(timeZoneWrapper.getRaceTimeZoneString());
+            localTimeZone.setVisible(true);
+        }
 
-        localTime.setLayoutX(Coordinate.getWindowWidthX() - 110);
-        localTime.setLayoutY(100);
-        localTimeZone.setLayoutX(Coordinate.getWindowWidthX() - 115);
-        localTimeZone.setLayoutY(80);
-
-        int utc = race.getRegatta().getUtcOffset();
-        TimeZoneWrapper timeZoneWrapper = new TimeZoneWrapper(utc);
-        String text = timeZoneWrapper.getLocalTimeString();
-        localTime.setText(text);
-
-        localTimeZone.setFont(font);
-        localTimeZone.setText(timeZoneWrapper.getRaceTimeZoneString());
-        localTimeZone.setVisible(true);
 
     }
 
@@ -692,9 +703,12 @@ public class RaceController {
      * clears and re-draws boundary to avoid problem when course bounds change
      */
     private void updateBoundary(){
-        boundary = getBoundary(race);
-        boundaryGroup.getChildren().clear();
-        boundaryGroup.getChildren().add(boundary);
+        if(race.isViewReady()){
+            boundary = getBoundary(race);
+            boundaryGroup.getChildren().clear();
+            boundaryGroup.getChildren().add(boundary);
+        }
+
     }
 
     /**
