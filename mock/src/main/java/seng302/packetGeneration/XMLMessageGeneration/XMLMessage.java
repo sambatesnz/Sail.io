@@ -1,9 +1,8 @@
 package seng302.packetGeneration.XMLMessageGeneration;
 
-import PacketGeneration.BinaryMessage;
-import PacketGeneration.PacketGenerationUtils;
-import PacketGeneration.MessageType;
-
+import seng302.PacketGeneration.BinaryMessage;
+import seng302.PacketGeneration.MessageType;
+import seng302.PacketGeneration.PacketGenerationUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

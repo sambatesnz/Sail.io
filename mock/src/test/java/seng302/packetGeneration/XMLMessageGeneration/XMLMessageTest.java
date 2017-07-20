@@ -1,7 +1,7 @@
 package seng302.packetGeneration.XMLMessageGeneration;
 
-import PacketGeneration.BinaryMessage;
 import org.junit.Test;
+import seng302.PacketGeneration.BinaryMessage;
 import seng302.packetGeneration.PacketUtils;
 
 import static org.junit.Assert.assertEquals;

@@ -1,7 +1,7 @@
 package seng302.packetGeneration;
 
-import PacketGeneration.BinaryMessage;
 import org.junit.Test;
+import seng302.PacketGeneration.BinaryMessage;
 import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.packetGeneration.BoatLocationGeneration.BoatLocationUtility;
 

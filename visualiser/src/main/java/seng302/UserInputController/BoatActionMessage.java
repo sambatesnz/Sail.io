@@ -1,11 +1,8 @@
 package seng302.UserInputController;
 
-
-import PacketGeneration.BinaryMessage;
-import PacketGeneration.MessageType;
-import PacketGeneration.PacketGenerationUtils;
-
-
+import seng302.PacketGeneration.BinaryMessage;
+import seng302.PacketGeneration.MessageType;
+import seng302.PacketGeneration.PacketGenerationUtils;
 
 /**
  * Created by tjg73 on 13/07/17.

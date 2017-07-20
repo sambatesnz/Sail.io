@@ -1,9 +1,9 @@
 package seng302.packetGeneration.RaceStatusGeneration;
 
-import PacketGeneration.BinaryMessage;
-import PacketGeneration.PacketGenerationUtils;
 import seng302.Boat;
-import PacketGeneration.MessageType;
+import seng302.PacketGeneration.BinaryMessage;
+import seng302.PacketGeneration.MessageType;
+import seng302.PacketGeneration.PacketGenerationUtils;
 
 import java.nio.ByteBuffer;
 import java.util.List;
