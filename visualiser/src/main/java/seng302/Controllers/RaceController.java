@@ -2,11 +2,9 @@ package seng302.Controllers;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -18,8 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -28,15 +24,11 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.util.Callback;
 import seng302.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
 import java.util.concurrent.TimeUnit;
-
-import static java.lang.System.currentTimeMillis;
 
 /**
  * Class that controls the race window and updates the race as it proceeds
@@ -136,7 +128,7 @@ public class RaceController {
         Thread serverThread = new Thread(() -> {
             StreamClient client = new StreamClient(race);
             client.connect();
-            client.retrieveData();
+            client.processStreams();
         });
         serverThread.start();
 
