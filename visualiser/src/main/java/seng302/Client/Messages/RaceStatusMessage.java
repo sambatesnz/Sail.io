@@ -3,6 +3,8 @@ package seng302.Client.Messages;
 
 import seng302.Race.Race;
 
+import java.util.Arrays;
+
 /**
  * Class that holds anc can update the details for a race given by a race status packet.
  * Passes on the boat status to the BoatStatusMessage class.
@@ -29,6 +31,7 @@ public class RaceStatusMessage {
      * @param bytes The array of bytes from the body of a race status packet
      */
     public RaceStatusMessage(byte[] bytes, Race race) {
+        System.out.println(Arrays.toString(bytes));
         currentTime = Message.byteArrayToLong(bytes, 1, 6);
         raceID = Message.byteArrayToLong(bytes, 7, 4);
         raceStatus = Message.byteArrayToInt(bytes, 11, 1);
@@ -42,6 +45,8 @@ public class RaceStatusMessage {
         int indent = 24;
 
         boatDetailsList = new BoatStatusMessage[numBoatsInRace];
+
+        System.out.println("boats in race " + numBoatsInRace);
 
         for (int i = 0; i < numBoatsInRace; i++) {
             long boatSourceID = Message.byteArrayToLong(bytes, indent, 4);

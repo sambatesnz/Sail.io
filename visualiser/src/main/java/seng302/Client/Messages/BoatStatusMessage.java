@@ -48,7 +48,7 @@ public class BoatStatusMessage {
      * - Estimated time to finish
      */
     public void setBoatDetails() {
-        if (boatDict.containsKey(sourceID)) {
+        if (null != boatDict && boatDict.containsKey(sourceID)) {
             boatDict.get(sourceID).setStatus(status);
             boatDict.get(sourceID).setCurrentLegIndex(legNumber);
             boatDict.get(sourceID).setTimeToNextMark(estTimeToNextMark);

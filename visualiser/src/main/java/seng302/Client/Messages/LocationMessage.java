@@ -53,7 +53,7 @@ public class LocationMessage{
      * - Heading
      */
     private void setBoatLocation() {
-        if (boatDict.containsKey(sourceID)) {
+        if (boatDict != null && boatDict.containsKey(sourceID)) {
             boatDict.get(sourceID).setMark(new Mark(latitude, longitude));
             boatDict.get(sourceID).setSpeed(speedOverGround);
             boatDict.get(sourceID).setHeading(heading);

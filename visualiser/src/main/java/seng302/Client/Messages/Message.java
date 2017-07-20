@@ -5,10 +5,13 @@ import seng302.Race.Race;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -78,11 +81,12 @@ public class Message {
      * @param len The number of bytes to be converted (from the given index)
      * @return A long, converted from the given bytes
      */
-    public static long byteArrayToLong(byte[] bytes, int pos, int len){
+    public static long byteArrayToLong(byte[] bytes, int pos, int len) {
         byte[] intByte = new byte[8];
         System.arraycopy(bytes, pos, intByte, 0, len);
         return ByteBuffer.wrap(intByte).order(ByteOrder.LITTLE_ENDIAN).getInt();
     }
+
 
     /**
      * Gives the packet to the relative message handler based on the messageType
