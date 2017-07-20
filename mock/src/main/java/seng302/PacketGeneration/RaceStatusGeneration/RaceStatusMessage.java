@@ -6,6 +6,7 @@ import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.PacketGenerationUtils;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,7 +53,7 @@ public class RaceStatusMessage extends BinaryMessage{
         this.windDirection = PacketGenerationUtils.shortToTwoBytes(windDirection);
         this.windSpeed = PacketGenerationUtils.shortToTwoBytes(windSpeed);
         this.numberOfBoatsByte = PacketGenerationUtils.charToOneByte(numberOfBoats);
-        this.numberOfBoatsInt = Character.getNumericValue(numberOfBoats);
+        this.numberOfBoatsInt = Character.getNumericValue(numberOfBoats) +48;
         this.raceType = PacketGenerationUtils.charToOneByte(raceType);
         this.boats = boats;
 
@@ -94,6 +95,10 @@ public class RaceStatusMessage extends BinaryMessage{
     public byte[] getBody() {
         ByteBuffer body = PacketGenerationUtils.LEBuffer(24 + numberOfBoatsInt * 20);
         //Copy specific bytes into here
+
+        System.out.println(versionNumber.length);
+        System.out.println("\n");
+        System.out.println(currentTime.length);
         body.put(versionNumber);
         body.put(currentTime);
         body.put(raceID);

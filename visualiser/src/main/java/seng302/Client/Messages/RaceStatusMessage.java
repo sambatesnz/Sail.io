@@ -42,24 +42,21 @@ public class RaceStatusMessage {
         raceType = Message.byteArrayToInt(bytes, 23, 1);
         this.race = race;
 
-        int indent = 24;
-
         boatDetailsList = new BoatStatusMessage[numBoatsInRace];
-
-        System.out.println("boats in race " + numBoatsInRace);
+        int offset = 24;
 
         for (int i = 0; i < numBoatsInRace; i++) {
-            long boatSourceID = Message.byteArrayToLong(bytes, indent, 4);
-            int boatStatus = Message.byteArrayToInt(bytes, indent + 4, 1);
-            int boatLegNumber = Message.byteArrayToInt(bytes, indent + 5, 1);
-            long boatTimeToNextMark = Message.byteArrayToLong(bytes, indent + 8, 6);
-            long boatTimeToFinish = Message.byteArrayToLong(bytes, indent + 14, 6);
+            long boatSourceID = Message.byteArrayToLong(bytes, offset, 4);
+            int boatStatus = Message.byteArrayToInt(bytes, offset + 4, 1);
+            int boatLegNumber = Message.byteArrayToInt(bytes, offset + 5, 1);
+            long boatTimeToNextMark = Message.byteArrayToLong(bytes, offset + 8, 6);
+            long boatTimeToFinish = Message.byteArrayToLong(bytes, offset + 14, 6);
 
             BoatStatusMessage boatDetails = new BoatStatusMessage(boatSourceID, boatStatus,
                     boatLegNumber, boatTimeToNextMark, boatTimeToFinish, race);
             boatDetailsList[i] = boatDetails;
 
-            indent += 20;
+            offset += 20;
         }
 
         updateRaceDetails();

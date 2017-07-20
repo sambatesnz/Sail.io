@@ -29,7 +29,7 @@ public class MockRace implements IServerData {
                                                             currentTimeMillis(),
                                                             race.getWindDirection(),
                                                             race.getWindSpeed(),
-                                                            (char)(race.getBoats().size() + 48),
+                                                            (char)(race.getBoats().size()),
                                                             race.getRaceType(),
                                                             race.getBoats());
 
