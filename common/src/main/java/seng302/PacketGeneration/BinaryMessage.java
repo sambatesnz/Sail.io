@@ -1,7 +1,6 @@
-package seng302.packetGeneration;
+package seng302.PacketGeneration;
 
-
-import seng302.packetGeneration.MessageHeaderGeneration.MessageHeader;
+import seng302.PacketGeneration.MessageHeaderGenerations.MessageHeader;
 
 import java.util.zip.CRC32;
 

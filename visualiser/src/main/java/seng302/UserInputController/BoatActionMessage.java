@@ -1,9 +1,8 @@
 package seng302.UserInputController;
 
-
-import seng302.MessageType;
-import seng302.packetGeneration.BinaryMessage;
-import seng302.packetGeneration.PacketGenerationUtils;
+import seng302.PacketGeneration.BinaryMessage;
+import seng302.PacketGeneration.MessageType;
+import seng302.PacketGeneration.PacketGenerationUtils;
 
 /**
  * Creates messages of boat action type as specified by SENG302 API

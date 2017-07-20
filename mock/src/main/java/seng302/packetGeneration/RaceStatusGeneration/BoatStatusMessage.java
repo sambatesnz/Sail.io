@@ -1,6 +1,6 @@
 package seng302.packetGeneration.RaceStatusGeneration;
 
-import seng302.packetGeneration.PacketGenerationUtils;
+import seng302.PacketGeneration.PacketGenerationUtils;
 
 import java.nio.ByteBuffer;
 
