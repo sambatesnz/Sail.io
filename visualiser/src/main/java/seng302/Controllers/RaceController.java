@@ -166,13 +166,16 @@ public class RaceController {
         resetViewButton.setLayoutX(14);
         resetViewButton.setLayoutY(Coordinate.getWindowHeightY() - 100);
         resetViewButton.setVisible(true);
-
+        resetViewButton.setDisable(true);
 
         initialisePositionsTable();
+        enableScrolling();
 
+        runInfiniteLoop();
+    }
 
+    private void enableScrolling() {
         viewAnchorPane.setOnScroll(event -> {
-            System.out.println(Coordinate.isTrackingBoat());
             if (Coordinate.isTrackingBoat()) {
                 if (event.getDeltaY() < 0) {
                     Coordinate.decreaseZoom();
@@ -182,112 +185,9 @@ public class RaceController {
                 }
             }
         });
-
-
-
-        runInfiniteLoop();
-        //runAnotherInfiniteLoop();
-
-
-//        System.out.println(race.getBoats());
-
-        /*while (!race.isRaceReady()) {
-            System.out.println(race.isRaceXMLReceived());
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }*/
-
-        /*initializeMap();
-
-        // handles zooming when a boat is selected
-        viewAnchorPane.setOnScroll(event -> {
-            if (Coordinate.isTrackingBoat()) {
-                if (event.getDeltaY() < 0) {
-                   Coordinate.decreaseZoom();
-                }
-                if (event.getDeltaY() > 0) {
-                   Coordinate.increaseZoom();
-                }
-            }
-        });
-
-        //Where should we put this?
-
-        finishedListView = new ListView<>();
-
-        boundary = getBoundary(race);
-        boundaryGroup.getChildren().add(boundary);
-
-        initialiseBoats();
-
-        mainBorderPane.setLeft(sidePanelSplit);
-        mainBorderPane.setCenter(viewAnchorPane);
-
-        // set the data types for the table columns.
-        positionCol.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("position"));
-//
-        positionCol.setCellValueFactory(p -> {
-            String pos = String.valueOf(p.getValue().getPosition());
-//                System.out.println(p.getValue().getPosition() + ", " + p.getValue().getName() + ", " + p.getValue().getTimeToFinish());
-            return new ReadOnlyObjectWrapper<>(pos);
-        });
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        speedCol.setCellValueFactory(p -> {
-            String speed = String.valueOf(p.getValue().getSpeed());
-            return new ReadOnlyObjectWrapper<>(speed);
-        });
-
-        //Initialises compoundMarks
-        for (CompoundMark lm : race.getCompoundMarks()) {
-            for (int n=0; n < lm.getMarks().size(); n++){
-                Rectangle square = new Rectangle(10, 10, lm.getColor());
-                compoundMarks.add(square);
-            }
-        }
-
-        //Initialises gates
-        for (int i = 0; i < race.getGates().size(); i++) {
-            CompoundMark gate = race.getGates().get(i);
-            Mark gateHead = gate.getMarks().get(0);
-            Mark gateTail = gate.getMarks().get(1);
-            Line line = new Line(gateHead.getX(), gateHead.getY(), gateTail.getX(), gateTail.getY());
-            line.setStrokeWidth(3);
-            gates.add(line);
-        }
-
-        for (Path path: paths) {
-            group.getChildren().add(path);
-        }
-
-        //Initialises race clock
-        clock.setFont(new Font("Arial", 30));
-        clock.setText(" 00:00:00");
-        clock.setVisible(true);
-
-        //Initialise time zone
-        localTimeZone.setFont(new Font("Arial", 15));
-        localTimeZone.setText(timeZoneWrapper.getRaceTimeZoneString());
-        localTimeZone.setVisible(true);
-
-        localTime.setFont(new Font("Arial", 15));
-        localTime.setVisible(true);
-
-        group.getChildren().addAll(gates);
-        group.getChildren().addAll(compoundMarks);
-        group.getChildren().addAll(boats);
-
-//        RacersListBeforeStart(race);
-
-        createChart();
-        runRace();*/
     }
 
     private void initialisePositionsTable() {
-//        positionCol.setCellValueFactory(new PropertyValueFactory<Boat, Integer>("position")); //TODO Sam figure out if we need this?
-
         positionCol.setCellValueFactory(p -> {
             String pos = String.valueOf(p.getValue().getPosition());
             return new ReadOnlyObjectWrapper<>(pos);
@@ -298,24 +198,6 @@ public class RaceController {
             return new ReadOnlyObjectWrapper<>(speed);
         });
     }
-
-//    private void runAnotherInfiniteLoop() {
-//        new AnimationTimer() {
-//
-//            @Override
-//            public void handle(long now) {
-//                rotateWindArrow();
-//                setUTC();
-//                updateClock();
-//                fpsCounter.update(now);
-//                updateViewLayout();
-//                updateCourseLayout();
-//                updateBoundary();
-//                Coordinate.updateBorder();
-////                Coordinate.updateBorder();
-//            }
-//        }.start();
-//    }
 
     private void runInfiniteLoop() {
         new AnimationTimer() {
@@ -340,7 +222,6 @@ public class RaceController {
                 viewUpdateCount++;
 
                 if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0){
-                    System.out.println(frameCount);
                     positionTable.refresh();
                     positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
                     positionTable.setPrefHeight(Coordinate.getWindowHeightY() - SPARKLINEHEIGHT);
@@ -449,13 +330,13 @@ public class RaceController {
                 // Used when selecting a boat to follow
                 boatSprite.onMousePressedProperty().setValue(event -> {
                     boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
-                    resetViewButton.setVisible(true);
+                    resetViewButton.setDisable(false);
                     Coordinate.setTrackingBoat(true);
                 });
                 // to give the user more space to click on the boat
                 tc.onMousePressedProperty().setValue(event -> {
                     boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
-                    resetViewButton.setVisible(true);
+                    resetViewButton.setDisable(false);
                     Coordinate.setTrackingBoat(true);
                 });
 
@@ -605,16 +486,23 @@ public class RaceController {
     }
 
     private void setUTC() {
-        localTime.setFont(new Font("Arial", 15));
-        localTime.setVisible(true); //TODO This should be set to visible only when utc is set correctly
+        Font font = new Font("Arial", 15);
+        localTime.setFont(font);
+        localTime.setVisible(true);
 
         localTime.setLayoutX(Coordinate.getWindowWidthX() - 110);
         localTime.setLayoutY(100);
+        localTimeZone.setLayoutX(Coordinate.getWindowWidthX() - 115);
+        localTimeZone.setLayoutY(80);
 
         int utc = race.getRegatta().getUtcOffset();
         TimeZoneWrapper timeZoneWrapper = new TimeZoneWrapper(utc);
         String text = timeZoneWrapper.getLocalTimeString();
         localTime.setText(text);
+
+        localTimeZone.setFont(font);
+        localTimeZone.setText(timeZoneWrapper.getRaceTimeZoneString());
+        localTimeZone.setVisible(true);
 
     }
 
@@ -624,58 +512,6 @@ public class RaceController {
      */
     private void rotateWindArrow() {
         windArrow.setRotate(race.getWindHeading() + 180);
-    }
-
-    /**
-     * Displays a background google maps image
-     */
-    private void initializeMap() {
-        selectedImage.setPreserveRatio(true);
-        Image image = createMap(race.getMapCenter().getLatitude(), race.getMapCenter().getLongitude());
-        selectedImage.setImage(image);
-        imagePos = new Mark(race.getMapCenter().getLatitude(), race.getMapCenter().getLongitude());
-        selectedImage.setFitWidth(image.getWidth()*IMAGE_SCALE);
-        viewAnchorPane.getChildren().add(0, selectedImage);
-    }
-
-    /**
-     * Creates a google maps image
-     * @param centerLat the central latitude of the map
-     * @param centerLon the central longitude of the map
-     * @return the google maps Image
-     */
-    private Image createMap(double centerLat, double centerLon) {
-        String key = "AIzaSyAAmj8rsEdHfH4WbXbqB4ugZEKVBrvCyaw";
-        String style = "style=feature:all|element:labels|visibility:off";
-        int sizeH = 640;
-        int sizeV = 640;
-        double difLon = race.getViewMax().convertToLon() - race.getViewMin().convertToLon();
-        double difLat = race.getViewMax().convertToLat() - race.getViewMin().convertToLat();
-        StringBuilder sb = new StringBuilder("visible=");
-        sb.append(centerLat + (centerLat>0?1:-1)*difLat/2*IMAGE_SCALE).append(',').append(centerLon + (centerLon>0?1:-1)*difLon/2*IMAGE_SCALE)
-                .append('|')
-                .append(centerLat - (centerLat>0?1:-1)*difLat/2*IMAGE_SCALE).append(',').append(centerLon - (centerLon>0?1:-1)*difLon/2*IMAGE_SCALE).append('|');
-        for (Mark cl: race.getBoundaries()) {
-            sb.append(cl.getLatitude()).append(',').append(cl.getLongitude()).append('|');
-        }
-        sb.setLength(sb.length() - 1);
-        String imageUrl = String.format("https://maps.googleapis.com/maps/api/staticmap?" +
-                "center=%f,%f&size=%dx%d&scale=2&%s&%s&key=%s", centerLat, centerLon, sizeH, sizeV, sb, style, key);
-        return new Image(imageUrl);
-    }
-
-    private void RacersListBeforeStart(Race race) {
-        startersList.setVisible(true);
-        ObservableList<String> listOfStarters = FXCollections.observableArrayList();
-        for(Boat boat : race.getBoats()) {
-            String name = boat.getName();
-            listOfStarters.add(name);
-        }
-        startersList.setItems(listOfStarters);
-    }
-
-    private void RemoveRacersList() {
-        startersList.setVisible(false);
     }
 
 
@@ -693,21 +529,6 @@ public class RaceController {
         }
 
     }
-
-//    Deactivated distance calculator
-//    private double calculateDistance(double sourceLat, double destLat, double sourceLong, double destLong) {
-//
-//        double latDist = Math.toRadians(destLat - sourceLat);
-//        double longDist = Math.toRadians(destLong - sourceLong);
-//
-//        double a = Math.sin(latDist / 2) * Math.sin(latDist / 2) + Math.cos(Math.toRadians(sourceLat))
-//                * Math.cos(Math.toRadians(destLat)) * Math.sin(longDist / 2) * Math.sin(longDist / 2);
-//        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-//        double dist = EARTH_RADIUS * c * METERS_CONVERSION;
-//
-//        return dist;
-//    }
-
     /**
      * Generates a line used for a wake
      * @param speed speed of the boat
@@ -793,7 +614,7 @@ public class RaceController {
     public void resetViewButtonPressed() {
         resetZoom();
         Coordinate.setZoom(0);
-        resetViewButton.setVisible(false);
+        resetViewButton.setDisable(true);
         Coordinate.setTrackingBoat(false);
     }
 
@@ -867,104 +688,6 @@ public class RaceController {
     }
 
     /**
-     * Updates the Raceview window, and the coordinates of the nodes within the pane.
-     * Keeps the boats in the correct position as they move around the course.
-     * If the window is resized, the objects will keep a relatively similar distribution
-     * across the new window size.
-     */
-    private void updateView() {
-        System.out.println("View being potentially updated");
-        viewUpdateCount++;
-
-        selectedImage.setX(Coordinate.getRelativeX(imagePos.getX())-selectedImage.getImage().getWidth()*IMAGE_SCALE/2);
-        selectedImage.setY(Coordinate.getRelativeY(imagePos.getY())-selectedImage.getImage().getHeight()*IMAGE_SCALE/2);
-        selectedImage.setScaleX(1/(1+Coordinate.getZoom()));
-        selectedImage.setScaleY(1/(1+Coordinate.getZoom()));
-
-        positionTable.refresh();
-
-        positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
-        positionTable.setPrefHeight(Coordinate.getWindowHeightY() - SPARKLINEHEIGHT);
-
-        viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
-        viewAnchorPane.setMaxHeight(Coordinate.getWindowHeightY());
-        viewAnchorPane.setMinWidth(Coordinate.getWindowWidthX());
-        viewAnchorPane.setMaxWidth(Coordinate.getWindowWidthX());
-
-        Coordinate.updateBorder();
-        viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
-        viewAnchorPane.setMaxHeight(Coordinate.getWindowHeightY());
-        viewAnchorPane.setMinWidth(Coordinate.getWindowWidthX());
-        viewAnchorPane.setMaxWidth(Coordinate.getWindowWidthX());
-
-        double position = 1 - (SPARKLINEHEIGHT / Coordinate.getWindowHeightY());
-        sidePanelSplit.setDividerPosition(0, position);
-
-        updateBoatPositions();
-
-        ArrayList<Mark> marks = new ArrayList<>();
-        for (CompoundMark lm : race.getCompoundMarks()){
-            for (Mark pos : lm.getMarks()){
-                marks.add(pos);
-            }
-        }
-
-        for (int i = 0; i < compoundMarks.size(); i++) {
-            compoundMarks.get(i).setX(Coordinate.getRelativeX(marks.get(i).getX()) - compoundMarks.get(i).getWidth() / 2);
-            compoundMarks.get(i).setY(Coordinate.getRelativeY(marks.get(i).getY()) - compoundMarks.get(i).getHeight() / 2);
-            updateNodeScale(compoundMarks.get(i));
-        }
-
-        for (int i = 0; i < gates.size(); i++) {
-            gates.get(i).setStartX(Coordinate.getRelativeX(race.getGates().get(i).getMarks().get(0).getX()));
-            gates.get(i).setStartY(Coordinate.getRelativeY(race.getGates().get(i).getMarks().get(0).getY()));
-            gates.get(i).setEndX(Coordinate.getRelativeX(race.getGates().get(i).getMarks().get(1).getX()));
-            gates.get(i).setEndY(Coordinate.getRelativeY(race.getGates().get(i).getMarks().get(1).getY()));
-        }
-
-        windArrow.setLayoutX(50);
-        windArrow.setLayoutY(50);
-        windArrow.setRotate(race.getWindHeading() + 180);
-
-        if (showFPS) {
-            fpsLabel.setLayoutX(Coordinate.getWindowWidthX() - 90);
-            fpsLabel.setLayoutY(60);
-        }
-
-        resetViewButton.setLayoutX(14);
-        resetViewButton.setLayoutY(Coordinate.getWindowHeightY() - 100);
-
-        fpsBtn.setLayoutX(14);
-        fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 75);
-
-        annotationBtn.setLayoutX(14);
-        annotationBtn.setLayoutY(Coordinate.getWindowHeightY() - 50);
-
-        BoatNameCheckBox.setLayoutX(14);
-        BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 150);
-
-        BoatSpeedCheckBox.setLayoutX(14);
-        BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 125);
-
-        clock.setLayoutY(20);
-        clock.setLayoutX(Coordinate.getWindowWidthX() - 155);
-
-        localTimeZone.setLayoutX(Coordinate.getWindowWidthX() - 115);
-        localTimeZone.setLayoutY(80);
-
-        localTime.setLayoutX(Coordinate.getWindowWidthX() - 110);
-        localTime.setLayoutY(100);
-        localTime.setText(timeZoneWrapper.getLocalTimeString());
-
-        startersList.setPrefSize(Coordinate.getWindowWidthX() - 400, Coordinate.getWindowHeightY() - 200);
-
-        startersList.setLayoutX(200);
-        startersList.setLayoutY(100);
-
-        updateBoundary();
-    }
-
-    /**
      *Updates the course boundaries on the view,
      * clears and re-draws boundary to avoid problem when course bounds change
      */
@@ -1006,59 +729,5 @@ public class RaceController {
     private void updateNodeScale(Node nodeToScale) {
         nodeToScale.setScaleX(1/(1+Coordinate.getZoom()*0.9));
         nodeToScale.setScaleY(1/(1+Coordinate.getZoom()*0.9));
-    }
-
-    /**
-     * Initiates an animationTimer to start the race in which the boats will participate. This will count down from the
-     * timeToStart countdown, then start the boats racing. Keeps the window updated with calls to
-     * updateView. Also displays the current position that the boats are in
-     */
-    private void runRace() {
-        updateView();
-
-        long startTime = race.getExpectedStartTime();
-
-        long timeToStart = startTime - race.getCurrentTime();
-        // If the race hasn't started yet
-        if (timeToStart > 0) {
-            raceStarted = false;
-            // Show the time to the start of the race.
-            raceHours = (int) TimeUnit.MILLISECONDS.toHours(timeToStart);
-            raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(timeToStart) -
-                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeToStart)));
-            raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(timeToStart) -
-                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeToStart)));
-        } else {
-            long raceRunning = - timeToStart;
-            raceStarted = true;
-
-            raceHours = (int) TimeUnit.MILLISECONDS.toHours(raceRunning);
-            raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(raceRunning) -
-                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(raceRunning)));
-            raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceRunning) -
-                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceRunning)));
-        }
-
-        new AnimationTimer() {
-            @Override
-            public void handle(long currentNanoTime) {
-                frameCount++;
-                if (currentNanoTime - lastTime >= timerUpdate) {
-                    fpsLabel.setText(frameCount + " fps");
-                    frameCount = 0;
-                    lastTime = currentNanoTime;
-                }
-
-                updateView();
-                sparkCounter++;
-                if (sparkCounter > 100 && race.started()) {
-                    sparkCounter = 0;
-                    updateSparkLineChart();
-                }
-
-                Coordinate.updateBorder();
-                updateRaceClock();
-            }
-        }.start();
     }
 }

@@ -288,7 +288,10 @@ public class XMLParser {
                             courseName = node.getTextContent();
                             break;
                         case UTC_OFFSET:
-                            utc = Integer.parseInt(node.getTextContent());
+                            Random r = new Random();
+                            utc = r.nextInt(10);
+
+                            //utc = Integer.parseInt(node.getTextContent());
                             break;
                     }
                 }

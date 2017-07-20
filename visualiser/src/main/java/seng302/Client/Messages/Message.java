@@ -147,7 +147,7 @@ public class Message {
                     startTime = xmlParser.getRaceStartTime();
                     race.setRaceXMLReceived(true);
                     //race.setViewParams();
-//                    race.setRaceReady(true);
+                    race.setViewReady(true);
                     raceSet = true;
                     break;
             }
