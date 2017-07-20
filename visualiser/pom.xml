@@ -22,11 +22,11 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>seng302</groupId>-->
-            <!--<artifactId>mock</artifactId>-->
-            <!--<version>0.0</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
