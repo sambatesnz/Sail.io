@@ -110,8 +110,8 @@ public class BoatLocationMessageTest {
         byte[] actualMessage = new byte[8];
         int sourceIndex = BoatLocationUtility.TIME.getIndex();
         int size = BoatLocationUtility.TIME.getSize();
-        long actualVersionNumber = PacketUtils.getLongFromByteArray(message, sourceIndex, actualMessage, size);
-        assertEquals(time, actualVersionNumber);
+        long actualTime = PacketUtils.getLongFromByteArray(message, sourceIndex, actualMessage, size);
+        assertEquals(time, actualTime);
     }
 
     @Test

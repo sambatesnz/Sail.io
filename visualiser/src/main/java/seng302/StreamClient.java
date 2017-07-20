@@ -1,13 +1,8 @@
 package seng302;
 import seng302.Messages.*;
+import seng302.UserInputController.KeyBindingUtility;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
@@ -16,24 +11,23 @@ import java.nio.ByteOrder;
 import java.util.Arrays;
 
 public class StreamClient {
-    //    private StreamParser parser;
+
     private Socket clientSocket;
     private InputStream streamInput;
+    private OutputStream streamOutput;
     private String serverName;
-    private byte[] data;
+    private byte[] dataReceived;
 
-    private ByteBuffer messageBuffer;
-    private byte[] messageBytes;
     private String host;
     private int port;
     private Race race;
-//    String output = "";
 
     public StreamClient(Race race) {
         this.race = race;
-        data = new byte[4300];
+        dataReceived = new byte[4300];
         clientSocket = null;
         streamInput = null;
+        streamOutput = null;
         AppConfig config = new AppConfig();
         serverName = config.getProperty(AppConfig.DATA_HOST_NAME);
         port = Integer.parseInt(config.getProperty(AppConfig.DATA_HOST_PORT));
@@ -44,17 +38,18 @@ public class StreamClient {
         }
     }
 
-    public void retrieveData() {
-        int breakNo = 0;
-        int result = 0;
-        boolean moreData = false;
-        while (clientSocket != null && streamInput != null) {
+    /**
+     * Handles both incoming and outgoing packets
+     */
+    public void processStreams() {
+        while (clientSocket != null && streamInput != null && streamOutput != null) {
             try {
                 nextMessage();
+                sendMessage();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Arrays.fill(data, (byte)0);
+            Arrays.fill(dataReceived, (byte)0);
         }
         disconnect();
     }
@@ -80,7 +75,6 @@ public class StreamClient {
 
         byte[] lenBytes = new byte[4];
         System.arraycopy(head, 13, lenBytes, 0, 2);
-//        int messageLength = ((lenBytes[2] & 0xff) << 8) | (lenBytes[3] & 0xff);
         int messageLength = ByteBuffer.wrap(lenBytes).order(ByteOrder.LITTLE_ENDIAN).getInt();
         if(streamInput.available() < messageLength + CRC_LEN){
             streamInput.reset();
@@ -88,12 +82,7 @@ public class StreamClient {
         }
         byte[] body = new byte[messageLength + CRC_LEN];
         streamInput.read(body);
-        //System.out.println(Arrays.toString(body));
 
-
-
-//
-        //TODO: passmessage in to the thing
         byte[] message = new byte[messageLength + CRC_LEN + HEADER_LEN];
         System.arraycopy(head, 0, message, 0, HEADER_LEN);
         System.arraycopy(body, 0, message, HEADER_LEN, messageLength);
@@ -101,13 +90,25 @@ public class StreamClient {
         packet.parseMessage();
     }
 
+    /**
+     * Sends BoatActionMessages over a socket stream
+     * @throws IOException
+     */
+    private void sendMessage() throws IOException {
+        if (KeyBindingUtility.keyPressed()){
+            byte[] packetToSend = KeyBindingUtility.getUserInputData();
+            streamOutput.write(packetToSend);
+            streamOutput.flush();
+        }
+    }
+
     public void connect() {
         try {
             System.out.println("Attempting to connect...");
-//            clientSocket = new Socket("localhost", 5005);
             clientSocket = new Socket(host, port);
             System.out.println("Connected.");
             streamInput = new BufferedInputStream(clientSocket.getInputStream());
+            streamOutput = new BufferedOutputStream(clientSocket.getOutputStream());
         }
         catch (IOException e) {
             e.printStackTrace();
