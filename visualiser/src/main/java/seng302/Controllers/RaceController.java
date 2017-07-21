@@ -283,6 +283,7 @@ public class RaceController {
 
         //Initialise time zone
         localTimeZone.setFont(new Font("Arial", 15));
+        System.out.println(timeZoneWrapper.getRaceTimeZoneString());
         localTimeZone.setText(timeZoneWrapper.getRaceTimeZoneString());
         localTimeZone.setVisible(true);
 

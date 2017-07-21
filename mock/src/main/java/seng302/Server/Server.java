@@ -71,7 +71,9 @@ public class Server {
 
                         byte[] body = new byte[messageLen];
                         System.arraycopy(data,15, body,0, messageLen);
-                        System.out.println(byteArrayToInt(body, 0, 1));
+
+                        int messageCommand = byteArrayToInt(body, 0, 1);
+
                     }
 //                    else {                                              //
 //                        System.out.println("No available data");        //Testing

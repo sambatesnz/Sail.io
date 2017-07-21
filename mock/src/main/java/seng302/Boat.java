@@ -18,11 +18,49 @@ public class Boat {
     private int position;
     private String abrv;
 
-    public int getSourceId() {
-        return sourceId;
+    private int sourceId;
+
+    /**
+     * Constructs a boat
+     * @param name the name of the boat/team
+     * @param speed the speed of the boat
+     * @param sourceId
+     */
+    public Boat(String name, double speed, Color colour, String abrv, int sourceId) {
+        this.name = name;
+        this.currentLegDistance = 0;
+        this.currentLegIndex = 0;
+        this.speed = speed;
+        this.colour = colour;
+        this.abrv = abrv;
+        this.raceTime = Integer.toUnsignedLong(0);
+        this.sourceId = sourceId;
     }
 
-    private int sourceId;
+    /**
+     * Increments or decrements the boat heading by a set amount (currently 3 degrees but default)
+     * towards or away from the current wind direction based on the command upwind, or downwind.
+     * @param windDirection The current direction that the wind is heading
+     * @param upwind Whether to increment the heading towards (true) or away
+     *               from (false) the current wind direction
+     */
+    public void updateHeading(int windDirection, boolean upwind) {
+        int headingIncrement = 3;
+
+        if (upwind) {
+            if ((heading > windDirection) && (heading < (180 + windDirection) % 360)) {
+                heading += headingIncrement;
+            } else {
+                heading -= headingIncrement;
+            }
+        } else {
+            if ((heading > windDirection) && (heading < (180 + windDirection) % 360)) {
+                heading -= headingIncrement;
+            } else {
+                heading += headingIncrement;
+            }
+        }
+    }
 
     /**
      * Gets the abbreviation of the name of the team's boat
@@ -43,23 +81,6 @@ public class Boat {
      * @param time the time to be set.
      */
     public void setRaceTime(Long time) { this.raceTime = time; }
-
-    /**
-     * Constructs a boat
-     * @param name the name of the boat/team
-     * @param speed the speed of the boat
-     * @param sourceId
-     */
-    public Boat(String name, double speed, Color colour, String abrv, int sourceId) {
-        this.name = name;
-        this.currentLegDistance = 0;
-        this.currentLegIndex = 0;
-        this.speed = speed;
-        this.colour = colour;
-        this.abrv = abrv;
-        this.raceTime = Integer.toUnsignedLong(0);
-        this.sourceId = sourceId;
-    }
 
     /**
      * Get the boats colour
@@ -196,6 +217,10 @@ public class Boat {
      */
     public double getLongitude(){
         return Position.convertX(x);
+    }
+
+    public int getSourceId() {
+        return sourceId;
     }
 }
 
