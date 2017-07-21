@@ -4,8 +4,9 @@ package seng302;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import seng302.Messages.Message;
-import seng302.Messages.RaceStatusMessage;
+import seng302.Client.Messages.Message;
+import seng302.Race.Boat;
+import seng302.Race.Race;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,23 +114,23 @@ public class RaceStatusMessageTest {
 
     @Test
     public void boatLegIndexTest() {
-        Assert.assertEquals(6, race.boats.get(101).getCurrentLegIndex());
-        Assert.assertEquals(5, race.boats.get(102).getCurrentLegIndex());
-        Assert.assertEquals(7, race.boats.get(103).getCurrentLegIndex());
+        Assert.assertEquals(6, race.getBoatsMap().get(101).getCurrentLegIndex());
+        Assert.assertEquals(5, race.getBoatsMap().get(102).getCurrentLegIndex());
+        Assert.assertEquals(7, race.getBoatsMap().get(103).getCurrentLegIndex());
     }
 
     @Test
     public void boatTimeToNextMarkTest() {
-        Assert.assertEquals(6200, race.boats.get(101).getTimeToNextMark());
-        Assert.assertEquals(7300, race.boats.get(102).getTimeToNextMark());
-        Assert.assertEquals(1276, race.boats.get(103).getTimeToNextMark());
+        Assert.assertEquals(6200, race.getBoatsMap().get(101).getTimeToNextMark());
+        Assert.assertEquals(7300, race.getBoatsMap().get(102).getTimeToNextMark());
+        Assert.assertEquals(1276, race.getBoatsMap().get(103).getTimeToNextMark());
     }
 
     @Test
     public void boatTimeToFinishTest() {
-        Assert.assertEquals(98622, race.boats.get(101).getTimeToFinish());
-        Assert.assertEquals(96475, race.boats.get(102).getTimeToFinish());
-        Assert.assertEquals(89678, race.boats.get(103).getTimeToFinish());
+        Assert.assertEquals(98622, race.getBoatsMap().get(101).getTimeToFinish());
+        Assert.assertEquals(96475, race.getBoatsMap().get(102).getTimeToFinish());
+        Assert.assertEquals(89678, race.getBoatsMap().get(103).getTimeToFinish());
     }
 
 

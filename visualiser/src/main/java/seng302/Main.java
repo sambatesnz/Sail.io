@@ -34,6 +34,7 @@ public class Main extends Application {
             primaryStage.setTitle("RaceView");
             primaryStage.show();
 
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }

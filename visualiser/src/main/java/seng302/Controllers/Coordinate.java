@@ -1,6 +1,6 @@
 package seng302.Controllers;
 
-import seng302.Mark;
+import seng302.Race.Mark;
 
 /**
  * Holds information relating to the coordinates within the window.
@@ -9,20 +9,19 @@ import seng302.Mark;
  */
 public final class  Coordinate {
 
-    private static double windowX;
-    private static double windowY;
+    //Window resolution
+    private static double windowWidthX;
+    private static double windowHeightY;
 
     /**
-     * Number of pixels around the ede of the window to not use for the race.
+     * Number of pixels around the edge of the window to not use for the race.
      */
-    private static double BorderX = 0;
-    private static double BorderY = 0;
-    private static double BorderConstant = 0;
-    private static int sidePaneWidth = 248;
+    private static double derivedBorderWidthX = 0;
+    private static double derivedBorderHeightY = 0;
 
     private static Mark viewMin;
     private static Mark viewMax;
-    private static double zoom = 0;
+    private static double zoom = 0; //0 is default ratio of zoom
     private static Mark offset = new Mark(0, 0);
     private static Mark defaultCourseMin;
     private static Mark defaultCourseMax;
@@ -53,13 +52,14 @@ public final class  Coordinate {
      * Updates the border size within the window
      */
     public static void updateBorder(){
-        double sizeX = viewMax.getX() - viewMin.getX();
-        double sizeY = viewMax.getY() - viewMin.getY();
 
-        if ((windowX / sizeX) > windowY / sizeY ) {
-            BorderX = BorderConstant + (windowX - windowY / sizeY * sizeX) / 2;
-        }else if((windowX / sizeX) < windowY / sizeY ) {
-            BorderY = BorderConstant + (windowY - windowX / sizeX * sizeY) / 2;
+        double raceWidthX = viewMax.getX() - viewMin.getX();
+        double raceHeightY = viewMax.getY() - viewMin.getY();
+
+        if ((windowWidthX / raceWidthX) > windowHeightY / raceHeightY ) {
+            derivedBorderWidthX = (windowWidthX - windowHeightY / raceHeightY * raceWidthX) / 2;
+        }else if((windowWidthX / raceWidthX) < windowHeightY / raceHeightY ) {
+            derivedBorderHeightY = (windowHeightY - windowWidthX / raceWidthX * raceHeightY) / 2;
         }
     }
 
@@ -68,7 +68,8 @@ public final class  Coordinate {
      * Zooming in decreases zoom value until a maximum zoom is reached
      */
     public static void increaseZoom(){
-        if (zoom > -0.9) {
+        double MAX_ZOOM = -0.9;
+        if (zoom > MAX_ZOOM) {
             zoom -= 0.05;
         }
     }
@@ -77,7 +78,8 @@ public final class  Coordinate {
      * Zooming out increases zoom value until a minimum zoom is reached
      */
     public static void decreaseZoom(){
-        if (zoom < -0.05) {
+        double MIN_ZOOM = -0.05;
+        if (zoom < MIN_ZOOM) {
             zoom += 0.05;
         }
     }
@@ -96,8 +98,8 @@ public final class  Coordinate {
      * @return the absolute y value on the window relative to the y value passed in.
      */
     public static double getRelativeY(double standardY){
-        return windowY - (windowY - 2 * BorderY) * (standardY - viewMin.getY()) /
-                (viewMax.getY() - viewMin.getY()) - BorderY;
+        return windowHeightY - (windowHeightY - 2 * derivedBorderHeightY) * (standardY - viewMin.getY()) /
+                (viewMax.getY() - viewMin.getY()) - derivedBorderHeightY;
     }
 
     /**
@@ -106,8 +108,8 @@ public final class  Coordinate {
      * @return the absolute x value on the window relative to the x value passed in.
      */
     public static double getRelativeX(double standardX){
-        return (windowX - 2 * BorderX) * (standardX - viewMin.getX()) /
-                (viewMax.getX() - viewMin.getX()) + BorderX;
+        return (windowWidthX - 2 * derivedBorderWidthX) * (standardX - viewMin.getX()) /
+                (viewMax.getX() - viewMin.getX()) + derivedBorderWidthX;
     }
 
 
@@ -155,32 +157,33 @@ public final class  Coordinate {
      * Sets the width of the race window
      * @param x pixel width of the race window
      */
-    public static void setWindowX(double x) {
-        windowX = x - sidePaneWidth;
+    public static void setWindowWidthX(double x) {
+        int SIDE_PANE_WIDTH = 248;
+        windowWidthX = x - SIDE_PANE_WIDTH;
     }
 
     /**
      * Sets the height of the race window
      * @param y pixel height of the race window
      */
-    public static void setWindowY(double y) {
-        windowY = y;
+    public static void setWindowHeightY(double y) {
+        windowHeightY = y;
     }
 
     /**
      * Getter for the width of the window
      * @return the pixel value of the window width
      */
-    public static double getWindowX() {
-        return windowX;
+    public static double getWindowWidthX() {
+        return windowWidthX;
     }
 
     /**
      * Getter for the height of the window
      * @return the pixel value of the window height
      */
-    public static double getWindowY() {
-        return windowY;
+    public static double getWindowHeightY() {
+        return windowHeightY;
     }
 
 }

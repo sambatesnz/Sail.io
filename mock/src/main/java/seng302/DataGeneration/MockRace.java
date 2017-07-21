@@ -3,11 +3,11 @@ package seng302.DataGeneration;
 import seng302.Boat;
 import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
+import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
+import seng302.PacketGeneration.RaceStatusGeneration.RaceStatusMessage;
+import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
+import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.Race;
-import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
-import seng302.packetGeneration.RaceStatusGeneration.RaceStatusMessage;
-import seng302.packetGeneration.XMLMessageGeneration.XMLMessage;
-import seng302.packetGeneration.XMLMessageGeneration.XMLSubTypes;
 
 import java.util.*;
 
@@ -22,6 +22,8 @@ public class MockRace implements IServerData {
     Timer timer = new Timer();
 
     private Race race = new Race();
+
+    Random r = new Random();
     // Generate RaceStatusMessage from using properties of Race object.
     private BinaryMessage rsm = new RaceStatusMessage(currentTimeMillis(),
                                                             race.getRaceID(),
@@ -57,6 +59,7 @@ public class MockRace implements IServerData {
         @Override
         public void run() {
             DataGenerator dataGenerator = new DataGenerator();
+
             BinaryMessage xmlMessage =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
 //            System.out.println("\n--------\nRace XML Message created");
 //            System.out.println(Arrays.toString(xmlMessage.createMessage()));
@@ -68,7 +71,7 @@ public class MockRace implements IServerData {
 //            System.out.println(Arrays.toString(xmlMessage.createMessage()));
 //            System.out.println("--------\n");
             bytes.add(boatsXml.createMessage());
-
+//
             BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);
 //            System.out.println("\n--------\nREGATTA XML Message created");
 //            System.out.println(Arrays.toString(xmlMessage.createMessage()));
