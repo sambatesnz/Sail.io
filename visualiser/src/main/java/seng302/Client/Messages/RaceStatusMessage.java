@@ -31,7 +31,6 @@ public class RaceStatusMessage {
      * @param bytes The array of bytes from the body of a race status packet
      */
     public RaceStatusMessage(byte[] bytes, Race race) {
-        System.out.println(Arrays.toString(bytes));
         currentTime = Message.byteArrayToLong(bytes, 1, 6);
         raceID = Message.byteArrayToLong(bytes, 7, 4);
         raceStatus = Message.byteArrayToInt(bytes, 11, 1);
@@ -42,7 +41,6 @@ public class RaceStatusMessage {
         raceType = Message.byteArrayToInt(bytes, 23, 1);
         this.race = race;
 
-        System.out.println("boats : " +numBoatsInRace);
 
         boatDetailsList = new BoatStatusMessage[numBoatsInRace];
         int offset = 24;

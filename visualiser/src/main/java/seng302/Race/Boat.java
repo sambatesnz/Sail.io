@@ -22,6 +22,7 @@ public class Boat {
     private String shortName;
     private String country;
     private double speed;
+    private boolean knowsBoatLocation;
 
     /**
      * Gets the abbreviation of the name of the team's boat
@@ -65,6 +66,7 @@ public class Boat {
         this.shortName = shortName;
         this.sourceId = sourceId;
         this.country = country;
+        this.knowsBoatLocation = false;
     }
 
     public void setMark(Mark mark) {
@@ -282,6 +284,14 @@ public class Boat {
      */
     public void setTimeToFinish(long timeToFinish) {
         this.timeToFinish = timeToFinish;
+    }
+
+    public boolean isKnowsBoatLocation() {
+        return knowsBoatLocation;
+    }
+
+    public void setKnowsBoatLocation(boolean knowsBoatLocation) {
+        this.knowsBoatLocation = knowsBoatLocation;
     }
 }
 

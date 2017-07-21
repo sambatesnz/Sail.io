@@ -57,6 +57,7 @@ public class LocationMessage{
             boatDict.get(sourceID).setMark(new Mark(latitude, longitude));
             boatDict.get(sourceID).setSpeed(speedOverGround);
             boatDict.get(sourceID).setHeading(heading);
+            boatDict.get(sourceID).setKnowsBoatLocation(true);
         }
     }
 }
