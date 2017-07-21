@@ -16,8 +16,8 @@ public class RaceStatusMessageTest {
 
         int headerSize = 24;
         int boatPacketSize = 20;
-        char numBoats = '0';
-        int numBoatsInt = 0;
+        char numBoats = (char) 6;
+        int numBoatsInt = 6;
         short windDirection = 0;
 
         RaceStatusMessage raceStatusMessage =  new RaceStatusMessage(
@@ -32,9 +32,9 @@ public class RaceStatusMessageTest {
                 null
         );
 
-        int expected =  headerSize + numBoatsInt * boatPacketSize;
+        int expected =  headerSize + (numBoatsInt) * boatPacketSize;
         int packetSize = raceStatusMessage.getBody().length;
-        assertEquals(packetSize, expected);
+        assertEquals(expected, packetSize);
     }
 
     @Test

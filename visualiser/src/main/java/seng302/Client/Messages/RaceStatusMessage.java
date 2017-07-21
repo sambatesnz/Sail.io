@@ -42,6 +42,8 @@ public class RaceStatusMessage {
         raceType = Message.byteArrayToInt(bytes, 23, 1);
         this.race = race;
 
+        System.out.println("boats : " +numBoatsInRace);
+
         boatDetailsList = new BoatStatusMessage[numBoatsInRace];
         int offset = 24;
 
