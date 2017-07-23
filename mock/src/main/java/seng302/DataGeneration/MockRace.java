@@ -61,21 +61,21 @@ public class MockRace implements IServerData {
             DataGenerator dataGenerator = new DataGenerator();
 
             BinaryMessage xmlMessage =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
-//            System.out.println("\n--------\nRace XML Message created");
-//            System.out.println(Arrays.toString(xmlMessage.createMessage()));
-//            System.out.println("--------\n");
+            System.out.println("\n--------\nRace XML Message created");
+            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+            System.out.println("--------\n");
             bytes.add(xmlMessage.createMessage());
 
             BinaryMessage boatsXml = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
-//            System.out.println("\n--------\nBoats XML Message created");
-//            System.out.println(Arrays.toString(xmlMessage.createMessage()));
-//            System.out.println("--------\n");
+            System.out.println("\n--------\nBoats XML Message created");
+            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+            System.out.println("--------\n");
             bytes.add(boatsXml.createMessage());
-//
+
             BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);
-//            System.out.println("\n--------\nREGATTA XML Message created");
-//            System.out.println(Arrays.toString(xmlMessage.createMessage()));
-//            System.out.println("--------\n");
+            System.out.println("\n--------\nRegatta XML Message created");
+            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+            System.out.println("--------\n");
             bytes.add(regattaXML.createMessage());
         }
     }
@@ -94,11 +94,10 @@ public class MockRace implements IServerData {
                         (short) 100, (short) 100, (short) 100,
                         (short) 100, (short) 100, (short) 100
                 );
-//                System.out.println("\n--------\nBoat location message packet created");
-//                System.out.println(Arrays.toString(boatLocationMessage.createMessage()));
-//                System.out.println("--------\n");
+                System.out.println("\n--------\nBoat location message packet created");
+                System.out.println(Arrays.toString(boatLocationMessage.createMessage()));
+                System.out.println("--------\n");
                 bytes.add(boatLocationMessage.createMessage());
-
             }
         }
     }
@@ -114,9 +113,9 @@ public class MockRace implements IServerData {
         @Override
         public void run() {
             bytes.add(rsm.createMessage());
-//            System.out.println("\n--------\nRace Status message packet created");
-//            System.out.println(Arrays.toString(rsm.createMessage()));
-//            System.out.println("--------\n");
+            System.out.println("\n--------\nRace Status message packet created");
+            System.out.println(Arrays.toString(rsm.createMessage()));
+            System.out.println("--------\n");
         }
     }
 
