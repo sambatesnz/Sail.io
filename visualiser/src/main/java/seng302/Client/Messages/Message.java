@@ -1,17 +1,14 @@
 package seng302.Client.Messages;
 
-import seng302.Race.CompoundMark;
+import seng302.PacketParsing.XMLParser;
+import seng302.RaceObjects.CompoundMark;
 import seng302.Race.Race;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

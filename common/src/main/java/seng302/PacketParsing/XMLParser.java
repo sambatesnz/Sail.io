@@ -1,5 +1,5 @@
 
-package seng302.Client.Messages;
+package seng302.PacketParsing;
 
 
 import javafx.scene.paint.Color;
