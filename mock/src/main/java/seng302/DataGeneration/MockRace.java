@@ -10,6 +10,7 @@ import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.Race;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -17,7 +18,7 @@ import static java.lang.System.currentTimeMillis;
  * Created by sba136 on 3/05/17.
  */
 public class MockRace implements IServerData {
-    private Queue<byte[]> bytes = new LinkedList<>();
+    private Queue<byte[]> bytes = new LinkedBlockingQueue<>();
 
     Timer timer = new Timer();
 
@@ -126,7 +127,7 @@ public class MockRace implements IServerData {
     public void runServerTimers() {
         timer.schedule(new XMLSender(), 0, 2000);
         timer.schedule(new RSMSender(), 100, 2000);
-        timer.schedule(new BoatPosSender(), 1000, 10);
+        timer.schedule(new BoatPosSender(), 1000, 100);
         timer.schedule(new RaceRunner(), 2000, 100);
     }
 

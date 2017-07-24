@@ -89,7 +89,6 @@ public class Client {
 
 
 
-
         //TODO: pass message in to the thing
         byte[] message = new byte[messageLength + CRC_LEN + HEADER_LEN];
         System.arraycopy(head, 0, message, 0, HEADER_LEN);

@@ -46,7 +46,6 @@ public class Server {
                 e.printStackTrace();
             }
             while (!genData.finished() && !socket.isClosed()){
-                System.out.flush();  // Need to flush output stream to send packets
                 if(genData.ready()){
                     byte[] data = genData.getData();
                     try {
@@ -104,6 +103,7 @@ public class Server {
 
         private void send(byte[] packets) throws IOException {
             socket.getOutputStream().write(packets);
+            socket.getOutputStream().flush();  // Need to flush output stream to send packets
         }
 
         private void close() throws IOException {
