@@ -33,6 +33,7 @@ import seng302.Visualiser.WindArrow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -204,6 +205,7 @@ public class RaceController {
             @Override
             public void handle(long currentNanoTime) {
                 rotateWindArrow();
+                scaleWindArrow();
                 setUTC();
                 updateClock();
                 fpsCounter.update(currentNanoTime);
@@ -556,6 +558,17 @@ public class RaceController {
      */
     private void rotateWindArrow() {
         windArrow.setRotate(race.getWindHeading() + 180);
+    }
+
+    /**
+     * Scales the wind arrow based on the wind speed
+     */
+    private void scaleWindArrow() {
+        double windSpeed = race.getWindSpeed();
+        windSpeed = windSpeed < 0 ? 0 : (windSpeed > 23150 ? 23150 : windSpeed);
+        double scale = 2 + windSpeed/8000;
+        windArrow.setScaleX(scale);
+        windArrow.setScaleY(scale*0.7);
     }
 
     /**
