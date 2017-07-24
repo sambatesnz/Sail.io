@@ -5,10 +5,7 @@ package seng302.PacketParsing;
 import javafx.scene.paint.Color;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
-import seng302.Race.Boat;
-import seng302.Race.CompoundMark;
-import seng302.Race.Mark;
-import seng302.Race.Regatta;
+import seng302.RaceObjects.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

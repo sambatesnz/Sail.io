@@ -1,6 +1,7 @@
-package seng302.Race;
+package seng302.RaceObjects;
 
 import javafx.scene.paint.Color;
+import seng302.RaceObjects.Mark;
 
 /**
  * Represent a boat competing in yacht race

@@ -3,11 +3,11 @@ package seng302;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import seng302.Client.Messages.CourseLimit;
+import seng302.RaceObjects.CourseLimit;
 import seng302.PacketParsing.XMLParser;
-import seng302.Race.Boat;
+import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
-import seng302.Race.Regatta;
+import seng302.RaceObjects.Regatta;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

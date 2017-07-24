@@ -1,8 +1,8 @@
 package seng302.Client.Messages;
 
 
-import seng302.Race.Boat;
-import seng302.Race.Mark;
+import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.Mark;
 import seng302.Race.Race;
 
 import java.util.Map;

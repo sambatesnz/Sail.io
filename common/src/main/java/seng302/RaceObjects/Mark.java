@@ -1,4 +1,4 @@
-package seng302.Race;
+package seng302.RaceObjects;
 
 /**
  * Class to hold a position (set of coordinates)
