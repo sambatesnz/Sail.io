@@ -2,12 +2,10 @@ package seng302.Client.Messages;
 
 
 import seng302.Race.Boat;
-import seng302.Race.CompoundMark;
 import seng302.Race.Mark;
 import seng302.Race.Race;
 
 import java.util.Map;
-import java.util.function.Predicate;
 
 /**
  * Class that holds and can update the location of a boat in a yacht race,
@@ -41,8 +39,8 @@ public class LocationMessage{
         heading = Message.byteArrayToInt(bytes, 28, 2) * 360 / 65536.0;
         speedOverGround = Math.toIntExact((long) (Message.byteArrayToInt(bytes, 38, 2) * 1.9438444924574 / 1000));
 
-        this.race = race;
         boatDict = race.getBoatsMap();
+        this.race = race;
 
         setBoatLocation();
     }

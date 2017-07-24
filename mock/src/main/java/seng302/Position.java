@@ -69,4 +69,22 @@ public class Position {
     public double getY() {
         return y;
     }
+
+    /**
+     * Sets x and the longitude from x
+     * @param x the value used to set
+     */
+    public void setX(double x) {
+        this.x = x;
+        this.longitude = x / EARTH_CIRCUMFERENCE * 360;
+    }
+
+    /**
+     * Sets y and the latitude from y
+     * @param y the value used to set
+     */
+    public void setY(double y) {
+        this.y = y;
+        this.latitude= y / EARTH_CIRCUMFERENCE * 180;
+    }
 }
