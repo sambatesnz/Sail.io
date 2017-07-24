@@ -1,5 +1,7 @@
 package seng302;
 
+import seng302.DataGeneration.IServerData;
+import seng302.DataGeneration.MockRace;
 import seng302.Server.Server;
 
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        Server server = new Server(4941);
+        IServerData mockData = new MockRace(); //Default race
+        new Server(4941, mockData);
     }
 }   

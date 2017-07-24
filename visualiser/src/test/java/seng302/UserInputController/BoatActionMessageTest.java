@@ -1,7 +1,8 @@
 package seng302.UserInputController;
 
 import org.junit.Test;
-import seng302.Messages.PacketUtils;
+import seng302.PacketGeneration.PacketGenerationUtils.*;
+import seng302.PacketGeneration.PacketUtils;
 
 import java.util.Random;
 
@@ -31,6 +32,5 @@ public class BoatActionMessageTest {
         byte[] actualMessage = new byte[8];
         int actualBoatAction = PacketUtils.getIntFromByteArray(message, 0, actualMessage, 1);
         assertEquals(boatAction, actualBoatAction);
-
     }
 }

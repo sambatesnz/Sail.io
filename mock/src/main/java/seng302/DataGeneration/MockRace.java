@@ -3,13 +3,14 @@ package seng302.DataGeneration;
 import seng302.Boat;
 import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
+import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
+import seng302.PacketGeneration.RaceStatusGeneration.RaceStatusMessage;
+import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
+import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.Race;
-import seng302.packetGeneration.BoatLocationGeneration.BoatLocationMessage;
-import seng302.packetGeneration.RaceStatusGeneration.RaceStatusMessage;
-import seng302.packetGeneration.XMLMessageGeneration.XMLMessage;
-import seng302.packetGeneration.XMLMessageGeneration.XMLSubTypes;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -17,22 +18,14 @@ import static java.lang.System.currentTimeMillis;
  * Created by sba136 on 3/05/17.
  */
 public class MockRace implements IServerData {
-    private Queue<byte[]> bytes = new LinkedList<>();
+    private Queue<byte[]> bytes = new LinkedBlockingQueue<>();
 
     Timer timer = new Timer();
 
     private Race race = new Race();
+
     // Generate RaceStatusMessage from using properties of Race object.
-    private BinaryMessage rsm = new RaceStatusMessage(currentTimeMillis(),
-                                                            race.getRaceID(),
-                                                            race.getRaceStatus(),
-                                                            currentTimeMillis(),
-                                                            race.getWindDirection(),
-//                                                            race.getWindSpeed(),      // no longer required as the race wind speed is never updated
-                                                            race.retrieveWindSpeed(),   // retrieve a new randomly generated wind speed
-                                                            (char)(race.getBoats().size() + 48),
-                                                            race.getRaceType(),
-                                                            race.getBoats());
+    private BinaryMessage rsm;
 
     public Race getRace() {
         return race;
@@ -57,28 +50,41 @@ public class MockRace implements IServerData {
         return !bytes.isEmpty();
     }
 
+    @Override
+    public void beginGeneratingData() {
+        timer.schedule(new XMLSender(), 0, 2000);
+        timer.schedule(new RSMSender(), 100, 2000);
+        timer.schedule(new BoatPosSender(), 1000, 100);
+        timer.schedule(new RaceRunner(), 2000, 100);
+    }
 
+    @Override
+    public void finishGeneratingData() {
+        System.out.println("Threads cancelled");
+        timer.cancel();
+    }
 
     class XMLSender extends TimerTask {
         @Override
         public void run() {
             DataGenerator dataGenerator = new DataGenerator();
+
             BinaryMessage xmlMessage =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
-//            System.out.println("\n--------\nRace XML Message created");
-//            System.out.println(Arrays.toString(xmlMessage.createMessage()));
-//            System.out.println("--------\n");
+            System.out.println("\n--------\nRace XML Message created");
+            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+            System.out.println("--------\n");
             bytes.add(xmlMessage.createMessage());
 
             BinaryMessage boatsXml = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
-//            System.out.println("\n--------\nBoats XML Message created");
-//            System.out.println(Arrays.toString(xmlMessage.createMessage()));
-//            System.out.println("--------\n");
+            System.out.println("\n--------\nBoats XML Message created");
+            System.out.println(Arrays.toString(boatsXml.createMessage()));
+            System.out.println("--------\n");
             bytes.add(boatsXml.createMessage());
 
             BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);
-//            System.out.println("\n--------\nREGATTA XML Message created");
-//            System.out.println(Arrays.toString(xmlMessage.createMessage()));
-//            System.out.println("--------\n");
+            System.out.println("\n--------\nRegatta XML Message created");
+            System.out.println(Arrays.toString(regattaXML.createMessage()));
+            System.out.println("--------\n");
             bytes.add(regattaXML.createMessage());
         }
     }
@@ -103,7 +109,6 @@ public class MockRace implements IServerData {
 //                    System.out.println("--------\n");
 //                }
                 bytes.add(boatLocationMessage.createMessage());
-
             }
         }
     }
@@ -118,32 +123,20 @@ public class MockRace implements IServerData {
     class RSMSender extends TimerTask {
         @Override
         public void run() {
+            rsm = new RaceStatusMessage(currentTimeMillis(),
+                    race.getRaceID(),
+                    race.getRaceStatus(),
+                    currentTimeMillis(),
+                    race.getWindDirection(),
+                    race.retrieveWindSpeed(),   // retrieve a new randomly generated wind speed
+                    (char)(race.getBoats().size() + 48),
+                    race.getRaceType(),
+                    race.getBoats());
             bytes.add(rsm.createMessage());
-//            System.out.println("\n--------\nRace Status message packet created");
-//            System.out.println(Arrays.toString(rsm.createMessage()));
-//            System.out.println("--------\n");
+            System.out.println("\n--------\nRace Status message packet created");
+            System.out.println(Arrays.toString(rsm.createMessage()));
+            System.out.println("--------\n");
         }
     }
-
-    /**
-     * Schedules data to be generated for a race at intervals
-     *
-     */
-    public void runServerTimers() {
-        timer.schedule(new XMLSender(), 0, 2000);
-        timer.schedule(new RSMSender(), 100, 2000);
-        timer.schedule(new BoatPosSender(), 1000, 10);
-        timer.schedule(new RaceRunner(), 2000, 100);
-    }
-
-    /**
-     * Cancels the timers running in the current thread
-     * Used to free resources
-     */
-    public void cancelServerTimers(){
-        System.out.println("Threads cancelled");
-        timer.cancel();
-    }
-
 
 }

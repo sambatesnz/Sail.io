@@ -69,8 +69,6 @@ public class CoordinateTest {
 
     @Test
     public void test(){
-
-
     }
 
 }
