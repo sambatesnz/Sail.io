@@ -39,7 +39,7 @@ public class WindArrow extends Polyline{
         getPoints().addAll(0.0, 0.0,
                 -5.0, 15.0,
                 5.0, 15.0,
-                0.0, 0.0,
+                1.0, 0.0,
                 0.0, 30.0);
     }
 }
