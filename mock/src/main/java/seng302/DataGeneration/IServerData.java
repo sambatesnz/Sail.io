@@ -9,5 +9,9 @@ public interface IServerData {
 
     boolean ready();
 
+    void beginGeneratingData();
+
+    void finishGeneratingData();
+
 
 }
