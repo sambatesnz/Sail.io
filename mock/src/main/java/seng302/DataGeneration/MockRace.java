@@ -61,21 +61,21 @@ public class MockRace implements IServerData {
         public void run() {
             DataGenerator dataGenerator = new DataGenerator();
 
-            BinaryMessage xmlMessage =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
+            BinaryMessage raceXML =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
             System.out.println("\n--------\nRace XML Message created");
-            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+            System.out.println(Arrays.toString(raceXML.createMessage()));
             System.out.println("--------\n");
-            bytes.add(xmlMessage.createMessage());
+            bytes.add(raceXML.createMessage());
 
-            BinaryMessage boatsXml = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
+            BinaryMessage boatsXML = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
             System.out.println("\n--------\nBoats XML Message created");
-            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+            System.out.println(Arrays.toString(boatsXML.createMessage()));
             System.out.println("--------\n");
-            bytes.add(boatsXml.createMessage());
+            bytes.add(boatsXML.createMessage());
 
             BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);
             System.out.println("\n--------\nRegatta XML Message created");
-            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+            System.out.println(Arrays.toString(regattaXML.createMessage()));
             System.out.println("--------\n");
             bytes.add(regattaXML.createMessage());
         }
@@ -127,8 +127,8 @@ public class MockRace implements IServerData {
     public void runServerTimers() {
         timer.schedule(new XMLSender(), 0, 2000);
         timer.schedule(new RSMSender(), 100, 2000);
-        timer.schedule(new BoatPosSender(), 1000, 100);
-        timer.schedule(new RaceRunner(), 2000, 100);
+        timer.schedule(new BoatPosSender(), 1000, 17);
+        timer.schedule(new RaceRunner(), 2000, 17);
     }
 
     /**

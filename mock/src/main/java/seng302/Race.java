@@ -291,14 +291,9 @@ public class Race {
                 }
                 legs.add(new Leg(start, dest));
             }
-
-//            windHeading = cc.getWindDirection();
-//            windSpeed = cc.getWindSpeed();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     /**
