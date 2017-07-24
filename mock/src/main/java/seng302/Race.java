@@ -242,6 +242,20 @@ public class Race {
     }
 
     /**
+     * Gets the boat identified by a particular source ID number
+     * @param sourceID The number that identifies the boat
+     * @return The boat identified with SourceID
+     */
+    public Boat getBoatByID(int sourceID) {
+        for (Boat boat : boats) {
+            if (boat.getSourceId() == sourceID) {
+                return boat;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Creates an ArrayList of boats competing in the current race
      * @return The ArrayList of boats
      */
@@ -367,12 +381,13 @@ public class Race {
                             finished = true;
                             return;
                         }
-                    } else {
-                        boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
+                    }
+//                    else {
+//                        boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
 //                        System.out.println(boat.getName() + " passed " + passed + ", now sailing to " +
 //                                legs.get(boat.getCurrentLegIndex()).getDest().getName() + " with a heading of " +
 //                                String.format("%.2f", legs.get(boat.getCurrentLegIndex()).getHeading()) + "°");
-                    }
+//                    }
                 }
             }
         }

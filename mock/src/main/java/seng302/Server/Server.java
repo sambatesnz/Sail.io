@@ -38,6 +38,7 @@ public class Server {
         public void run(){
             System.out.println("Connection established");
             MockRace genData = new MockRace();
+            Delegator delegator = new Delegator(genData.getRace());
             genData.runServerTimers();
             InputStream in = null;
             try {
@@ -73,6 +74,7 @@ public class Server {
                         System.arraycopy(data,15, body,0, messageLen);
 
                         int messageCommand = byteArrayToInt(body, 0, 1);
+                        delegator.processCommand(messageCommand);
 
                     }
 //                    else {                                              //

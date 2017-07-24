@@ -34,6 +34,10 @@ public class MockRace implements IServerData {
                                                             race.getRaceType(),
                                                             race.getBoats());
 
+    public Race getRace() {
+        return race;
+    }
+
     @Override
     public byte[] getData() {
         try {
@@ -93,9 +97,11 @@ public class MockRace implements IServerData {
                         (short) 100, (short) 100, (short) 100,
                         (short) 100, (short) 100, (short) 100
                 );
-//                System.out.println("\n--------\nBoat location message packet created");
-//                System.out.println(Arrays.toString(boatLocationMessage.createMessage()));
-//                System.out.println("--------\n");
+//                if (boat.getSourceId() == 103) {
+//                    System.out.println("\n--------\nBoat location message packet created");
+//                    System.out.println(Arrays.toString(boatLocationMessage.createMessage()));
+//                    System.out.println("--------\n");
+//                }
                 bytes.add(boatLocationMessage.createMessage());
 
             }
