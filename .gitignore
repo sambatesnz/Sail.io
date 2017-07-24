@@ -2,6 +2,7 @@
 
 # Java
 *.class
+*.txt
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -89,10 +90,8 @@ nbactions.xml
 .idea/dictionaries
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
-app.iml
-mock/mock.iml
-visualiser/visualiser.iml
 .idea/*
+*.iml
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
