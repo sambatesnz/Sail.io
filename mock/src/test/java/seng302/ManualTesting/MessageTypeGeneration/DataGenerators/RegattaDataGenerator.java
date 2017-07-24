@@ -1,4 +1,4 @@
-package seng302.ManualTesting.MessageTypeGeneration;
+package seng302.ManualTesting.MessageTypeGeneration.DataGenerators;
 
 import seng302.DataGeneration.IServerData;
 import seng302.DataGenerator;
