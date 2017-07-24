@@ -37,12 +37,3 @@ In order to test this feature, we have connected a client to the server
  
  This is what we expected, therefore our test passed.
  
- 
- #####WindArrow test
- 
- * Date of Testing: 24/7/17
- 
- In order to test this feature, we require the mock to be set up to produce wind data 
- that exists within a set range of expected variable wind speed, with varying wind directions. 
- We expect to see the wind arrow, in a varying number of directions, and in varying scales of size, 
- that are still of a reasonable size that allows for appropriate viewing by the user.

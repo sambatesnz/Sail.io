@@ -90,7 +90,7 @@ public class RaceController {
     private List<List<Point2D>> absolutePaths = new ArrayList<>();
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
-    private Polyline windArrow = new WindArrow();
+    private WindArrow windArrow = new WindArrow();
     private boolean showName = true;
     private boolean showSpeed = true;
     private boolean showFPS = true;
@@ -564,11 +564,7 @@ public class RaceController {
      * Scales the wind arrow based on the wind speed
      */
     private void scaleWindArrow() {
-        double windSpeed = race.getWindSpeed();
-        windSpeed = windSpeed < 0 ? 0 : (windSpeed > 23150 ? 23150 : windSpeed);
-        double scale = 2 + windSpeed/8000;
-        windArrow.setScaleX(scale);
-        windArrow.setScaleY(scale*0.7);
+        windArrow.updateScaling(race.getWindSpeed());
     }
 
     /**

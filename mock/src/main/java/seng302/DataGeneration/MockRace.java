@@ -25,16 +25,7 @@ public class MockRace implements IServerData {
     private Race race = new Race();
 
     // Generate RaceStatusMessage from using properties of Race object.
-    private BinaryMessage rsm = new RaceStatusMessage(currentTimeMillis(),
-                                                            race.getRaceID(),
-                                                            race.getRaceStatus(),
-                                                            currentTimeMillis(),
-                                                            race.getWindDirection(),
-//                                                            race.getWindSpeed(),      // no longer required as the race wind speed is never updated
-                                                            race.retrieveWindSpeed(),   // retrieve a new randomly generated wind speed
-                                                            (char)(race.getBoats().size() + 48),
-                                                            race.getRaceType(),
-                                                            race.getBoats());
+    private BinaryMessage rsm;
 
     @Override
     public byte[] getData() {
@@ -126,6 +117,15 @@ public class MockRace implements IServerData {
     class RSMSender extends TimerTask {
         @Override
         public void run() {
+            rsm = new RaceStatusMessage(currentTimeMillis(),
+                    race.getRaceID(),
+                    race.getRaceStatus(),
+                    currentTimeMillis(),
+                    race.getWindDirection(),
+                    race.retrieveWindSpeed(),   // retrieve a new randomly generated wind speed
+                    (char)(race.getBoats().size() + 48),
+                    race.getRaceType(),
+                    race.getBoats());
             bytes.add(rsm.createMessage());
             System.out.println("\n--------\nRace Status message packet created");
             System.out.println(Arrays.toString(rsm.createMessage()));
