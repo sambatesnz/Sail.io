@@ -119,6 +119,6 @@ public class RaceCreator {
             System.out.println("Could not parse the wind speed.");
             throw e;
         }
-        return raceType;
+        return (char) (raceType + (char)-48);
     }
 }

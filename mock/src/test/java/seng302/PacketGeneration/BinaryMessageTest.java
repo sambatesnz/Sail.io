@@ -4,6 +4,7 @@ import org.junit.Test;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationUtility;
 
+
 import java.util.Random;
 import java.util.zip.CRC32;
 
@@ -19,7 +20,7 @@ public class BinaryMessageTest {
     private int CRCSize = 4;
 
 
-    private BoatLocationMessage geneateBoatLocationMessage() {
+    private BoatLocationMessage generateBoatLocationMessage() {
         Random generator = new Random();
         int versionNumber = generator.nextInt(twoToThe(BoatLocationUtility.MESSAGE_VERSION)); //Max six is one integer
         long time = System.currentTimeMillis();
@@ -51,7 +52,7 @@ public class BinaryMessageTest {
 
     @Test
     public void messageSizeForBoatLocation() throws Exception {
-        BinaryMessage message = geneateBoatLocationMessage();
+        BinaryMessage message = generateBoatLocationMessage();
         byte[] messageBody = message.createMessage();
 
         int expectedSize = headerSize + boatLocationSize + CRCSize;
@@ -61,7 +62,7 @@ public class BinaryMessageTest {
     @Test
     public void crc() {
         byte[] actualMessage = new byte[8];
-        BinaryMessage message = geneateBoatLocationMessage();
+        BinaryMessage message = generateBoatLocationMessage();
         byte[] messageBody = message.createMessage();
         int sourceIndex = headerSize + boatLocationSize;
         int actualCrc = PacketUtils.getIntFromByteArray(messageBody, sourceIndex, actualMessage, CRCSize);

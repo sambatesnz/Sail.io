@@ -52,6 +52,7 @@ public final class  Coordinate {
      * Updates the border size within the window
      */
     public static void updateBorder(){
+
         double raceWidthX = viewMax.getX() - viewMin.getX();
         double raceHeightY = viewMax.getY() - viewMin.getY();
 

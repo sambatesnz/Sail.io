@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import seng302.Controllers.RaceViewController;
+import seng302.UserInputController.KeyBindingUtility;
 
 import java.io.IOException;
 
@@ -25,6 +26,7 @@ public class Main extends Application {
             RaceViewController raceViewController = new RaceViewController(primaryStage);
             Parent root = loader.load();
             Scene rootScene = new Scene(root);
+            KeyBindingUtility.setKeyBindings(rootScene);
             primaryStage.setMinHeight(600);
             primaryStage.setMinWidth(800);
             primaryStage.setMaximized(true);

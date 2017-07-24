@@ -1,11 +1,12 @@
 package seng302.PacketGeneration.RaceStatusGeneration;
 
 import seng302.Boat;
-import seng302.MessageType;
 import seng302.PacketGeneration.BinaryMessage;
+import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.PacketGenerationUtils;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  * The primary concern of this class is to copy byte arrays of info (eg currentTime
  * Into the correct location for the race status message packet
  */
-public class RaceStatusMessage extends BinaryMessage{
+public class RaceStatusMessage extends BinaryMessage {
 
     private byte[] versionNumber;
     private byte[] currentTime;
@@ -52,7 +53,7 @@ public class RaceStatusMessage extends BinaryMessage{
         this.windDirection = PacketGenerationUtils.shortToTwoBytes(windDirection);
         this.windSpeed = PacketGenerationUtils.shortToTwoBytes(windSpeed);
         this.numberOfBoatsByte = PacketGenerationUtils.charToOneByte(numberOfBoats);
-        this.numberOfBoatsInt = Character.getNumericValue(numberOfBoats);
+        this.numberOfBoatsInt = numberOfBoats;
         this.raceType = PacketGenerationUtils.charToOneByte(raceType);
         this.boats = boats;
 
@@ -80,7 +81,7 @@ public class RaceStatusMessage extends BinaryMessage{
         this.windDirection = PacketGenerationUtils.shortToTwoBytes(windDirection);
         this.windSpeed = PacketGenerationUtils.shortToTwoBytes(windSpeed);
         this.numberOfBoatsByte = PacketGenerationUtils.charToOneByte(numberOfBoats);
-        this.numberOfBoatsInt = Character.getNumericValue(numberOfBoats);
+        this.numberOfBoatsInt = numberOfBoats;
         this.raceType = PacketGenerationUtils.charToOneByte(raceType);
 
         this.boats = boats;

@@ -1,4 +1,4 @@
-package seng302;
+package seng302.PacketGeneration;
 
 /**
  * Message Type designators as defined by the AC35 specfication
@@ -10,7 +10,8 @@ public enum MessageType {
     XML_MESSAGE(26),
     RACE_START_STATUS(27),
     CHATTER_TEXT(36),
-    BOAT_LOCATION(37);
+    BOAT_LOCATION(37),
+    BOAT_ACTION(100);
 
     private int messageType;
 

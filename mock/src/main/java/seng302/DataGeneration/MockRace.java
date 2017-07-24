@@ -2,14 +2,15 @@ package seng302.DataGeneration;
 
 import seng302.Boat;
 import seng302.DataGenerator;
-import seng302.Race;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatusGeneration.RaceStatusMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
+import seng302.Race;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -17,18 +18,21 @@ import static java.lang.System.currentTimeMillis;
  * Created by sba136 on 3/05/17.
  */
 public class MockRace implements IServerData {
-    private Queue<byte[]> bytes = new LinkedList<>();
+    private Queue<byte[]> bytes = new LinkedBlockingQueue<>();
 
     Timer timer = new Timer();
 
     private Race race = new Race();
+
+    Random r = new Random();
     // Generate RaceStatusMessage from using properties of Race object.
     private BinaryMessage rsm = new RaceStatusMessage(currentTimeMillis(),
                                                             race.getRaceID(),
-                                                            race.getRaceStatus()    ,
+                                                            race.getRaceStatus(),
                                                             currentTimeMillis(),
                                                             race.getWindDirection(),
-                                                            race.getWindSpeed(),
+//                                                            race.getWindSpeed(),      // no longer required as the race wind speed is never updated
+                                                            race.retrieveWindSpeed(),   // retrieve a new randomly generated wind speed
                                                             (char)(race.getBoats().size() + 48),
                                                             race.getRaceType(),
                                                             race.getBoats());
@@ -56,12 +60,12 @@ public class MockRace implements IServerData {
         @Override
         public void run() {
             DataGenerator dataGenerator = new DataGenerator();
+
             BinaryMessage xmlMessage =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
             System.out.println("\n--------\nRace XML Message created");
             System.out.println(Arrays.toString(xmlMessage.createMessage()));
             System.out.println("--------\n");
             bytes.add(xmlMessage.createMessage());
-
 
             BinaryMessage boatsXml = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
             System.out.println("\n--------\nBoats XML Message created");
@@ -70,7 +74,7 @@ public class MockRace implements IServerData {
             bytes.add(boatsXml.createMessage());
 
             BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);
-            System.out.println("\n--------\nREGATTA XML Message created");
+            System.out.println("\n--------\nRegatta XML Message created");
             System.out.println(Arrays.toString(xmlMessage.createMessage()));
             System.out.println("--------\n");
             bytes.add(regattaXML.createMessage());
@@ -95,7 +99,6 @@ public class MockRace implements IServerData {
                 System.out.println(Arrays.toString(boatLocationMessage.createMessage()));
                 System.out.println("--------\n");
                 bytes.add(boatLocationMessage.createMessage());
-
             }
         }
     }
@@ -124,7 +127,7 @@ public class MockRace implements IServerData {
     public void runServerTimers() {
         timer.schedule(new XMLSender(), 0, 2000);
         timer.schedule(new RSMSender(), 100, 2000);
-        //timer.schedule(new BoatPosSender(), 1000, 10);
+        timer.schedule(new BoatPosSender(), 1000, 100);
         timer.schedule(new RaceRunner(), 2000, 100);
     }
 

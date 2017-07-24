@@ -77,21 +77,21 @@ public class LocationMessageTest {
 
     @Test
     public void boatLatitudeTest() {
-        Assert.assertEquals(32.290326, race.boats.get(101).getLatitude(), 0.00001);
+        Assert.assertEquals(32.290326, race.getBoatsMap().get(101).getLatitude(), 0.00001);
     }
 
     @Test
     public void boatLongitudeTest() {
-        Assert.assertEquals(-64.851502, race.boats.get(101).getLongitude(), 0.00001);
+        Assert.assertEquals(-64.851502, race.getBoatsMap().get(101).getLongitude(), 0.00001);
     }
 
     @Test
     public void boatSpeedTest() {
-        Assert.assertEquals(40.0, race.boats.get(101).getSpeed(), 0.1);
+        Assert.assertEquals(40.0, race.getBoatsMap().get(101).getSpeed(), 0.1);
     }
 
     @Test
     public void boatHeadingTest() {
-        Assert.assertEquals(226, race.boats.get(101).getHeading(), 0.1);
+        Assert.assertEquals(226, race.getBoatsMap().get(101).getHeading(), 0.1);
     }
 }

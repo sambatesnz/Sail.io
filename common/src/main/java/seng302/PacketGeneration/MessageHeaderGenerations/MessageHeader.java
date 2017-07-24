@@ -1,4 +1,4 @@
-package seng302.PacketGeneration.MessageHeaderGeneration;
+package seng302.PacketGeneration.MessageHeaderGenerations;
 
 
 import seng302.PacketGeneration.PacketGenerationUtils;

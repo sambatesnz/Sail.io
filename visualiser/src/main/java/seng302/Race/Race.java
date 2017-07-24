@@ -23,7 +23,7 @@ public class Race {
     private Map<Integer, Mark> marks;
     // Changing list of boats to hashmap. where key is boat SourceID, as retrieved from the xml message
 //    private List<Boat> boats;
-    public Map<Integer, Boat> boats;
+    private Map<Integer, Boat> boats;
     private List<Boat> finishedBoats;
     private List<Leg> legs;
     private List<Mark> boundaries;
@@ -37,8 +37,6 @@ public class Race {
     public boolean finished = false;
     private Mark mapCenter;
     private boolean raceReady = false;
-    private Boat centerOfScreen;
-    private Boat boatToFollow;
     private List<Integer> participants;
     private long currentTime;
     private Mark viewMin;
@@ -49,6 +47,8 @@ public class Race {
     // yellow, blue, pink, orange, green, purple, red, brown
     private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300");
     private boolean receivedRaceXML;
+    private boolean viewReady;
+    private boolean hasRegatta;
 
 
     /**
@@ -57,9 +57,11 @@ public class Race {
     public Race() {
         finishedBoats = new ArrayList<>();
         raceXMLReceived = false;
+        viewReady = false;
 
         MarkStrings = FXCollections.observableArrayList();
         this.receivedRaceXML = false;
+        hasRegatta = false;
     }
 
     public boolean isRaceXMLReceived() {
@@ -74,21 +76,21 @@ public class Race {
         return raceReady;
     }
 
+    public boolean isViewReady() {
+        return viewReady;
+    }
+
     public void setRaceReady(boolean raceReady) {
         this.raceReady = raceReady;
+    }
+
+    public boolean getHasRegatta(){
+        return hasRegatta;
     }
 
 
     public Mark getMapCenter() {
         return mapCenter;
-    }
-
-    public Mark getViewMin() {
-        return viewMin;
-    }
-
-    public Mark getViewMax() {
-        return viewMax;
     }
 
     public long getCurrentTime() {
@@ -99,31 +101,35 @@ public class Race {
         this.currentTime = currentTime;
     }
 
-    public void setViewParams() {
+    public void setViewMinMax(Mark min, Mark max){
+        viewMin = min;
+        viewMax = max;
+    }
+
+    public Mark getViewMin(){
+        double minLat = boundaries.stream().min(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
+        double minLon = boundaries.stream().min(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
+
+        viewMin = new Mark(minLat, minLon);
+        return viewMin;
+
+    }
+    public Mark getViewMax(){
+        double maxLat = boundaries.stream().max(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
+        double maxLon = boundaries.stream().max(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
+
+        viewMax = new Mark(maxLat, maxLon);
+        return viewMax;
+    }
+
+    public void updateViewMinMax(){
         double minLat = boundaries.stream().min(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
         double minLon = boundaries.stream().min(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
         double maxLat = boundaries.stream().max(Comparator.comparingDouble(Mark::getLatitude)).get().getLatitude();
         double maxLon = boundaries.stream().max(Comparator.comparingDouble(Mark::getLongitude)).get().getLongitude();
         viewMin = new Mark(minLat, minLon);
         viewMax = new Mark(maxLat, maxLon);
-
-        Coordinate.setOffset(new Mark(0, 0));
-        Coordinate.setDefaultCourseMin(viewMin);
-        Coordinate.setDefaultCourseMax(viewMax);
-        Coordinate.setViewMin(viewMin.getCopy());
-        Coordinate.setViewMax(viewMax.getCopy());
-
         mapCenter = getCenter(viewMin.getCopy(), viewMax.getCopy());
-        centerOfScreen = new Boat(-1);
-        centerOfScreen.setMark(mapCenter);
-
-        if (!Coordinate.isTrackingBoat()) {
-            boatToFollow = centerOfScreen;
-
-        }
-
-        Coordinate.setCenter(getCenter(viewMin.getCopy(), viewMax.getCopy()));
-        Coordinate.updateViewCoordinates();
     }
 
     /**
@@ -154,18 +160,6 @@ public class Race {
      * Note that if no boats selected that boat to follow is set to a 'dummy' default boat at the center
      * @return a mark representing the current boat to follows offset with the original center
      */
-    public Mark calculateOffset(){
-        Mark offset = new Mark();
-
-        offset.setX(boatToFollow.getX() - mapCenter.getX());
-        offset.setY(boatToFollow.getY() - mapCenter.getY());
-
-        return offset;
-    }
-
-    public void resetZoom() {
-        boatToFollow = centerOfScreen;
-    }
 
     /**
      * Setter for current order, mainly to allow for testing.
@@ -359,6 +353,7 @@ public class Race {
 
     public void setRegatta(Regatta regatta) {
         this.regatta = regatta;
+        this.hasRegatta = true;
     }
 
     public Regatta getRegatta() {
@@ -374,6 +369,10 @@ public class Race {
             actualBoats.put(boatId, boat);
         }
         this.boats = actualBoats;
+    }
+
+    public boolean boatsReady(){
+        return boats != null;
     }
 
     /**
@@ -392,21 +391,15 @@ public class Race {
         return boats;
     }
 
-
-    /**
-     * If no boat has been selected this will be a 'dummy' boat whose position is the center
-     * @param markToFollow is a boat which the view will track round the course
-     */
-    public void setBoatToFollow(Boat markToFollow) {
-        System.out.println("Setting boat to follow" + markToFollow);
-        this.boatToFollow = markToFollow;
-    }
-
     public void setParticipants(List<Integer> participants) {
         this.participants = participants;
     }
 
     public void setReceivedRaceXML(boolean receivedRaceXML) {
         this.receivedRaceXML = receivedRaceXML;
+    }
+
+    public void setViewReady(boolean viewReady) {
+        this.viewReady = viewReady;
     }
 }

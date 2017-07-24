@@ -1,10 +1,12 @@
 package seng302.Client;
 import seng302.Client.Messages.*;
 import seng302.Race.Race;
+import seng302.UserInputController.KeyBindingUtility;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
@@ -15,8 +17,9 @@ import java.util.Arrays;
 public class Client {
     private Socket clientSocket;
     private InputStream streamInput;
+    private OutputStream streamOutput;
     private String serverName;
-    private byte[] data;
+    private byte[] dataReceived;
 
     private String host;
     private int port;
@@ -24,9 +27,10 @@ public class Client {
 
     public Client(Race race) {
         this.race = race;
-        data = new byte[4300];
+        dataReceived = new byte[4300];
         clientSocket = null;
         streamInput = null;
+        streamOutput = null;
         AppConfig config = new AppConfig();
         serverName = config.getProperty(AppConfig.DATA_HOST_NAME);
         port = Integer.parseInt(config.getProperty(AppConfig.DATA_HOST_PORT));
@@ -37,15 +41,19 @@ public class Client {
         }
     }
 
-    public void retrieveData(){
-        while (clientSocket != null && streamInput != null) {
+    /**
+     * Handles both incoming and outgoing packets
+     */
+    public void processStreams() {
+        while (clientSocket != null && streamInput != null && streamOutput != null) {
             try {
-                Thread.sleep(10);
+                Thread.sleep(0);
                 nextMessage();
+                sendMessage();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Arrays.fill(data, (byte)0);
+            Arrays.fill(dataReceived, (byte)0);
         }
         disconnect();
     }
@@ -81,7 +89,6 @@ public class Client {
 
 
 
-
         //TODO: pass message in to the thing
         byte[] message = new byte[messageLength + CRC_LEN + HEADER_LEN];
         System.arraycopy(head, 0, message, 0, HEADER_LEN);
@@ -90,12 +97,25 @@ public class Client {
         packet.parseMessage();
     }
 
+    /**
+     * Sends BoatActionMessages over a socket stream
+     * @throws IOException
+     */
+    private void sendMessage() throws IOException {
+        if (KeyBindingUtility.keyPressed()){
+            byte[] packetToSend = KeyBindingUtility.getUserInputData();
+            streamOutput.write(packetToSend);
+            streamOutput.flush();
+        }
+    }
+
     public void connect() {
         try {
             System.out.println("Attempting to connect...");
             clientSocket = new Socket(host, port);
             System.out.println("Connected.");
             streamInput = new BufferedInputStream(clientSocket.getInputStream());
+            streamOutput = new BufferedOutputStream(clientSocket.getOutputStream());
         }
         catch (IOException e) {
             e.printStackTrace();

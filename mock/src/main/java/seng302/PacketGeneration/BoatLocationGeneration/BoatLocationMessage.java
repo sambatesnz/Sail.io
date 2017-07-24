@@ -1,7 +1,7 @@
 package seng302.PacketGeneration.BoatLocationGeneration;
 
-import seng302.MessageType;
 import seng302.PacketGeneration.BinaryMessage;
+import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.PacketGenerationUtils;
 
 /**
@@ -104,6 +104,5 @@ public class BoatLocationMessage extends BinaryMessage {
     @Override
     protected int getMessageType() {
         return MessageType.BOAT_LOCATION.getMessageType();
-
     }
 }
