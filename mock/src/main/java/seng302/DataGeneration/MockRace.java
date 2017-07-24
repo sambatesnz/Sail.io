@@ -24,7 +24,6 @@ public class MockRace implements IServerData {
 
     private Race race = new Race();
 
-    Random r = new Random();
     // Generate RaceStatusMessage from using properties of Race object.
     private BinaryMessage rsm = new RaceStatusMessage(currentTimeMillis(),
                                                             race.getRaceID(),
@@ -56,6 +55,20 @@ public class MockRace implements IServerData {
         return !bytes.isEmpty();
     }
 
+    @Override
+    public void beginGeneratingData() {
+        timer.schedule(new XMLSender(), 0, 2000);
+        timer.schedule(new RSMSender(), 100, 2000);
+        timer.schedule(new BoatPosSender(), 1000, 100);
+        timer.schedule(new RaceRunner(), 2000, 100);
+    }
+
+    @Override
+    public void finishGeneratingData() {
+        System.out.println("Threads cancelled");
+        timer.cancel();
+    }
+
     class XMLSender extends TimerTask {
         @Override
         public void run() {
@@ -69,13 +82,13 @@ public class MockRace implements IServerData {
 
             BinaryMessage boatsXml = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
             System.out.println("\n--------\nBoats XML Message created");
-            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+            System.out.println(Arrays.toString(boatsXml.createMessage()));
             System.out.println("--------\n");
             bytes.add(boatsXml.createMessage());
 
             BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);
             System.out.println("\n--------\nRegatta XML Message created");
-            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+            System.out.println(Arrays.toString(regattaXML.createMessage()));
             System.out.println("--------\n");
             bytes.add(regattaXML.createMessage());
         }
@@ -119,26 +132,5 @@ public class MockRace implements IServerData {
             System.out.println("--------\n");
         }
     }
-
-    /**
-     * Schedules data to be generated for a race at intervals
-     *
-     */
-    public void runServerTimers() {
-        timer.schedule(new XMLSender(), 0, 2000);
-        timer.schedule(new RSMSender(), 100, 2000);
-        timer.schedule(new BoatPosSender(), 1000, 100);
-        timer.schedule(new RaceRunner(), 2000, 100);
-    }
-
-    /**
-     * Cancels the timers running in the current thread
-     * Used to free resources
-     */
-    public void cancelServerTimers(){
-        System.out.println("Threads cancelled");
-        timer.cancel();
-    }
-
 
 }

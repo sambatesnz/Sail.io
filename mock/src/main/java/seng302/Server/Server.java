@@ -1,5 +1,6 @@
 package seng302.Server;
 
+import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.MockRace;
 
 import java.io.IOException;
@@ -15,11 +16,13 @@ import java.nio.ByteOrder;
  */
 public class Server {
 
-    public Server(int port) throws IOException {
+
+
+    public Server(int port, IServerData mockData) throws IOException {
         ServerSocket listener = new ServerSocket(port);
         try {
             while(true) {
-                new Generator(listener.accept()).start();
+                new Generator(listener.accept(), mockData).start();
 
             }
         } finally {
@@ -30,24 +33,25 @@ public class Server {
 
     private static class Generator extends Thread {
         private Socket socket;
-        public Generator(Socket socket) throws IOException {
+        private IServerData mockData;
+        public Generator(Socket socket, IServerData mockData) throws IOException {
             this.socket = socket;
+            this.mockData = mockData;
             System.out.println("New Connection From client");
         }
 
         public void run(){
             System.out.println("Connection established");
-            MockRace genData = new MockRace();
-            genData.runServerTimers();
+            this.mockData.beginGeneratingData();
             InputStream in = null;
             try {
                 in = socket.getInputStream();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            while (!genData.finished() && !socket.isClosed()){
-                if(genData.ready()){
-                    byte[] data = genData.getData();
+            while (!this.mockData.finished() && !socket.isClosed()){
+                if(this.mockData.ready()){
+                    byte[] data = this.mockData.getData();
                     try {
                         send(data);
                     } catch (IOException e) {
@@ -72,15 +76,12 @@ public class Server {
                         System.arraycopy(data,15, body,0, messageLen);
                         System.out.println(byteArrayToInt(body, 0, 1));
                     }
-//                    else {                                              //
-//                        System.out.println("No available data");        //Testing
-//                    }                                                   //
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
 
-            genData.cancelServerTimers();
+            this.mockData.finishGeneratingData();
             try {
                 close();
             } catch (IOException e) {
