@@ -87,7 +87,7 @@ public class LocationMessageTest {
 
     @Test
     public void boatSpeedTest() {
-        Assert.assertEquals(40.0, race.getBoatsMap().get(101).getSpeed(), 0.1);
+        Assert.assertEquals(20578, race.getBoatsMap().get(101).getSpeed(), 0.1);
     }
 
     @Test
