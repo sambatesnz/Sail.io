@@ -93,7 +93,7 @@ public class Message {
      * @throws UnsupportedEncodingException
      */
     public void parseMessage() throws UnsupportedEncodingException {
-        System.out.println("packet about to be parsed!\n");
+//        System.out.println("packet about to be parsed!\n");  //Testing; To remove
         switch (messageType) {
             case HEARTBEAT:
                 break;

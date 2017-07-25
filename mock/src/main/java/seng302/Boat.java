@@ -20,6 +20,9 @@ public class Boat {
     private int position;
     private String abrv;
 
+    private boolean incrementMemory = false;
+    private boolean decrementMemory = false;
+
     private int sourceId;
 
     /**
@@ -49,8 +52,15 @@ public class Boat {
     public void updateHeading(int windDirection, boolean upwind) {
         int headingIncrement = 3;
 
-        if (upwind) {
-            if ((heading > windDirection) && (heading < (180 + windDirection) % 360)) {
+        if (incrementMemory) {
+            heading += headingIncrement;
+        } else if (decrementMemory) {
+            heading -= headingIncrement;
+            if (heading < 0) {
+                heading = heading + 360;
+            }
+        } else if (upwind) {
+            if ((heading < windDirection) && (heading > (180 + windDirection) % 360)) {
                 heading += headingIncrement;
             } else {
                 heading -= headingIncrement;
@@ -59,7 +69,7 @@ public class Boat {
                 }
             }
         } else {
-            if ((heading > windDirection) && (heading < (180 + windDirection) % 360)) {
+            if ((heading < windDirection) && (heading > (180 + windDirection) % 360)) {
                 heading -= headingIncrement;
                 if (heading < 0) {
                     heading = heading + 360;
@@ -69,7 +79,56 @@ public class Boat {
             }
         }
 
-        heading = abs(heading % 360); //Loop the heading back if it is over 360
+
+
+
+
+//        if ((heading < windDirection + 10 && heading > windDirection) ||
+//                (heading < ((windDirection + 180) % 360) + 10 && heading > ((windDirection + 180) % 360))) {
+//            if (!incrementMemory) {
+//                decrementMemory = true;
+//            }
+//        } else if ((heading > windDirection - 10 && heading < windDirection) ||
+//                (heading > ((windDirection + 180) % 360) - 10 && heading < ((windDirection + 180) % 360))) {
+//            if (!decrementMemory) {
+//                incrementMemory = true;
+//            }
+//        } else {
+//            incrementMemory = false;
+//            decrementMemory = false;
+//        }
+//
+//        if (incrementMemory) {
+//            heading += headingIncrement;
+//        } else if (decrementMemory) {
+//            heading -= headingIncrement;
+//            if (heading < 0) {
+//                heading = heading + 360;
+//            }
+//        } else if (upwind) {
+//            if ((heading > windDirection) && (heading < (180 + windDirection) % 360)) {
+//                heading += headingIncrement;
+//            } else {
+//                heading -= headingIncrement;
+//                if (heading < 0) {
+//                    heading = heading + 360;
+//                }
+//            }
+//        } else {
+//            if ((heading > windDirection) && (heading < (180 + windDirection) % 360)) {
+//                heading -= headingIncrement;
+//                if (heading < 0) {
+//                    heading = heading + 360;
+//                }
+//            } else {
+//                heading += headingIncrement;
+//            }
+//        }
+//
+//
+//
+//        heading = abs(heading % 360); //Loop the heading back if it is over 360
+//        System.out.println(heading);
     }
 
     /**
