@@ -65,7 +65,6 @@ public class Race {
         System.out.println(legs.size());
         System.out.println(boats.size());
         for (Boat boat : boats) {
-            System.out.println(legs.get(boat.getCurrentLegIndex()).getHeading());
             boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
             boat.getMark().setX(legs.get(0).getStart().getX());
             boat.getMark().setY(legs.get(0).getStart().getY());
