@@ -85,6 +85,8 @@ public class MockRace implements IServerData {
         @Override
         public void run() {
             for (Boat boat : race.getBoats()) {
+                System.out.printf("heading: %f, lat: %f, long: %f, speed: %f, sourceId: %d\n", boat.getHeading(),
+                        boat.getLatitude(), boat.getLongitude(), boat.getSpeed(), boat.getSourceId());
                 BinaryMessage boatLocationMessage = new BoatLocationMessage(
                         1, System.currentTimeMillis(), boat.getSourceId(),
                         1, 1,
@@ -139,6 +141,4 @@ public class MockRace implements IServerData {
         System.out.println("Threads cancelled");
         timer.cancel();
     }
-
-
 }

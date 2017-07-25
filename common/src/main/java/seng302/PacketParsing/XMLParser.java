@@ -215,7 +215,6 @@ public class XMLParser {
                             int sourceId = Integer.valueOf(nnm2.getNamedItem(SOURCEID).getNodeValue());
                             double lat = Double.valueOf(nnm2.getNamedItem(TARGETLAT).getNodeValue());
                             double lon = Double.valueOf(nnm2.getNamedItem(TARGETLON).getNodeValue());
-                            System.out.println("Lat = "+ lat + ", Long = " + lon );
                             String name = nnm2.getNamedItem(NAME).getNodeValue();
                             int seqId = -1;
                             if (nnm2.getLength() >= 5) {

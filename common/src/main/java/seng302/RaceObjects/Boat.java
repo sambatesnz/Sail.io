@@ -63,12 +63,12 @@ public class Boat {
      */
     public Boat(String name, String shortName, int sourceId, String country) {
         this.boatName = name;
-        //this.colour = Color.color(Math.random(), Math.random(), Math.random());
         this.shortName = shortName;
         this.sourceId = sourceId;
         this.country = country;
         this.knowsBoatLocation = false;
         this.mark = new Mark();
+        this.raceTime = Integer.toUnsignedLong(0);
     }
 
     public void setMark(Mark mark) {

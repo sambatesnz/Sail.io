@@ -59,11 +59,10 @@ public class Race {
         currentOrder = observableArrayList(boats);
         positionStrings = FXCollections.observableArrayList();
         for (Boat boat : boats) {
+            boat.setSpeed(5.0);
             boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
             boat.getMark().setLongitude(legs.get(0).getStart().getLongitude());
             boat.getMark().setLatitude(legs.get(0).getStart().getLatitude());
-            System.out.println(legs.get(0).getStart().getLongitude());
-            System.out.println(legs.get(0).getStart().getLatitude());
         }
     }
 
