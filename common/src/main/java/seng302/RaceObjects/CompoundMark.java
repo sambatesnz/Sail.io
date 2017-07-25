@@ -14,6 +14,8 @@ public class CompoundMark {
     private Color color;
     private int id;
     private String type;
+    private double longitude;
+    private double latitude;
 
     /**
      * Constructs a landmark
@@ -78,5 +80,25 @@ public class CompoundMark {
 
     public ArrayList<Mark> getMarks() {
         return marks;
+    }
+
+    public double getLongitude() {
+        if (marks.size() > 1) {
+            //average
+            double l1 = marks.get(0).getLongitude();
+            double l2 = marks.get(1).getLongitude();
+            return (l1+l2)/2;
+        }
+        return longitude;
+    }
+
+    public double getLatitude() {
+        if (marks.size() > 1) {
+            //average
+            double l1 = marks.get(0).getLatitude();
+            double l2 = marks.get(1).getLatitude();
+            return (l1+l2)/2;
+        }
+        return latitude;
     }
 }

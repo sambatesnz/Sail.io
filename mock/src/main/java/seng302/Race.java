@@ -58,16 +58,12 @@ public class Race {
         finishedBoats = new ArrayList<>();
         currentOrder = observableArrayList(boats);
         positionStrings = FXCollections.observableArrayList();
-        Position viewMin = new Position(32.275, -64.855);
-        Position viewMax = new Position(32.32, -64.831);
-        Coordinate.setViewMin(viewMin);
-        Coordinate.setViewMax(viewMax);
-        System.out.println(legs.size());
-        System.out.println(boats.size());
         for (Boat boat : boats) {
             boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
-            boat.getMark().setX(legs.get(0).getStart().getX());
-            boat.getMark().setY(legs.get(0).getStart().getY());
+            boat.getMark().setLongitude(legs.get(0).getStart().getLongitude());
+            boat.getMark().setLatitude(legs.get(0).getStart().getLatitude());
+            System.out.println(legs.get(0).getStart().getLongitude());
+            System.out.println(legs.get(0).getStart().getLatitude());
         }
     }
 
@@ -256,9 +252,9 @@ public class Race {
         contestants.add(new Boat("ORACLE TEAM USA", "USA", 101, "United States"));
         contestants.add(new Boat("Artemis Racing", "SWE", 102, "Sweden"));
         contestants.add(new Boat("Emirates Team New Zealand", "NZL", 103, "New Zealand"));
+        contestants.add(new Boat("SoftBank Team Japan", "JPN", 104, "Japan"));
         contestants.add(new Boat("Groupama Team France", "FRA", 105, "France"));
         contestants.add(new Boat("Land Rover BAR", "GBR", 106, "United Kingdom"));
-        contestants.add(new Boat("SoftBank Team Japan", "JPN", 104, "Japan"));
         return contestants;
     }
 
