@@ -2,6 +2,8 @@ package seng302;
 
 import javafx.scene.paint.Color;
 
+import static java.lang.StrictMath.abs;
+
 /**
  * Represent a boat competing in yacht race
  */
@@ -52,14 +54,22 @@ public class Boat {
                 heading += headingIncrement;
             } else {
                 heading -= headingIncrement;
+                if (heading < 0) {
+                    heading = heading + 360;
+                }
             }
         } else {
             if ((heading > windDirection) && (heading < (180 + windDirection) % 360)) {
                 heading -= headingIncrement;
+                if (heading < 0) {
+                    heading = heading + 360;
+                }
             } else {
                 heading += headingIncrement;
             }
         }
+
+        heading = abs(heading % 360); //Loop the heading back if it is over 360
     }
 
     /**

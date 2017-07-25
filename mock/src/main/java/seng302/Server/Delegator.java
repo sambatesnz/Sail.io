@@ -36,5 +36,7 @@ public class Delegator {
         Boat boat = race.getBoatByID(sourceID);
         int windDirection = race.getWindDirection();
         boat.updateHeading(windDirection, upwind);
+
+        System.out.println("Boat Heading " + boat.getHeading()); //Testing; To remove
     }
 }

@@ -121,7 +121,7 @@ public class Race {
             // if the wind heading is less than 0, it needs to be reset back up to 360
             this.windHeading = (short)(this.windHeading + 360);
         }
-        return this.windHeading;
+        return (short)((this.windHeading * 65536) / 360);
     }
 
     /**

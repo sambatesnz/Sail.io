@@ -70,21 +70,21 @@ public class MockRace implements IServerData {
             DataGenerator dataGenerator = new DataGenerator();
 
             BinaryMessage xmlMessage =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
-            System.out.println("\n--------\nRace XML Message created");
-            System.out.println(Arrays.toString(xmlMessage.createMessage()));
-            System.out.println("--------\n");
+//            System.out.println("\n--------\nRace XML Message created");
+//            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+//            System.out.println("--------\n");
             bytes.add(xmlMessage.createMessage());
 
             BinaryMessage boatsXml = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
-            System.out.println("\n--------\nBoats XML Message created");
-            System.out.println(Arrays.toString(boatsXml.createMessage()));
-            System.out.println("--------\n");
+//            System.out.println("\n--------\nBoats XML Message created");
+//            System.out.println(Arrays.toString(boatsXml.createMessage()));
+//            System.out.println("--------\n");
             bytes.add(boatsXml.createMessage());
 
             BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);
-            System.out.println("\n--------\nRegatta XML Message created");
-            System.out.println(Arrays.toString(regattaXML.createMessage()));
-            System.out.println("--------\n");
+//            System.out.println("\n--------\nRegatta XML Message created");
+//            System.out.println(Arrays.toString(regattaXML.createMessage()));
+//            System.out.println("--------\n");
             bytes.add(regattaXML.createMessage());
         }
     }
@@ -133,9 +133,10 @@ public class MockRace implements IServerData {
                     race.getRaceType(),
                     race.getBoats());
             bytes.add(rsm.createMessage());
-            System.out.println("\n--------\nRace Status message packet created");
-            System.out.println(Arrays.toString(rsm.createMessage()));
-            System.out.println("--------\n");
+//            System.out.println("\n--------\nRace Status message packet created");
+//            System.out.println(Arrays.toString(rsm.createMessage()));
+//            System.out.println("--------\n");
+            System.out.println("Wind direction: " + race.getWindDirection());  //Testing; To remove
         }
     }
 
