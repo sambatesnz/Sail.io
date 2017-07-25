@@ -204,10 +204,10 @@ public class XMLParser {
         NodeList nodes = xmlDoc.getElementsByTagName(COURSE).item(0).getChildNodes();
         List<CompoundMark> courseObjects = new ArrayList<>();
         try {
+            markMap = new HashMap<>();
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
                 ArrayList<Mark> positions = new ArrayList<>();
-                markMap = new HashMap<>();
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     NamedNodeMap nnm = node.getAttributes();
                     String compoundMarkName = nnm.getNamedItem(NAME).getNodeValue();

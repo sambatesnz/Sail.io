@@ -58,11 +58,11 @@ public class LocationMessage{
             boatDict.get(sourceID).setSpeed(speedOverGround);
             boatDict.get(sourceID).setHeading(heading);
             boatDict.get(sourceID).setKnowsBoatLocation(true);
-        } else if (race.getMarks().containsKey(sourceID)) {
+        } else if (race.getMarks() != null && race.getMarks().containsKey(sourceID)) {
             Mark mark = race.getMarks().get(sourceID);
             mark.setLatitude(latitude);
             mark.setLongitude(longitude);
-            mark.setX(mark.convertToY(latitude));
+            mark.setY(mark.convertToY(latitude));
             mark.setX(mark.convertToX(longitude));
         }
     }
