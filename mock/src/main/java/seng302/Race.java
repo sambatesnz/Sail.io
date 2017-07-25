@@ -59,7 +59,7 @@ public class Race {
         currentOrder = observableArrayList(boats);
         positionStrings = FXCollections.observableArrayList();
         for (Boat boat : boats) {
-            int speed = (new Random().nextInt(5)+10);
+            int speed = (new Random().nextInt(5000)+100);
             boat.setSpeed(speed);
             boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
             boat.getMark().setLongitude(legs.get(0).getStart().getLongitude());
@@ -336,12 +336,11 @@ public class Race {
 
         for (Boat boat : boats) {
             if (!finishedBoats.contains(boat)) {
-                boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed()*distanceMultiplier);
+                boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed()/1000*distanceMultiplier);
 
                 //Increments the the distance by the speed
-                boat.getMark().setX(boat.getX() + (boat.getSpeed())*sin(toRadians(boat.getHeading()))*movementMultiplier);
-                boat.getMark().setY(boat.getY() + (boat.getSpeed())*cos(toRadians(boat.getHeading()))*movementMultiplier);
-                System.out.println(boat.getSpeed());
+                boat.getMark().setX(boat.getX() + (boat.getSpeed()/1000)*sin(toRadians(boat.getHeading()))*movementMultiplier);
+                boat.getMark().setY(boat.getY() + (boat.getSpeed()/1000)*cos(toRadians(boat.getHeading()))*movementMultiplier);
                 if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {
                     String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
                     boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());

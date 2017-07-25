@@ -5,6 +5,7 @@ import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.Mark;
 import seng302.Race.Race;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -37,8 +38,7 @@ public class LocationMessage{
         latitude = Message.byteArrayToLong(bytes, 16, 4) * 180 / 2147483648.0;
         longitude = Message.byteArrayToLong(bytes, 20, 4) * 180 / 2147483648.0;
         heading = Message.byteArrayToInt(bytes, 28, 2) * 360 / 65536.0;
-        speedOverGround = Math.toIntExact((long) (Message.byteArrayToInt(bytes, 38, 2) * 1.9438444924574 / 1000));
-
+        speedOverGround = Math.toIntExact((long) (Message.byteArrayToInt(bytes, 38, 2)));
         this.race = race;
         boatDict = race.getBoatsMap();
 

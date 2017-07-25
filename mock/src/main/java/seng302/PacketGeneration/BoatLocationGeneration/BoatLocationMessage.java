@@ -67,7 +67,6 @@ public class BoatLocationMessage extends BinaryMessage {
 
         this.cog = PacketGenerationUtils.shortToTwoBytes(cog);
         this.sog = PacketGenerationUtils.shortToTwoBytes(sog);
-//        System.out.println("sog: " + Arrays.toString(this.sog));
         this.apparentWindSpeed = PacketGenerationUtils.shortToTwoBytes(apparentWindSpeed);
         this.apparentWindAngle = PacketGenerationUtils.shortToTwoBytes(apparentWindAngle);
         this.trueWindSpeed = PacketGenerationUtils.shortToTwoBytes(trueWindSpeed );

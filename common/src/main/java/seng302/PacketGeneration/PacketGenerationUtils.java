@@ -78,7 +78,6 @@ public final class PacketGenerationUtils {
 
     public static byte[] headingToTwoBytes(double heading) {
         int casted = (int)(heading*(1L << 16L)/360);
-        System.out.println(Arrays.toString(shortToTwoBytes(casted)));
         return shortToTwoBytes(casted);
     }
 
