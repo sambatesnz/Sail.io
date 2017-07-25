@@ -1,6 +1,5 @@
 package seng302.DataGeneration;
 
-import seng302.Boat;
 import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
@@ -8,6 +7,7 @@ import seng302.PacketGeneration.RaceStatusGeneration.RaceStatusMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.Race;
+import seng302.RaceObjects.Boat;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;

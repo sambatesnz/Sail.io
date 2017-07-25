@@ -2,7 +2,11 @@ package seng302;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.paint.Color;
+import seng302.PacketParsing.XMLParser;
+import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.CompoundMark;
+import seng302.RaceObjects.CourseLimit;
+import seng302.RaceObjects.Leg;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,12 +23,12 @@ import static javafx.collections.FXCollections.observableArrayList;
  */
 public class Race {
     private int numFinishers = 0;
-    private List<Landmark> landmarks;
-    private List<Landmark> gates;
+    private List<CompoundMark> compoundMarks;
+    private List<CompoundMark> gates;
     private List<Boat> boats;
     private List<Boat> finishedBoats;
     private List<Leg> legs;
-    private List<Position> boundaries;
+    private List<CourseLimit> boundaries;
     private short windHeading;
     private short startingWindSpeed;
     private short windSpeed = 1700;
@@ -43,7 +47,7 @@ public class Race {
      * Constructor for the race class.
      */
     public Race() {
-        parseCourseXML("course.xml");
+        parseCourseXML("Race.xml");
         parseRaceXML("Race.xml");
         // setWindHeading(190);
 
@@ -58,10 +62,13 @@ public class Race {
         Position viewMax = new Position(32.32, -64.831);
         Coordinate.setViewMin(viewMin);
         Coordinate.setViewMax(viewMax);
+        System.out.println(legs.size());
+        System.out.println(boats.size());
         for (Boat boat : boats) {
+            System.out.println(legs.get(boat.getCurrentLegIndex()).getHeading());
             boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
-            boat.setX(legs.get(0).getStart().getX());
-            boat.setY(legs.get(0).getStart().getY());
+            boat.getMark().setX(legs.get(0).getStart().getX());
+            boat.getMark().setY(legs.get(0).getStart().getY());
         }
     }
 
@@ -218,11 +225,11 @@ public class Race {
     }
 
     /**
-     * Getter for the list of landmarks
-     * @return a list of landmarks
+     * Getter for the list of compoundMarks
+     * @return a list of compoundMarks
      */
-    public List<Landmark> getLandmarks() {
-        return landmarks;
+    public List<CompoundMark> getCompoundMarks() {
+        return compoundMarks;
     }
 
     /**
@@ -247,12 +254,12 @@ public class Race {
      */
     private ArrayList<Boat> getContestants() {
         ArrayList<Boat> contestants = new ArrayList<>();
-        contestants.add(new Boat("ORACLE TEAM USA", 5.8, Color.RED, "USA", 101));
-        contestants.add(new Boat("Artemis Racing", 7.1, Color.BLUE, "SWE", 102));
-        contestants.add(new Boat("Emirates Team New Zealand", 11.2, Color.BLACK, "NZL", 103));
-        contestants.add(new Boat("Groupama Team France", 6.7, Color.WHEAT, "FRA", 105));
-        contestants.add(new Boat("Land Rover BAR", 7.6, Color.AQUAMARINE, "GBR", 106));
-        contestants.add(new Boat("SoftBank Team Japan", 9.3, Color.DARKSALMON, "JPN", 104));
+        contestants.add(new Boat("ORACLE TEAM USA", "USA", 101, "United States"));
+        contestants.add(new Boat("Artemis Racing", "SWE", 102, "Sweden"));
+        contestants.add(new Boat("Emirates Team New Zealand", "NZL", 103, "New Zealand"));
+        contestants.add(new Boat("Groupama Team France", "FRA", 105, "France"));
+        contestants.add(new Boat("Land Rover BAR", "GBR", 106, "United Kingdom"));
+        contestants.add(new Boat("SoftBank Team Japan", "JPN", 104, "Japan"));
         return contestants;
     }
 
@@ -263,30 +270,33 @@ public class Race {
     private void parseCourseXML(String fileName) {
 
         try {
-            CourseCreator cc = new CourseCreator(fileName);
+            DataGenerator dataGenerator = new DataGenerator();
+            String xmlString = dataGenerator.loadFile(fileName);
 
-            landmarks = cc.getLandmarks();
+            XMLParser xmlParser = new XMLParser(xmlString);
+
+            compoundMarks = xmlParser.getCourseLayout();
+            boundaries = xmlParser.getCourseLimits();
+            List<Integer> courseOrder = xmlParser.getCourseOrder();
+
             gates = new ArrayList<>();
-            for (Landmark mark : landmarks) {
+            for (CompoundMark mark : compoundMarks) {
                 if (mark.getType().equals("Gate")) {
                     gates.add(mark);
                 }
             }
-            boundaries = cc.getBoundaries();
-
-            ArrayList<Integer> courseOrder = cc.getGateOrderForRace();
 
             legs = new ArrayList<>();
             for (int i = 1; i < courseOrder.size(); i++) {
                 int startId = courseOrder.get(i-1);
                 int destId = courseOrder.get(i);
-                Landmark start = null;
-                Landmark dest = null;
-                for (Landmark lm : landmarks) {
-                    if (lm.getId() == startId) {
-                        start = lm;
-                    } else if (lm.getId() == destId) {
-                        dest = lm;
+                CompoundMark start = null;
+                CompoundMark dest = null;
+                for (CompoundMark compoundMark : compoundMarks) {
+                    if (compoundMark.getId() == startId) {
+                        start = compoundMark;
+                    } else if (compoundMark.getId() == destId) {
+                        dest = compoundMark;
                     }
                 }
                 legs.add(new Leg(start, dest));
@@ -318,7 +328,7 @@ public class Race {
      * Get the gates
      * @return the gates
      */
-    public List<Landmark> getGates() {
+    public List<CompoundMark> getGates() {
         return gates;
     }
 
@@ -334,8 +344,8 @@ public class Race {
                 boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed()*distanceMultiplier);
 
                 //Increments the the distance by the speed
-                boat.setX(boat.getX() + boat.getSpeed()*sin(toRadians(boat.getHeading()))*movementMultiplier);
-                boat.setY(boat.getY() + boat.getSpeed()*cos(toRadians(boat.getHeading()))*movementMultiplier);
+                boat.getMark().setX(boat.getX() + boat.getSpeed()*sin(toRadians(boat.getHeading()))*movementMultiplier);
+                boat.getMark().setY(boat.getY() + boat.getSpeed()*cos(toRadians(boat.getHeading()))*movementMultiplier);
 
                 if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {
                     String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
@@ -373,11 +383,8 @@ public class Race {
         }
     }
 
-    public List<Position> getBoundaries() {
+    public List<CourseLimit> getBoundaries() {
         return boundaries;
     }
 
-    public void setBoundaries(ArrayList<Position> boundaries) {
-        this.boundaries = boundaries;
-    }
 }

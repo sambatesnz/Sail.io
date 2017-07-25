@@ -68,6 +68,7 @@ public class Boat {
         this.sourceId = sourceId;
         this.country = country;
         this.knowsBoatLocation = false;
+        this.mark = new Mark();
     }
 
     public void setMark(Mark mark) {
@@ -293,6 +294,10 @@ public class Boat {
 
     public void setKnowsBoatLocation(boolean knowsBoatLocation) {
         this.knowsBoatLocation = knowsBoatLocation;
+    }
+
+    public Mark getMark() {
+        return mark;
     }
 }
 
