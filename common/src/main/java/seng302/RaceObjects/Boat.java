@@ -22,7 +22,7 @@ public class Boat {
     private long timeToFinish;
     private String shortName;
     private String country;
-    private double speed;
+    private int speed;               //mm/sec
     private boolean knowsBoatLocation;
 
     /**
@@ -164,7 +164,7 @@ public class Boat {
      * Get the speed of the boat
      * @return speed of the boat
      */
-    public double getSpeed() {
+    public int getSpeed() {
         return speed;
     }
 
@@ -172,7 +172,7 @@ public class Boat {
      * Set the speed of the boat
      * @param speed the speed to set
      */
-    public void setSpeed(double speed) {
+    public void setSpeed(int speed) {
         this.speed = speed;
     }
 

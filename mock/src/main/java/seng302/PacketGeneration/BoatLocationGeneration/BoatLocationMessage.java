@@ -4,6 +4,9 @@ import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.PacketGenerationUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * For the Creation of the Boat Location Message Packets
  * Packet body size should be 56 bytes
@@ -42,8 +45,8 @@ public class BoatLocationMessage extends BinaryMessage {
     public BoatLocationMessage(int versionNumber, long time, int sourceId,
                                int sequenceNumber, int deviceType,
                                double latitude, double longitude, int altitude,
-                               short heading, int pitch, int roll, short boatSpeed,
-                               short cog, short sog,
+                               short heading, int pitch, int roll, int boatSpeed,
+                               short cog, int sog,
                                short apparentWindSpeed, short apparentWindAngle,
                                short trueWindSpeed, short trueWindDirection, short trueWindAngle,
                                short currentDrift, short currentSet, short rudderAngle) {
@@ -58,11 +61,13 @@ public class BoatLocationMessage extends BinaryMessage {
         this.latitude = PacketGenerationUtils.locationToFourBytes(latitude);
         this.longitude = PacketGenerationUtils.locationToFourBytes(longitude);
         this.altitude = PacketGenerationUtils.intToFourBytes(altitude);
-        this.heading = PacketGenerationUtils.shortToTwoBytes(heading);
-        //Roll and pitch will go here if implemeneted
-        this.boatSpeed = PacketGenerationUtils.shortToTwoBytes(boatSpeed);
+        this.heading = PacketGenerationUtils.headingToTwoBytes(heading);
+        //Roll and pitch will go here if implemented
+        this.boatSpeed = PacketGenerationUtils.speedToTwoBytes(boatSpeed);
+
         this.cog = PacketGenerationUtils.shortToTwoBytes(cog);
         this.sog = PacketGenerationUtils.shortToTwoBytes(sog);
+//        System.out.println("sog: " + Arrays.toString(this.sog));
         this.apparentWindSpeed = PacketGenerationUtils.shortToTwoBytes(apparentWindSpeed);
         this.apparentWindAngle = PacketGenerationUtils.shortToTwoBytes(apparentWindAngle);
         this.trueWindSpeed = PacketGenerationUtils.shortToTwoBytes(trueWindSpeed );

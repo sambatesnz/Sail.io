@@ -1,6 +1,7 @@
 package seng302;
 
 import org.junit.Test;
+import seng302.PacketGeneration.PacketGenerationUtils;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,12 @@ public class RaceTest {
         }
 
         assertEquals(greatestWindVal - lowestWindVal <= TEN_KNOTS, true);
+    }
+
+    @Test
+    public void CastTest() {
+
+//        Math.toIntExact((long) (PacketGenerationUtils.byteArrayToInt(bytes, 38, 2) * 1.9438444924574 / 1000))
     }
 
 }

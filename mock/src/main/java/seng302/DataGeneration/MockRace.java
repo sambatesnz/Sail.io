@@ -85,14 +85,12 @@ public class MockRace implements IServerData {
         @Override
         public void run() {
             for (Boat boat : race.getBoats()) {
-                System.out.printf("heading: %f, lat: %f, long: %f, speed: %f, sourceId: %d\n", boat.getHeading(),
-                        boat.getLatitude(), boat.getLongitude(), boat.getSpeed(), boat.getSourceId());
                 BinaryMessage boatLocationMessage = new BoatLocationMessage(
                         1, System.currentTimeMillis(), boat.getSourceId(),
                         1, 1,
                         boat.getLatitude(), boat.getLongitude(), 0,
-                        (short) boat.getHeading(), 0, 0, (short) boat.getSpeed(),
-                        (short) 100, (short) 100,
+                        (short) boat.getHeading(), 0, 0,0,
+                        (short) 100, boat.getSpeed(),
                         (short) 200, (short) 200,
                         (short) 100, (short) 100, (short) 100,
                         (short) 100, (short) 100, (short) 100
