@@ -549,8 +549,6 @@ public class RaceController {
             localTimeZone.setText(timeZoneWrapper.getRaceTimeZoneString());
             localTimeZone.setVisible(true);
         }
-
-
     }
 
     /**
