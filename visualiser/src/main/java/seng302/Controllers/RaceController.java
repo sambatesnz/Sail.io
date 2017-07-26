@@ -359,25 +359,24 @@ public class RaceController {
 
                 // Temporary hard coding to differentiate between the boat in user control
                 if (race.getBoats().get(Integer.parseInt(boatSprite.getId())).getSourceID() == 103) {
-//                    Circle controlCircle = new Circle(10);
-//                    controlCircle.setCenterX(0);
-//                    controlCircle.setCenterY(0);
-//                    controlCircle.setStroke(Color.INDIANRED);
-//                    controlCircle.setFill(Color.TRANSPARENT);
+                    Circle controlCircle = new Circle(10);
+                    controlCircle.setCenterX(0);
+                    controlCircle.setCenterY(0);
+                    controlCircle.setStroke(Color.INDIANRED);
+                    controlCircle.setFill(Color.TRANSPARENT);
 
-//                    stack.getChildren().add(controlCircle);
+                    stack.getChildren().add(controlCircle);
 
-                    ImageView imgView = new ImageView();
-                    Image sailorTom = new Image("sailertom.png");
-
-                    imgView.setImage(sailorTom);
-                    imgView.prefWidth(10);
-                    imgView.prefHeight(10);
-
-                    stack.getChildren().add(imgView);
-
-
-
+//                    ImageView imgView = new ImageView();
+//                    Image sailorTom = new Image("sailertom.png");
+//
+//                    imgView.setImage(sailorTom);
+//                    imgView.setFitHeight(35);
+//                    imgView.setFitWidth(35);
+//                    imgView.setX(-10);
+//                    imgView.setY(0);
+//
+//                    stack.getChildren().add(imgView);
                 }
 
                 boats.add(stack);

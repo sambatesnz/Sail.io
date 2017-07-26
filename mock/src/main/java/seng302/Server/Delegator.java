@@ -1,7 +1,7 @@
 package seng302.Server;
 
-import seng302.Boat;
 import seng302.Race;
+import seng302.RaceObjects.Boat;
 
 public class Delegator {
 
@@ -34,7 +34,7 @@ public class Delegator {
      */
     public void changeBoatHeading(int sourceID, boolean upwind){
         Boat boat = race.getBoatByID(sourceID);
-        int windDirection = ((((race.getWindDirection()  * 360) / 65536)+360)%360);  //TODO Make this into a function
+        int windDirection = ((((race.updateWindDirection()  * 360) / 65536)+360)%360);  //TODO Make this into a function
         boat.updateHeading(windDirection, upwind);
 
         System.out.println("Boat Heading " + boat.getHeading()); //Testing; To remove

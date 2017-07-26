@@ -355,13 +355,13 @@ public class Race {
 
         for (Boat boat : boats) {
             if (!finishedBoats.contains(boat)) {
-                boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed()/1000*distanceMultiplier);
+                boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 * distanceMultiplier);
 
                 //todo update boat speed
 
                 //Increments the the distance by the speed
-                boat.getMark().setX(boat.getX() + (boat.getSpeed()/1000)*sin(toRadians(boat.getHeading()))*movementMultiplier);
-                boat.getMark().setY(boat.getY() + (boat.getSpeed()/1000)*cos(toRadians(boat.getHeading()))*movementMultiplier);
+                boat.getMark().setX(boat.getX() + (boat.getSpeed() / 1000) * sin(toRadians(boat.getHeading())) * movementMultiplier);
+                boat.getMark().setY(boat.getY() + (boat.getSpeed() / 1000) * cos(toRadians(boat.getHeading())) * movementMultiplier);
                 if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {
                     String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
                     boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
@@ -374,7 +374,7 @@ public class Race {
                         if (boat1.getCurrentLegIndex() == boat2.getCurrentLegIndex()) {
                             return Long.compare(boat1.getRaceTime(), boat2.getRaceTime());
                         } else {
-                            return Integer.compare(boat2.getCurrentLegIndex(),boat1.getCurrentLegIndex());
+                            return Integer.compare(boat2.getCurrentLegIndex(), boat1.getCurrentLegIndex());
                         }
                     });
 
@@ -394,13 +394,14 @@ public class Race {
 //                                legs.get(boat.getCurrentLegIndex()).getDest().getName() + " with a heading of " +
 //                                String.format("%.2f", legs.get(boat.getCurrentLegIndex()).getHeading()) + "°");
 //                    }
+                    }
                 }
             }
         }
-    }
 
-    public List<CourseLimit> getBoundaries() {
-        return boundaries;
+//        public List<CourseLimit> getBoundaries () {
+//            return boundaries;
+//        }
     }
 
 }
