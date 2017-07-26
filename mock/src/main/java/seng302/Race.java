@@ -403,6 +403,7 @@ public class Race {
 //                    }
                     }
                 }
+                boat.setHeadingChangedToFalse();
             }
         }
         windHeadingChanged = false;

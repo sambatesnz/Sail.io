@@ -1,7 +1,6 @@
 package seng302.RaceObjects;
 
 import javafx.scene.paint.Color;
-import seng302.RaceObjects.Mark;
 
 /**
  * Represent a boat competing in yacht race
@@ -336,6 +335,11 @@ public class Boat {
         } else if (heading < 0) {
             heading += 360;
         }
+        this.headingChanged = true;
+    }
+
+    public void setHeadingChangedToFalse() {
+        this.headingChanged = false;
     }
 }
 
