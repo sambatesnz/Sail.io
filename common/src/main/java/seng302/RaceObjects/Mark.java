@@ -9,6 +9,7 @@ public class Mark {
     private double longitude;
     private double x;
     private double y;
+    private int sourceId;
 
     public Mark(){}
     /**
@@ -21,6 +22,14 @@ public class Mark {
         this.longitude = longitude;
         this.x = convertToX(longitude);
         this.y = convertToY(latitude);
+    }
+
+    public Mark(double latitude, double longitude, int sourceId) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.x = convertToX(longitude);
+        this.y = convertToY(latitude);
+        this.sourceId = sourceId;
     }
 
     public void setLatitude(double latitude) {
@@ -97,4 +106,11 @@ public class Mark {
         this.latitude = y * 180 / EARTH_CIRCUMFERENCE;
     }
 
+    public int getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(int sourceId) {
+        this.sourceId = sourceId;
+    }
 }
