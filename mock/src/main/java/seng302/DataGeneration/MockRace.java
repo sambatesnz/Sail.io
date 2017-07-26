@@ -30,7 +30,7 @@ public class MockRace implements IServerData {
                                                             race.getRaceID(),
                                                             race.getRaceStatus(),
                                                             currentTimeMillis(),
-                                                            race.getWindDirection(),
+                                                            race.updateWindDirection(),
 //                                                            race.getWindSpeed(),      // no longer required as the race wind speed is never updated
                                                             race.retrieveWindSpeed(),   // retrieve a new randomly generated wind speed
                                                             (char)(race.getBoats().size() + 48),

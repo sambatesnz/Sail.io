@@ -115,7 +115,7 @@ public class Race {
      * Chooses to take a gamble on whether or not to change the wind direction.
      * @return
      */
-    public short getWindDirection() {
+    public short updateWindDirection() {
         this.windHeading = (short) (windHeading + gambleWindDirection());
         if (this.windHeading > 359) {
             // if the wind heading is greater than or equal to 360, reset it back down to 0
@@ -124,6 +124,10 @@ public class Race {
             // if the wind heading is less than 0, it needs to be reset back up to 360
             this.windHeading = (short)(this.windHeading + 360);
         }
+        return this.windHeading;
+    }
+
+    public short getWindHeading(){
         return this.windHeading;
     }
 
@@ -338,6 +342,8 @@ public class Race {
         for (Boat boat : boats) {
             if (!finishedBoats.contains(boat)) {
                 boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed()/1000*distanceMultiplier);
+
+                //todo update boat speed
 
                 //Increments the the distance by the speed
                 boat.getMark().setX(boat.getX() + (boat.getSpeed()/1000)*sin(toRadians(boat.getHeading()))*movementMultiplier);
