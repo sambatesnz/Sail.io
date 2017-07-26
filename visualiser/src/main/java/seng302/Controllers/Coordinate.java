@@ -1,6 +1,6 @@
 package seng302.Controllers;
 
-import seng302.Race.Mark;
+import seng302.RaceObjects.Mark;
 
 /**
  * Holds information relating to the coordinates within the window.

@@ -1,6 +1,7 @@
-package seng302.Race;
+package seng302.RaceObjects;
 
 import javafx.scene.paint.Color;
+import seng302.RaceObjects.Mark;
 
 /**
  * Represent a boat competing in yacht race
@@ -21,7 +22,7 @@ public class Boat {
     private long timeToFinish;
     private String shortName;
     private String country;
-    private double speed;
+    private int speed;               //mm/sec
     private boolean knowsBoatLocation;
 
     /**
@@ -62,11 +63,12 @@ public class Boat {
      */
     public Boat(String name, String shortName, int sourceId, String country) {
         this.boatName = name;
-        //this.colour = Color.color(Math.random(), Math.random(), Math.random());
         this.shortName = shortName;
         this.sourceId = sourceId;
         this.country = country;
         this.knowsBoatLocation = false;
+        this.mark = new Mark();
+        this.raceTime = Integer.toUnsignedLong(0);
     }
 
     public void setMark(Mark mark) {
@@ -162,7 +164,7 @@ public class Boat {
      * Get the speed of the boat
      * @return speed of the boat
      */
-    public double getSpeed() {
+    public int getSpeed() {
         return speed;
     }
 
@@ -170,7 +172,7 @@ public class Boat {
      * Set the speed of the boat
      * @param speed the speed to set
      */
-    public void setSpeed(double speed) {
+    public void setSpeed(int speed) {
         this.speed = speed;
     }
 
@@ -292,6 +294,10 @@ public class Boat {
 
     public void setKnowsBoatLocation(boolean knowsBoatLocation) {
         this.knowsBoatLocation = knowsBoatLocation;
+    }
+
+    public Mark getMark() {
+        return mark;
     }
 }
 

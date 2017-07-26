@@ -1,9 +1,9 @@
 package seng302.PacketGeneration.RaceStatusGeneration;
 
-import seng302.Boat;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.PacketGenerationUtils;
+import seng302.RaceObjects.Boat;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -114,7 +114,6 @@ public class RaceStatusMessage extends BinaryMessage {
 
         return body.array();
     }
-
 
 
     @Override

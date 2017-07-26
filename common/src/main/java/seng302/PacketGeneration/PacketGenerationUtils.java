@@ -40,11 +40,16 @@ public final class PacketGenerationUtils {
         byte[] wholeArray = LEBuffer(4).putInt(value).array();
         return Arrays.copyOfRange(wholeArray, 0, 2);
     }
+    public static byte[] speedToTwoBytes(int value) {
+        byte[] wholeArray = LEBuffer(4).putInt(value).array();
+//        System.out.println("init: " + value + ", after: "+ Arrays.toString(wholeArray));
+        return Arrays.copyOfRange(wholeArray, 0, 2);
+    }
 
     public static byte[] shortToTwoBytes(int value) {
         byte[] output = new byte[2];
         output[0] = (byte) value;
-        output[1] = (byte) (value >>> 8);
+        output[1] = (byte) (value >>> 8L);
         return output;
     }
 
@@ -71,4 +76,14 @@ public final class PacketGenerationUtils {
     }
 
 
+    public static byte[] headingToTwoBytes(double heading) {
+        int casted = (int)(heading*(1L << 16L)/360);
+        return shortToTwoBytes(casted);
+    }
+
+
+    public static byte[] speedToTwoBytes(double speed) {
+        int casted = (int)(speed*(1L << 16L)/360);
+        return shortToTwoBytes(casted);
+    }
 }

@@ -1,6 +1,5 @@
 package seng302.DataGeneration;
 
-import seng302.Boat;
 import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
@@ -8,6 +7,7 @@ import seng302.PacketGeneration.RaceStatusGeneration.RaceStatusMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.Race;
+import seng302.RaceObjects.Boat;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -25,11 +25,21 @@ public class MockRace implements IServerData {
     private Race race = new Race();
 
     // Generate RaceStatusMessage from using properties of Race object.
-    private BinaryMessage rsm;
+//    private BinaryMessage rsm;
 
     public Race getRace() {
         return race;
     }
+    private BinaryMessage rsm = new RaceStatusMessage(currentTimeMillis(),
+                                                            race.getRaceID(),
+                                                            race.getRaceStatus(),
+                                                            currentTimeMillis(),
+                                                            race.updateWindDirection(),
+//                                                            race.getWindSpeed(),      // no longer required as the race wind speed is never updated
+                                                            race.retrieveWindSpeed(),   // retrieve a new randomly generated wind speed
+                                                            (char)(race.getBoats().size() + 48),
+                                                            race.getRaceType(),
+                                                            race.getBoats());
 
     @Override
     public byte[] getData() {
@@ -69,17 +79,17 @@ public class MockRace implements IServerData {
         public void run() {
             DataGenerator dataGenerator = new DataGenerator();
 
-            BinaryMessage xmlMessage =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
+            BinaryMessage raceXML =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
 //            System.out.println("\n--------\nRace XML Message created");
-//            System.out.println(Arrays.toString(xmlMessage.createMessage()));
+//            System.out.println(Arrays.toString(raceXML.createMessage()));
 //            System.out.println("--------\n");
-            bytes.add(xmlMessage.createMessage());
+            bytes.add(raceXML.createMessage());
 
-            BinaryMessage boatsXml = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
+            BinaryMessage boatsXML = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
 //            System.out.println("\n--------\nBoats XML Message created");
-//            System.out.println(Arrays.toString(boatsXml.createMessage()));
+//            System.out.println(Arrays.toString(boatsXML.createMessage()));
 //            System.out.println("--------\n");
-            bytes.add(boatsXml.createMessage());
+            bytes.add(boatsXML.createMessage());
 
             BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);
 //            System.out.println("\n--------\nRegatta XML Message created");
@@ -97,17 +107,15 @@ public class MockRace implements IServerData {
                         1, System.currentTimeMillis(), boat.getSourceId(),
                         1, 1,
                         boat.getLatitude(), boat.getLongitude(), 0,
-                        (short) boat.getHeading(), 0, 0, (short) boat.getSpeed(),
-                        (short) 100, (short) 100,
+                        (short) boat.getHeading(), 0, 0,0,
+                        (short) 100, boat.getSpeed(),
                         (short) 200, (short) 200,
                         (short) 100, (short) 100, (short) 100,
                         (short) 100, (short) 100, (short) 100
                 );
-//                if (boat.getSourceId() == 103) {
-//                    System.out.println("\n--------\nBoat location message packet created");
-//                    System.out.println(Arrays.toString(boatLocationMessage.createMessage()));
-//                    System.out.println("--------\n");
-//                }
+//                System.out.println("\n--------\nBoat location message packet created");
+//                System.out.println(Arrays.toString(boatLocationMessage.createMessage()));
+//                System.out.println("--------\n");
                 bytes.add(boatLocationMessage.createMessage());
             }
         }
@@ -136,7 +144,26 @@ public class MockRace implements IServerData {
 //            System.out.println("\n--------\nRace Status message packet created");
 //            System.out.println(Arrays.toString(rsm.createMessage()));
 //            System.out.println("--------\n");
-            System.out.println("Wind direction: " + ((((race.getWindDirection()  * 360) / 65536)+360)%360));  //Testing; To remove
         }
+    }
+
+    /**
+     * Schedules data to be generated for a race at intervals
+     *
+     */
+    public void runServerTimers() {
+        timer.schedule(new XMLSender(), 0, 2000);
+        timer.schedule(new RSMSender(), 100, 2000);
+        timer.schedule(new BoatPosSender(), 1000, 17);
+        timer.schedule(new RaceRunner(), 2000, 17);
+    }
+
+    /**
+     * Cancels the timers running in the current thread
+     * Used to free resources
+     */
+    public void cancelServerTimers(){
+        System.out.println("Threads cancelled");
+        timer.cancel();
     }
 }

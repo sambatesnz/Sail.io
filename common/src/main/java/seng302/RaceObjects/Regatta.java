@@ -1,4 +1,4 @@
-package seng302.Race;
+package seng302.RaceObjects;
 
 /**
  * Created by asv15 on 17/05/17.

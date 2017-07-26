@@ -1,4 +1,4 @@
-package seng302.Race;
+package seng302.RaceObjects;
 
 /**
  * Class to hold a position (set of coordinates)
@@ -25,21 +25,16 @@ public class Mark {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+        this.y = convertToY(latitude);
     }
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+        this.x = convertToX(longitude);
     }
 
     public Mark getCopy(){
         return new Mark(this.latitude, this.longitude);
-    }
-
-    public double convertToLon(){
-        return x / EARTH_CIRCUMFERENCE * 360;
-    }
-    public double convertToLat(){
-        return y / EARTH_CIRCUMFERENCE * 180;
     }
 
     /**
@@ -94,10 +89,12 @@ public class Mark {
 
     public void setX(double x) {
         this.x = x;
+        this.longitude = x * 360 / EARTH_CIRCUMFERENCE;
     }
-
+//  x = lon * EARTH_CIRCUMFERENCE / 360;
     public void setY(double y) {
         this.y = y;
+        this.latitude = y * 180 / EARTH_CIRCUMFERENCE;
     }
 
 }

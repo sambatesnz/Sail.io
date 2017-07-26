@@ -3,8 +3,7 @@ package seng302.Race;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
-import seng302.Client.Messages.CourseLimit;
-import seng302.Controllers.Coordinate;
+import seng302.RaceObjects.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
