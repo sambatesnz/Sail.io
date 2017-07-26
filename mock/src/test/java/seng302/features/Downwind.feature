@@ -1,7 +1,6 @@
 Feature: Testing that when an downwind boat action is received the boat heading is updated away from the wind.
   Background:
     Given the race is running
-    And a client is connected
 
   Scenario: A downwind boat action is received
     Given a boatAction packet has been received with a value of 6

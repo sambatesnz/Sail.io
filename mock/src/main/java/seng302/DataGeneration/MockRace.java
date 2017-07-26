@@ -136,7 +136,7 @@ public class MockRace implements IServerData {
 //            System.out.println("\n--------\nRace Status message packet created");
 //            System.out.println(Arrays.toString(rsm.createMessage()));
 //            System.out.println("--------\n");
-            System.out.println("Wind direction: " + ((race.getWindDirection()  * 360) / 65536));  //Testing; To remove
+            System.out.println("Wind direction: " + ((((race.getWindDirection()  * 360) / 65536)+360)%360));  //Testing; To remove
         }
     }
 

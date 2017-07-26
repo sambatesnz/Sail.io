@@ -20,6 +20,7 @@ public class Boat {
     private int position;
     private String abrv;
 
+    // not currently in use, ubt saving for tacking/gybing
     private boolean incrementMemory = false;
     private boolean decrementMemory = false;
 
@@ -52,52 +53,6 @@ public class Boat {
     public void updateHeading(int windDirection, boolean upwind) {
         int headingIncrement = 3;
 
-        if (incrementMemory) {
-            heading += headingIncrement;
-        } else if (decrementMemory) {
-            heading -= headingIncrement;
-            if (heading < 0) {
-                heading = heading + 360;
-            }
-        } else if (upwind) {
-            if ((heading < windDirection) && (heading > (180 + windDirection) % 360)) {
-                heading += headingIncrement;
-            } else {
-                heading -= headingIncrement;
-                if (heading < 0) {
-                    heading = heading + 360;
-                }
-            }
-        } else {
-            if ((heading < windDirection) && (heading > (180 + windDirection) % 360)) {
-                heading -= headingIncrement;
-                if (heading < 0) {
-                    heading = heading + 360;
-                }
-            } else {
-                heading += headingIncrement;
-            }
-        }
-
-
-
-
-
-//        if ((heading < windDirection + 10 && heading > windDirection) ||
-//                (heading < ((windDirection + 180) % 360) + 10 && heading > ((windDirection + 180) % 360))) {
-//            if (!incrementMemory) {
-//                decrementMemory = true;
-//            }
-//        } else if ((heading > windDirection - 10 && heading < windDirection) ||
-//                (heading > ((windDirection + 180) % 360) - 10 && heading < ((windDirection + 180) % 360))) {
-//            if (!decrementMemory) {
-//                incrementMemory = true;
-//            }
-//        } else {
-//            incrementMemory = false;
-//            decrementMemory = false;
-//        }
-//
 //        if (incrementMemory) {
 //            heading += headingIncrement;
 //        } else if (decrementMemory) {
@@ -105,30 +60,27 @@ public class Boat {
 //            if (heading < 0) {
 //                heading = heading + 360;
 //            }
-//        } else if (upwind) {
-//            if ((heading > windDirection) && (heading < (180 + windDirection) % 360)) {
-//                heading += headingIncrement;
-//            } else {
-//                heading -= headingIncrement;
-//                if (heading < 0) {
-//                    heading = heading + 360;
-//                }
-//            }
-//        } else {
-//            if ((heading > windDirection) && (heading < (180 + windDirection) % 360)) {
-//                heading -= headingIncrement;
-//                if (heading < 0) {
-//                    heading = heading + 360;
-//                }
-//            } else {
-//                heading += headingIncrement;
-//            }
-//        }
-//
-//
-//
-//        heading = abs(heading % 360); //Loop the heading back if it is over 360
-//        System.out.println(heading);
+//        } else
+        double headingMinusWind = (360 + heading - windDirection) % 360;
+        if (upwind) {   // turning upwind
+            if (headingMinusWind > 180) {
+                heading += headingIncrement;
+            } else {
+                heading -= headingIncrement;
+            }
+        } else {        // turning downwind
+            if (headingMinusWind > 180) {
+                heading -= headingIncrement;
+            } else {
+                heading += headingIncrement;
+            }
+        }
+
+        if (heading > 359) {
+            heading -= 360;
+        } else if (heading < 0) {
+            heading += 360;
+        }
     }
 
     /**
