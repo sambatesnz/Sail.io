@@ -1,6 +1,5 @@
 package seng302.Polars;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import seng302.RaceObjects.Boat;
 
 import java.util.HashMap;
