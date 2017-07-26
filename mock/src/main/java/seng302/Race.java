@@ -411,6 +411,5 @@ public class Race {
 //        public List<CourseLimit> getBoundaries () {
 //            return boundaries;
 //        }
-    }
 
 }
