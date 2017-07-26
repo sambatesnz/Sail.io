@@ -30,7 +30,7 @@ public class RaceXMLCreator {
 
 
         root.addElement("RaceStartTime")
-                .addAttribute("Start", getDateString())
+                .addAttribute("Start", race.getDateString())
                 .addAttribute("Postpone", "False");
 
         root.addElement("RaceID")
@@ -93,18 +93,6 @@ public class RaceXMLCreator {
         return this.raceXML;
     }
 
-
-
-
-    private String getDateString() {
-        final long ONE_MINUTE_IN_MILLIS=60000;
-        TimeZone tz = TimeZone.getTimeZone("NZST");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); // Quoted "Z" to indicate UTC, no timezone offset
-        // df.setTimeZone(tz);
-        Calendar date = Calendar.getInstance();
-        long t= date.getTimeInMillis();
-        return df.format(new Date(t + ONE_MINUTE_IN_MILLIS / 2));
-    }
 
 
 

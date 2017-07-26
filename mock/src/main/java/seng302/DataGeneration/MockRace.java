@@ -136,6 +136,7 @@ public class MockRace implements IServerData {
         @Override
         public void run() {
             race.updateBoats();
+            race.updateRaceInfo();
         }
     }
 
@@ -145,7 +146,7 @@ public class MockRace implements IServerData {
             rsm = new RaceStatusMessage(currentTimeMillis(),
                     race.getRaceID(),
                     race.getRaceStatus(),
-                    currentTimeMillis(),
+                    race.getStartingTime().getTime(),
                     race.updateWindDirection(),
                     race.retrieveWindSpeed(),   // retrieve a new randomly generated wind speed
                     (char)(race.getBoats().size() + 48),
@@ -164,7 +165,7 @@ public class MockRace implements IServerData {
      */
     public void runServerTimers() {
         timer.schedule(new XMLSender(), 0, 2000);
-        timer.schedule(new RSMSender(), 100, 2000);
+        timer.schedule(new RSMSender(), 100, 500);
         timer.schedule(new BoatPosSender(), 1000, 17);
         timer.schedule(new RaceRunner(), 1000, 17);
 
