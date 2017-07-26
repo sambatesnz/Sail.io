@@ -1,7 +1,7 @@
 package seng302.Polars;
 
 /**
- * Created by tjg73 on 26/07/17.
+ * Enum for polar ratios based on the angle to the wind
  */
 public enum PolarRatio {
 

@@ -14,6 +14,13 @@ public class PolarUtils {
 
     private PolarUtils(){}
 
+
+    /**
+     * Updates a boats speed based on the nearest polar value
+     * @param boat boat to update
+     * @param windHeading current wind heading
+     * @param windSpeed current wind speed
+     */
     public static void updateBoatSpeed(Boat boat, double windHeading, int windSpeed){
         Map<Integer, PolarRatio> polarMap = generatePolarMap();
         double diff = abs(windHeading - boat.getHeading());
