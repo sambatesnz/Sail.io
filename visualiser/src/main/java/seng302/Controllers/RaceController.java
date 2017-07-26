@@ -261,6 +261,11 @@ public class RaceController {
                 updateNodeScale(boats.get(i).getChildren().get(0));
                 boats.get(i).getChildren().get(0).setRotate(race.getBoats().get(i).getHeading());
 
+                // Temporary hard coding to differentiate between the boat in user control
+                if (race.getBoats().get(i).getSourceID() == 103) {
+                    updateNodeScale(boats.get(i).getChildren().get(4));
+                }
+
                 //Boats wake
                 boats.get(i).getChildren().set(2, newWake(boatSpeed));
                 updateNodeScale(boats.get(i).getChildren().get(2));
@@ -364,6 +369,12 @@ public class RaceController {
                     controlCircle.setCenterY(0);
                     controlCircle.setStroke(Color.INDIANRED);
                     controlCircle.setFill(Color.TRANSPARENT);
+
+                    controlCircle.onMouseClickedProperty().setValue(event -> {
+                        boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
+                        resetViewButton.setDisable(false);
+                        Coordinate.setTrackingBoat(true);
+                    });
 
                     stack.getChildren().add(controlCircle);
 
@@ -581,7 +592,8 @@ public class RaceController {
      * Rotates the wind arrow based on the heading
      */
     private void rotateWindArrow() {
-        windArrow.setRotate(race.getWindHeading() + 180);
+        windArrow.setRotate(race.getWindHeading()
+        );
     }
 
     /**

@@ -34,6 +34,7 @@ public class Race {
     private short startingWindSpeed;
     private int windSpeed;
     private Boolean windHeadingChanged = false;
+    private Boolean windSpeedChanged = false;
     private int raceID;
     private char raceType;
     private int raceStatus = 0;
@@ -43,7 +44,7 @@ public class Race {
     private static final int TEN_KNOTS = 5145;
     private static final int FORTY_KNOTS = 20577;
     private static final int FIVE_KNOTS = 2573;
-    private static final int DIRECTION_CHANGE_PROB = 100;
+    private static final int DIRECTION_CHANGE_PROB = 25;
 
     /**
      * Constructor for the race class.
@@ -169,6 +170,7 @@ public class Race {
         int high = startingWindSpeed + 2600;
         int windVal = random.nextInt(high - low) + low;
         this.windSpeed = windVal;
+        windSpeedChanged = true;
         return (short) windVal;
     }
 
@@ -361,7 +363,7 @@ public class Race {
 //                if windHeading or boat.getHeading() has changed:
 //                    reevaluate the speed;
 //                    else do nothing.
-                if (windHeadingChanged || boat.getHeadingChanged()) {
+                if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
                     PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
                 }
 
@@ -407,6 +409,7 @@ public class Race {
             }
         }
         windHeadingChanged = false;
+        windSpeedChanged = false;
     }
 
 //        public List<CourseLimit> getBoundaries () {

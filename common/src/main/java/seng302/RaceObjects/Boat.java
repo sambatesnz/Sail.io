@@ -316,7 +316,7 @@ public class Boat {
         int headingIncrement = 3;
 
         double headingMinusWind = (360 + heading - windDirection) % 360;
-        if (upwind) {   // turning upwind
+        if (!upwind) {   // turning upwind
             if (headingMinusWind > 180) {
                 heading += headingIncrement;
             } else {

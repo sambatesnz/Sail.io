@@ -16,19 +16,18 @@ public class PolarUtils {
 
     public static void updateBoatSpeed(Boat boat, double windHeading, int windSpeed){
         Map<Integer, PolarRatio> polarMap = generatePolarMap();
-        double diff = windHeading - boat.getHeading();
+        double diff = abs(windHeading - boat.getHeading());
         double angleRelative = abs(180-diff);
         int closestRefAngle = 0;
 
         for(Integer angle: polarMap.keySet()){
             // find closest angle
-            double d1 = angle - angleRelative;
-            if (d1 < 15) {
+            double d1 = abs(angle - angleRelative);
+            if (d1 <= 8) {
                 closestRefAngle = angle;
                 break;
             }
         }
-        System.out.println(polarMap.get(closestRefAngle).getRatio());
         int newSpeed = (int) (polarMap.get(closestRefAngle).getRatio() * windSpeed);
         System.out.println("Speed is now: " + newSpeed);
         boat.setSpeed(newSpeed);

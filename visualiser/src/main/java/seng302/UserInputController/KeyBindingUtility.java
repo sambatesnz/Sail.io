@@ -59,7 +59,6 @@ public class KeyBindingUtility {
                     default:
                         return;
                 }
-                System.out.println(event.getCode().getName());
                 event.consume();
                 bytes.add(boatActionMessage.createMessage());
             }

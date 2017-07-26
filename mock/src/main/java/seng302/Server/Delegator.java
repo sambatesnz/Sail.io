@@ -36,7 +36,5 @@ public class Delegator {
         Boat boat = race.getBoatByID(sourceID);
         int windDirection = ((((race.updateWindDirection()  * 360) / 65536)+360)%360);  //TODO Make this into a function
         boat.updateHeading(windDirection, upwind);
-
-        System.out.println("Boat Heading " + boat.getHeading()); //Testing; To remove
     }
 }
