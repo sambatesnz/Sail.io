@@ -25,6 +25,10 @@ public class Boat {
     private int speed;               //mm/sec
     private boolean knowsBoatLocation;
 
+    private boolean upwindMemory = false;
+    private boolean downwindMemory = false;
+    private boolean plusMemory = false;
+
     /**
      * Gets the abbreviation of the name of the team's boat
      * @return the boat's abbreviation string
@@ -311,20 +315,46 @@ public class Boat {
         int headingIncrement = 3;
 
         double headingMinusWind = (360 + heading - windDirection) % 360;
-        if (upwind) {   // turning upwind
+        if (!upwind) {   // turning upwind
+            downwindMemory = false;
+            if (upwindMemory && heading == windDirection) {
+                if (plusMemory) {
+                    heading += headingIncrement;
+                } else {
+                    heading -= headingIncrement;
+                }
+                upwindMemory = false;
+            }
             if (headingMinusWind > 180) {
                 heading += headingIncrement;
+                upwindMemory = true;
+                plusMemory = true;
             } else {
                 heading -= headingIncrement;
+                upwindMemory = true;
+                plusMemory = false;
             }
         } else {        // turning downwind
+
+            upwindMemory = false;
+            if (downwindMemory && heading == windDirection) {
+                if (plusMemory) {
+                    heading += headingIncrement;
+                } else {
+                    heading -= headingIncrement;
+                }
+                downwindMemory = false;
+            }
             if (headingMinusWind > 180) {
                 heading -= headingIncrement;
+                downwindMemory = true;
+                plusMemory = false;
             } else {
                 heading += headingIncrement;
+                downwindMemory = true;
+                plusMemory = true;
             }
         }
-
         if (heading > 359) {
             heading -= 360;
         } else if (heading < 0) {
