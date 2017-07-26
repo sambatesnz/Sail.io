@@ -246,7 +246,7 @@ public class RaceController {
     private void updateBoatPositions() {
         for (int i = 0; i < boats.size(); i++) {
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
-                double boatSpeed = race.getBoats().get(i).getSpeed();
+                double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
                 String speed = "";
                 String name = "";
                 if (showSpeed) {
@@ -279,31 +279,36 @@ public class RaceController {
     private void updateBoatPaths(){
         //boat paths
         for (int i = 0; i < boats.size(); i++){
-            if(race.getBoats().get(i).isKnowsBoatLocation()) {
+//            if(race.getBoats().get(i).isKnowsBoatLocation()) {
                 if (viewUpdateCount % 5 == 1) {
                     if (absolutePaths.get(i).size() > 150) {
                         paths.get(i).getElements().remove(1);
                         absolutePaths.get(i).remove(0);
                     }
 
-                    if (!lastHeadings.get(i).equals(race.getBoats().get(i).getHeading())) {
+//                    if (!lastHeadings.get(i).equals(race.getBoats().get(i).getHeading())) {
                         absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
                         paths.get(i).getElements().add(new LineTo());
                         lastHeadings.set(i, race.getBoats().get(i).getHeading());
-                    } else {
-                        absolutePaths.get(i).set(absolutePaths.get(i).size() - 1, new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-                        paths.get(i).getElements().set(paths.get(i).getElements().size() - 1, new LineTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-                    }
+//                    } else {
+//                        absolutePaths.get(i).set(absolutePaths.get(i).size() - 1,
+//                                new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+//                        paths.get(i).getElements().set(paths.get(i).getElements().size() - 1,
+//                                new LineTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+//                    }
 
-
-                    ((MoveTo) paths.get(i).getElements().get(0)).setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
-                    ((MoveTo) paths.get(i).getElements().get(0)).setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
+                    ((MoveTo) paths.get(i).getElements().get(0))
+                            .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
+                    ((MoveTo) paths.get(i).getElements().get(0))
+                            .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
                     for (int j = 1; j < paths.get(i).getElements().size(); j++) {
-                        ((LineTo) paths.get(i).getElements().get(j)).setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
-                        ((LineTo) paths.get(i).getElements().get(j)).setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
+                        ((LineTo) paths.get(i).getElements().get(j))
+                                .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
+                        ((LineTo) paths.get(i).getElements().get(j))
+                                .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
                     }
                 }
-            }
+//            }
         }
     }
 
@@ -415,7 +420,7 @@ public class RaceController {
                     paths.add(path);
                     absolutePaths.add(new ArrayList<>());
 
-                    lastHeadings.add(race.getBoats().get(i).getHeading() + 1);  // guarantee its different
+                    lastHeadings.add(race.getBoats().get(i).getHeading());
                 } else {
                     knowAllLocations = false;
                 }
