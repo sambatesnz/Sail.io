@@ -35,7 +35,7 @@ public class RaceXMLCreator {
 
 
         root.addElement("RaceStartTime")
-                .addAttribute("Start", "/TODO")
+                .addAttribute("Start", "2015-08-29T13:10:00+02:00") //TODO Generate time properly
                 .addAttribute("Postpone", "False");
 
         root.addElement("RaceID")
@@ -64,7 +64,8 @@ public class RaceXMLCreator {
                         .addAttribute("SeqID", String.valueOf(seqid))
                         .addAttribute("Name", "/TODO")
                         .addAttribute("TargetLat", String.valueOf(singleMark.getLatitude()))
-                        .addAttribute("TargetLng", String.valueOf(singleMark.getLongitude()));
+                        .addAttribute("TargetLng", String.valueOf(singleMark.getLongitude()))
+                        .addAttribute("SourceID", String.valueOf(singleMark.getSourceId()));
                 seqid ++;
 
             }

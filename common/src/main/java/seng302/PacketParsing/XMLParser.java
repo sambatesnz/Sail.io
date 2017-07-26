@@ -220,7 +220,7 @@ public class XMLParser {
                             if (nnm2.getLength() >= 5) {
                                 seqId = Integer.valueOf(nnm2.getNamedItem(SEQ_ID).getNodeValue());
                             }
-                            positions.add(new Mark(lat, lon));
+                            positions.add(new Mark(lat, lon, sourceId));
 //                            System.out.println(String.format("Name: %s, Lat: %f, Long: %f, SrcId: %d, SeqId: %d", name, lat, lon, sourceId, seqId));
                         }
                     }

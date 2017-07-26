@@ -8,7 +8,9 @@ import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.Race;
 import seng302.RaceObjects.Boat;
+import seng302.XMLCreation.RaceXMLCreator;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -61,7 +63,16 @@ public class MockRace implements IServerData {
         public void run() {
             DataGenerator dataGenerator = new DataGenerator();
 
-            BinaryMessage raceXML =  new XMLMessage(dataGenerator.loadFile("Race.xml"), (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
+
+            RaceXMLCreator creator = new RaceXMLCreator(race);
+            String xml = "hi";
+            try {
+                xml = creator.createDocument().asXML();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            BinaryMessage raceXML =  new XMLMessage(xml, (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
 //            System.out.println("\n--------\nRace XML Message created");
 //            System.out.println(Arrays.toString(raceXML.createMessage()));
 //            System.out.println("--------\n");
@@ -128,6 +139,7 @@ public class MockRace implements IServerData {
         timer.schedule(new XMLSender(), 0, 2000);
         timer.schedule(new RSMSender(), 100, 2000);
         timer.schedule(new BoatPosSender(), 1000, 17);
+        timer.schedule(new RaceRunner(), 1000, 17);
 
     }
 
