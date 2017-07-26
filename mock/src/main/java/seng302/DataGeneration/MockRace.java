@@ -139,5 +139,4 @@ public class MockRace implements IServerData {
             System.out.println("Wind direction: " + ((((race.getWindDirection()  * 360) / 65536)+360)%360));  //Testing; To remove
         }
     }
-
 }
