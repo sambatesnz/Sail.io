@@ -311,9 +311,9 @@ public class Race {
      */
     public List<Boat> getBoats() {
         if (!raceReady){
-            return new ArrayList<Boat>();
+            return new ArrayList<>();
         } else {
-            return new ArrayList<Boat>(boats.values());
+            return new ArrayList<>(boats.values());
         }
     }
 
