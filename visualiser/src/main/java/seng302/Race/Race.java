@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import seng302.RaceObjects.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -36,6 +37,7 @@ public class Race {
     private Mark mapCenter;
     private boolean raceReady = false;
     private List<Integer> participants;
+    private LocalDateTime startTime;
     private long currentTime;
     private Mark viewMin;
     private Mark viewMax;
@@ -97,6 +99,12 @@ public class Race {
 
     public void setCurrentTime(long currentTime) {
         this.currentTime = currentTime;
+    }
+
+    public LocalDateTime getStartTime() { return startTime; }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public void setViewMinMax(Mark min, Mark max){
