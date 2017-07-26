@@ -1,4 +1,4 @@
-package seng302.Race;
+package seng302.RaceObjects;
 
 import javafx.scene.paint.Color;
 
@@ -21,8 +21,9 @@ public class Boat {
     private long timeToFinish;
     private String shortName;
     private String country;
-    private double speed;
+    private int speed;               //mm/sec
     private boolean knowsBoatLocation;
+    private boolean headingChanged;
 
     /**
      * Gets the abbreviation of the name of the team's boat
@@ -36,6 +37,10 @@ public class Boat {
         return boatName;
     }
 
+    /**
+     * Getter for the source ID, or the identification number, of the boat
+     * @return The number that the boat is identified by
+     */
     public int getSourceId() {
         return sourceId;
     }
@@ -62,11 +67,13 @@ public class Boat {
      */
     public Boat(String name, String shortName, int sourceId, String country) {
         this.boatName = name;
-        //this.colour = Color.color(Math.random(), Math.random(), Math.random());
         this.shortName = shortName;
         this.sourceId = sourceId;
         this.country = country;
         this.knowsBoatLocation = false;
+        this.mark = new Mark();
+        this.raceTime = Integer.toUnsignedLong(0);
+        this.headingChanged = false;
     }
 
     public void setMark(Mark mark) {
@@ -162,7 +169,7 @@ public class Boat {
      * Get the speed of the boat
      * @return speed of the boat
      */
-    public double getSpeed() {
+    public int getSpeed() {
         return speed;
     }
 
@@ -170,7 +177,7 @@ public class Boat {
      * Set the speed of the boat
      * @param speed the speed to set
      */
-    public void setSpeed(double speed) {
+    public void setSpeed(int speed) {
         this.speed = speed;
     }
 
@@ -215,12 +222,6 @@ public class Boat {
      * @param id The number that the boat will be identified by
      */
     public void setSourceID(int id) { this.sourceId = id; }
-
-    /**
-     * Getter for the source ID, or the identification number, of the boat
-     * @return The number that the boat is identified by
-     */
-    public int getSourceID() { return sourceId; }
 
     /**
      * Getter for the status of the boat:
@@ -292,6 +293,51 @@ public class Boat {
 
     public void setKnowsBoatLocation(boolean knowsBoatLocation) {
         this.knowsBoatLocation = knowsBoatLocation;
+    }
+
+    public Mark getMark() {
+        return mark;
+    }
+
+    public boolean getHeadingChanged() {
+        return headingChanged;
+    }
+
+    /**
+     * Increments or decrements the boat heading by a set amount (currently 3 degrees but default)
+     * towards or away from the current wind direction based on the command upwind, or downwind.
+     * @param windDirection The current direction that the wind is heading
+     * @param upwind Whether to increment the heading towards (true) or away
+     *               from (false) the current wind direction
+     */
+    public void updateHeading(int windDirection, boolean upwind) {
+        int headingIncrement = 3;
+
+        double headingMinusWind = (360 + heading - windDirection) % 360;
+        if (!upwind) {   // turning upwind
+            if (headingMinusWind > 180) {
+                heading += headingIncrement;
+            } else {
+                heading -= headingIncrement;
+            }
+        } else {        // turning downwind
+            if (headingMinusWind > 180) {
+                heading -= headingIncrement;
+            } else {
+                heading += headingIncrement;
+            }
+        }
+
+        if (heading > 359) {
+            heading -= 360;
+        } else if (heading < 0) {
+            heading += 360;
+        }
+        this.headingChanged = true;
+    }
+
+    public void setHeadingChangedToFalse() {
+        this.headingChanged = false;
     }
 }
 

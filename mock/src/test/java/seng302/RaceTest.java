@@ -1,7 +1,12 @@
 package seng302;
 
 import org.junit.Test;
+import seng302.PacketGeneration.PacketGenerationUtils;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.Arrays;
 import static junit.framework.TestCase.assertTrue;
 
 public class RaceTest {
@@ -29,6 +34,18 @@ public class RaceTest {
         }
 
         assertTrue(greatestWindVal - lowestWindVal <= TEN_KNOTS);
+    }
+
+    @Test
+    public void CastTest() {
+        int sog = 5;
+        byte[] output;
+        byte[] ans = new byte[4];
+        output = PacketGenerationUtils.shortToTwoBytes(sog);
+        System.arraycopy(output, 0, ans, 0, 2);
+        System.out.println(Arrays.toString(ans));
+        int output_num = ByteBuffer.wrap(ans).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        assertEquals(output_num, sog);
     }
 
 }

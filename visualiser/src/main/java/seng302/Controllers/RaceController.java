@@ -14,6 +14,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -24,9 +25,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import seng302.Client.Client;
-import seng302.Race.Boat;
-import seng302.Race.CompoundMark;
-import seng302.Race.Mark;
+import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.CompoundMark;
+import seng302.RaceObjects.Mark;
 import seng302.Race.Race;
 import seng302.Visualiser.FPSCounter;
 import seng302.Visualiser.WindArrow;
@@ -245,7 +246,7 @@ public class RaceController {
     private void updateBoatPositions() {
         for (int i = 0; i < boats.size(); i++) {
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
-                double boatSpeed = race.getBoats().get(i).getSpeed();
+                double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
                 String speed = "";
                 String name = "";
                 if (showSpeed) {
@@ -259,6 +260,11 @@ public class RaceController {
                 boats.get(i).setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
                 updateNodeScale(boats.get(i).getChildren().get(0));
                 boats.get(i).getChildren().get(0).setRotate(race.getBoats().get(i).getHeading());
+
+                // Temporary hard coding to differentiate between the boat in user control
+                if (race.getBoats().get(i).getSourceId() == 103) {
+                    updateNodeScale(boats.get(i).getChildren().get(4));
+                }
 
                 //Boats wake
                 boats.get(i).getChildren().set(2, newWake(boatSpeed));
@@ -278,31 +284,36 @@ public class RaceController {
     private void updateBoatPaths(){
         //boat paths
         for (int i = 0; i < boats.size(); i++){
-            if(race.getBoats().get(i).isKnowsBoatLocation()) {
+//            if(race.getBoats().get(i).isKnowsBoatLocation()) {
                 if (viewUpdateCount % 5 == 1) {
                     if (absolutePaths.get(i).size() > 150) {
                         paths.get(i).getElements().remove(1);
                         absolutePaths.get(i).remove(0);
                     }
 
-                    if (!lastHeadings.get(i).equals(race.getBoats().get(i).getHeading())) {
+//                    if (!lastHeadings.get(i).equals(race.getBoats().get(i).getHeading())) {
                         absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
                         paths.get(i).getElements().add(new LineTo());
                         lastHeadings.set(i, race.getBoats().get(i).getHeading());
-                    } else {
-                        absolutePaths.get(i).set(absolutePaths.get(i).size() - 1, new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-                        paths.get(i).getElements().set(paths.get(i).getElements().size() - 1, new LineTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-                    }
+//                    } else {
+//                        absolutePaths.get(i).set(absolutePaths.get(i).size() - 1,
+//                                new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+//                        paths.get(i).getElements().set(paths.get(i).getElements().size() - 1,
+//                                new LineTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+//                    }
 
-
-                    ((MoveTo) paths.get(i).getElements().get(0)).setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
-                    ((MoveTo) paths.get(i).getElements().get(0)).setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
+                    ((MoveTo) paths.get(i).getElements().get(0))
+                            .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
+                    ((MoveTo) paths.get(i).getElements().get(0))
+                            .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
                     for (int j = 1; j < paths.get(i).getElements().size(); j++) {
-                        ((LineTo) paths.get(i).getElements().get(j)).setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
-                        ((LineTo) paths.get(i).getElements().get(j)).setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
+                        ((LineTo) paths.get(i).getElements().get(j))
+                                .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
+                        ((LineTo) paths.get(i).getElements().get(j))
+                                .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
                     }
                 }
-            }
+//            }
         }
     }
 
@@ -325,6 +336,8 @@ public class RaceController {
 
                 wake.getPoints().addAll(0.0, 0.0,
                         0.0, 1.0);
+
+
 
                 Circle tc = new Circle(2);
                 tc.setCenterX(0);
@@ -353,6 +366,35 @@ public class RaceController {
                 stack.getChildren().add(text);
                 stack.getChildren().add(wake);
                 stack.getChildren().add(tc);
+
+                // Temporary hard coding to differentiate between the boat in user control
+                if (race.getBoats().get(Integer.parseInt(boatSprite.getId())).getSourceId() == 103) {
+                    Circle controlCircle = new Circle(10);
+                    controlCircle.setCenterX(0);
+                    controlCircle.setCenterY(0);
+                    controlCircle.setStroke(Color.INDIANRED);
+                    controlCircle.setFill(Color.TRANSPARENT);
+
+                    controlCircle.onMouseClickedProperty().setValue(event -> {
+                        boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
+                        resetViewButton.setDisable(false);
+                        Coordinate.setTrackingBoat(true);
+                    });
+
+                    stack.getChildren().add(controlCircle);
+
+//                    ImageView imgView = new ImageView();
+//                    Image sailorTom = new Image("sailertom.png");
+//
+//                    imgView.setImage(sailorTom);
+//                    imgView.setFitHeight(35);
+//                    imgView.setFitWidth(35);
+//                    imgView.setX(-10);
+//                    imgView.setY(0);
+//
+//                    stack.getChildren().add(imgView);
+                }
+
                 boats.add(stack);
 
 //                Path path = new Path();
@@ -389,7 +431,7 @@ public class RaceController {
                     paths.add(path);
                     absolutePaths.add(new ArrayList<>());
 
-                    lastHeadings.add(race.getBoats().get(i).getHeading() + 1);  // guarantee its different
+                    lastHeadings.add(race.getBoats().get(i).getHeading());
                 } else {
                     knowAllLocations = false;
                 }
@@ -548,15 +590,14 @@ public class RaceController {
             localTimeZone.setText(timeZoneWrapper.getRaceTimeZoneString());
             localTimeZone.setVisible(true);
         }
-
-
     }
 
     /**
      * Rotates the wind arrow based on the heading
      */
     private void rotateWindArrow() {
-        windArrow.setRotate(race.getWindHeading() + 180);
+        windArrow.setRotate(race.getWindHeading()
+        );
     }
 
     /**
@@ -761,6 +802,9 @@ public class RaceController {
         } else {
             raceTime = race.getExpectedStartTime() - race.getCurrentTime();
         }
+        System.out.println("expected: " + race.getExpectedStartTime());
+        System.out.println("current: " + race.getCurrentTime());
+        System.out.println(raceTime);
 
         raceHours = (int) TimeUnit.MILLISECONDS.toHours(raceTime);
         raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(raceTime) -

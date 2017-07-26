@@ -1,4 +1,6 @@
-package seng302.Race;
+package seng302.RaceObjects;
+
+import seng302.RaceObjects.CompoundMark;
 
 /**
  * Represents a section of the Race
@@ -29,7 +31,7 @@ public class Leg {
      * Get the bearing that the boats are travelling on the leg
      * @return the heading of the boat
      */
-    double getHeading() {
+    public double getHeading() {
         return heading;
     }
 
@@ -37,7 +39,7 @@ public class Leg {
      * Get the distance of the leg
      * @return the distance of the leg
      */
-    double getDistance() {
+    public double getDistance() {
         return distance;
     }
 
@@ -97,7 +99,7 @@ public class Leg {
      * @param start landmark at the start of the leg
      * @param dest landmark at the end of the leg
      */
-    Leg(CompoundMark start, CompoundMark dest) {
+    public Leg(CompoundMark start, CompoundMark dest) {
         this.start = start;
         this.dest = dest;
         distance = calculateDistance();

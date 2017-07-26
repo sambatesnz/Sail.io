@@ -3,9 +3,9 @@ package seng302.Race;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
-import seng302.Client.Messages.CourseLimit;
-import seng302.Controllers.Coordinate;
+import seng302.RaceObjects.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -38,6 +38,7 @@ public class Race {
     private Mark mapCenter;
     private boolean raceReady = false;
     private List<Integer> participants;
+    private LocalDateTime startTime;
     private long currentTime;
     private Mark viewMin;
     private Mark viewMax;
@@ -99,6 +100,12 @@ public class Race {
 
     public void setCurrentTime(long currentTime) {
         this.currentTime = currentTime;
+    }
+
+    public LocalDateTime getStartTime() { return startTime; }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public void setViewMinMax(Mark min, Mark max){
@@ -313,9 +320,9 @@ public class Race {
      */
     public List<Boat> getBoats() {
         if (!raceReady){
-            return new ArrayList<Boat>();
+            return new ArrayList<>();
         } else {
-            return new ArrayList<Boat>(boats.values());
+            return new ArrayList<>(boats.values());
         }
     }
 

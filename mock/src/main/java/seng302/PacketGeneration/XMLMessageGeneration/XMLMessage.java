@@ -43,7 +43,8 @@ public class XMLMessage extends BinaryMessage {
         System.arraycopy(versionNum, 0, output, XMLMessageUtility.MESSAGE_VERSION.getIndex(), XMLMessageUtility.MESSAGE_VERSION.getSize());
         System.arraycopy(ackNumber, 0, output, XMLMessageUtility.ACK_NUM.getIndex(), XMLMessageUtility.ACK_NUM.getSize());
         System.arraycopy(timestamp, 0, output, XMLMessageUtility.TIME_STAMP.getIndex(), XMLMessageUtility.TIME_STAMP.getSize());
-        System.arraycopy(xmlMsgSubType, 0, output, XMLMessageUtility.XML_MESSAGE_SUB_TYPE.getIndex(), XMLMessageUtility.XML_MESSAGE_SUB_TYPE.getSize());        System.arraycopy(seqNumber, 0, output, XMLMessageUtility.SEQUENCE_NUMBER.getIndex(), XMLMessageUtility.SEQUENCE_NUMBER.getSize());
+        System.arraycopy(xmlMsgSubType, 0, output, XMLMessageUtility.XML_MESSAGE_SUB_TYPE.getIndex(), XMLMessageUtility.XML_MESSAGE_SUB_TYPE.getSize());
+        System.arraycopy(seqNumber, 0, output, XMLMessageUtility.SEQUENCE_NUMBER.getIndex(), XMLMessageUtility.SEQUENCE_NUMBER.getSize());
         System.arraycopy(xmlTextLenByte, 0, output, XMLMessageUtility.XML_MESSAGE_LENGTH.getIndex(), XMLMessageUtility.XML_MESSAGE_LENGTH.getSize());
         System.arraycopy(xmlBytes, 0, output, XMLMessageUtility.XML_MESSAGE.getIndex(), xmlTextLenInt);
         return output;

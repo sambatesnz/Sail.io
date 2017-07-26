@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import seng302.Client.Messages.Message;
-import seng302.Race.Boat;
+import seng302.RaceObjects.Boat;
 import seng302.Race.Race;
 
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public class LocationMessageTest {
 
     @Test
     public void boatSpeedTest() {
-        Assert.assertEquals(40.0, race.getBoatsMap().get(101).getSpeed(), 0.1);
+        Assert.assertEquals(20578, race.getBoatsMap().get(101).getSpeed(), 0.1);
     }
 
     @Test

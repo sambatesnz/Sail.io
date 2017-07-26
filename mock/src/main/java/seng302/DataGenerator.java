@@ -3,9 +3,6 @@ package seng302;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-/**
- * Created by sha162 on 3/05/17.
- */
 public class DataGenerator {
 
     public String loadFile(String xml){

@@ -33,15 +33,16 @@ public class Server {
 
     private static class Generator extends Thread {
         private Socket socket;
-        private IServerData mockData;
+        private MockRace mockData;
         public Generator(Socket socket, IServerData mockData) throws IOException {
             this.socket = socket;
-            this.mockData = mockData;
+            this.mockData = (MockRace)mockData;
             System.out.println("New Connection From client");
         }
 
         public void run(){
             System.out.println("Connection established");
+            Delegator delegator = new Delegator(mockData.getRace());
             this.mockData.beginGeneratingData();
             InputStream in = null;
             try {
@@ -74,7 +75,10 @@ public class Server {
 
                         byte[] body = new byte[messageLen];
                         System.arraycopy(data,15, body,0, messageLen);
-                        System.out.println(byteArrayToInt(body, 0, 1));
+
+                        int messageCommand = byteArrayToInt(body, 0, 1);
+                        delegator.processCommand(messageCommand);
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

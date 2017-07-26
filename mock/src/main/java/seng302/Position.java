@@ -36,8 +36,6 @@ public class Position {
 //        this.y = y;
 //    }
 
-
-
     /**
      * Getter for the latitude.
      * @return the latitude as a double.

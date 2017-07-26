@@ -1,14 +1,11 @@
 
-package seng302.Client.Messages;
+package seng302.PacketParsing;
 
 
 import javafx.scene.paint.Color;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
-import seng302.Race.Boat;
-import seng302.Race.CompoundMark;
-import seng302.Race.Mark;
-import seng302.Race.Regatta;
+import seng302.RaceObjects.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -225,9 +222,7 @@ public class XMLParser {
                             if (nnm2.getLength() >= 5) {
                                 seqId = Integer.valueOf(nnm2.getNamedItem(SEQ_ID).getNodeValue());
                             }
-                            Mark m = new Mark(lat, lon);
-                            positions.add(m);
-                            markMap.put(sourceId, m);
+                            positions.add(new Mark(lat, lon, sourceId));
 //                            System.out.println(String.format("Name: %s, Lat: %f, Long: %f, SrcId: %d, SeqId: %d", name, lat, lon, sourceId, seqId));
                         }
                     }

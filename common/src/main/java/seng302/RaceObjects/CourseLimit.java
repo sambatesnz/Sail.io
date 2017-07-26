@@ -1,4 +1,4 @@
-package seng302.Client.Messages;
+package seng302.RaceObjects;
 
 /**
  * Created by osr13 on 12/05/17.

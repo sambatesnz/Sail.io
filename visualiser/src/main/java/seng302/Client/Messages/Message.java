@@ -1,17 +1,14 @@
 package seng302.Client.Messages;
 
-import seng302.Race.CompoundMark;
+import seng302.PacketParsing.XMLParser;
+import seng302.RaceObjects.CompoundMark;
 import seng302.Race.Race;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -93,7 +90,6 @@ public class Message {
      * @throws UnsupportedEncodingException
      */
     public void parseMessage() throws UnsupportedEncodingException {
-        System.out.println("packet about to be parsed!\n");
         switch (messageType) {
             case HEARTBEAT:
                 break;
@@ -136,7 +132,6 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    // TODO Bug fix so we can connect to csse stream 4941. Need to throttle the rate packets get processed to properly fix this
                     if (!race.isRaceReady()) {
                         race.setBoats(xmlParser.getBoats());
                     }
@@ -150,7 +145,8 @@ public class Message {
                     race.setMarks(xmlParser.getMarks());
                     race.setGates(compoundMarks);
                     race.setCourseOrder(xmlParser.getCourseOrder());
-                    startTime = xmlParser.getRaceStartTime();
+//                    startTime = xmlParser.getRaceStartTime();
+                    race.setStartTime(xmlParser.getRaceStartTime());
                     race.setRaceXMLReceived(true);
                     //race.setViewParams();
                     race.setViewReady(true);
