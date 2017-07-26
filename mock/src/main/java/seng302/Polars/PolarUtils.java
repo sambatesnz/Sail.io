@@ -1,0 +1,14 @@
+package seng302.Polars;
+
+/**
+ * Created by osr13 on 26/07/17.
+ */
+public class PolarUtils {
+
+
+    private PolarUtils(){}
+
+    public double getRelativeSpeed(double boat){
+        return 0.0;
+    }
+}

@@ -31,7 +31,7 @@ public class Race {
     private List<CourseLimit> boundaries;
     private short windHeading;
     private short startingWindSpeed;
-    private short windSpeed = 1700;
+    private int windSpeed;
     private int raceID;
     private char raceType;
     private int raceStatus = 0;
@@ -52,6 +52,7 @@ public class Race {
         // setWindHeading(190);
 
         setStartingWindSpeed();
+        this.windSpeed = this.startingWindSpeed;
         instantiateWindHeading();
 
         boats = getContestants();
@@ -148,7 +149,7 @@ public class Race {
         return 0;
     }
 
-    public short getWindSpeed() {   return this.windSpeed;    }
+    public int getWindSpeed() {   return this.windSpeed;    }
 
     /**
      *  Randomly selects a new wind speed ranging from five knots below and five knots above the
@@ -160,7 +161,7 @@ public class Race {
         int low = startingWindSpeed - 2600;
         int high = startingWindSpeed + 2600;
         int windVal = random.nextInt(high - low) + low;
-
+        this.windSpeed = windVal;
         return (short) windVal;
     }
 
@@ -368,6 +369,7 @@ public class Race {
                         }
                     } else {
                         boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
+
 //                        System.out.println(boat.getName() + " passed " + passed + ", now sailing to " +
 //                                legs.get(boat.getCurrentLegIndex()).getDest().getName() + " with a heading of " +
 //                                String.format("%.2f", legs.get(boat.getCurrentLegIndex()).getHeading()) + "°");
