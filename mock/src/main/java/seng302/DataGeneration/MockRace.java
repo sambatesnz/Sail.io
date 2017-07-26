@@ -24,8 +24,12 @@ public class MockRace implements IServerData {
 
     private Race race = new Race();
 
-    Random r = new Random();
     // Generate RaceStatusMessage from using properties of Race object.
+//    private BinaryMessage rsm;
+
+    public Race getRace() {
+        return race;
+    }
     private BinaryMessage rsm = new RaceStatusMessage(currentTimeMillis(),
                                                             race.getRaceID(),
                                                             race.getRaceStatus(),
@@ -54,6 +58,20 @@ public class MockRace implements IServerData {
     @Override
     public boolean ready() {
         return !bytes.isEmpty();
+    }
+
+    @Override
+    public void beginGeneratingData() {
+        timer.schedule(new XMLSender(), 0, 2000);
+        timer.schedule(new RSMSender(), 100, 2000);
+        timer.schedule(new BoatPosSender(), 1000, 100);
+        timer.schedule(new RaceRunner(), 2000, 100);
+    }
+
+    @Override
+    public void finishGeneratingData() {
+        System.out.println("Threads cancelled");
+        timer.cancel();
     }
 
     class XMLSender extends TimerTask {
@@ -113,6 +131,15 @@ public class MockRace implements IServerData {
     class RSMSender extends TimerTask {
         @Override
         public void run() {
+            rsm = new RaceStatusMessage(currentTimeMillis(),
+                    race.getRaceID(),
+                    race.getRaceStatus(),
+                    currentTimeMillis(),
+                    race.updateWindDirection(),
+                    race.retrieveWindSpeed(),   // retrieve a new randomly generated wind speed
+                    (char)(race.getBoats().size() + 48),
+                    race.getRaceType(),
+                    race.getBoats());
             bytes.add(rsm.createMessage());
 //            System.out.println("\n--------\nRace Status message packet created");
 //            System.out.println(Arrays.toString(rsm.createMessage()));

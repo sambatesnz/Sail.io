@@ -305,5 +305,37 @@ public class Boat {
     public boolean getHeadingChanged() {
         return headingChanged;
     }
+
+    /**
+     * Increments or decrements the boat heading by a set amount (currently 3 degrees but default)
+     * towards or away from the current wind direction based on the command upwind, or downwind.
+     * @param windDirection The current direction that the wind is heading
+     * @param upwind Whether to increment the heading towards (true) or away
+     *               from (false) the current wind direction
+     */
+    public void updateHeading(int windDirection, boolean upwind) {
+        int headingIncrement = 3;
+
+        double headingMinusWind = (360 + heading - windDirection) % 360;
+        if (upwind) {   // turning upwind
+            if (headingMinusWind > 180) {
+                heading += headingIncrement;
+            } else {
+                heading -= headingIncrement;
+            }
+        } else {        // turning downwind
+            if (headingMinusWind > 180) {
+                heading -= headingIncrement;
+            } else {
+                heading += headingIncrement;
+            }
+        }
+
+        if (heading > 359) {
+            heading -= 360;
+        } else if (heading < 0) {
+            heading += 360;
+        }
+    }
 }
 

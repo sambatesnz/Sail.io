@@ -14,6 +14,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -33,6 +34,7 @@ import seng302.Visualiser.WindArrow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -89,7 +91,7 @@ public class RaceController {
     private List<List<Point2D>> absolutePaths = new ArrayList<>();
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
-    private Polyline windArrow = new WindArrow();
+    private WindArrow windArrow = new WindArrow();
     private boolean showName = true;
     private boolean showSpeed = true;
     private boolean showFPS = true;
@@ -204,6 +206,7 @@ public class RaceController {
             @Override
             public void handle(long currentNanoTime) {
                 rotateWindArrow();
+                scaleWindArrow();
                 setUTC();
                 updateClock();
                 fpsCounter.update(currentNanoTime);
@@ -324,6 +327,8 @@ public class RaceController {
                 wake.getPoints().addAll(0.0, 0.0,
                         0.0, 1.0);
 
+
+
                 Circle tc = new Circle(2);
                 tc.setCenterX(0);
                 tc.setCenterY(0);
@@ -351,6 +356,29 @@ public class RaceController {
                 stack.getChildren().add(text);
                 stack.getChildren().add(wake);
                 stack.getChildren().add(tc);
+
+                // Temporary hard coding to differentiate between the boat in user control
+                if (race.getBoats().get(Integer.parseInt(boatSprite.getId())).getSourceID() == 103) {
+                    Circle controlCircle = new Circle(10);
+                    controlCircle.setCenterX(0);
+                    controlCircle.setCenterY(0);
+                    controlCircle.setStroke(Color.INDIANRED);
+                    controlCircle.setFill(Color.TRANSPARENT);
+
+                    stack.getChildren().add(controlCircle);
+
+//                    ImageView imgView = new ImageView();
+//                    Image sailorTom = new Image("sailertom.png");
+//
+//                    imgView.setImage(sailorTom);
+//                    imgView.setFitHeight(35);
+//                    imgView.setFitWidth(35);
+//                    imgView.setX(-10);
+//                    imgView.setY(0);
+//
+//                    stack.getChildren().add(imgView);
+                }
+
                 boats.add(stack);
 
 //                Path path = new Path();
@@ -547,8 +575,6 @@ public class RaceController {
             localTimeZone.setText(timeZoneWrapper.getRaceTimeZoneString());
             localTimeZone.setVisible(true);
         }
-
-
     }
 
     /**
@@ -556,6 +582,13 @@ public class RaceController {
      */
     private void rotateWindArrow() {
         windArrow.setRotate(race.getWindHeading() + 180);
+    }
+
+    /**
+     * Scales the wind arrow based on the wind speed
+     */
+    private void scaleWindArrow() {
+        windArrow.updateScaling(race.getWindSpeed());
     }
 
     /**
