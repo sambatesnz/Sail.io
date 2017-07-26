@@ -63,7 +63,7 @@ public class Race {
         currentOrder = observableArrayList(boats);
         positionStrings = FXCollections.observableArrayList();
         for (Boat boat : boats) {
-            int speed = (new Random().nextInt(5000)+100);
+            int speed = (new Random().nextInt(5000) + 100);
             boat.setSpeed(speed);
             boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
             boat.getMark().setLongitude(legs.get(0).getStart().getLongitude());
@@ -89,6 +89,7 @@ public class Race {
 
     /**
      * Setter for finishedBoat, mainly to allow for testing.
+     *
      * @param finishedBoats set the finished list of boats
      */
     public void setFinishedBoats(List<Boat> finishedBoats) {
@@ -97,6 +98,7 @@ public class Race {
 
     /**
      * Setter for current order, mainly to allow for testing.
+     *
      * @param currentOrder sets the current order of boats
      */
     public void setCurrentOrder(ObservableList<Boat> currentOrder) {
@@ -105,9 +107,12 @@ public class Race {
 
     /**
      * Getter for finished boat list.
+     *
      * @return finished boat list.
      */
-    public List<Boat> getFinishedBoats() { return finishedBoats; }
+    public List<Boat> getFinishedBoats() {
+        return finishedBoats;
+    }
 
 //    public double getWindHeading() {
 //        return windHeading;
@@ -116,21 +121,22 @@ public class Race {
     /**
      * Get the wind direction.
      * Chooses to take a gamble on whether or not to change the wind direction.
+     *
      * @return
      */
     public short updateWindDirection() {
         this.windHeading = (short) (windHeading + gambleWindDirection());
         if (this.windHeading > 359) {
             // if the wind heading is greater than or equal to 360, reset it back down to 0
-            this.windHeading = (short)(this.windHeading - 360);
+            this.windHeading = (short) (this.windHeading - 360);
         } else if (this.windHeading < 0) {
             // if the wind heading is less than 0, it needs to be reset back up to 360
-            this.windHeading = (short)(this.windHeading + 360);
+            this.windHeading = (short) (this.windHeading + 360);
         }
-        return (short)((this.windHeading * 65536) / 360);
+        return (short) ((this.windHeading * 65536) / 360);
     }
 
-    public short getWindHeading(){
+    public short getWindHeading() {
         return this.windHeading;
     }
 
@@ -151,17 +157,20 @@ public class Race {
             if (up) {
                 return 5;
             } else {
-                return - 5;
+                return -5;
             }
         }
         return 0;
     }
 
-    public int getWindSpeed() {   return this.windSpeed;    }
+    public int getWindSpeed() {
+        return this.windSpeed;
+    }
 
     /**
-     *  Randomly selects a new wind speed ranging from five knots below and five knots above the
-     *  original wind speed
+     * Randomly selects a new wind speed ranging from five knots below and five knots above the
+     * original wind speed
+     *
      * @return windVal, the new wind speed value
      */
     public short retrieveWindSpeed() {
@@ -192,6 +201,7 @@ public class Race {
 
     /**
      * Takes the list of finished boats and creates a list of strings.
+     *
      * @return positionStrings, an OberservableList of strings with in the order of finishers.
      */
     public ObservableList<String> getPositionStrings() {
@@ -210,6 +220,7 @@ public class Race {
     /**
      * Getter for the observableList currentOrder. Gets the current position of the boats and adds it to the boat
      * position attribute.
+     *
      * @return currentOrder as an observable list.
      */
     public ObservableList<Boat> getCurrentOrder() {
@@ -223,6 +234,7 @@ public class Race {
 
     /**
      * Sets the current direction of the wind
+     *
      * @param windHeading the direction that the wind is heading
      */
     public void setWindHeading(short windHeading) {
@@ -231,6 +243,7 @@ public class Race {
 
     /**
      * Getter for the list of compoundMarks
+     *
      * @return a list of compoundMarks
      */
     public List<CompoundMark> getCompoundMarks() {
@@ -239,6 +252,7 @@ public class Race {
 
     /**
      * Get the legs in the race
+     *
      * @return the legs in the race
      */
     public List<Leg> getLegs() {
@@ -247,6 +261,7 @@ public class Race {
 
     /**
      * Get the boats competing
+     *
      * @return the boats competing
      */
     public List<Boat> getBoats() {
@@ -255,6 +270,7 @@ public class Race {
 
     /**
      * Gets the boat identified by a particular source ID number
+     *
      * @param sourceID The number that identifies the boat
      * @return The boat identified with SourceID
      */
@@ -269,6 +285,7 @@ public class Race {
 
     /**
      * Creates an ArrayList of boats competing in the current race
+     *
      * @return The ArrayList of boats
      */
     private ArrayList<Boat> getContestants() {
@@ -284,6 +301,7 @@ public class Race {
 
     /**
      * Reads the course.xml file to get the attributes of things on the course
+     *
      * @param fileName the filename to parse
      */
     private void parseCourseXML(String fileName) {
@@ -307,7 +325,7 @@ public class Race {
 
             legs = new ArrayList<>();
             for (int i = 1; i < courseOrder.size(); i++) {
-                int startId = courseOrder.get(i-1);
+                int startId = courseOrder.get(i - 1);
                 int destId = courseOrder.get(i);
                 CompoundMark start = null;
                 CompoundMark dest = null;
@@ -327,6 +345,7 @@ public class Race {
 
     /**
      * Reads the Race.xml file to get the attributes of things of the race.
+     *
      * @param fileName the filename to parse
      */
     private void parseRaceXML(String fileName) {
@@ -341,6 +360,7 @@ public class Race {
 
     /**
      * Get the gates
+     *
      * @return the gates
      */
     public List<CompoundMark> getGates() {
@@ -397,16 +417,17 @@ public class Race {
                             return;
                         }
                     } else {
-                        boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
-
+                        if(boat.getSourceId() != 103) {
+                            boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
+                        }
 //                        System.out.println(boat.getName() + " passed " + passed + ", now sailing to " +
 //                                legs.get(boat.getCurrentLegIndex()).getDest().getName() + " with a heading of " +
 //                                String.format("%.2f", legs.get(boat.getCurrentLegIndex()).getHeading()) + "°");
 //                    }
                     }
                 }
-                boat.setHeadingChangedToFalse();
             }
+            boat.setHeadingChangedToFalse();
         }
         windHeadingChanged = false;
         windSpeedChanged = false;

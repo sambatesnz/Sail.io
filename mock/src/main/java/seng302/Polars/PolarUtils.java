@@ -23,7 +23,7 @@ public class PolarUtils {
         for(Integer angle: polarMap.keySet()){
             // find closest angle
             double d1 = abs(angle - angleRelative);
-            if (d1 <= 8) {
+            if (d1 <= 7.5) {
                 closestRefAngle = angle;
                 break;
             }

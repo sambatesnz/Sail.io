@@ -262,7 +262,7 @@ public class RaceController {
                 boats.get(i).getChildren().get(0).setRotate(race.getBoats().get(i).getHeading());
 
                 // Temporary hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(i).getSourceID() == 103) {
+                if (race.getBoats().get(i).getSourceId() == 103) {
                     updateNodeScale(boats.get(i).getChildren().get(4));
                 }
 
@@ -368,7 +368,7 @@ public class RaceController {
                 stack.getChildren().add(tc);
 
                 // Temporary hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(Integer.parseInt(boatSprite.getId())).getSourceID() == 103) {
+                if (race.getBoats().get(Integer.parseInt(boatSprite.getId())).getSourceId() == 103) {
                     Circle controlCircle = new Circle(10);
                     controlCircle.setCenterX(0);
                     controlCircle.setCenterY(0);

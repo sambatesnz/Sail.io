@@ -37,6 +37,10 @@ public class Boat {
         return boatName;
     }
 
+    /**
+     * Getter for the source ID, or the identification number, of the boat
+     * @return The number that the boat is identified by
+     */
     public int getSourceId() {
         return sourceId;
     }
@@ -218,12 +222,6 @@ public class Boat {
      * @param id The number that the boat will be identified by
      */
     public void setSourceID(int id) { this.sourceId = id; }
-
-    /**
-     * Getter for the source ID, or the identification number, of the boat
-     * @return The number that the boat is identified by
-     */
-    public int getSourceID() { return sourceId; }
 
     /**
      * Getter for the status of the boat:
