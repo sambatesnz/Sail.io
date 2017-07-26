@@ -6,15 +6,36 @@ import seng302.RaceObjects.Boat;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Math.abs;
+
 /**
  * Created by osr13 on 26/07/17.
  */
 public class PolarUtils {
 
-    private Map<Integer, PolarRatio> polarMap;
+    private PolarUtils(){}
 
-    private PolarUtils(){
-        polarMap = new HashMap<>();
+    public static void updateBoatSpeed(Boat boat, double windHeading, int windSpeed){
+        Map<Integer, PolarRatio> polarMap = generatePolarMap();
+        double diff = windHeading - boat.getHeading();
+        double angleRelative = abs(180-diff);
+        int closestRefAngle = 0;
+
+        for(Integer angle: polarMap.keySet()){
+            // find closest angle
+            double d1 = angle - angleRelative;
+            if (d1 < 15) {
+                closestRefAngle = angle;
+                break;
+            }
+        }
+        System.out.println(polarMap.get(closestRefAngle).getRatio());
+        int newSpeed = (int) (polarMap.get(closestRefAngle).getRatio() * windSpeed);
+        boat.setSpeed(newSpeed);
+    }
+
+    private static Map<Integer,PolarRatio> generatePolarMap() {
+        Map<Integer,PolarRatio> polarMap = new HashMap<>();
         polarMap.put(0, PolarRatio.ANGLE0);
         polarMap.put(15, PolarRatio.ANGLE15);
         polarMap.put(30, PolarRatio.ANGLE30);
@@ -28,18 +49,6 @@ public class PolarUtils {
         polarMap.put(150, PolarRatio.ANGLE150);
         polarMap.put(165, PolarRatio.ANGLE165);
         polarMap.put(180, PolarRatio.ANGLE180);
-    }
-
-    public void updateBoatSpeed(Boat boat, double windHeading, double windSpeed){
-        double angleRelative = (boat.getHeading() - windHeading) % 180; //TODO
-
-        for(Integer angle: polarMap.keySet()){
-            // find closest angle
-
-
-
-        }
-
-        //use angle found to get new boat speed from windspeed
+        return polarMap;
     }
 }

@@ -24,6 +24,7 @@ public class Boat {
     private String country;
     private int speed;               //mm/sec
     private boolean knowsBoatLocation;
+    private boolean headingChanged;
 
     /**
      * Gets the abbreviation of the name of the team's boat
@@ -69,6 +70,7 @@ public class Boat {
         this.knowsBoatLocation = false;
         this.mark = new Mark();
         this.raceTime = Integer.toUnsignedLong(0);
+        this.headingChanged = false;
     }
 
     public void setMark(Mark mark) {
@@ -298,6 +300,10 @@ public class Boat {
 
     public Mark getMark() {
         return mark;
+    }
+
+    public boolean getHeadingChanged() {
+        return headingChanged;
     }
 }
 

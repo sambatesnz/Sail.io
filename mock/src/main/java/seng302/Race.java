@@ -3,6 +3,7 @@ package seng302;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seng302.PacketParsing.XMLParser;
+import seng302.Polars.PolarUtils;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.CourseLimit;
@@ -32,6 +33,7 @@ public class Race {
     private short windHeading;
     private short startingWindSpeed;
     private int windSpeed;
+    private Boolean windHeadingChanged = false;
     private int raceID;
     private char raceType;
     private int raceStatus = 0;
@@ -41,7 +43,7 @@ public class Race {
     private static final int TEN_KNOTS = 5145;
     private static final int FORTY_KNOTS = 20577;
     private static final int FIVE_KNOTS = 2573;
-    private static final int DIRECTION_CHANGE_PROB = 10;
+    private static final int DIRECTION_CHANGE_PROB = 100;
 
     /**
      * Constructor for the race class.
@@ -143,6 +145,7 @@ public class Race {
         if (changeVal) {
             // binary up or down decision
             boolean up = random.nextInt(2) == 0;
+            windHeadingChanged = true;
 
             if (up) {
                 return 5;
@@ -311,17 +314,13 @@ public class Race {
      * @param fileName the filename to parse
      */
     private void parseRaceXML(String fileName) {
-
         try {
             RaceCreator rc = new RaceCreator(fileName);
-
             raceID = rc.getRaceID();
             raceType = rc.getRaceType();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     /**
@@ -344,6 +343,14 @@ public class Race {
                 boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed()/1000*distanceMultiplier);
 
                 //todo update boat speed
+
+//                if windHeading or boat.getHeading() has changed:
+//                    reevaluate the speed;
+//                    else do nothing.
+                if (windHeadingChanged || boat.getHeadingChanged()) {
+                    PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
+                }
+
 
                 //Increments the the distance by the speed
                 boat.getMark().setX(boat.getX() + (boat.getSpeed()/1000)*sin(toRadians(boat.getHeading()))*movementMultiplier);
@@ -383,6 +390,7 @@ public class Race {
                 }
             }
         }
+        windHeadingChanged = false;
     }
 
     public List<CourseLimit> getBoundaries() {

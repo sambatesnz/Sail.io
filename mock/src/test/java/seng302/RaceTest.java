@@ -45,18 +45,11 @@ public class RaceTest {
         int sog = 5;
         byte[] output;
         byte[] ans = new byte[4];
-
         output = PacketGenerationUtils.shortToTwoBytes(sog);
-
         System.arraycopy(output, 0, ans, 0, 2);
-
         System.out.println(Arrays.toString(ans));
-
         int output_num = ByteBuffer.wrap(ans).order(ByteOrder.LITTLE_ENDIAN).getInt();
-
         assertEquals(output_num, sog);
-
-
     }
 
 }
