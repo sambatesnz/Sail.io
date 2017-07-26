@@ -446,7 +446,6 @@ public class RaceController {
         }
         group.getChildren().addAll(gates);
 
-
         for (int i = 0; i < gates.size(); i++) {
             gates.get(i).setStartX(Coordinate.getRelativeX(race.getGates().get(i).getMarks().get(0).getX()));
             gates.get(i).setStartY(Coordinate.getRelativeY(race.getGates().get(i).getMarks().get(0).getY()));

@@ -39,8 +39,8 @@ public class LocationMessage{
         heading = Message.byteArrayToInt(bytes, 28, 2) * 360 / 65536.0;
         speedOverGround = Math.toIntExact((long) (Message.byteArrayToInt(bytes, 38, 2) * 1.9438444924574 / 1000));
 
-        this.race = race;
         boatDict = race.getBoatsMap();
+        this.race = race;
 
         setBoatLocation();
     }
@@ -58,6 +58,12 @@ public class LocationMessage{
             boatDict.get(sourceID).setSpeed(speedOverGround);
             boatDict.get(sourceID).setHeading(heading);
             boatDict.get(sourceID).setKnowsBoatLocation(true);
+        } else if (race.getMarks() != null && race.getMarks().containsKey(sourceID)) {
+            Mark mark = race.getMarks().get(sourceID);
+            mark.setLatitude(latitude);
+            mark.setLongitude(longitude);
+            mark.setY(mark.convertToY(latitude));
+            mark.setX(mark.convertToX(longitude));
         }
     }
 }

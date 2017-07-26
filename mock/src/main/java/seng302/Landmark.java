@@ -37,20 +37,20 @@ public class Landmark {
         return color;
     }
 
-    /**
-     * Get the landmarks x coordinate
-     * @return the landmarks x coordinate
-     */
-    public double getX() {
-        return this.positions.get(0).getX();
-    }
-
     public double getXByIndex(int i) {
         return this.positions.get(i).getX();
     }
 
     public double getYByIndex(int i) {
         return this.positions.get(i).getY();
+    }
+
+    /**
+     * Get the landmarks x coordinate
+     * @return the landmarks x coordinate
+     */
+    public double getX() {
+        return this.positions.get(0).getX();
     }
     /**
      * Get the landmarks y coordinate

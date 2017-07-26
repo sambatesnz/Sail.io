@@ -147,6 +147,7 @@ public class Message {
                     race.setBoundaries(xmlParser.getCourseLimits());
                     List<CompoundMark> compoundMarks = xmlParser.getCourseLayout();
                     race.setCompoundMarks(compoundMarks);
+                    race.setMarks(xmlParser.getMarks());
                     race.setGates(compoundMarks);
                     race.setCourseOrder(xmlParser.getCourseOrder());
                     startTime = xmlParser.getRaceStartTime();

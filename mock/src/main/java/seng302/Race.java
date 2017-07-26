@@ -110,7 +110,7 @@ public class Race {
     /**
      * Get the wind direction.
      * Chooses to take a gamble on whether or not to change the wind direction.
-     * @return
+     * @return the wind direction
      */
     public short getWindDirection() {
         this.windHeading = (short) (windHeading + gambleWindDirection());
@@ -333,6 +333,8 @@ public class Race {
     public void updateBoats() {
         double distanceMultiplier = 1;
         double movementMultiplier = 1;
+
+//        this.landmarks.get(0).getPositions().get(0).setX((new Random()));
 
         for (Boat boat : boats) {
             if (!finishedBoats.contains(boat)) {

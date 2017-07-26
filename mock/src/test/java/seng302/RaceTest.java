@@ -2,13 +2,8 @@ package seng302;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
+import static junit.framework.TestCase.assertTrue;
 
-import static junit.framework.TestCase.assertEquals;
-
-/**
- * Created by msi52 on 17/07/17.
- */
 public class RaceTest {
 
     private Race race = new Race();
@@ -33,7 +28,7 @@ public class RaceTest {
             }
         }
 
-        assertEquals(greatestWindVal - lowestWindVal <= TEN_KNOTS, true);
+        assertTrue(greatestWindVal - lowestWindVal <= TEN_KNOTS);
     }
 
 }
