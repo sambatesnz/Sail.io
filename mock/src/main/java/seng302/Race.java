@@ -64,7 +64,7 @@ public class Race {
         Calendar date = Calendar.getInstance();
         long t= date.getTimeInMillis();
 
-        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS / 2);
+        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS / 4);
 
 
         boats = getContestants();
@@ -401,21 +401,15 @@ public class Race {
 
             for (Boat boat : boats) {
                 if (!finishedBoats.contains(boat)) {
-                    boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 * distanceMultiplier);
+                    boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
 
-                    //todo update boat speed
-
-//                if windHeading or boat.getHeading() has changed:
-//                    reevaluate the speed;
-//                    else do nothing.
                     if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
                         PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
                     }
 
-
                     //Increments the the distance by the speed
-                    boat.getMark().setX(boat.getX() + (boat.getSpeed() / 1000) * sin(toRadians(boat.getHeading())) * movementMultiplier);
-                    boat.getMark().setY(boat.getY() + (boat.getSpeed() / 1000) * cos(toRadians(boat.getHeading())) * movementMultiplier);
+                    boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
+                    boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
                     if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {
                         String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
                         boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
