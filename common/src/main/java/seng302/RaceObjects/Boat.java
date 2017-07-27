@@ -343,6 +343,11 @@ public class Boat {
         this.headingChanged = false;
     }
 
+
+    /**
+     * Converts and then returns current boat speed (originally in mm/sec) in knots.
+     * @return boat speed in knots
+     */
     public double getSpeedInKnots() {
         double val = speed * 1.9438444924574 / 1000;
         DecimalFormat df = new DecimalFormat("#.#");
