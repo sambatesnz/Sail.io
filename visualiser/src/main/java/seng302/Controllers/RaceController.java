@@ -244,11 +244,11 @@ public class RaceController {
     private void updateBoatPositions() {
         for (int i = 0; i < boats.size(); i++) {
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
-                double boatSpeed = race.getBoats().get(i).getSpeedInKnots();
+                double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
                 String speed = "";
                 String name = "";
                 if (showSpeed) {
-                    speed = String.valueOf(boatSpeed) + " knots";
+                    speed = String.valueOf(race.getBoats().get(i).getSpeedInKnots()) + " knots";
                 }
                 if (showName) {
                     name = race.getBoats().get(i).getShortName();
