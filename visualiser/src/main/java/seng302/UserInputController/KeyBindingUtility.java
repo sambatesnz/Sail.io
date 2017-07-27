@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import seng302.PacketGeneration.BinaryMessage;
 
-
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;

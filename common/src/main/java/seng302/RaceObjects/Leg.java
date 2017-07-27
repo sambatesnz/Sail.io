@@ -1,7 +1,5 @@
 package seng302.RaceObjects;
 
-import seng302.RaceObjects.CompoundMark;
-
 /**
  * Represents a section of the Race
  */

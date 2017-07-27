@@ -3,8 +3,6 @@ package seng302.Client.Messages;
 
 import seng302.Race.Race;
 
-import java.util.Arrays;
-
 /**
  * Class that holds anc can update the details for a race given by a race status packet.
  * Passes on the boat status to the BoatStatusMessage class.

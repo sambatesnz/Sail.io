@@ -4,9 +4,6 @@ import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.PacketGenerationUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /**
  * For the Creation of the Boat Location Message Packets
  * Packet body size should be 56 bytes

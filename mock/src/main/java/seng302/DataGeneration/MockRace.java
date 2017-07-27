@@ -11,7 +11,10 @@ import seng302.RaceObjects.Boat;
 import seng302.XMLCreation.RaceXMLCreator;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.NoSuchElementException;
+import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.lang.System.currentTimeMillis;

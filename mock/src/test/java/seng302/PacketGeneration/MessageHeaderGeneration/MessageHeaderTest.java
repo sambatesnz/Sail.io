@@ -1,7 +1,6 @@
 package seng302.PacketGeneration.MessageHeaderGeneration;
 
 import org.junit.Test;
-
 import seng302.PacketGeneration.MessageHeaderGenerations.HeaderByteValues;
 import seng302.PacketGeneration.MessageHeaderGenerations.MessageHeader;
 import seng302.PacketGeneration.PacketUtils;

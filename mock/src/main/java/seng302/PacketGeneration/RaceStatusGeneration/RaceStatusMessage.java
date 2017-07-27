@@ -6,7 +6,6 @@ import seng302.PacketGeneration.PacketGenerationUtils;
 import seng302.RaceObjects.Boat;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.List;
 
 /**

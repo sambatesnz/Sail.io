@@ -1,11 +1,9 @@
 package seng302.Client;
-import seng302.Client.Messages.*;
+
+import seng302.Client.Messages.Message;
 import seng302.Race.Race;
 import seng302.UserInputController.KeyBindingUtility;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.Socket;

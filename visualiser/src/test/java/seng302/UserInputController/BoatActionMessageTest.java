@@ -1,7 +1,6 @@
 package seng302.UserInputController;
 
 import org.junit.Test;
-import seng302.PacketGeneration.PacketGenerationUtils.*;
 import seng302.PacketGeneration.PacketUtils;
 
 import java.util.Random;

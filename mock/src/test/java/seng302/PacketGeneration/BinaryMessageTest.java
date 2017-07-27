@@ -4,7 +4,6 @@ import org.junit.Test;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationUtility;
 
-
 import java.util.Random;
 import java.util.zip.CRC32;
 

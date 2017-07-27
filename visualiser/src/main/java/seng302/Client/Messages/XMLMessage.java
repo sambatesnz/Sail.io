@@ -1,6 +1,6 @@
 package seng302.Client.Messages;
 
-import java.io.*;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Class that extracts an XML message from an XML packet, and packages it into

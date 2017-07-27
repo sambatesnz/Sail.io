@@ -2,6 +2,9 @@ package seng302.RaceObjects;
 
 import javafx.scene.paint.Color;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 /**
  * Represent a boat competing in yacht race
  */
@@ -338,6 +341,13 @@ public class Boat {
 
     public void setHeadingChangedToFalse() {
         this.headingChanged = false;
+    }
+
+    public double getSpeedInKnots() {
+        double val = speed * 1.9438444924574 / 1000;
+        DecimalFormat df = new DecimalFormat("#.#");
+        df.setRoundingMode(RoundingMode.CEILING);
+        return Double.valueOf(df.format(val));
     }
 }
 

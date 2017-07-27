@@ -1,8 +1,8 @@
 package seng302.Client.Messages;
 
 import seng302.PacketParsing.XMLParser;
-import seng302.RaceObjects.CompoundMark;
 import seng302.Race.Race;
+import seng302.RaceObjects.CompoundMark;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

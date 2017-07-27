@@ -5,9 +5,10 @@ import seng302.PacketGeneration.PacketGenerationUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
 import java.util.Arrays;
-import static junit.framework.TestCase.assertTrue;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class RaceTest {
 

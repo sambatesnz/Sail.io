@@ -8,13 +8,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -25,16 +24,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import seng302.Client.Client;
+import seng302.Race.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.Mark;
-import seng302.Race.Race;
 import seng302.Visualiser.FPSCounter;
 import seng302.Visualiser.WindArrow;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -195,7 +193,7 @@ public class RaceController {
         });
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         speedCol.setCellValueFactory(p -> {
-            String speed = String.valueOf(p.getValue().getSpeed());
+            String speed = String.valueOf(p.getValue().getSpeedInKnots());
             return new ReadOnlyObjectWrapper<>(speed);
         });
     }
@@ -246,7 +244,7 @@ public class RaceController {
     private void updateBoatPositions() {
         for (int i = 0; i < boats.size(); i++) {
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
-                double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
+                double boatSpeed = race.getBoats().get(i).getSpeedInKnots();
                 String speed = "";
                 String name = "";
                 if (showSpeed) {
