@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
 import seng302.RaceObjects.Boat;
 
 
@@ -32,7 +33,6 @@ public class BoatSprite {
         initaliseControlCircle();
         initialiseSail();
         stack = new Pane();
-
         stack.getChildren().add(boatIcon);
         stack.getChildren().add(text);
         stack.getChildren().add(wake);
@@ -81,13 +81,20 @@ public class BoatSprite {
 
     private void initialiseSail(){
         sail = new Polyline();
+//        sail.getTransforms().addAll(new Scale(3, 3));
         sail.setStroke(Color.RED);
         for(int i=0; i<360; i++){
             sail.getPoints().addAll(Math.sin(Math.toRadians(i)*2), i/22.5);
         }
     }
 
-//    public update
+    public void waveSail(){
+        sail.setStroke(Color.GREEN);
+        for(int i=0; i<720; i += 2){
+            sail.getPoints().set(i, Math.log(i+1)*Math.sin(Math.toRadians((System.currentTimeMillis()+i)/1.0d)));
+            sail.getPoints().set(i + 1, i/45d);
+        }
+    }
 
 
 

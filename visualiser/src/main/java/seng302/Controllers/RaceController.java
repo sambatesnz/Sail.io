@@ -17,12 +17,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import seng302.Client.Client;
 import seng302.Race.Race;
 import seng302.RaceObjects.Boat;
@@ -124,7 +122,7 @@ public class RaceController {
     private int EARTH_RADIUS = 6371;
     private int METERS_CONVERSION = 1000;
     private final int SPARKLINEHEIGHT = 239;
-
+    private final int MULTIPLICATIVE_IDENTITY = 1;
     private FPSCounter fpsCounter;
 
 
@@ -164,7 +162,7 @@ public class RaceController {
 
 
         resetViewButton.setLayoutX(14);
-        resetViewButton.setLayoutY(Coordinate.getWindowHeightY() - 100);
+        resetViewButton.setLayoutY(Coordinate.getWindowHeightY() - MULTIPLICATIVE_IDENTITY * 100);
         resetViewButton.setVisible(true);
         resetViewButton.setDisable(true);
 
@@ -279,10 +277,14 @@ public class RaceController {
 
                 //Sails
 
-                if (race.getBoats().get(i).isSailsOut()){
-                    boats.get(i).getStack().getChildren().get(5).setRotate(race.getWindHeading() + 90);
-                    boats.get(i).getStack().getChildren().get(2).setLayoutX(((16) * (1 / (1 + Coordinate.getZoom() * 0.9))) * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
-                    boats.get(i).getStack().getChildren().get(2).setLayoutY(((16) * (1 / (1 + Coordinate.getZoom() * 0.9))) * Math.cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                if (true){//race.getBoats().get(i).isSailsOut()){
+                    System.out.println(race.getBoats().get(i).isSailsOut());
+                    boats.get(i).waveSail();
+                    boats.get(i).getStack().getChildren().get(5).setRotate(race.getWindHeading());
+                    boats.get(i).getStack().getChildren().get(5).setLayoutX((16 * (1 / (1 + Coordinate.getZoom() * 0.9)))
+                            * Math.sin(-Math.toRadians(race.getWindHeading())));
+                    boats.get(i).getStack().getChildren().get(5).setLayoutY((16 * (1 / (1 + Coordinate.getZoom() * 0.9)))
+                            * Math.cos(-Math.toRadians(race.getWindHeading())));
                 }
             }
         }
@@ -328,13 +330,15 @@ public class RaceController {
         if(race.boatsReady() && !boatMetaDataInitialised && race.isRaceReady()){
             for (int i = 0; i < race.getBoats().size(); i++) {
                 BoatSprite boatSprite = new BoatSprite(race.getBoats().get(i));
-                boats.add(boatSprite);
-
-//                boatSprite.onMousePressedProperty().setValue(event -> {
-//                    boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
+//                boatSprite.getStack().getChildren().get(0).setId(Integer.toString(i));
+//                boatSprite.getStack().getChildren().get(0).onMousePressedProperty().setValue(event -> {
+//                    boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getStack().getChildren().get(0).getId()));
 //                    resetViewButton.setDisable(false);
 //                    Coordinate.setTrackingBoat(true);
 //                });
+                boats.add(boatSprite);
+
+
             }
 ////                Path path = new Path();
 ////                path.setStroke(race.getBoats().get(i).getColour());
@@ -556,8 +560,8 @@ public class RaceController {
         List<Boat> boats = race.getBoats();
 
         boats.sort((o1, o2) -> o1.getCurrentLegIndex()>o2.getCurrentLegIndex()?-1:o1.getCurrentLegIndex()<=o2.getCurrentLegIndex()?1: 0);
-        for (int i = 0; i < boats.size(); i++) {
-            int position = i + 1;
+        for (int i = 0; i < boats.size(); i += MULTIPLICATIVE_IDENTITY) {
+            int position = i + MULTIPLICATIVE_IDENTITY;
             boats.get(i).setPosition(position);
         }
 
@@ -637,7 +641,7 @@ public class RaceController {
             boundary.getPoints().add(Coordinate.getRelativeY(race.getBoundaries().get(i).getY()));
         }
         boundary.setFill(Color.LIGHTBLUE);
-        boundary.setOpacity(0.5);
+        boundary.setOpacity(MULTIPLICATIVE_IDENTITY/2);
         return boundary;
     }
 
