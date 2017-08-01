@@ -31,6 +31,7 @@ public class BoatSprite {
         tc.setCenterX(0);
         initaliseControlCircle();
         initialiseSail();
+        stack = new Pane();
 
         stack.getChildren().add(boatIcon);
         stack.getChildren().add(text);
