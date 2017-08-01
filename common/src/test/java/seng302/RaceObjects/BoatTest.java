@@ -1,7 +1,6 @@
-package RaceObjects;
+package seng302.RaceObjects;
 
 import org.junit.Test;
-import seng302.RaceObjects.Boat;
 
 import static junit.framework.TestCase.assertEquals;
 

@@ -5,6 +5,8 @@ import javafx.scene.paint.Color;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+import static java.lang.Math.abs;
+
 /**
  * Represent a boat competing in yacht race
  */
@@ -308,6 +310,23 @@ public class Boat {
 
     public boolean getHeadingChanged() {
         return headingChanged;
+    }
+
+    public void tackOrGybe(int windDirection) {
+
+        double headingDif = (360 + heading - windDirection) % 360;
+        double finalHeading;
+        boolean addHeading;
+        if (headingDif < 90) {      // Tack counter-clockwise
+            finalHeading = 360 - headingDif;
+            addHeading = false;
+        } else if (headingDif > 270 && headingDif < 360) { // Tack clockwise
+            finalHeading = 360 - headingDif;
+            addHeading = true;
+        } else if (headingDif > 90 && headingDif < 180) {   // Gybe clockwise
+            finalHeading =
+        }
+
     }
 
     /**

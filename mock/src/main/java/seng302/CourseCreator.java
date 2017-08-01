@@ -7,7 +7,7 @@
 //import org.w3c.dom.Node;
 //import org.w3c.dom.NodeList;
 //import org.xml.sax.SAXException;
-//import seng302.RaceObjects.CompoundMark;
+//import seng302.seng302.RaceObjects.CompoundMark;
 //
 //import javax.xml.parsers.DocumentBuilder;
 //import javax.xml.parsers.DocumentBuilderFactory;

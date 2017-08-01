@@ -1,6 +1,6 @@
 //package seng302;
 //
-//import seng302.RaceObjects.CompoundMark;
+//import seng302.seng302.RaceObjects.CompoundMark;
 //
 ///**
 // * Represents a section of the Race
