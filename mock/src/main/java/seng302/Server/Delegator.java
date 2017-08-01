@@ -21,9 +21,11 @@ public class Delegator {
         } else if (messageCommand == BoatAction.DOWNWIND.getBoatAction()) {
             changeBoatHeading(boatID, false);
         } else if (messageCommand == BoatAction.SAILS_IN.getBoatAction()) {
-            //  TODO
+            Boat boat = race.getBoatByID(boatID);
+            boat.setSailsOut(false);
         } else if (messageCommand == BoatAction.SAILS_OUT.getBoatAction()) {
-            //  TODO
+            Boat boat = race.getBoatByID(boatID);
+            boat.setSailsOut(true);
         }
     }
 
