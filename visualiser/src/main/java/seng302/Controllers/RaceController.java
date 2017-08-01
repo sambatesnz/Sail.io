@@ -84,7 +84,7 @@ public class RaceController {
 
     private Race race;
 
-    private List<Pane> boats = new ArrayList<>();
+    private List<BoatSprite> boats = new ArrayList<>();
     private List<Rectangle> compoundMarks = new ArrayList<>();
     private List<Line> gates = new ArrayList<>();
     private List<List<Point2D>> absolutePaths = new ArrayList<>();
@@ -255,27 +255,35 @@ public class RaceController {
                     name = race.getBoats().get(i).getShortName();
                 }
                 //Position of boat, wake and annotations.
-                boats.get(i).setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
-                boats.get(i).setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
-                updateNodeScale(boats.get(i).getChildren().get(0));
-                boats.get(i).getChildren().get(0).setRotate(race.getBoats().get(i).getHeading());
+                boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
+                boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
+                updateNodeScale(boats.get(i).getStack().getChildren().get(0));
+                boats.get(i).getStack().getChildren().get(0).setRotate(race.getBoats().get(i).getHeading());
 
                 // Temporary hard coding to differentiate between the boat in user control
                 if (race.getBoats().get(i).getSourceId() == 103) {
-                    updateNodeScale(boats.get(i).getChildren().get(4));
+                    updateNodeScale(boats.get(i).getStack().getChildren().get(4));
                 }
 
                 //Boats wake
-                boats.get(i).getChildren().set(2, newWake(boatSpeed));
-                updateNodeScale(boats.get(i).getChildren().get(2));
-                boats.get(i).getChildren().get(2).setRotate(race.getBoats().get(i).getHeading());
-                boats.get(i).getChildren().get(2).setLayoutX(((9 + boatSpeed) * (1 / (1 + Coordinate.getZoom() * 0.9))) * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
-                boats.get(i).getChildren().get(2).setLayoutY(((9 + boatSpeed) * (1 / (1 + Coordinate.getZoom() * 0.9))) * Math.cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                boats.get(i).getStack().getChildren().set(2, newWake(boatSpeed));
+                updateNodeScale(boats.get(i).getStack().getChildren().get(2));
+                boats.get(i).getStack().getChildren().get(2).setRotate(race.getBoats().get(i).getHeading());
+                boats.get(i).getStack().getChildren().get(2).setLayoutX(((9 + boatSpeed) * (1 / (1 + Coordinate.getZoom() * 0.9))) * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                boats.get(i).getStack().getChildren().get(2).setLayoutY(((9 + boatSpeed) * (1 / (1 + Coordinate.getZoom() * 0.9))) * Math.cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
 
                 //Boat annotations (name and speed)
-                boats.get(i).getChildren().set(1, new Text(name + " " + speed));
-                boats.get(i).getChildren().get(1).setTranslateX(10);
-                boats.get(i).getChildren().get(1).setTranslateY(0);
+                boats.get(i).getStack().getChildren().set(1, new Text(name + " " + speed));
+                boats.get(i).getStack().getChildren().get(1).setTranslateX(10);
+                boats.get(i).getStack().getChildren().get(1).setTranslateY(0);
+
+                //Sails
+
+                if (race.getBoats().get(i).isSailsOut()){
+                    boats.get(i).getStack().getChildren().get(5).setRotate(race.getWindHeading() + 90);
+                    boats.get(i).getStack().getChildren().get(2).setLayoutX(((16) * (1 / (1 + Coordinate.getZoom() * 0.9))) * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                    boats.get(i).getStack().getChildren().get(2).setLayoutY(((16) * (1 / (1 + Coordinate.getZoom() * 0.9))) * Math.cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                }
             }
         }
     }
@@ -320,7 +328,7 @@ public class RaceController {
         if(race.boatsReady() && !boatMetaDataInitialised && race.isRaceReady()){
             for (int i = 0; i < race.getBoats().size(); i++) {
                 BoatSprite boatSprite = new BoatSprite(race.getBoats().get(i));
-                boats.add(boatSprite.getStack());
+                boats.add(boatSprite);
 
 //                boatSprite.onMousePressedProperty().setValue(event -> {
 //                    boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
@@ -338,8 +346,10 @@ public class RaceController {
 ////                lastHeadings.add(race.getBoats().get(i).getHeading() + 1);  // guarantee its different
 //
 //            }
-
-            group.getChildren().addAll(boats);
+            for (BoatSprite boat : boats){
+                group.getChildren().addAll(boat.getStack());
+            }
+//            group.getChildren().addAll(boats);
 //            for (Path path: paths) {
 //                group.getChildren().add(path);
 //            }

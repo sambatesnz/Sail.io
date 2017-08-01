@@ -9,6 +9,7 @@ import seng302.RaceObjects.Boat;
 
 
 public class BoatSprite {
+    private Pane stack;
     private Boat boatObject;
     private Polyline boatIcon;
     private Polyline wake;
@@ -16,6 +17,7 @@ public class BoatSprite {
     private Color boatColour;
     private Circle tc;
     private Circle controlCircle;
+    private Polyline sail;
     private int id;
 
 
@@ -28,16 +30,17 @@ public class BoatSprite {
         tc.setCenterY(0);
         tc.setCenterX(0);
         initaliseControlCircle();
+        initialiseSail();
 
-    }
-
-    public Pane getStack(){
-        Pane stack = new Pane();
         stack.getChildren().add(boatIcon);
         stack.getChildren().add(text);
         stack.getChildren().add(wake);
         stack.getChildren().add(tc);
         stack.getChildren().add(controlCircle);
+        stack.getChildren().add(sail);
+    }
+
+    public Pane getStack(){
         return stack;
     }
 
@@ -74,6 +77,17 @@ public class BoatSprite {
             controlCircle.setFill(Color.TRANSPARENT);
         }
     }
+
+    private void initialiseSail(){
+        sail = new Polyline();
+        sail.setStroke(Color.RED);
+        for(int i=0; i<360; i++){
+            sail.getPoints().addAll(Math.sin(Math.toRadians(i)*2), i/22.5);
+        }
+    }
+
+//    public update
+
 
 
 
