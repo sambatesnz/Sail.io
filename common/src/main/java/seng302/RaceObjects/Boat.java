@@ -313,18 +313,40 @@ public class Boat {
     }
 
     public void tackOrGybe(int windDirection) {
-
         double headingDif = (360 + heading - windDirection) % 360;
-        double finalHeading;
-        boolean addHeading;
+        System.out.println(headingDif);
+        double finalHeading = heading;
+        boolean addHeading = false;
         if (headingDif < 90) {      // Tack counter-clockwise
-            finalHeading = 360 - headingDif;
+            finalHeading = windDirection + 360 - headingDif;
             addHeading = false;
         } else if (headingDif > 270 && headingDif < 360) { // Tack clockwise
-            finalHeading = 360 - headingDif;
+            finalHeading = windDirection + 360 - headingDif;
             addHeading = true;
         } else if (headingDif > 90 && headingDif < 180) {   // Gybe clockwise
-            finalHeading =
+            finalHeading = windDirection + 180 + (180 - headingDif);
+            addHeading = true;
+        } else if (headingDif < 270 && headingDif > 180) {  // Gybe counter-clockwise
+            finalHeading = windDirection + 180 - (headingDif - 180);
+            addHeading = false;
+        }
+        finalHeading = (360 + finalHeading) % 360;
+        System.out.println(finalHeading);
+        System.out.println(addHeading);
+        if (addHeading) {
+            while (heading < finalHeading) {
+                heading += 3;
+                if (heading > 360) {
+                    heading -= 360;
+                }
+            }
+        } else {
+            while (heading > finalHeading) {
+                heading -= 3;
+                if (heading < 0) {
+                    heading += 360;
+                }
+            }
         }
 
     }
@@ -340,7 +362,7 @@ public class Boat {
         int headingIncrement = 3;
 
         double headingMinusWind = (360 + heading - windDirection) % 360;
-        if (!upwind) {   // turning upwind
+        if (upwind) {   // turning upwind
             downwindMemory = false;
             if (upwindMemory && heading == windDirection) {
                 if (plusMemory) {
