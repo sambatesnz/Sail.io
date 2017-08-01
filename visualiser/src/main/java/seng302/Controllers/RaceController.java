@@ -21,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import seng302.Client.Client;
 import seng302.Race.Race;
 import seng302.RaceObjects.Boat;
@@ -276,15 +277,16 @@ public class RaceController {
                 boats.get(i).getStack().getChildren().get(1).setTranslateY(0);
 
                 //Sails
-
-                if (true){//race.getBoats().get(i).isSailsOut()){
+                Node sail = boats.get(i).getStack().getChildren().get(5);
+                if (!race.getBoats().get(i).isSailsOut()){
                     System.out.println(race.getBoats().get(i).isSailsOut());
-                    boats.get(i).waveSail();
-                    boats.get(i).getStack().getChildren().get(5).setRotate(race.getWindHeading());
-                    boats.get(i).getStack().getChildren().get(5).setLayoutX((16 * (1 / (1 + Coordinate.getZoom() * 0.9)))
-                            * Math.sin(-Math.toRadians(race.getWindHeading())));
-                    boats.get(i).getStack().getChildren().get(5).setLayoutY((16 * (1 / (1 + Coordinate.getZoom() * 0.9)))
-                            * Math.cos(-Math.toRadians(race.getWindHeading())));
+                    boats.get(i).sailIn();
+                    sail.getTransforms().clear(); //Credit Ray
+                    sail.getTransforms().add(new Rotate(race.getWindHeading() + 180, 0,0)); // Credit 이동헌
+                }else {
+                    boats.get(i).sailOut();
+                    sail.getTransforms().clear(); //Credit Ray
+                    sail.getTransforms().add(new Rotate(race.getWindHeading()+90, 0,0)); // Credit 이동헌
                 }
             }
         }
