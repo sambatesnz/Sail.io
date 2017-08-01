@@ -28,6 +28,7 @@ import seng302.Race.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.Mark;
+import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
 import seng302.Visualiser.WindArrow;
 
@@ -318,93 +319,25 @@ public class RaceController {
     private void initialiseBoatMetaData() {
         if(race.boatsReady() && !boatMetaDataInitialised && race.isRaceReady()){
             for (int i = 0; i < race.getBoats().size(); i++) {
-                Pane stack = new Pane();
-                Text text = new Text();
-                Polyline boatSprite = new Polyline();
-                Polyline wake = new Polyline();
+                BoatSprite boatSprite = new BoatSprite(race.getBoats().get(i));
+                boats.add(boatSprite.getStack());
 
-                //creates a boat sprite
-                boatSprite.getPoints().addAll(0.0, 0.0,
-                        0.0, -8.0,
-                        0.0, 8.0,
-                        -5.0, 8.0,
-                        0.0, -8.0,
-                        5.0, 8.0,
-                        -5.0, 8.0);
-
-                wake.getPoints().addAll(0.0, 0.0,
-                        0.0, 1.0);
-
-
-
-                Circle tc = new Circle(2);
-                tc.setCenterX(0);
-                tc.setCenterY(0);
-                wake.setStroke(Color.CYAN);
-                text.relocate(155, 2);
-                text.setTextAlignment(TextAlignment.RIGHT);
-                boatSprite.setStroke(race.getBoats().get(i).getColour().desaturate().desaturate());
-                boatSprite.setFill(race.getBoats().get(i).getColour().saturate().saturate());
-                boatSprite.setId(Integer.toString(i));
-
-                // Used when selecting a boat to follow
-                boatSprite.onMousePressedProperty().setValue(event -> {
-                    boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
-                    resetViewButton.setDisable(false);
-                    Coordinate.setTrackingBoat(true);
-                });
-                // to give the user more space to click on the boat
-                tc.onMousePressedProperty().setValue(event -> {
-                    boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
-                    resetViewButton.setDisable(false);
-                    Coordinate.setTrackingBoat(true);
-                });
-
-                stack.getChildren().add(boatSprite);
-                stack.getChildren().add(text);
-                stack.getChildren().add(wake);
-                stack.getChildren().add(tc);
-
-                // Temporary hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(Integer.parseInt(boatSprite.getId())).getSourceId() == 103) {
-                    Circle controlCircle = new Circle(10);
-                    controlCircle.setCenterX(0);
-                    controlCircle.setCenterY(0);
-                    controlCircle.setStroke(Color.INDIANRED);
-                    controlCircle.setFill(Color.TRANSPARENT);
-
-                    controlCircle.onMouseClickedProperty().setValue(event -> {
-                        boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
-                        resetViewButton.setDisable(false);
-                        Coordinate.setTrackingBoat(true);
-                    });
-
-                    stack.getChildren().add(controlCircle);
-
-//                    ImageView imgView = new ImageView();
-//                    Image sailorTom = new Image("sailertom.png");
-//
-//                    imgView.setImage(sailorTom);
-//                    imgView.setFitHeight(35);
-//                    imgView.setFitWidth(35);
-//                    imgView.setX(-10);
-//                    imgView.setY(0);
-//
-//                    stack.getChildren().add(imgView);
-                }
-
-                boats.add(stack);
-
-//                Path path = new Path();
-//                path.setStroke(race.getBoats().get(i).getColour());
-//                path.getElements().add(new MoveTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-//                path.setFill(Color.TRANSPARENT);
-//                paths.add(path);
-//                absolutePaths.add(new ArrayList<>());
-//
-//                lastHeadings.add(race.getBoats().get(i).getHeading() + 1);  // guarantee its different
-
+//                boatSprite.onMousePressedProperty().setValue(event -> {
+//                    boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
+//                    resetViewButton.setDisable(false);
+//                    Coordinate.setTrackingBoat(true);
+//                });
             }
+////                Path path = new Path();
+////                path.setStroke(race.getBoats().get(i).getColour());
+////                path.getElements().add(new MoveTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+////                path.setFill(Color.TRANSPARENT);
+////                paths.add(path);
+////                absolutePaths.add(new ArrayList<>());
+////
+////                lastHeadings.add(race.getBoats().get(i).getHeading() + 1);  // guarantee its different
+//
+//            }
 
             group.getChildren().addAll(boats);
 //            for (Path path: paths) {
