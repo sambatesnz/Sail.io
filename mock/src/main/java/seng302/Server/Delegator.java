@@ -23,7 +23,6 @@ public class Delegator {
                 changeBoatHeading(boatID, false);
                 break;
             }
-
         }
     }
 
