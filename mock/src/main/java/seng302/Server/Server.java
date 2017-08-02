@@ -23,7 +23,6 @@ public class Server {
         try {
             while(true) {
                 new Generator(listener.accept(), mockData).start();
-
             }
         } finally {
             listener.close();
