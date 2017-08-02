@@ -23,6 +23,11 @@ Test that the zooming functionality scales all the graphics correctly and follow
 - Performed By: Abel Svoboda, Sam Bates
 - Result: Pass
 
+- Date: 3/8/2017
+- Current Commit of branch: e9e071f1fb2b686db5a3c94da809200e1c8399bf
+- Performed By: Abel Svoboda, Matt Simpson
+- Result: Pass
+
     
 
     

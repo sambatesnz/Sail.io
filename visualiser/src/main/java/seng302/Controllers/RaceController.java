@@ -294,15 +294,15 @@ public class RaceController {
                 updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.SAIL));
                 if (!race.getBoats().get(i).isSailsOut()){
                     boats.get(i).sailIn();
-                    sail.getTransforms().clear(); //Credit Ray
-                    sail.getTransforms().add(new Rotate(race.getWindHeading() + 180, 0,0)); // Credit 이동헌
+                    sail.getTransforms().clear();
+                    sail.getTransforms().add(new Rotate(race.getWindHeading() + 180, 0,0));
                 } else {
                     boats.get(i).sailOut();
-                    sail.getTransforms().clear(); //Credit Ray
-                    sail.getTransforms().add(new Rotate(race.getWindHeading()+150, 0,0)); // Credit 이동헌
+                    sail.getTransforms().clear();
+                    sail.getTransforms().add(new Rotate(race.getWindHeading() + 150, 0,0));
                 }
-
-                sail.setLayoutY((1/(1+Coordinate.getZoom() * 0.9)) * (720d / 45d) / 2d - SAIL_OFFSET);
+                double sailLength = 720d / 45d;
+                sail.setLayoutY((1/(1 + Coordinate.getZoom() * 0.9)) * (sailLength)/2 - SAIL_OFFSET);
             }
         }
     }
@@ -640,9 +640,10 @@ public class RaceController {
      */
     private Polygon getBoundary(Race race){
         Polygon boundary = new Polygon();
-        for (int i=0; i<race.getBoundaries().size(); i++) {
-            boundary.getPoints().add(Coordinate.getRelativeX(race.getBoundaries().get(i).getX()));
-            boundary.getPoints().add(Coordinate.getRelativeY(race.getBoundaries().get(i).getY()));
+        List<Mark> boundaries = race.getBoundaries();
+        for (Mark position : boundaries) {
+            boundary.getPoints().add(Coordinate.getRelativeX(position.getX()));
+            boundary.getPoints().add(Coordinate.getRelativeY(position.getY()));
         }
         boundary.setFill(Color.LIGHTBLUE);
         boundary.setOpacity(MULTIPLICATIVE_IDENTITY/2);

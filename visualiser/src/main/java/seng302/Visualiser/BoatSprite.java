@@ -17,11 +17,9 @@ public class BoatSprite {
     private Polyline boatIcon;
     private Polyline wake;
     private Text text;
-    private Color boatColour;
     private Circle tc;
     private Circle controlCircle;
     private Polyline sail;
-    private int id;
     public static final int BOAT = 0;
     public static final int CONTROL_CIRCLE = 1;
     public static final int WAKE = 2;
@@ -52,11 +50,12 @@ public class BoatSprite {
 
     /**
      * Returns a reference to the stack of the boat
-     * @return
+     * @return the stack
      */
     public Pane getStack() {
         return stack;
     }
+
     public Boat getBoat(){
         return boatObject;
     }
@@ -93,7 +92,6 @@ public class BoatSprite {
 
     private void initialiseSail(){
         sail = new Polyline();
-//        sail.getTransforms().addAll(new Scale(3, 3));
         sail.setStroke(Color.RED);
         for(int i=0; i<360; i++){
             sail.getPoints().addAll(Math.sin(Math.toRadians(i)*2), i/22.5);
@@ -119,8 +117,5 @@ public class BoatSprite {
             sail.getPoints().set(i + 1, i/45d);
         }
     }
-
-
-
 }
 

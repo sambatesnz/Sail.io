@@ -21,5 +21,8 @@ To test the sails of the boat, Make sure that the sail displays properly when it
 - Result: Pass
 
     
-
+- Date: 3/8/2017
+- Current Commit of branch: e9e071f1fb2b686db5a3c94da809200e1c8399bf
+- Performed By: Abel Svoboda, Matt Simpson
+- Result: Pass
     
