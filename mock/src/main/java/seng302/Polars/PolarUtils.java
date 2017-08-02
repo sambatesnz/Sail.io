@@ -29,14 +29,15 @@ public class PolarUtils {
 
         for(Integer angle: polarMap.keySet()){
             // find closest angle
-            double d1 = abs(angle - angleRelative);
+            double d1 = abs(angle - angleRelative); //Changing in attempt to correct wind direction problems
+//            double d1 = abs(angle - diff);
             if (d1 <= 7.5) {
                 closestRefAngle = angle;
                 break;
             }
         }
         int newSpeed = (int) (polarMap.get(closestRefAngle).getRatio() * windSpeed);
-        System.out.println("Speed is now: " + newSpeed);
+        //System.out.println("Speed is now: " + newSpeed); //Testing; to remove
         boat.setSpeed(newSpeed);
     }
 
