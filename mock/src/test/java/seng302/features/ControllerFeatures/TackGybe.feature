@@ -1,4 +1,4 @@
-Feature: Testing that when the tack/gybe button is pressed by the user, the appropriate message is received and the boat hading adjusted accordingly
+Feature: Testing that when the tack/gybe button is pressed by the user, the appropriate message is received and the boat heading adjusted accordingly
 
   Background:
     Given the race is running
@@ -7,7 +7,7 @@ Feature: Testing that when the tack/gybe button is pressed by the user, the appr
     Given a boatAction packet is received of type <BoatAction>
     And the boats current heading is <BeforeHeading> degrees
     And the current wind direction is <WindDirection>
-    When te received tack/gybe packet is processed
+    When the received tack/gybe packet is processed
     Then the boats current heading is chaned to <AfterHeading> degrees
     Examples:
     | BoatAction | BeforeHeading | WindDirection | AfterHeading |
