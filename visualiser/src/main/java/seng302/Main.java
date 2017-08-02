@@ -24,6 +24,7 @@ public class Main extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("RaceView.fxml"));
             RaceViewController raceViewController = new RaceViewController(primaryStage);
+
             Parent root = loader.load();
             Scene rootScene = new Scene(root);
             KeyBindingUtility.setKeyBindings(rootScene);

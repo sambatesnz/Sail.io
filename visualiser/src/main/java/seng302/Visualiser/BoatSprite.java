@@ -2,10 +2,13 @@ package seng302.Visualiser;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
 import seng302.RaceObjects.Boat;
+
+import static javafx.scene.paint.Color.PINK;
 
 
 public class BoatSprite {
@@ -19,6 +22,12 @@ public class BoatSprite {
     private Circle controlCircle;
     private Polyline sail;
     private int id;
+    public static final int BOAT = 0;
+    public static final int CONTROL_CIRCLE = 1;
+    public static final int WAKE = 2;
+    public static final int DOT = 3;
+    public static final int TEXT = 4;
+    public static final int SAIL = 5;
 
 
     public BoatSprite(Boat boat){
@@ -27,16 +36,17 @@ public class BoatSprite {
         initialiseWake();
         text = new Text();
         tc = new Circle(2);
-        tc.setCenterY(0);
         tc.setCenterX(0);
+        tc.setCenterY(0);
         initialiseControlCircle();
         initialiseSail();
+
         stack = new Pane();
         stack.getChildren().add(boatIcon);
-        stack.getChildren().add(text);
+        stack.getChildren().add(controlCircle);
         stack.getChildren().add(wake);
         stack.getChildren().add(tc);
-        stack.getChildren().add(controlCircle);
+        stack.getChildren().add(text);
         stack.getChildren().add(sail);
     }
 
@@ -96,7 +106,7 @@ public class BoatSprite {
     public void sailOut() {
         for (int i = 0; i < 720; i += 2) {
             sail.getPoints().set(i, 0d);
-            sail.getPoints().set(i + 1, i / 45d);
+            sail.getPoints().set(i + 1, i/45d);
         }
 
     }
