@@ -12,6 +12,7 @@ public class BoatActionMessage extends BinaryMessage {
 
     private byte[] action;
     private static final int MESSAGE_SIZE = 1;
+    private byte[] boatSourceId;
     private byte[] boatActionMessage;
 
     /**
