@@ -594,8 +594,7 @@ public class RaceController {
      * Rotates the wind arrow based on the heading
      */
     private void rotateWindArrow() {
-        windArrow.setRotate(race.getWindHeading()
-        );
+        windArrow.setRotate(race.getWindHeading() + 180);
     }
 
     /**
@@ -800,9 +799,6 @@ public class RaceController {
         } else {
             raceTime = race.getExpectedStartTime() - race.getCurrentTime();
         }
-        System.out.println("expected: " + race.getExpectedStartTime());
-        System.out.println("current: " + race.getCurrentTime());
-        System.out.println(raceTime);
 
         raceHours = (int) TimeUnit.MILLISECONDS.toHours(raceTime);
         raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(raceTime) -
