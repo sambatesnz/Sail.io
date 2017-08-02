@@ -19,6 +19,7 @@ public class LocationMessage{
     private double longitude;
     private double heading;
     private int speedOverGround;
+    private boolean sailOut;
     private Race race;
 
     private Map<Integer, Boat> boatDict;
@@ -38,6 +39,7 @@ public class LocationMessage{
         longitude = Message.byteArrayToLong(bytes, 20, 4) * 180 / 2147483648.0;
         heading = Message.byteArrayToInt(bytes, 28, 2) * 360 / 65536.0;
         speedOverGround = Math.toIntExact((long) (Message.byteArrayToInt(bytes, 38, 2)));
+        sailOut = bytes[50] != 0;
         boatDict = race.getBoatsMap();
         this.race = race;
 
@@ -53,10 +55,12 @@ public class LocationMessage{
      */
     private void setBoatLocation() {
         if (boatDict != null && boatDict.containsKey(sourceID)) {
-            boatDict.get(sourceID).setMark(new Mark(latitude, longitude));
-            boatDict.get(sourceID).setSpeed(speedOverGround);
-            boatDict.get(sourceID).setHeading(heading);
-            boatDict.get(sourceID).setKnowsBoatLocation(true);
+            Boat boat = boatDict.get(sourceID);
+            boat.setMark(new Mark(latitude, longitude));
+            boat.setSpeed(speedOverGround);
+            boat.setHeading(heading);
+            boat.setKnowsBoatLocation(true);
+            boat.setSailsOut(sailOut);
         } else if (race.getMarks() != null && race.getMarks().containsKey(sourceID)) {
             Mark mark = race.getMarks().get(sourceID);
             mark.setLatitude(latitude);

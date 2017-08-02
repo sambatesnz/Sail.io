@@ -5,6 +5,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -15,25 +16,30 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Scale;
+import javafx.scene.transform.Translate;
 import seng302.Client.Client;
 import seng302.Race.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.Mark;
+import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
 import seng302.Visualiser.WindArrow;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static javafx.scene.input.KeyCode.Z;
 
 /**
  * Class that controls the race window and updates the race as it proceeds
@@ -70,8 +76,6 @@ public class RaceController {
     @FXML
     private Button fpsBtn;
     @FXML
-    private Button resetViewButton;
-    @FXML
     private ListView<String> startersList;
     @FXML
     private LineChart<Number, Number> sparklinesChart;
@@ -83,7 +87,8 @@ public class RaceController {
 
     private Race race;
 
-    private List<Pane> boats = new ArrayList<>();
+    private final int playerBoat = 103;
+    private List<BoatSprite> boats = new ArrayList<>();
     private List<Rectangle> compoundMarks = new ArrayList<>();
     private List<Line> gates = new ArrayList<>();
     private List<List<Point2D>> absolutePaths = new ArrayList<>();
@@ -96,6 +101,8 @@ public class RaceController {
     private List<Path> paths = new ArrayList<>();
     private Boat boatToFollow;
     private Boat centerOfScreen;
+    private double zoomLevel = 0;
+    private boolean followingBoat = false;
     private int raceHours = 0;
     private int raceMinutes = 0;
     private int raceSeconds = 0;
@@ -123,7 +130,7 @@ public class RaceController {
     private int EARTH_RADIUS = 6371;
     private int METERS_CONVERSION = 1000;
     private final int SPARKLINEHEIGHT = 239;
-
+    private final int MULTIPLICATIVE_IDENTITY = 1;
     private FPSCounter fpsCounter;
 
 
@@ -161,16 +168,19 @@ public class RaceController {
 
         fpsCounter = new FPSCounter(fpsLabel);
 
-
-        resetViewButton.setLayoutX(14);
-        resetViewButton.setLayoutY(Coordinate.getWindowHeightY() - 100);
-        resetViewButton.setVisible(true);
-        resetViewButton.setDisable(true);
-
+        initialiseZoomFollowing();
         initialisePositionsTable();
         enableScrolling();
 
         startRaceListener();
+    }
+
+    private void initialiseZoomFollowing() {
+        viewAnchorPane.setOnKeyPressed(event -> {
+            if (event.getCode().equals(Z)) {
+                resetViewButtonPressed();
+            }
+        });
     }
 
     private void enableScrolling() {
@@ -242,6 +252,7 @@ public class RaceController {
     }
 
     private void updateBoatPositions() {
+        final int SAIL_OFFSET = 7;
         for (int i = 0; i < boats.size(); i++) {
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
                 double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
@@ -254,159 +265,101 @@ public class RaceController {
                     name = race.getBoats().get(i).getShortName();
                 }
                 //Position of boat, wake and annotations.
-                boats.get(i).setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
-                boats.get(i).setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
-                updateNodeScale(boats.get(i).getChildren().get(0));
-                boats.get(i).getChildren().get(0).setRotate(race.getBoats().get(i).getHeading());
+                boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
+                boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
+                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.BOAT));
+                boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
                 // Temporary hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(i).getSourceId() == 103) {
-                    updateNodeScale(boats.get(i).getChildren().get(4));
+                if (race.getBoats().get(i).getSourceId() == playerBoat) {
+                    updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
                 }
 
                 //Boats wake
-                boats.get(i).getChildren().set(2, newWake(boatSpeed));
-                updateNodeScale(boats.get(i).getChildren().get(2));
-                boats.get(i).getChildren().get(2).setRotate(race.getBoats().get(i).getHeading());
-                boats.get(i).getChildren().get(2).setLayoutX(((9 + boatSpeed) * (1 / (1 + Coordinate.getZoom() * 0.9))) * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
-                boats.get(i).getChildren().get(2).setLayoutY(((9 + boatSpeed) * (1 / (1 + Coordinate.getZoom() * 0.9))) * Math.cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                boats.get(i).getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
+                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.WAKE));
+                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setRotate(race.getBoats().get(i).getHeading());
+                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * (1 / (1 + Coordinate.getZoom() * 0.9)))
+                        * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
+                        * (1 / (1 + Coordinate.getZoom() * 0.9))) * Math.cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
 
                 //Boat annotations (name and speed)
-                boats.get(i).getChildren().set(1, new Text(name + " " + speed));
-                boats.get(i).getChildren().get(1).setTranslateX(10);
-                boats.get(i).getChildren().get(1).setTranslateY(0);
+                boats.get(i).getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
+                boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateX(10);
+                boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateY(0);
+
+                //Sails
+                Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
+                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.SAIL));
+                if (!race.getBoats().get(i).isSailsOut()){
+                    boats.get(i).sailIn();
+                    sail.getTransforms().clear();
+                    sail.getTransforms().add(new Rotate(race.getWindHeading() + 180, 0,0));
+                } else {
+                    boats.get(i).sailOut();
+                    sail.getTransforms().clear();
+                    sail.getTransforms().add(new Rotate(race.getWindHeading() + 150, 0,0));
+                }
+                double sailLength = 720d / 45d;
+                sail.setLayoutY((1/(1 + Coordinate.getZoom() * 0.9)) * (sailLength)/2 - SAIL_OFFSET);
             }
         }
     }
 
     private void updateBoatPaths(){
         //boat paths
+        int pathPoints = 250;
+        int skipAmount = 15;
         for (int i = 0; i < boats.size(); i++){
-//            if(race.getBoats().get(i).isKnowsBoatLocation()) {
-                if (viewUpdateCount % 5 == 1) {
-                    if (absolutePaths.get(i).size() > 150) {
+            if(race.getBoats().get(i).isKnowsBoatLocation()) {
+                if (viewUpdateCount % skipAmount == 1) {
+                    if (absolutePaths.get(i).size() > pathPoints) {
                         paths.get(i).getElements().remove(1);
                         absolutePaths.get(i).remove(0);
                     }
-
-//                    if (!lastHeadings.get(i).equals(race.getBoats().get(i).getHeading())) {
-                        absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-                        paths.get(i).getElements().add(new LineTo());
-                        lastHeadings.set(i, race.getBoats().get(i).getHeading());
-//                    } else {
-//                        absolutePaths.get(i).set(absolutePaths.get(i).size() - 1,
-//                                new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-//                        paths.get(i).getElements().set(paths.get(i).getElements().size() - 1,
-//                                new LineTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-//                    }
-
-                    ((MoveTo) paths.get(i).getElements().get(0))
-                            .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
-                    ((MoveTo) paths.get(i).getElements().get(0))
-                            .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
-                    for (int j = 1; j < paths.get(i).getElements().size(); j++) {
-                        ((LineTo) paths.get(i).getElements().get(j))
-                                .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
-                        ((LineTo) paths.get(i).getElements().get(j))
-                                .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
-                    }
                 }
-//            }
+
+                absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+                paths.get(i).getElements().add(new LineTo());
+                lastHeadings.set(i, race.getBoats().get(i).getHeading());
+
+                ((MoveTo) paths.get(i).getElements().get(0))
+                        .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
+                ((MoveTo) paths.get(i).getElements().get(0))
+                        .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
+                for (int j = 1; j < paths.get(i).getElements().size(); j++) {
+                    ((LineTo) paths.get(i).getElements().get(j))
+                            .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
+                    ((LineTo) paths.get(i).getElements().get(j))
+                            .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
+                }
+            }
         }
     }
 
     private void initialiseBoatMetaData() {
         if(race.boatsReady() && !boatMetaDataInitialised && race.isRaceReady()){
             for (int i = 0; i < race.getBoats().size(); i++) {
-                Pane stack = new Pane();
-                Text text = new Text();
-                Polyline boatSprite = new Polyline();
-                Polyline wake = new Polyline();
+                BoatSprite boatSprite = new BoatSprite(race.getBoats().get(i));
+                boats.add(boatSprite);
 
-                //creates a boat sprite
-                boatSprite.getPoints().addAll(0.0, 0.0,
-                        0.0, -8.0,
-                        0.0, 8.0,
-                        -5.0, 8.0,
-                        0.0, -8.0,
-                        5.0, 8.0,
-                        -5.0, 8.0);
-
-                wake.getPoints().addAll(0.0, 0.0,
-                        0.0, 1.0);
-
-
-
-                Circle tc = new Circle(2);
-                tc.setCenterX(0);
-                tc.setCenterY(0);
-                wake.setStroke(Color.CYAN);
-                text.relocate(155, 2);
-                text.setTextAlignment(TextAlignment.RIGHT);
-                boatSprite.setStroke(race.getBoats().get(i).getColour().desaturate().desaturate());
-                boatSprite.setFill(race.getBoats().get(i).getColour().saturate().saturate());
-                boatSprite.setId(Integer.toString(i));
-
-                // Used when selecting a boat to follow
-                boatSprite.onMousePressedProperty().setValue(event -> {
-                    boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
-                    resetViewButton.setDisable(false);
-                    Coordinate.setTrackingBoat(true);
-                });
-                // to give the user more space to click on the boat
-                tc.onMousePressedProperty().setValue(event -> {
-                    boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
-                    resetViewButton.setDisable(false);
-                    Coordinate.setTrackingBoat(true);
-                });
-
-                stack.getChildren().add(boatSprite);
-                stack.getChildren().add(text);
-                stack.getChildren().add(wake);
-                stack.getChildren().add(tc);
-
-                // Temporary hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(Integer.parseInt(boatSprite.getId())).getSourceId() == 103) {
-                    Circle controlCircle = new Circle(10);
-                    controlCircle.setCenterX(0);
-                    controlCircle.setCenterY(0);
-                    controlCircle.setStroke(Color.INDIANRED);
-                    controlCircle.setFill(Color.TRANSPARENT);
-
-                    controlCircle.onMouseClickedProperty().setValue(event -> {
-                        boatToFollow = race.getBoats().get(Integer.parseInt(boatSprite.getId()));
-                        resetViewButton.setDisable(false);
-                        Coordinate.setTrackingBoat(true);
-                    });
-
-                    stack.getChildren().add(controlCircle);
-
-//                    ImageView imgView = new ImageView();
-//                    Image sailorTom = new Image("sailertom.png");
-//
-//                    imgView.setImage(sailorTom);
-//                    imgView.setFitHeight(35);
-//                    imgView.setFitWidth(35);
-//                    imgView.setX(-10);
-//                    imgView.setY(0);
-//
-//                    stack.getChildren().add(imgView);
-                }
-
-                boats.add(stack);
-
-//                Path path = new Path();
-//                path.setStroke(race.getBoats().get(i).getColour());
-//                path.getElements().add(new MoveTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-//                path.setFill(Color.TRANSPARENT);
-//                paths.add(path);
-//                absolutePaths.add(new ArrayList<>());
-//
-//                lastHeadings.add(race.getBoats().get(i).getHeading() + 1);  // guarantee its different
 
             }
-
-            group.getChildren().addAll(boats);
+////                Path path = new Path();
+////                path.setStroke(race.getBoats().get(i).getColour());
+////                path.getElements().add(new MoveTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+////                path.setFill(Color.TRANSPARENT);
+////                paths.add(path);
+////                absolutePaths.add(new ArrayList<>());
+////
+////                lastHeadings.add(race.getBoats().get(i).getHeading() + 1);  // guarantee its different
+//
+//            }
+            for (BoatSprite boat : boats){
+                group.getChildren().addAll(boat.getStack());
+            }
+//            group.getChildren().addAll(boats);
 //            for (Path path: paths) {
 //                group.getChildren().add(path);
 //            }
@@ -549,8 +502,6 @@ public class RaceController {
             fpsLabel.setLayoutY(60);
             clock.setLayoutY(20);
             clock.setLayoutX(Coordinate.getWindowWidthX() - 155);
-            resetViewButton.setLayoutX(14);
-            resetViewButton.setLayoutY(Coordinate.getWindowHeightY() - 100);
             fpsBtn.setLayoutX(14);
             fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 75);
             annotationBtn.setLayoutX(14);
@@ -613,8 +564,8 @@ public class RaceController {
         List<Boat> boats = race.getBoats();
 
         boats.sort((o1, o2) -> o1.getCurrentLegIndex()>o2.getCurrentLegIndex()?-1:o1.getCurrentLegIndex()<=o2.getCurrentLegIndex()?1: 0);
-        for (int i = 0; i < boats.size(); i++) {
-            int position = i + 1;
+        for (int i = 0; i < boats.size(); i += MULTIPLICATIVE_IDENTITY) {
+            int position = i + MULTIPLICATIVE_IDENTITY;
             boats.get(i).setPosition(position);
         }
 
@@ -689,12 +640,13 @@ public class RaceController {
      */
     private Polygon getBoundary(Race race){
         Polygon boundary = new Polygon();
-        for (int i=0; i<race.getBoundaries().size(); i++) {
-            boundary.getPoints().add(Coordinate.getRelativeX(race.getBoundaries().get(i).getX()));
-            boundary.getPoints().add(Coordinate.getRelativeY(race.getBoundaries().get(i).getY()));
+        List<Mark> boundaries = race.getBoundaries();
+        for (Mark position : boundaries) {
+            boundary.getPoints().add(Coordinate.getRelativeX(position.getX()));
+            boundary.getPoints().add(Coordinate.getRelativeY(position.getY()));
         }
         boundary.setFill(Color.LIGHTBLUE);
-        boundary.setOpacity(0.5);
+        boundary.setOpacity(MULTIPLICATIVE_IDENTITY/2);
         return boundary;
     }
 
@@ -702,10 +654,17 @@ public class RaceController {
      * resets the view back to its original state
      */
     public void resetViewButtonPressed() {
-        resetZoom();
-        Coordinate.setZoom(0);
-        resetViewButton.setDisable(true);
-        Coordinate.setTrackingBoat(false);
+        if (followingBoat) {
+            zoomLevel = Coordinate.getZoom();
+            resetZoom();
+            Coordinate.setZoom(0);
+            Coordinate.setTrackingBoat(false);
+        } else {
+            boatToFollow = race.getBoatsMap().get(playerBoat);
+            Coordinate.setZoom(zoomLevel);
+            Coordinate.setTrackingBoat(true);
+        }
+        followingBoat = !followingBoat;
     }
 
     /**
@@ -800,9 +759,9 @@ public class RaceController {
         } else {
             raceTime = race.getExpectedStartTime() - race.getCurrentTime();
         }
-        System.out.println("expected: " + race.getExpectedStartTime());
-        System.out.println("current: " + race.getCurrentTime());
-        System.out.println(raceTime);
+//        System.out.println("expected: " + race.getExpectedStartTime());
+//        System.out.println("current: " + race.getCurrentTime());
+//        System.out.println(raceTime);
 
         raceHours = (int) TimeUnit.MILLISECONDS.toHours(raceTime);
         raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(raceTime) -

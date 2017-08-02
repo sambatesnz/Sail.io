@@ -24,7 +24,7 @@ public enum BoatLocationUtility {
     TRUE_WIND_SPEED(44, 2),
     TRUE_WIND_DIRECTION(46, 2),
     TRUE_WIND_ANGLE(48, 2),
-    CURRENT_DRIFT(50, 2),
+    SAIL_STATUS(50, 2),
     CURRENT_SET(52, 2),
     RUDDER_ANGLE(54, 2);
 

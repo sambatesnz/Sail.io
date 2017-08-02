@@ -125,7 +125,7 @@ public class MockRace implements IServerData {
                         (short) 100, boat.getSpeed(),
                         (short) 200, (short) 200,
                         (short) 100, (short) 100, (short) 100,
-                        (short) 100, (short) 100, (short) 100
+                        (short) (boat.isSailsOut() ? 1 : 0), (short) 100, (short) 100
                 );
 //                System.out.println("\n--------\nBoat location message packet created");
 //                System.out.println(Arrays.toString(boatLocationMessage.createMessage()));
