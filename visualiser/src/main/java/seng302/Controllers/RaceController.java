@@ -296,7 +296,7 @@ public class RaceController {
                     boats.get(i).sailIn();
                     sail.getTransforms().clear(); //Credit Ray
                     sail.getTransforms().add(new Rotate(race.getWindHeading() + 180, 0,0)); // Credit 이동헌
-                }else {
+                } else {
                     boats.get(i).sailOut();
                     sail.getTransforms().clear(); //Credit Ray
                     sail.getTransforms().add(new Rotate(race.getWindHeading()+150, 0,0)); // Credit 이동헌
