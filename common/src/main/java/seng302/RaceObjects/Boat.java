@@ -6,11 +6,14 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.round;
 
 /**
  * Represent a boat competing in yacht race
  */
 public class Boat {
+    private static final int HEADING_INCREMENT = 3;
+
     private Mark mark;
     private String boatName;
     private double currentLegDistance;
@@ -33,6 +36,11 @@ public class Boat {
     private boolean upwindMemory = false;
     private boolean downwindMemory = false;
     private boolean plusMemory = false;
+
+    private double finalHeading = heading;
+    private boolean addHeading = false;
+    private Thread turningThread;
+    private Boolean stopTurnThread = false;
 
     /**
      * Gets the abbreviation of the name of the team's boat
@@ -312,11 +320,15 @@ public class Boat {
         return headingChanged;
     }
 
+    /**
+     * Tacks or Gybes the boat depending on which way the boat is oriented to the wind. Calling this
+     * function while the boat is already tacking or gybing will stop the last tack or gybe instead.
+     * @param windDirection The direction the wind is currently coming from
+     */
     public void tackOrGybe(int windDirection) {
         double headingDif = (360 + heading - windDirection) % 360;
         System.out.println(headingDif);
-        double finalHeading = heading;
-        boolean addHeading = false;
+        finalHeading = heading;
         if (headingDif < 90) {      // Tack counter-clockwise
             finalHeading = windDirection + 360 - headingDif;
             addHeading = false;
@@ -333,51 +345,75 @@ public class Boat {
         finalHeading = (360 + finalHeading) % 360;
         System.out.println(finalHeading);
         System.out.println(addHeading);
-        if (addHeading) {
-            while (heading < finalHeading) {
-                heading += 3;
-                if (heading > 360) {
-                    heading -= 360;
-                }
-            }
-        } else {
-            while (heading > finalHeading) {
-                heading -= 3;
-                if (heading < 0) {
-                    heading += 360;
-                }
-            }
-        }
 
+        if (turningThread != null && turningThread.isAlive()) {
+            stopTurnThread = true;
+            return;
+        } else {
+            stopTurnThread = false;
+        }
+        turningThread = new Thread("Boat Turning") {
+            public void run() {
+                if (addHeading) {
+                    while ((heading < finalHeading - 2 || heading > finalHeading + 2) && !stopTurnThread) {
+                        heading += HEADING_INCREMENT;
+                        if (heading > 360) {
+                            heading -= 360;
+                        }
+                        headingChanged = true;
+                        try {
+                            Thread.sleep(100);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    while ((heading > finalHeading + 2 || heading < finalHeading - 2) && !stopTurnThread) {
+                        heading -= HEADING_INCREMENT;
+                        if (heading < 0) {
+                            heading += 360;
+                        }
+                        headingChanged = true;
+                        try {
+                            Thread.sleep(100);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        };
+
+        turningThread.start();
     }
 
     /**
      * Increments or decrements the boat heading by a set amount (currently 3 degrees but default)
      * towards or away from the current wind direction based on the command upwind, or downwind.
-     * @param windDirection The current direction that the wind is heading
+     * @param windDirection The current direction that the wind is coming from
      * @param upwind Whether to increment the heading towards (true) or away
      *               from (false) the current wind direction
      */
     public void updateHeading(int windDirection, boolean upwind) {
-        int headingIncrement = 3;
+        stopTurnThread = true;
 
         double headingMinusWind = (360 + heading - windDirection) % 360;
         if (upwind) {   // turning upwind
             downwindMemory = false;
             if (upwindMemory && heading == windDirection) {
                 if (plusMemory) {
-                    heading += headingIncrement;
+                    heading += HEADING_INCREMENT;
                 } else {
-                    heading -= headingIncrement;
+                    heading -= HEADING_INCREMENT;
                 }
                 upwindMemory = false;
             }
             if (headingMinusWind > 180) {
-                heading += headingIncrement;
+                heading += HEADING_INCREMENT;
                 upwindMemory = true;
                 plusMemory = true;
             } else {
-                heading -= headingIncrement;
+                heading -= HEADING_INCREMENT;
                 upwindMemory = true;
                 plusMemory = false;
             }
@@ -386,18 +422,18 @@ public class Boat {
             upwindMemory = false;
             if (downwindMemory && heading == windDirection) {
                 if (plusMemory) {
-                    heading += headingIncrement;
+                    heading += HEADING_INCREMENT;
                 } else {
-                    heading -= headingIncrement;
+                    heading -= HEADING_INCREMENT;
                 }
                 downwindMemory = false;
             }
             if (headingMinusWind > 180) {
-                heading -= headingIncrement;
+                heading -= HEADING_INCREMENT;
                 downwindMemory = true;
                 plusMemory = false;
             } else {
-                heading += headingIncrement;
+                heading += HEADING_INCREMENT;
                 downwindMemory = true;
                 plusMemory = true;
             }
