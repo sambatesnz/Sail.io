@@ -33,10 +33,10 @@ public class Server {
 
     private static class Generator extends Thread {
         private Socket socket;
-        private MockRace mockData;
+        private IServerData mockData;
         public Generator(Socket socket, IServerData mockData) throws IOException {
             this.socket = socket;
-            this.mockData = (MockRace)mockData;
+            this.mockData = mockData;
             System.out.println("New Connection From client");
         }
 

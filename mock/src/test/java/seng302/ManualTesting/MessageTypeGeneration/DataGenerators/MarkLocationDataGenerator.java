@@ -7,6 +7,7 @@ import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.Position;
+import seng302.Race;
 
 import java.util.NoSuchElementException;
 import java.util.Queue;
@@ -19,6 +20,11 @@ public class MarkLocationDataGenerator implements IServerData {
     private Queue<byte[]> bytes = new LinkedBlockingQueue<>();
 
     private Timer timer = new Timer();
+
+    @Override
+    public Race getRace() {
+        return null;
+    }
 
     @Override
     public byte[] getData() {

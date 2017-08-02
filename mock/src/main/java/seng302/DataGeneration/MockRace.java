@@ -23,11 +23,22 @@ import static java.lang.System.currentTimeMillis;
  * Created by sba136 on 3/05/17.
  */
 public class MockRace implements IServerData {
+
+    private Race race;
+
+
+    public MockRace(){
+        this.race = new Race();
+    }
+
+    public MockRace(Race race) {
+        this.race = race;
+    }
+
     private Queue<byte[]> bytes = new LinkedBlockingQueue<>();
 
     Timer timer = new Timer();
 
-    private Race race = new Race();
 
     // Generate RaceStatusMessage from using properties of Race object.
 //    private BinaryMessage rsm;

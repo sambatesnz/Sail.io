@@ -5,6 +5,7 @@ import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
+import seng302.Race;
 
 import java.util.NoSuchElementException;
 import java.util.Queue;
@@ -19,6 +20,12 @@ public class RaceXmlDataGenerator implements IServerData{
     private Queue<byte[]> bytes = new LinkedBlockingQueue<>();
 
     Timer timer = new Timer();
+
+
+    @Override
+    public Race getRace() {
+        return null;
+    }
 
     @Override
     public byte[] getData() {
