@@ -36,7 +36,6 @@ public class PolarUtils {
             }
         }
         int newSpeed = (int) (polarMap.get(closestRefAngle).getRatio() * windSpeed);
-        System.out.println("Speed is now: " + newSpeed);
         boat.setSpeed(newSpeed);
     }
 
