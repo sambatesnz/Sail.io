@@ -800,9 +800,9 @@ public class RaceController {
         } else {
             raceTime = race.getExpectedStartTime() - race.getCurrentTime();
         }
-        System.out.println("expected: " + race.getExpectedStartTime());
-        System.out.println("current: " + race.getCurrentTime());
-        System.out.println(raceTime);
+//        System.out.println("expected: " + race.getExpectedStartTime());
+//        System.out.println("current: " + race.getCurrentTime());
+//        System.out.println(raceTime);
 
         raceHours = (int) TimeUnit.MILLISECONDS.toHours(raceTime);
         raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(raceTime) -
