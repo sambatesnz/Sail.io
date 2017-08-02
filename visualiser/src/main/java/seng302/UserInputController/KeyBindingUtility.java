@@ -41,7 +41,6 @@ public class KeyBindingUtility {
                         boatActionMessage = new BoatActionMessage(BoatAction.SAILS_IN.getBoatAction());
                     } else {
                         boatActionMessage = new BoatActionMessage(BoatAction.SAILS_OUT.getBoatAction());
-                        System.out.println("EZ");
                     }
                     alternateSailStatus();
                     break;

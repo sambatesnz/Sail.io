@@ -279,14 +279,13 @@ public class RaceController {
                 //Sails
                 Node sail = boats.get(i).getStack().getChildren().get(5);
                 if (!race.getBoats().get(i).isSailsOut()){
-                    System.out.println(race.getBoats().get(i).isSailsOut());
                     boats.get(i).sailIn();
                     sail.getTransforms().clear(); //Credit Ray
                     sail.getTransforms().add(new Rotate(race.getWindHeading() + 180, 0,0)); // Credit 이동헌
                 }else {
                     boats.get(i).sailOut();
                     sail.getTransforms().clear(); //Credit Ray
-                    sail.getTransforms().add(new Rotate(race.getWindHeading()+90, 0,0)); // Credit 이동헌
+                    sail.getTransforms().add(new Rotate(race.getWindHeading()+150, 0,0)); // Credit 이동헌
                 }
             }
         }
@@ -294,10 +293,12 @@ public class RaceController {
 
     private void updateBoatPaths(){
         //boat paths
+        int pathPoints = 250;
+        int skipAmount = 15;
         for (int i = 0; i < boats.size(); i++){
 //            if(race.getBoats().get(i).isKnowsBoatLocation()) {
-                if (viewUpdateCount % 5 == 1) {
-                    if (absolutePaths.get(i).size() > 150) {
+                if (viewUpdateCount % skipAmount == 1) {
+                    if (absolutePaths.get(i).size() > pathPoints) {
                         paths.get(i).getElements().remove(1);
                         absolutePaths.get(i).remove(0);
                     }
