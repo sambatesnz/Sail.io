@@ -1,6 +1,9 @@
 package seng302.Client;
 
 import seng302.Client.Messages.Message;
+import seng302.Client.Messages.RaceRegistrationMessage;
+import seng302.Client.Messages.RaceRegistrationType;
+import seng302.PacketGeneration.BinaryMessage;
 import seng302.Race.Race;
 import seng302.UserInputController.KeyBindingUtility;
 
@@ -114,6 +117,13 @@ public class Client {
             System.out.println("Connected.");
             streamInput = new BufferedInputStream(clientSocket.getInputStream());
             streamOutput = new BufferedOutputStream(clientSocket.getOutputStream());
+
+            //TODO: Send a RRM to the server, in order to retrieve a Boat SourceId
+            //TODO: User must select in the Lobby whether or not they are viewing or playing.
+
+            BinaryMessage rrm = new RaceRegistrationMessage(RaceRegistrationType.PARTICIPATE);
+            streamOutput.write(rrm.createMessage());
+            streamOutput.flush();
         }
         catch (IOException e) {
             e.printStackTrace();

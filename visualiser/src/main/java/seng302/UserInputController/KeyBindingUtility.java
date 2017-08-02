@@ -34,7 +34,7 @@ public class KeyBindingUtility {
             @Override
             public void handle(KeyEvent event) {
                 BinaryMessage boatActionMessage;
-                int sourceId = 10;
+                int sourceId = 103;
                 switch (event.getCode()) {
                     case SPACE:
                         boatActionMessage = new BoatActionMessage(BoatAction.AUTOPILOT.getBoatAction(), sourceId);
