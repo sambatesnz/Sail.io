@@ -5,13 +5,14 @@ package seng302.PacketGeneration;
  */
 public enum MessageType {
     HEART_BEAT(1),
-    RACE_REGISTRATION(55),
     RACE_STATUS(12),
     DISPLAY_TEXT_MESSAGE(20),
     XML_MESSAGE(26),
     RACE_START_STATUS(27),
     CHATTER_TEXT(36),
     BOAT_LOCATION(37),
+    RACE_REGISTRATION(55),
+    PARTICIPANT_CONFIRMATION(56),
     BOAT_ACTION(100);
 
     private int messageType;
