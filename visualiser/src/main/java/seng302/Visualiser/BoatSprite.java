@@ -40,10 +40,13 @@ public class BoatSprite {
         stack.getChildren().add(sail);
     }
 
-    public Pane getStack(){
+    /**
+     * Returns a reference to the stack of the boat
+     * @return
+     */
+    public Pane getStack() {
         return stack;
     }
-
     public Boat getBoat(){
         return boatObject;
     }
@@ -87,18 +90,24 @@ public class BoatSprite {
         }
     }
 
+    /**
+     * Redraws the sail to be luffing
+     */
     public void sailIn(){
         for(int i=0; i<720; i += 2){
             sail.getPoints().set(i, Math.log(i+1)*Math.sin(Math.toRadians((System.currentTimeMillis()+i)/1.0d)));
             sail.getPoints().set(i + 1, i/45d);
         }
     }
+
+    /**
+     * Redraws the sail to be powered
+     */
     public void sailOut() {
         for (int i = 0; i < 720; i += 2) {
             sail.getPoints().set(i, 0d);
             sail.getPoints().set(i + 1, i / 45d);
         }
-
     }
 
 
