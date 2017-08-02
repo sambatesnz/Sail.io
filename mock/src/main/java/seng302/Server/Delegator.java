@@ -26,7 +26,6 @@ public class Delegator {
         } else if (messageCommand == BoatAction.SAILS_OUT.getBoatAction()) {
             Boat boat = race.getBoatByID(boatID);
             boat.setSailsOut(true);
-            System.out.println("YOUR MUM IS NICE");
         }
     }
 
