@@ -34,26 +34,27 @@ public class KeyBindingUtility {
             @Override
             public void handle(KeyEvent event) {
                 BinaryMessage boatActionMessage;
+                int sourceId = 10;
                 switch (event.getCode()) {
                     case SPACE:
-                        boatActionMessage = new BoatActionMessage(BoatAction.AUTOPILOT.getBoatAction());
+                        boatActionMessage = new BoatActionMessage(BoatAction.AUTOPILOT.getBoatAction(), sourceId);
                         break;
                     case SHIFT:
                         if(sailStatus){
-                            boatActionMessage = new BoatActionMessage(BoatAction.SAILS_IN.getBoatAction());
+                            boatActionMessage = new BoatActionMessage(BoatAction.SAILS_IN.getBoatAction(), sourceId);
                         } else {
-                            boatActionMessage = new BoatActionMessage(BoatAction.SAILS_OUT.getBoatAction());
+                            boatActionMessage = new BoatActionMessage(BoatAction.SAILS_OUT.getBoatAction(), sourceId);
                         }
                         alternateSailStatus();
                         break;
                     case ENTER:
-                        boatActionMessage = new BoatActionMessage(BoatAction.TACK_OR_GYBE.getBoatAction());
+                        boatActionMessage = new BoatActionMessage(BoatAction.TACK_OR_GYBE.getBoatAction(), sourceId);
                         break;
                     case PAGE_UP:
-                        boatActionMessage = new BoatActionMessage(BoatAction.UPWIND.getBoatAction());
+                        boatActionMessage = new BoatActionMessage(BoatAction.UPWIND.getBoatAction(), sourceId);
                         break;
                     case PAGE_DOWN:
-                        boatActionMessage = new BoatActionMessage(BoatAction.DOWNWIND.getBoatAction());
+                        boatActionMessage = new BoatActionMessage(BoatAction.DOWNWIND.getBoatAction(), sourceId);
                         break;
                     default:
                         return;
