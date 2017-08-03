@@ -10,9 +10,9 @@ Feature: A users boat should shift to a heading that results in an optimal VMG w
     Then the boats current heading is changed to <AfterHeading> degrees
   Examples:
   | BoatAction | BeforeHeading | WindDirection | AfterHeading |
-  | 4          | 180           | 60            | 300          |
-  | 4          | 250           | 315           | 20           |
-  | 4          | 0             | 60            | 120          |
-  | 4          | 120           | 60            | 0            |
-  | 4          | 350           | 50            | 110          |
-  | 4          | 110           | 50            | 350          |
+  | 1          | 180           | 60            | 300          |
+  | 1          | 250           | 315           | 20           |
+  | 1          | 0             | 60            | 120          |
+  | 1          | 120           | 60            | 0            |
+  | 1          | 350           | 50            | 110          |
+  | 1          | 110           | 50            | 350          |

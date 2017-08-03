@@ -22,9 +22,10 @@ public class PolarUtils {
      * @param windSpeed current wind speed
      */
     public static void updateBoatSpeed(Boat boat, double windHeading, int windSpeed){
+        windHeading = (double) Math.floorMod((int) windHeading - 180, 360);
         Map<Integer, PolarRatio> polarMap = generatePolarMap();
         double diff = abs(windHeading - boat.getHeading());
-        double angleRelative = abs(180-diff);
+        double angleRelative = abs(diff);
         int closestRefAngle = 0;
 
         for(Integer angle: polarMap.keySet()){
