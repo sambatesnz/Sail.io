@@ -28,7 +28,6 @@ public class ClientConnexion extends Thread {
                     System.out.println(Arrays.toString(data));
                 }
                 server.handlePacket(data);
-//                server.sendToAll();
             }
         } catch (EOFException ie) {
         } catch (IOException ie) {

@@ -26,12 +26,13 @@ public class MockRace implements IServerData {
 
     private Race race;
     private BinaryMessage rsm;
-    private Queue<byte[]> bytes = new LinkedBlockingQueue<>();
+    private Queue<byte[]> bytes;
     Timer timer = new Timer();
 
 
     public MockRace(){
         this.race = new Race();
+        bytes = new LinkedBlockingQueue<>();
     }
 
 

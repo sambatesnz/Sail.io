@@ -9,28 +9,38 @@ import java.net.*;
 import java.util.*;
 
 public class Server2 {
-    private ServerSocket ss;
-    private Hashtable outputStreams = new Hashtable();
+    private Hashtable outputStreams;
     private IServerData mockRace;
     private ConnectionManager connectionManager;
 
     public Server2(int port) throws IOException {
         this.mockRace = new MockRace();
-//        this.connectionManager = new ConnectionManager();  //TODO
-        this.mockRace.beginGeneratingData();    //move this nephew
-        listen(port);
+        outputStreams = new Hashtable();
+        this.connectionManager = new ConnectionManager(outputStreams, port, this);
+        startEventLoop();
+        //this.mockRace.beginGeneratingData();    //move this nephew
     }
 
-    private void listen(int port) throws IOException {
-        ss = new ServerSocket(port);
-        System.out.println("Listening on " + ss);
+    private void startEventLoop() {
+        boolean hasStarted = false;
+
+        int numConnections = 0;
+
         while (true) {
-            Socket s = ss.accept();
-            System.out.println("Connection from " + s);
-            DataOutputStream dout = new DataOutputStream(s.getOutputStream());
-            outputStreams.put(s, dout);
-            new ClientConnexion(this, s);
-            this.mockRace.addXMLPackets();
+
+            if (numConnections < outputStreams.size()){
+                System.out.println("new connection detected, resending the XML Packets.");
+                this.mockRace.addXMLPackets();
+                numConnections = outputStreams.size();
+            }
+            if (outputStreams.size() > 0 && !hasStarted) {
+                System.out.println("Race will begin generating data now.");
+                this.mockRace.beginGeneratingData();
+                hasStarted = true;
+            }
+            if (outputStreams.size() > 0 && hasStarted) {
+                sendToAll();
+            }
         }
     }
 
@@ -46,18 +56,14 @@ public class Server2 {
                 DataOutputStream dout = (DataOutputStream) e.nextElement();
                 try {
                     boolean hasPackets = bytes.length > 0;
-                    dout.write(bytes);
                     if (hasPackets) {
-
+                        dout.write(bytes);
                         System.out.println(Arrays.toString(bytes));
                     }
-
-//                    dout.writeUTF( message );
                 } catch (IOException ie) {
                     System.out.println(ie);
                 }
             }
-
         }
     }
 

@@ -18,7 +18,7 @@ public class Server {
 
         List<Socket> connections = Collections.synchronizedList(new ArrayList<Socket>());
 
-        new ConnectionManager(connections, listener);
+//        new ConnectionManager(connections, listener);
 
 
         while (true) {
