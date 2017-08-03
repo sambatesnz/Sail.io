@@ -4,13 +4,13 @@ Feature: Testing that when the tack/gybe button is pressed by the user, the appr
     Given the race is running
 
   Scenario Outline: A tack/gybe packet is received
-    Given a boatAction packet is received of type <BoatAction>
+    Given a boatAction packet has been received with a value of <BoatAction>
     And the boats current heading is <BeforeHeading> degrees
     And the current wind direction is <WindDirection>
-    When te received tack/gybe packet is processed
-    Then the boats current heading is chaned to <AfterHeading> degrees
+    When the received boatAction packet is processed
+    Then the boats final heading is altered to <HeadingAfter> degrees
     Examples:
-    | BoatAction | BeforeHeading | WindDirection | AfterHeading |
+    | BoatAction | BeforeHeading | WindDirection | HeadingAfter |
     | 4          | 180           | 60            | 300          |
     | 4          | 250           | 315           | 20           |
     | 4          | 0             | 60            | 120          |
