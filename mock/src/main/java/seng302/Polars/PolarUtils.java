@@ -22,23 +22,19 @@ public class PolarUtils {
      * @param windSpeed current wind speed
      */
     public static void updateBoatSpeed(Boat boat, double windHeading, int windSpeed){
-        windHeading = (double) Math.floorMod((int) windHeading - 180, 360);
         Map<Integer, PolarRatio> polarMap = generatePolarMap();
-        double diff = abs(windHeading - boat.getHeading());
-        double angleRelative = abs(diff);
+        double angleRelative = abs(windHeading - boat.getHeading());
         int closestRefAngle = 0;
 
         for(Integer angle: polarMap.keySet()){
             // find closest angle
             double d1 = abs(angle - angleRelative); //Changing in attempt to correct wind direction problems
-//            double d1 = abs(angle - diff);
             if (d1 <= 7.5) {
                 closestRefAngle = angle;
                 break;
             }
         }
         int newSpeed = (int) (polarMap.get(closestRefAngle).getRatio() * windSpeed);
-        //System.out.println("Speed is now: " + newSpeed); //Testing; to remove
         boat.setSpeed(newSpeed);
     }
 
