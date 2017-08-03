@@ -66,7 +66,6 @@ public class ClientConnector extends Thread {
                 }
             }
         }
-
         this.mockData.finishGeneratingData();
         try {
             close();

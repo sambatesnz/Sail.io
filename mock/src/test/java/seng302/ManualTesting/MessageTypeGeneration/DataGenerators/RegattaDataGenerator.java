@@ -57,6 +57,11 @@ public class RegattaDataGenerator implements IServerData {
         timer.cancel();
     }
 
+    @Override
+    public void addXMLPackets() {
+
+    }
+
     private class RegattaXMLSender extends TimerTask {
         @Override
         public void run() {

@@ -26,17 +26,13 @@ public class MockRace implements IServerData {
 
     private Race race;
     private BinaryMessage rsm;
+    private Queue<byte[]> bytes = new LinkedBlockingQueue<>();
+    Timer timer = new Timer();
 
 
     public MockRace(){
         this.race = new Race();
-
     }
-
-
-    private Queue<byte[]> bytes = new LinkedBlockingQueue<>();
-
-    Timer timer = new Timer();
 
 
     public Race getRace() {
@@ -77,29 +73,37 @@ public class MockRace implements IServerData {
         timer.cancel();
     }
 
+    @Override
+    public void addXMLPackets() {
+        generateXML();
+    }
+
     class XMLSender extends TimerTask {
         @Override
         public void run() {
-            DataGenerator dataGenerator = new DataGenerator();
-
-
-            RaceXMLCreator creator = new RaceXMLCreator(race);
-            String xml = "hi";
-            try {
-                xml = creator.createDocument().asXML();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            BinaryMessage raceXML =  new XMLMessage(xml, (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
-            bytes.add(raceXML.createMessage());
-
-            BinaryMessage boatsXML = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
-            bytes.add(boatsXML.createMessage());
-
-            BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);
-            bytes.add(regattaXML.createMessage());
+            generateXML();
         }
+    }
+
+    private void generateXML() {
+        DataGenerator dataGenerator = new DataGenerator();
+
+        RaceXMLCreator creator = new RaceXMLCreator(race);
+        String xml = "";
+        try {
+            xml = creator.createDocument().asXML();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        BinaryMessage raceXML =  new XMLMessage(xml, (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
+        bytes.add(raceXML.createMessage());
+
+        BinaryMessage boatsXML = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
+        bytes.add(boatsXML.createMessage());
+
+        BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);
+        bytes.add(regattaXML.createMessage());
     }
 
     class BoatPosSender extends TimerTask {

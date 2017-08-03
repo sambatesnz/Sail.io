@@ -57,6 +57,11 @@ public class RaceXmlDataGenerator implements IServerData{
         timer.cancel();
     }
 
+    @Override
+    public void addXMLPackets() {
+
+    }
+
     private class RaceXMLSender extends TimerTask {
         @Override
         public void run() {

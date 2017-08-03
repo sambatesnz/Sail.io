@@ -17,5 +17,6 @@ public interface IServerData {
 
     void finishGeneratingData();
 
+    void addXMLPackets();
 
 }
