@@ -6,6 +6,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.floorMod;
 import static java.lang.Math.round;
 
 /**
@@ -448,24 +449,47 @@ public class Boat {
         this.headingChanged = false;
     }
 
+//    public void setHeadingToVMG(int windHeading) {
+//        final int boatQuad = 90;
+//        final double VMG_UPWIND = 105;
+//        final double VMG_DOWNWIND = 60;
+//        if (heading < (boatQuad + windHeading)) {
+//            heading = (double) Math.floorMod((int) (windHeading - VMG_UPWIND), 360);
+//            System.out.println("if clause");
+//        }else if (heading < (3 * boatQuad + windHeading)){
+//            heading = (double) Math.floorMod((int)(windHeading - VMG_DOWNWIND), 360);
+//            System.out.println("elif 1");
+//        }else if (heading < (3 * boatQuad + windHeading)){
+//            heading = (double) Math.floorMod((int)(windHeading + VMG_DOWNWIND), 360);
+//            System.out.println("elif 2");
+//        }else {
+//            heading = (double) Math.floorMod((int) (windHeading + VMG_UPWIND), 360);
+//            System.out.println("else clause");
+//        }
+//        System.out.println(heading);
+//    }
+
     public void setHeadingToVMG(int windHeading) {
-        final int boatQuad = 90;
-        final double VMG_UPWIND = 105;
-        final double VMG_DOWNWIND = 60;
-        if (heading < (boatQuad + windHeading)) {
-            heading = (double) Math.floorMod((int) (windHeading - VMG_UPWIND), 360);
-            System.out.println("if clause");
-        }else if (heading < (3 * boatQuad + windHeading)){
-            heading = (double) Math.floorMod((int)(windHeading - VMG_DOWNWIND), 360);
-            System.out.println("elif 1");
-        }else if (heading < (3 * boatQuad + windHeading)){
-            heading = (double) Math.floorMod((int)(windHeading + VMG_DOWNWIND), 360);
-            System.out.println("elif 2");
-        }else {
+        final double VMG_UPWIND = 180 - 105;
+        final double VMG_DOWNWIND = 180 - 60;
+        System.out.println("wind :" + windHeading + " heading: " + heading);
+        if (Math.floorMod(((int)heading - windHeading), 360) < 90) {
             heading = (double) Math.floorMod((int) (windHeading + VMG_UPWIND), 360);
+            System.out.println("if clause");
+
+        }else if (Math.floorMod(((int)heading - windHeading), 360) < 180){
+            heading = (double) Math.floorMod((int)(windHeading + VMG_DOWNWIND), 360);
+            System.out.println("elif 1");
+
+        }else if (Math.floorMod(((int)heading - windHeading), 360) < 270){
+            heading = (double) Math.floorMod((int)(windHeading - VMG_DOWNWIND), 360);
+            System.out.println("elif 2");
+
+        }else {
+            heading = (double) Math.floorMod((int)(windHeading - VMG_UPWIND), 360);
             System.out.println("else clause");
         }
-        System.out.println(heading);
+
     }
 
     /**
