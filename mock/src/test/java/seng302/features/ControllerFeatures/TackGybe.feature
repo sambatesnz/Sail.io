@@ -1,4 +1,4 @@
-Feature: Testing that when the tack/gybe button is pressed by the user, the appropriate message is received and the boat hading adjusted accordingly
+Feature: Testing that when the tack/gybe button is pressed by the user, the appropriate message is received and the boat heading adjusted accordingly
 
   Background:
     Given the race is running

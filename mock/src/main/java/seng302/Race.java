@@ -131,10 +131,6 @@ public class Race {
         return finishedBoats;
     }
 
-//    public double getWindHeading() {
-//        return windHeading;
-//    }
-
     /**
      * Get the wind direction.
      * Chooses to take a gamble on whether or not to change the wind direction.

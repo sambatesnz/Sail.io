@@ -16,20 +16,18 @@ public class PolarUtilsTest {
 
     @Before
     public void setup() {
-        testBoat = new Boat("Kev", "k", 114, "Kevistan");
+        testBoat = new Boat("Test", "t", 114, "TestLand");
         testBoat.setSailsOut(true);
         testBoat.setSpeed(1000);
         testBoat.setHeading(120);
 
         windSpeed = 1500;
-        windHeading = 150;
     }
-
-
 
     @Test
     public void updateSpeedTest() {
-        int expectedSpeed = 2839;
+        windHeading = 150;
+        int expectedSpeed = 1134;
         PolarUtils.updateBoatSpeed(testBoat, windHeading, windSpeed);
         Assert.assertEquals(expectedSpeed, testBoat.getSpeed());
     }
@@ -37,7 +35,7 @@ public class PolarUtilsTest {
     @Test
     public void updateSpeedUpWindTest() {
         windHeading = 300;
-        int expectedSpeed = 0;
+        int expectedSpeed = 1742;
         PolarUtils.updateBoatSpeed(testBoat, windHeading, windSpeed);
         Assert.assertEquals(expectedSpeed, testBoat.getSpeed());
     }
@@ -45,7 +43,25 @@ public class PolarUtilsTest {
     @Test
     public void updateSpeedDownWindTest() {
         windHeading = 120;
-        int expectedSpeed = 1742;
+        int expectedSpeed = 0;
+        PolarUtils.updateBoatSpeed(testBoat, windHeading, windSpeed);
+        Assert.assertEquals(expectedSpeed, testBoat.getSpeed());
+    }
+
+    @Test
+    public void updateSpeedBoatHeading0Test() {
+        windHeading = 150;
+        testBoat.setHeading(0);
+        int expectedSpeed = 2839;
+        PolarUtils.updateBoatSpeed(testBoat, windHeading, windSpeed);
+        Assert.assertEquals(expectedSpeed, testBoat.getSpeed());
+    }
+
+    @Test
+    public void updateSpeedBoatHeading355Test() {
+        windHeading = 150;
+        testBoat.setHeading(350);
+        int expectedSpeed = 2291;
         PolarUtils.updateBoatSpeed(testBoat, windHeading, windSpeed);
         Assert.assertEquals(expectedSpeed, testBoat.getSpeed());
     }
