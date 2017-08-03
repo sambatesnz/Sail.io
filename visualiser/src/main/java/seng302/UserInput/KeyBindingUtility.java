@@ -1,4 +1,4 @@
-package seng302.UserInputController;
+package seng302.UserInput;
 
 import javafx.event.EventHandler;
 import javafx.scene.Scene;

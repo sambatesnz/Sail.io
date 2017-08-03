@@ -1,4 +1,4 @@
-package seng302.UserInputController;
+package seng302.UserInput;
 
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.MessageType;

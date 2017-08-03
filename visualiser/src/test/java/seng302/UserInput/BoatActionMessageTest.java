@@ -1,4 +1,4 @@
-package seng302.UserInputController;
+package seng302.UserInput;
 
 import org.junit.Test;
 import seng302.PacketGeneration.PacketUtils;
