@@ -327,7 +327,6 @@ public class Boat {
      */
     public void tackOrGybe(int windDirection) {
         double headingDif = (360 + heading - windDirection) % 360;
-        System.out.println(headingDif);
         finalHeading = heading;
         if (headingDif < 90) {      // Tack counter-clockwise
             finalHeading = windDirection + 360 - headingDif;
@@ -343,8 +342,6 @@ public class Boat {
             addHeading = false;
         }
         finalHeading = (360 + finalHeading) % 360;
-        System.out.println(finalHeading);
-        System.out.println(addHeading);
 
         if (turningThread != null && turningThread.isAlive()) {
             stopTurnThread = true;

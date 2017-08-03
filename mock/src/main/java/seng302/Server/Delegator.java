@@ -2,11 +2,11 @@ package seng302.Server;
 
 import seng302.Race;
 import seng302.RaceObjects.Boat;
+import seng302.UserInputController.BoatAction;
 
 public class Delegator {
 
     private Race race;
-
     public Delegator(Race race) {
         this.race = race;
     }
@@ -31,6 +31,10 @@ public class Delegator {
         }
     }
 
+    /**
+     * Forces the boat to tack/gybe based on its current position
+     * @param sourceId source id of the boat
+     */
     public void tackOrGybeBoat(int sourceId) {
         Boat boat = race.getBoatByID(sourceId);
         int windDirection = race.getWindHeading();
