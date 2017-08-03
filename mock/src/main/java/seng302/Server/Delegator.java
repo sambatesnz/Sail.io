@@ -33,7 +33,7 @@ public class Delegator {
 
     public void tackOrGybeBoat(int sourceId) {
         Boat boat = race.getBoatByID(sourceId);
-        int windDirection = ((((race.updateWindDirection()  * 360) / 65536)+360)%360);
+        int windDirection = race.getWindHeading();
         boat.tackOrGybe(windDirection);
     }
 
@@ -44,8 +44,7 @@ public class Delegator {
      */
     public void changeBoatHeading(int sourceID, boolean upwind){
         Boat boat = race.getBoatByID(sourceID);
-        int windDirection = ((((race.updateWindDirection()  * 360) / 65536)+360)%360);  //TODO Make this into a function
-        System.out.println(windDirection);
+        int windDirection = race.getWindHeading();
         boat.updateHeading(windDirection, upwind);
     }
 }
