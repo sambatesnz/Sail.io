@@ -343,8 +343,6 @@ public class Boat {
             addHeading = false;
         }
         finalHeading = (360 + finalHeading) % 360;
-        System.out.println(finalHeading);
-        System.out.println(addHeading);
 
         if (turningThread != null && turningThread.isAlive()) {
             stopTurnThread = true;
@@ -450,6 +448,25 @@ public class Boat {
         this.headingChanged = false;
     }
 
+    public void setHeadingToVMG(int windHeading) {
+        final int boatQuad = 90;
+        final double VMG_UPWIND = 105;
+        final double VMG_DOWNWIND = 60;
+        if (heading < (boatQuad + windHeading)) {
+            heading = (double) Math.floorMod((int) (windHeading - VMG_UPWIND), 360);
+            System.out.println("if clause");
+        }else if (heading < (3 * boatQuad + windHeading)){
+            heading = (double) Math.floorMod((int)(windHeading - VMG_DOWNWIND), 360);
+            System.out.println("elif 1");
+        }else if (heading < (3 * boatQuad + windHeading)){
+            heading = (double) Math.floorMod((int)(windHeading + VMG_DOWNWIND), 360);
+            System.out.println("elif 2");
+        }else {
+            heading = (double) Math.floorMod((int) (windHeading + VMG_UPWIND), 360);
+            System.out.println("else clause");
+        }
+        System.out.println(heading);
+    }
 
     /**
      * Converts and then returns current boat speed (originally in mm/sec) in knots.
