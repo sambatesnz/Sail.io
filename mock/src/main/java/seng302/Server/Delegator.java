@@ -15,7 +15,9 @@ public class Delegator {
     public void processCommand(int messageCommand) {
         int boatID = 103; //Hardcoded to NZL for testing purposes, and while packets don't contain ID
 
-        if (messageCommand == BoatAction.UPWIND.getBoatAction()) {
+        if (messageCommand == BoatAction.TACK_OR_GYBE.getBoatAction()) {
+            tackOrGybeBoat(boatID);
+        } else if (messageCommand == BoatAction.UPWIND.getBoatAction()) {
             changeBoatHeading(boatID, true);
         } else if (messageCommand == BoatAction.DOWNWIND.getBoatAction()) {
             changeBoatHeading(boatID, false);
