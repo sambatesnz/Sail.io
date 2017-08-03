@@ -32,6 +32,15 @@ public class Boat {
     private int speed;               //mm/sec
     private boolean knowsBoatLocation;
     private boolean headingChanged;
+    private boolean sailsOut = false;
+
+    public boolean isSailsOut() {
+        return sailsOut;
+    }
+
+    public void setSailsOut(boolean sailsOut) {
+        this.sailsOut = sailsOut;
+    }
 
     private boolean upwindMemory = false;
     private boolean downwindMemory = false;

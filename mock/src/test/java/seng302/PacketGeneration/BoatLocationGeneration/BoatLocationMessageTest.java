@@ -274,10 +274,10 @@ public class BoatLocationMessageTest {
     }
 
     @Test
-    public void currentDrift() throws Exception {
+    public void sailStatus() throws Exception {
         byte[] actualMessage = new byte[8];
-        int sourceIndex = BoatLocationUtility.CURRENT_DRIFT.getIndex();
-        int size = BoatLocationUtility.CURRENT_DRIFT.getSize();
+        int sourceIndex = BoatLocationUtility.SAIL_STATUS.getIndex();
+        int size = BoatLocationUtility.SAIL_STATUS.getSize();
         short actualCurrentDrift = (short) PacketUtils.getIntFromByteArray(message, sourceIndex, actualMessage, size);
         assertEquals(currentDrift, actualCurrentDrift);
     }
