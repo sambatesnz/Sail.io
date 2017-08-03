@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import seng302.Controllers.RaceViewController;
-import seng302.UserInputController.KeyBindingUtility;
+import seng302.UserInput.KeyBindingUtility;
 
 import java.io.IOException;
 
