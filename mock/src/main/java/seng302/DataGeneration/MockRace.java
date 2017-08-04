@@ -23,7 +23,6 @@ import static java.lang.System.currentTimeMillis;
  * Created by sba136 on 3/05/17.
  */
 public class MockRace implements IServerData {
-
     private Race race;
     private BinaryMessage rsm;
     private Queue<byte[]> bytes;

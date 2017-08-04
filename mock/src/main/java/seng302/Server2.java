@@ -3,19 +3,23 @@ package seng302;
 import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.MockRace;
 import seng302.Server.ConnectionManager;
+import seng302.Server.Delegator;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Server2 {
     private Hashtable outputStreams;
     private IServerData mockRace;
     private ConnectionManager connectionManager;
+    private Queue<byte[]> receivedPackets;
 
     public Server2(int port) throws IOException {
         this.mockRace = new MockRace();
         outputStreams = new Hashtable();
+        receivedPackets = new LinkedBlockingQueue<>();
         this.connectionManager = new ConnectionManager(outputStreams, port, this);
         startEventLoop();
         //this.mockRace.beginGeneratingData();    //move this nephew
@@ -41,6 +45,14 @@ public class Server2 {
             if (outputStreams.size() > 0 && hasStarted) {
                 sendToAll();
             }
+            updateMock();
+        }
+    }
+
+    private void updateMock() {
+        if (!receivedPackets.isEmpty()) {
+            System.out.println("received some big as packets!");
+            byte[] packets = receivedPackets.remove();
         }
     }
 
@@ -58,7 +70,6 @@ public class Server2 {
                     boolean hasPackets = bytes.length > 0;
                     if (hasPackets) {
                         dout.write(bytes);
-                        System.out.println(Arrays.toString(bytes));
                     }
                 } catch (IOException ie) {
                     System.out.println(ie);
@@ -85,7 +96,7 @@ public class Server2 {
         new Server2(port);
     }
 
-    public void handlePacket(byte[] data) {
-        //TODO: parse packet, and if necessary change the race.
+    public void addPacketToQueue(byte[] data) {
+        receivedPackets.add(data);
     }
 }

@@ -2,6 +2,8 @@ package seng302;
 
 import java.io.*;
 import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Arrays;
 
 /**
@@ -21,13 +23,17 @@ public class ClientConnexion extends Thread {
         try {
             DataInputStream din = new DataInputStream(socket.getInputStream());
             while (true) {
-
+                final int HEADER_LEN = 15;
                 byte[] data = new byte[4000];
-                if (din.available() > 15) {
+                if (din.available() > HEADER_LEN) {
                     din.read(data);
-                    System.out.println(Arrays.toString(data));
+                    boolean validPacket = validatePacket(data);
+                    System.out.println("packet received");
+                    if (validPacket) {
+                        System.out.println("valid packet received");
+                        server.addPacketToQueue(data);
+                    }
                 }
-                server.handlePacket(data);
             }
         } catch (EOFException ie) {
         } catch (IOException ie) {
@@ -35,5 +41,24 @@ public class ClientConnexion extends Thread {
         } finally {
             server.removeConnection(socket);
         }
+    }
+
+    private boolean validatePacket(byte[] data) {
+        final int SYNC_BYTE_1 = 0;
+        final int SYNC_BYTE_2 = 1;
+        return data[SYNC_BYTE_1] == (byte) 0x47 && data[SYNC_BYTE_2] == (byte) 0x83;
+    }
+
+        /**
+         * Converts a section from an array of bytes into an integer.
+         * @param bytes The array to convert bytes from
+         * @param pos The starting index of the bytes desired to be converted
+         * @param len The number of bytes to be converted (from the given index)
+         * @return An integer, converted from the given bytes
+         */
+    public static int byteArrayToInt(byte[] bytes, int pos, int len){
+        byte[] intByte = new byte[4];
+        System.arraycopy(bytes, pos, intByte, 0, len);
+        return ByteBuffer.wrap(intByte).order(ByteOrder.LITTLE_ENDIAN).getInt();
     }
 }

@@ -50,16 +50,16 @@ public class ClientConnector extends Thread {
                     final int HEADER_LEN = 15;
                     if (in.available() > HEADER_LEN){
                         in.read(data);
-                        int syncByte1 = byteArrayToInt(data, 0, 1);
-                        int syncByte2 = byteArrayToInt(data, 1,1);
-                        int messageType = byteArrayToInt(data, 2,1);
-                        int messageLen = byteArrayToInt(data, 13,2);
-
-                        byte[] body = new byte[messageLen];
-                        System.arraycopy(data,15, body,0, messageLen);
-
-                        int messageCommand = byteArrayToInt(body, 0, 1);
-                        delegator.processCommand(messageCommand);
+//                        int syncByte1 = byteArrayToInt(data, 0, 1);
+//                        int syncByte2 = byteArrayToInt(data, 1,1);
+//                        int messageType = byteArrayToInt(data, 2,1);
+//                        int messageLen = byteArrayToInt(data, 13,2);
+//
+//                        byte[] body = new byte[messageLen];
+//                        System.arraycopy(data,15, body,0, messageLen);
+//
+//                        int messageCommand = byteArrayToInt(body, 0, 1);
+//                        delegator.processCommand(messageCommand);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -74,18 +74,7 @@ public class ClientConnector extends Thread {
         }
     }
 
-    /**
-     * Converts a section from an array of bytes into an integer.
-     * @param bytes The array to convert bytes from
-     * @param pos The starting index of the bytes desired to be converted
-     * @param len The number of bytes to be converted (from the given index)
-     * @return An integer, converted from the given bytes
-     */
-    public static int byteArrayToInt(byte[] bytes, int pos, int len){
-        byte[] intByte = new byte[4];
-        System.arraycopy(bytes, pos, intByte, 0, len);
-        return ByteBuffer.wrap(intByte).order(ByteOrder.LITTLE_ENDIAN).getInt();
-    }
+
 
     private void send(byte[] packets) throws IOException {
         socket.getOutputStream().write(packets);

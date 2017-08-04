@@ -42,16 +42,6 @@ public class ConnectionManager extends Thread {
             outputStreams.put(s, dout);
             new ClientConnexion(server, s);
         }
-//        System.out.println("running!");
-//        while (true){
-//            try {
-//                connections.add(this.listener.accept());
-//                System.out.println(connections.size());
-//
-//            } catch (IOException e) {
-//                System.out.println("hey bro");
-//            }
-//        }
     }
 
 }
