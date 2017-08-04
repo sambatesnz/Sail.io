@@ -13,8 +13,8 @@ public class MarkRoundingSteps {
         throw new PendingException();
     }
 
-    @When("^the the boat passes mark (\\d+)$")
-    public void the_the_boat_passes_mark(int markNumber) throws Throwable {
+    @When("^the the boat passes that mark$")
+    public void the_the_boat_passes_that_mark() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
