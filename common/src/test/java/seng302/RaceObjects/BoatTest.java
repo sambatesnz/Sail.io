@@ -16,7 +16,7 @@ public class BoatTest {
         boat.setHeading(145);
         boat.updateHeading(100, true);
 
-        assertEquals(148.0, boat.getHeading());
+        assertEquals(142.0, boat.getHeading());
     }
 
     @Test
@@ -24,7 +24,7 @@ public class BoatTest {
         boat.setHeading(150);
         boat.updateHeading(100, false);
 
-        assertEquals(147.0, boat.getHeading());
+        assertEquals(153.0, boat.getHeading());
     }
 
 
