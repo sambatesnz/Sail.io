@@ -15,12 +15,14 @@ public class Server2 {
     private IServerData mockRace;
     private ConnectionManager connectionManager;
     private Queue<byte[]> receivedPackets;
+    private RaceHandler raceHandler;
 
     public Server2(int port) throws IOException {
         this.mockRace = new MockRace();
         outputStreams = new Hashtable();
         receivedPackets = new LinkedBlockingQueue<>();
         this.connectionManager = new ConnectionManager(outputStreams, port, this);
+        raceHandler = new RaceHandler(this.mockRace.getRace());
         startEventLoop();
         //this.mockRace.beginGeneratingData();    //move this nephew
     }
@@ -53,7 +55,7 @@ public class Server2 {
         if (!receivedPackets.isEmpty()) {
             System.out.println("Packet Received - now need to parse it!");
             byte[] packets = receivedPackets.remove();
-            System.out.println(PacketParserUtils.getMessageType(packets));
+            raceHandler.updateRace(packets);
             //PacketParserUtils.getMessageType(packets)
 
             // TODO: Gotta Parse/Pass this information to some kind of parser, which then communicates with the MockRace.

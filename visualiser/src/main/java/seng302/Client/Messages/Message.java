@@ -46,8 +46,6 @@ public class Message {
     }
 
 
-
-
     /**
      * Gives the packet to the relative message handler based on the messageType
      * @throws UnsupportedEncodingException
