@@ -18,10 +18,12 @@ public class RoundingUtility {
         double yTarget = currentTarget.getY();
         double xLast = lastTarget.getX();
         double yLast = lastTarget.getY();
-        double xDummy = -yTarget;
-        double yDummy = xTarget;
+//        double xDummy = -yTarget;
+//        double yDummy = xTarget;
+        double xDummy = -Math.abs(yTarget - yLast);
+        double yDummy = Math.abs(xTarget - xLast);
         
-        String orientPerpendicular = RoundingUtility.getOrientation(boat, xTarget, yTarget, xDummy, yDummy);
+        String orientPerpendicular = RoundingUtility.getOrientation(boat, 0, 0, xDummy, yDummy);
         String orientParallel = RoundingUtility.getOrientation(boat, xLast, yLast, xTarget, yTarget);
 
         String orientation = courseRoundingInfo.get(boat.getTargetMarkIndex()).getValue();
@@ -42,7 +44,72 @@ public class RoundingUtility {
                    (orientPerpendicular.equals(LEFT) && orientParallel.equals(portLeft) && boat.getRoundingStage() == 2)) {
             boat.updateRoundingStage();
         }
+
+        if (courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey().getMarks().size() > 1) {
+            Mark leftMark;
+            Mark rightMark;
+            if (boat.isRightOfNextGate()) {
+                leftMark = currentTarget.getMarks().get(0);
+                rightMark = currentTarget.getMarks().get(1);
+            } else {
+                rightMark = currentTarget.getMarks().get(0);
+                leftMark = currentTarget.getMarks().get(1);
+            }
+            orientPerpendicular = RoundingUtility.getOrientation(boat, leftMark.getX(), leftMark.getY(), rightMark.getX(), rightMark.getY());
+//            leftMark.getX() + rightMark.getX()
+
+            double xDummyLeft = leftMark.getX() - rightMark.getY();
+            double yDummyLeft = leftMark.getY() - rightMark.getX();
+            xDummyLeft = -yDummyLeft;
+            yDummyLeft = xDummyLeft;
+
+            double xDummyRight = rightMark.getX() - rightMark.getY();
+            double yDummyRight = rightMark.getY() - rightMark.getX();
+            xDummyRight = yDummyRight;
+            yDummyRight = -xDummyRight;
+
+            String orientParallelLeft = RoundingUtility.getOrientation(boat, leftMark.getX(), leftMark.getY(), xDummyLeft, yDummyLeft);
+            String orientParallelRight = RoundingUtility.getOrientation(boat, rightMark.getX(), rightMark.getY(), xDummyRight, yDummyRight);
+
+//            if (orientPerpendicular.equals(RIGHT) && orientParallel.equals(portLeft)) {
+//                boat.resetRoundingStage();
+//            } else if ((orientPerpendicular.equals(RIGHT) && orientParallel.equals(portRight) && boat.getRoundingStage() == 0) ||
+//                    (orientPerpendicular.equals(LEFT) && orientParallel.equals(portRight) && boat.getRoundingStage() == 1) ||
+//                    (orientPerpendicular.equals(LEFT) && orientParallel.equals(portLeft) && boat.getRoundingStage() == 2)) {
+//                boat.updateRoundingStage();
+//            }
+            if (orientPerpendicular.equals(RIGHT)) {
+                if (orientParallelLeft.equals(LEFT) || orientParallelRight.equals(RIGHT)) {
+                    boat.resetRoundingStage();
+                } else if (boat.getRoundingStage() == 0) {
+                    boat.updateRoundingStage();
+                }
+            }
+            else if (orientPerpendicular.equals(LEFT) && (boat.getRoundingStage() == 1 ||
+                    ((orientParallelLeft.equals(LEFT) || orientParallelRight.equals(RIGHT)) && boat.getRoundingStage() == 2))) {
+                boat.updateRoundingStage();
+            }
+        }
+
+
+
+        if (boat.getRoundingStage() == 3) {
+            boat.resetRoundingStage();
+            boat.incrementTargetMarkIndex();
+            if (courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey().getMarks().size() > 1) {
+                boat.setRightOfNextGate(isBoatRightOfGate(courseRoundingInfo, boat));
+            }
+        }
     }
+
+    private static boolean isBoatRightOfGate(List<Pair<CompoundMark, String>> courseRoundingInfo, Boat boat) {
+        Mark currentTarget1 = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey().getMarks().get(0);
+        Mark currentTarget2 = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey().getMarks().get(1);
+        String orientPerpendicularCheck = RoundingUtility.getOrientation(boat, currentTarget1.getX(),
+                currentTarget1.getY(), currentTarget2.getX(), currentTarget2.getY());
+        return orientPerpendicularCheck.equals(RIGHT);
+    }
+
 
     /**
      * Determines whether a boat is to the left or to the right of a line between the last mark
