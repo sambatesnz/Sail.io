@@ -2,12 +2,10 @@ package seng302;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.Pair;
 import seng302.PacketParsing.XMLParser;
 import seng302.Polars.PolarUtils;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.CompoundMark;
-import seng302.RaceObjects.CourseLimit;
-import seng302.RaceObjects.Leg;
+import seng302.RaceObjects.*;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -17,6 +15,8 @@ import java.util.*;
 import static java.lang.Math.*;
 import static java.lang.System.currentTimeMillis;
 import static javafx.collections.FXCollections.observableArrayList;
+import static seng302.PacketParsing.XMLParser.COMPOUND_MARK_ID;
+import static seng302.PacketParsing.XMLParser.ROUNDING;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
@@ -24,6 +24,7 @@ import static javafx.collections.FXCollections.observableArrayList;
  */
 public class Race {
     private int numFinishers = 0;
+    private List<Pair<CompoundMark, String>> courseRoundingInfo;
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
     private List<Boat> boats;
@@ -326,7 +327,8 @@ public class Race {
 
             compoundMarks = xmlParser.getCourseLayout();
             boundaries = xmlParser.getCourseLimits();
-            List<Integer> courseOrder = xmlParser.getCourseOrder();
+            List<Map<String, String>> courseOrder = xmlParser.getCourseOrder();
+
 
             gates = new ArrayList<>();
             for (CompoundMark mark : compoundMarks) {
@@ -335,21 +337,34 @@ public class Race {
                 }
             }
 
-            legs = new ArrayList<>();
-            for (int i = 1; i < courseOrder.size(); i++) {
-                int startId = courseOrder.get(i - 1);
-                int destId = courseOrder.get(i);
-                CompoundMark start = null;
-                CompoundMark dest = null;
-                for (CompoundMark compoundMark : compoundMarks) {
-                    if (compoundMark.getId() == startId) {
-                        start = compoundMark;
-                    } else if (compoundMark.getId() == destId) {
-                        dest = compoundMark;
-                    }
+            courseRoundingInfo = new ArrayList<>();
+            for (Map<String, String> m: courseOrder) {
+                int compoundMarkID = Integer.parseInt(m.get(COMPOUND_MARK_ID));
+                Optional<CompoundMark> optional = compoundMarks.stream().filter(cm -> cm.getId() == compoundMarkID).findFirst();
+                if (optional.isPresent()) {
+                    CompoundMark compoundMark = optional.get();
+                    String rounding = m.get(ROUNDING);
+                    courseRoundingInfo.add(new Pair<>(compoundMark, rounding));
+                } else {
+                    System.err.println("No matching Compound mark id");
                 }
-                legs.add(new Leg(start, dest));
             }
+
+//            legs = new ArrayList<>();
+//            for (int i = 1; i < courseOrder.size(); i++) {
+//                int startId = courseOrder.get(i - 1);
+//                int destId = courseOrder.get(i);
+//                CompoundMark start = null;
+//                CompoundMark dest = null;
+//                for (CompoundMark compoundMark : compoundMarks) {
+//                    if (compoundMark.getId() == startId) {
+//                        start = compoundMark;
+//                    } else if (compoundMark.getId() == destId) {
+//                        dest = compoundMark;
+//                    }
+//                }
+//                legs.add(new Leg(start, dest));
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -405,9 +420,25 @@ public class Race {
                     }
 
                     //Increments the the distance by the speed
+                    double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
+                    double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
 
-                    boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
-                    boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
+                    CompoundMark lastTarget = courseRoundingInfo.get(boat.getLastMarkIndex()).getKey();
+                    CompoundMark currentTarget = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey();
+                    double xTarget = currentTarget.getX();
+                    double yTarget = currentTarget.getY();
+                    double xDummy = yTarget;
+                    double yDummy = -xTarget;
+
+                    String orient = Rounding.getOrientation(boat, xTarget, yTarget, xDummy, yDummy);
+
+//                    CompoundMark lastTarget = courseRoundingInfo.get(boat.getLastMarkIndex()).getKey();
+//                    CompoundMark currentTarget = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey();
+//                    String orient = Rounding.getOrientation(boat, lastTarget, currentTarget);
+
+
+                    boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
+                    boat.getMark().setY(newY);
 
 
                     /*if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {                           //Legacy code

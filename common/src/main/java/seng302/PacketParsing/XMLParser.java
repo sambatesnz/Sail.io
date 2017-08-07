@@ -17,32 +17,33 @@ import java.util.*;
 
 public class XMLParser {
 
-    private static final String LATITUDE = "Lat";
-    private static final String LONGITUDE = "Lon";
-    private static final String COMPOUND_MARK_ID = "CompoundMarkID";
-    private static final String TYPE = "Type";
-    private static final String YACHT = "Yacht";
-    private static final String COURSE = "Course";
-    private static final String COURSE_LIMIT = "CourseLimit";
-    private static final String PARTICIPANTS = "Participants";
-    private static final String RACESTARTTIME = "RaceStartTime";
-    private static final String TIME = "Time";
-    private static final String START = "Start";
-    private static final String SEQ_ID = "SeqID";
-    private static final String NAME = "Name";
-    private static final String TARGETLAT = "TargetLat";
-    private static final String TARGETLON = "TargetLng";
-    private static final String SOURCEID = "SourceID";
-    private static final String SHORTNAME = "ShortName";
-    private static final String BOATNAME = "BoatName";
-    private static final String COUNTRY = "Country";
-    private static final String COMPOUND_MARK_SEQUENCE = "CompoundMarkSequence";
-    private static final String BOATS = "Boats";
-    private static final String REGATTA = "RegattaConfig";
-    private static final String REGATTA_ID = "RegattaID";
-    private static final String REGATTA_NAME = "RegattaName";
-    private static final String COURSE_NAME = "CourseName";
-    private static final String UTC_OFFSET = "UtcOffset";
+    public static final String LATITUDE = "Lat";
+    public static final String LONGITUDE = "Lon";
+    public static final String COMPOUND_MARK_ID = "CompoundMarkID";
+    public static final String TYPE = "Type";
+    public static final String YACHT = "Yacht";
+    public static final String COURSE = "Course";
+    public static final String COURSE_LIMIT = "CourseLimit";
+    public static final String PARTICIPANTS = "Participants";
+    public static final String RACESTARTTIME = "RaceStartTime";
+    public static final String TIME = "Time";
+    public static final String START = "Start";
+    public static final String SEQ_ID = "SeqID";
+    public static final String NAME = "Name";
+    public static final String TARGETLAT = "TargetLat";
+    public static final String TARGETLON = "TargetLng";
+    public static final String SOURCEID = "SourceID";
+    public static final String SHORTNAME = "ShortName";
+    public static final String BOATNAME = "BoatName";
+    public static final String COUNTRY = "Country";
+    public static final String COMPOUND_MARK_SEQUENCE = "CompoundMarkSequence";
+    public static final String BOATS = "Boats";
+    public static final String REGATTA = "RegattaConfig";
+    public static final String REGATTA_ID = "RegattaID";
+    public static final String REGATTA_NAME = "RegattaName";
+    public static final String COURSE_NAME = "CourseName";
+    public static final String UTC_OFFSET = "UtcOffset";
+    public static final String ROUNDING = "Rounding";
 
     private String xmlString;
     private Document xmlDoc;
@@ -179,17 +180,27 @@ public class XMLParser {
         return raceStartTime;
     }
 
-    public List<Integer> getCourseOrder() {
+    public List<Map<String, String>> getCourseOrder() {
         NodeList nodes = xmlDoc.getElementsByTagName(COMPOUND_MARK_SEQUENCE).item(0).getChildNodes();
-        List<Integer> courseOrder = new ArrayList<>();
+//        List<Integer> courseOrder = new ArrayList<>();
+        List<Map<String, String>> courseOrder = new ArrayList<>();
         try {
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     NamedNodeMap nnm = node.getAttributes();
-                    courseOrder.add(Integer.parseInt(nnm.getNamedItem(COMPOUND_MARK_ID).getNodeValue()));
+                    String seqId = nnm.getNamedItem(SEQ_ID).getNodeValue();
+                    String compoundMarkId = nnm.getNamedItem(COMPOUND_MARK_ID).getNodeValue();
+                    String rounding = nnm.getNamedItem(ROUNDING).getNodeValue();
+                    Map<String, String> compoundMarkInfo = new HashMap<>();
+                    compoundMarkInfo.put(SEQ_ID, seqId);
+                    compoundMarkInfo.put(COMPOUND_MARK_ID, compoundMarkId);
+                    compoundMarkInfo.put(ROUNDING, rounding);
+
+                    courseOrder.add(compoundMarkInfo);
                 }
             }
+            courseOrder.sort(Comparator.comparingInt(o -> Integer.parseInt(o.get(SEQ_ID))));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }

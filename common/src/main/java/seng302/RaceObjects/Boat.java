@@ -15,6 +15,8 @@ public class Boat {
     private static final int HEADING_INCREMENT = 3;
 
     private Mark mark;
+    private int targetMarkIndex = 1;
+    private int lastMarkIndex = 0;
     private String boatName;
     private double currentLegDistance;
     private int currentLegIndex;
@@ -466,6 +468,14 @@ public class Boat {
         DecimalFormat df = new DecimalFormat("#.#");
         df.setRoundingMode(RoundingMode.CEILING);
         return Double.valueOf(df.format(val));
+    }
+
+    public int getTargetMarkIndex() {
+        return targetMarkIndex;
+    }
+
+    public int getLastMarkIndex() {
+        return lastMarkIndex;
     }
 }
 
