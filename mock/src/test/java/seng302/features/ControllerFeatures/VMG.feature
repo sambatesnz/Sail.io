@@ -7,7 +7,7 @@ Feature: A users boat should shift to a heading that results in an optimal VMG w
     And the boats current heading is <HeadingBefore> degrees
     And the current wind direction is <WindDirection>
     When the received boatAction packet is processed
-    Then the boats current heading is altered to <HeadingAfter> degrees
+    Then the boats final heading is altered to <HeadingAfter> degrees
   Examples:
   | BoatAction | HeadingBefore | WindDirection | HeadingAfter |
   | 1          | 180           | 60            | 180          |

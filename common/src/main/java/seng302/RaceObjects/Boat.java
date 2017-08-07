@@ -38,8 +38,6 @@ public class Boat {
     private boolean downwindMemory = false;
     private boolean plusMemory = false;
 
-    private double finalHeading = heading;
-    private boolean addHeading = false;
     private Thread turningThread;
     private Boolean stopTurnThread = false;
 
@@ -72,62 +70,28 @@ public class Boat {
      * @param windDirection The direction the wind is currently coming from
      */
     public void tackOrGybe(int windDirection) {
+        boolean isClockwise = true;
         double headingDif = (360 + heading - windDirection) % 360;
-        System.out.println(headingDif);
-        finalHeading = heading;
+        double finalHeading = heading;
         if (headingDif < 90) {      // Tack counter-clockwise
             finalHeading = windDirection + 360 - headingDif;
-            addHeading = false;
+            isClockwise = false;
         } else if (headingDif > 270 && headingDif < 360) { // Tack clockwise
             finalHeading = windDirection + 360 - headingDif;
-            addHeading = true;
+            isClockwise = true;
         } else if (headingDif > 90 && headingDif < 180) {   // Gybe clockwise
             finalHeading = windDirection + 180 + (180 - headingDif);
-            addHeading = true;
+            isClockwise = true;
         } else if (headingDif < 270 && headingDif > 180) {  // Gybe counter-clockwise
             finalHeading = windDirection + 180 - (headingDif - 180);
-            addHeading = false;
+            isClockwise = false;
         }
         finalHeading = (360 + finalHeading) % 360;
 
-        if (turningThread != null && turningThread.isAlive()) {
-            stopTurnThread = true;
-            return;
-        } else {
-            stopTurnThread = false;
-        }
-        turningThread = new Thread("Boat Turning") {
-            public void run() {
-                if (addHeading) {
-                    while ((heading < finalHeading - 2 || heading > finalHeading + 2) && !stopTurnThread) {
-                        heading += HEADING_INCREMENT;
-                        if (heading > 360) {
-                            heading -= 360;
-                        }
-                        headingChanged = true;
-                        try {
-                            Thread.sleep(17);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else {
-                    while ((heading > finalHeading + 2 || heading < finalHeading - 2) && !stopTurnThread) {
-                        heading -= HEADING_INCREMENT;
-                        if (heading < 0) {
-                            heading += 360;
-                        }
-                        headingChanged = true;
-                        try {
-                            Thread.sleep(17);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        };
-        turningThread.start();
+        updateStopTurnThread();
+
+        turnBoat(isClockwise, finalHeading);
+
     }
 
     /**
@@ -138,7 +102,7 @@ public class Boat {
      *               from (false) the current wind direction
      */
     public void updateHeading(int windDirection, boolean upwind) {
-        stopTurnThread = true;
+        updateStopTurnThread();
 
         double headingMinusWind = (360 + heading - windDirection) % 360;
         if (upwind) {   // turning upwind
@@ -191,18 +155,68 @@ public class Boat {
     public void setHeadingToVMG(int windHeading) {
         final double VMG_UPWIND = 180 - 105;
         final double VMG_DOWNWIND = 180 - 60;
-        int relativeAngle = Math.floorMod(((int)heading - windHeading), 360);
+        boolean isClockwise = true;
+        double finalHeading = heading;
+        int relativeAngle = getRelativeAngle(windHeading, heading);
 
         if (relativeAngle < 80) {
-            heading = (double) Math.floorMod((int) (windHeading + VMG_UPWIND), 360);
-        }else if (relativeAngle > 100 && relativeAngle < 180){
-            heading = (double) Math.floorMod((int)(windHeading + VMG_DOWNWIND), 360);
-        }else if (relativeAngle > 180 && relativeAngle < 260){
-            heading = (double) Math.floorMod((int)(windHeading - VMG_DOWNWIND), 360);
-        }else if (relativeAngle > 280){
-            heading = (double) Math.floorMod((int)(windHeading - VMG_UPWIND), 360);
+            finalHeading = (double) Math.floorMod((int) (windHeading + VMG_UPWIND), 360);
+            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;        }else if (relativeAngle > 100 && relativeAngle < 180){
+            finalHeading = (double) Math.floorMod((int)(windHeading + VMG_DOWNWIND), 360);
+            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;        }else if (relativeAngle > 180 && relativeAngle < 260){
+            finalHeading = (double) Math.floorMod((int)(windHeading - VMG_DOWNWIND), 360);
+            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;        }else if (relativeAngle > 280){
+            finalHeading = (double) Math.floorMod((int)(windHeading - VMG_UPWIND), 360);
+            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
         }
+        updateStopTurnThread();
+        turnBoat(isClockwise, finalHeading);
     }
+
+    private int getRelativeAngle(int angle1, double angle2){
+        return Math.floorMod(((int)angle2 - angle1), 360);
+    }
+
+
+    private void turnBoat(boolean isClockwise, double finalHeading) {
+
+        turningThread = new Thread("Boat Turning") {
+            public void run() {
+                if (isClockwise) {
+                    while ((heading < finalHeading - 2 || heading > finalHeading + 2) && !stopTurnThread) {
+                        heading += HEADING_INCREMENT;
+                        if (heading > 360) {
+                            heading -= 360;
+                        }
+                        headingChanged = true;
+                        try {
+                            Thread.sleep(17);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    while ((heading > finalHeading + 2 || heading < finalHeading - 2) && !stopTurnThread) {
+                        heading -= HEADING_INCREMENT;
+                        if (heading < 0) {
+                            heading += 360;
+                        }
+                        headingChanged = true;
+                        try {
+                            Thread.sleep(17);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                if(!stopTurnThread){
+                    heading = finalHeading; // Sets heading to final heading. This is needed because the code above only gets within 2.
+                }
+            }
+        };
+        turningThread.start();
+    }
+
 
     /**
      * Converts and then returns current boat speed (originally in mm/sec) in knots.
@@ -213,6 +227,10 @@ public class Boat {
         DecimalFormat df = new DecimalFormat("#.#");
         df.setRoundingMode(RoundingMode.CEILING);
         return Double.valueOf(df.format(val));
+    }
+
+    private void updateStopTurnThread(){
+        stopTurnThread = turningThread != null && turningThread.isAlive();
     }
 
     public void setHeadingChangedToFalse() {
