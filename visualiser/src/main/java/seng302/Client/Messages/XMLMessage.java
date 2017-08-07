@@ -1,5 +1,7 @@
 package seng302.Client.Messages;
 
+import seng302.PacketParsing.PacketParserUtils;
+
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -22,8 +24,8 @@ public class XMLMessage {
      * @throws UnsupportedEncodingException
      */
     public XMLMessage(byte[] data) throws UnsupportedEncodingException{
-        xmlMessageSubtype = Message.byteArrayToInt(data, 9, 1);
-        xmlMessageLen = Message.byteArrayToInt(data, 12, 2);
+        xmlMessageSubtype = PacketParserUtils.byteArrayToInt(data, 9, 1);
+        xmlMessageLen = PacketParserUtils.byteArrayToInt(data, 12, 2);
         xmlMessage = new byte[xmlMessageLen];
         System.arraycopy(data,14, xmlMessage,0, xmlMessageLen);
         xmlString = new String(xmlMessage, "UTF-8");

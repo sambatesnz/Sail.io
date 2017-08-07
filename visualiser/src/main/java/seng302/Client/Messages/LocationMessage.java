@@ -1,6 +1,6 @@
 package seng302.Client.Messages;
 
-
+import seng302.PacketParsing.PacketParserUtils;
 import seng302.Race.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.Mark;
@@ -20,7 +20,6 @@ public class LocationMessage{
     private double heading;
     private int speedOverGround;
     private Race race;
-
     private Map<Integer, Boat> boatDict;
 
 
@@ -31,13 +30,13 @@ public class LocationMessage{
      * @param bytes The array of bytes from the body of a boat location packet
      */
     public LocationMessage(byte[] bytes, Race race) {
-        time = Message.byteArrayToLong(bytes, 1, 6);
-        sourceID = Message.byteArrayToInt(bytes, 7, 4);
-//        seqNumber = Message.byteArrayToInt(bytes, 11, 6);
-        latitude = Message.byteArrayToLong(bytes, 16, 4) * 180 / 2147483648.0;
-        longitude = Message.byteArrayToLong(bytes, 20, 4) * 180 / 2147483648.0;
-        heading = Message.byteArrayToInt(bytes, 28, 2) * 360 / 65536.0;
-        speedOverGround = Math.toIntExact((long) (Message.byteArrayToInt(bytes, 38, 2)));
+        time = PacketParserUtils.byteArrayToLong(bytes, 1, 6);
+        sourceID = PacketParserUtils.byteArrayToInt(bytes, 7, 4);
+//        seqNumber = PacketParserUtils.byteArrayToInt(bytes, 11, 6);
+        latitude = PacketParserUtils.byteArrayToLong(bytes, 16, 4) * 180 / 2147483648.0;
+        longitude = PacketParserUtils.byteArrayToLong(bytes, 20, 4) * 180 / 2147483648.0;
+        heading = PacketParserUtils.byteArrayToInt(bytes, 28, 2) * 360 / 65536.0;
+        speedOverGround = Math.toIntExact((long) (PacketParserUtils.byteArrayToInt(bytes, 38, 2)));
         boatDict = race.getBoatsMap();
         this.race = race;
 

@@ -2,8 +2,8 @@ package seng302;
 
 import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.MockRace;
+import seng302.PacketParsing.PacketParserUtils;
 import seng302.Server.ConnectionManager;
-import seng302.Server.Delegator;
 
 import java.io.*;
 import java.net.*;
@@ -51,16 +51,21 @@ public class Server2 {
 
     private void updateMock() {
         if (!receivedPackets.isEmpty()) {
-            System.out.println("received some big as packets!");
+            System.out.println("Packet Received - now need to parse it!");
             byte[] packets = receivedPackets.remove();
+            System.out.println(PacketParserUtils.getMessageType(packets));
+            //PacketParserUtils.getMessageType(packets)
+
+            // TODO: Gotta Parse/Pass this information to some kind of parser, which then communicates with the MockRace.
+
         }
     }
 
-    Enumeration getOutputStreams() {
+    private Enumeration getOutputStreams() {
         return outputStreams.elements();
     }
 
-    void sendToAll() {
+    private void sendToAll() {
         synchronized (outputStreams) {
             byte[] bytes = this.mockRace.getData();
             for (Enumeration e = getOutputStreams(); e.hasMoreElements(); ) {

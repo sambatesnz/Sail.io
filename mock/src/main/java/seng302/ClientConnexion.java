@@ -28,9 +28,7 @@ public class ClientConnexion extends Thread {
                 if (din.available() > HEADER_LEN) {
                     din.read(data);
                     boolean validPacket = validatePacket(data);
-                    System.out.println("packet received");
                     if (validPacket) {
-                        System.out.println("valid packet received");
                         server.addPacketToQueue(data);
                     }
                 }
