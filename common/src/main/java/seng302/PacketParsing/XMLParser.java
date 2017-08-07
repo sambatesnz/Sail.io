@@ -43,7 +43,7 @@ public class XMLParser {
     public static final String REGATTA_NAME = "RegattaName";
     public static final String COURSE_NAME = "CourseName";
     public static final String UTC_OFFSET = "UtcOffset";
-    public static final String ROUNDING = "Rounding";
+    public static final String ROUNDING = "RoundingUtility";
 
     private String xmlString;
     private Document xmlDoc;

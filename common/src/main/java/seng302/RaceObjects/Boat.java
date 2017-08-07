@@ -15,8 +15,6 @@ public class Boat {
     private static final int HEADING_INCREMENT = 3;
 
     private Mark mark;
-    private int targetMarkIndex = 1;
-    private int lastMarkIndex = 0;
     private String boatName;
     private double currentLegDistance;
     private int currentLegIndex;
@@ -52,6 +50,10 @@ public class Boat {
     private boolean addHeading = false;
     private Thread turningThread;
     private Boolean stopTurnThread = false;
+
+    private int targetMarkIndex = 1;
+    private int lastMarkIndex = 0;
+    private int roundingStage = 0;
 
     /**
      * Gets the abbreviation of the name of the team's boat
@@ -476,6 +478,23 @@ public class Boat {
 
     public int getLastMarkIndex() {
         return lastMarkIndex;
+    }
+
+    public int getRoundingStage() {
+        return roundingStage;
+    }
+
+    public void resetRoundingStage() {
+        roundingStage = 0;
+    }
+
+    public void updateRoundingStage() {
+        roundingStage++;
+        if (roundingStage == 3) {
+            resetRoundingStage();
+            lastMarkIndex++;
+            targetMarkIndex++;
+        }
     }
 }
 

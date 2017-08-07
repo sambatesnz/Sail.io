@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.Math.*;
-import static java.lang.System.currentTimeMillis;
 import static javafx.collections.FXCollections.observableArrayList;
 import static seng302.PacketParsing.XMLParser.COMPOUND_MARK_ID;
 import static seng302.PacketParsing.XMLParser.ROUNDING;
@@ -423,18 +422,25 @@ public class Race {
                     double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
                     double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
 
-                    CompoundMark lastTarget = courseRoundingInfo.get(boat.getLastMarkIndex()).getKey();
-                    CompoundMark currentTarget = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey();
+                    RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
+
+                    /*CompoundMark currentTarget = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey();
                     double xTarget = currentTarget.getX();
                     double yTarget = currentTarget.getY();
-                    double xDummy = yTarget;
-                    double yDummy = -xTarget;
+                    double xDummy = -yTarget;
+                    double yDummy = xTarget;
 
-                    String orient = Rounding.getOrientation(boat, xTarget, yTarget, xDummy, yDummy);
+                    String orientPerpendicular = RoundingUtility.getOrientation(boat, xTarget, yTarget, xDummy, yDummy);
+                    if (orientPerpendicular.equals("Left")) {
+                        CompoundMark lastTarget = courseRoundingInfo.get(boat.getLastMarkIndex()).getKey();
+                        double xLast = lastTarget.getX();
+                        double yLast = lastTarget.getY();
+                        String orientParallel = RoundingUtility.getOrientation(boat, xLast, yLast, xTarget, yTarget);
+                    }*/
 
-//                    CompoundMark lastTarget = courseRoundingInfo.get(boat.getLastMarkIndex()).getKey();
+//
 //                    CompoundMark currentTarget = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey();
-//                    String orient = Rounding.getOrientation(boat, lastTarget, currentTarget);
+//                    String orient = RoundingUtility.getOrientation(boat, lastTarget, currentTarget);
 
 
                     boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
