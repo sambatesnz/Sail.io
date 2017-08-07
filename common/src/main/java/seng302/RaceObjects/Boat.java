@@ -452,24 +452,17 @@ public class Boat {
     public void setHeadingToVMG(int windHeading) {
         final double VMG_UPWIND = 180 - 105;
         final double VMG_DOWNWIND = 180 - 60;
-        System.out.println("wind :" + windHeading + " heading: " + heading);
-        if (Math.floorMod(((int)heading - windHeading), 360) < 90) {
+        int relativeAngle = Math.floorMod(((int)heading - windHeading), 360);
+
+        if (relativeAngle < 80) {
             heading = (double) Math.floorMod((int) (windHeading + VMG_UPWIND), 360);
-            System.out.println("if clause");
-
-        }else if (Math.floorMod(((int)heading - windHeading), 360) < 180){
+        }else if (relativeAngle > 100 && relativeAngle < 180){
             heading = (double) Math.floorMod((int)(windHeading + VMG_DOWNWIND), 360);
-            System.out.println("elif 1");
-
-        }else if (Math.floorMod(((int)heading - windHeading), 360) < 270){
+        }else if (relativeAngle > 180 && relativeAngle < 260){
             heading = (double) Math.floorMod((int)(windHeading - VMG_DOWNWIND), 360);
-            System.out.println("elif 2");
-
-        }else {
+        }else if (relativeAngle > 280){
             heading = (double) Math.floorMod((int)(windHeading - VMG_UPWIND), 360);
-            System.out.println("else clause");
         }
-
     }
 
     /**

@@ -8,6 +8,6 @@ import org.junit.runner.RunWith;
  */
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/java/seng302/features")
+@CucumberOptions(features = "src/test/java/seng302/features/ControllerFeatures/VMG.feature")
 public class RunCucumberTests {
 }

@@ -16,3 +16,5 @@ Feature: A users boat should shift to a heading that results in an optimal VMG w
   | 1          | 120           | 60            | 135          |
   | 1          | 350           | 50            | 335          |
   | 1          | 110           | 50            | 125          |
+  | 1          | 110           | 20            | 110          |
+  | 1          | 300           | 30            | 300          |
