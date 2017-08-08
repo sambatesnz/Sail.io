@@ -161,11 +161,14 @@ public class Boat {
 
         if (relativeAngle < 80) {
             finalHeading = (double) Math.floorMod((int) (windHeading + VMG_UPWIND), 360);
-            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;        }else if (relativeAngle > 100 && relativeAngle < 180){
+            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
+        }else if (relativeAngle > 100 && relativeAngle < 180){
             finalHeading = (double) Math.floorMod((int)(windHeading + VMG_DOWNWIND), 360);
-            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;        }else if (relativeAngle > 180 && relativeAngle < 260){
+            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
+        }else if (relativeAngle > 180 && relativeAngle < 260){
             finalHeading = (double) Math.floorMod((int)(windHeading - VMG_DOWNWIND), 360);
-            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;        }else if (relativeAngle > 280){
+            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
+        }else if (relativeAngle > 280){
             finalHeading = (double) Math.floorMod((int)(windHeading - VMG_UPWIND), 360);
             isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
         }
