@@ -1,5 +1,6 @@
 package seng302.XMLCreation;
 
+import javafx.util.Pair;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -16,8 +17,8 @@ import java.io.IOException;
 
 public class RaceXMLCreator {
 
-    Race race;
-    Document raceXML;
+    private Race race;
+    private Document raceXML;
 
     public Document createDocument() throws IOException {
 
@@ -66,14 +67,29 @@ public class RaceXMLCreator {
         Element compoundMarkSequence = root.addElement("CompoundMarkSequence");
 
         int seqId = 1;
-        for (CompoundMark mark : race.getCompoundMarks()) {
+        for (Pair<CompoundMark, String> pair: race.getCourseRoundingInfo()) {
+            CompoundMark compoundMark = pair.getKey();
+            String rounding = pair.getValue();
+
             compoundMarkSequence.addElement("Corner")
                     .addAttribute("SeqID", String.valueOf(seqId))
-                    .addAttribute("CompoundMarkID", String.valueOf(mark.getId()))
-                    .addAttribute("Rounding", mark.getRounding())
+                    .addAttribute("CompoundMarkID", String.valueOf(compoundMark.getId()))
+                    .addAttribute("Rounding", rounding)
                     .addAttribute("ZoneSize", "/TODO");
+
             seqId++;
         }
+
+//        seqId = 1;
+//        for (CompoundMark mark : race.getCompoundMarks()) {
+//            System.out.println(mark.getRounding());
+//            compoundMarkSequence.addElement("Corner")
+//                    .addAttribute("SeqID", String.valueOf(seqId))
+//                    .addAttribute("CompoundMarkID", String.valueOf(mark.getId()))
+//                    .addAttribute("Rounding", mark.getRounding())
+//                    .addAttribute("ZoneSize", "/TODO");
+//            seqId++;
+//        }
 
         Element courseLimit = root.addElement("CourseLimit");
 

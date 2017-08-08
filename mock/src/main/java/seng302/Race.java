@@ -96,6 +96,10 @@ public class Race {
         windHeading = (short) random.nextInt(360);
     }
 
+    public List<Pair<CompoundMark, String>> getCourseRoundingInfo() {
+        return courseRoundingInfo;
+    }
+
     public Date getStartingTime() {
         return startingTime;
     }

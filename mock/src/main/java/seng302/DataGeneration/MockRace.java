@@ -25,7 +25,7 @@ import static java.lang.System.currentTimeMillis;
 public class MockRace implements IServerData {
     private Queue<byte[]> bytes = new LinkedBlockingQueue<>();
 
-    Timer timer = new Timer();
+    private Timer timer = new Timer();
 
     private Race race = new Race();
 
@@ -86,7 +86,7 @@ public class MockRace implements IServerData {
 
 
             RaceXMLCreator creator = new RaceXMLCreator(race);
-            String xml = "hi";
+            String xml = "";
             try {
                 xml = creator.createDocument().asXML();
             } catch (IOException e) {
