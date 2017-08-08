@@ -14,6 +14,7 @@ public class CompoundMark {
     private Color color;
     private int id;
     private String type;
+    private String rounding;
     private double longitude;
     private double latitude;
 
@@ -80,6 +81,14 @@ public class CompoundMark {
 
     public ArrayList<Mark> getMarks() {
         return marks;
+    }
+
+    public void setRounding(String rounding) {
+        this.rounding = rounding;
+    }
+
+    public String getRounding() {
+        return rounding;
     }
 
     public double getLongitude() {

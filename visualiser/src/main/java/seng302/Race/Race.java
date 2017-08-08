@@ -8,6 +8,9 @@ import seng302.RaceObjects.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static seng302.PacketParsing.XMLParser.COMPOUND_MARK_ID;
+import static seng302.PacketParsing.XMLParser.ROUNDING;
+
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
  * This displays a text-based play by play commentary of the race as it happens
@@ -24,7 +27,7 @@ public class Race {
     private List<Boat> finishedBoats;
     private List<Leg> legs;
     private List<Mark> boundaries;
-    private List<Integer> courseOrder;
+    private List<Map<String, String>> courseOrder;
     private double windHeading;
     private double windSpeed;
     private ObservableList<Boat> currentOrder;
@@ -323,8 +326,16 @@ public class Race {
         }
     }
 
-    public void setCourseOrder(List<Integer> courseOrder) {
+    public void setCourseOrder(List<Map<String, String>> courseOrder) {
         this.courseOrder = courseOrder;
+        for (Map<String, String> orderedMark: courseOrder) {
+            for (CompoundMark mark: compoundMarks) {
+                if (mark.getId() == Integer.parseInt(orderedMark.get(COMPOUND_MARK_ID))) {
+                    mark.setRounding(orderedMark.get(ROUNDING));
+                }
+            }
+        }
+
     }
 
     public void setCompoundMarks(List<CompoundMark> compoundMarks) {

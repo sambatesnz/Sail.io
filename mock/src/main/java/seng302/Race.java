@@ -74,9 +74,9 @@ public class Race {
         for (Boat boat : boats) {
             int speed = (new Random().nextInt(5000) + 100);
             boat.setSpeed(speed);
-            boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
-            boat.getMark().setLongitude(legs.get(0).getStart().getLongitude());
-            boat.getMark().setLatitude(legs.get(0).getStart().getLatitude());
+            boat.setHeading(0);
+            boat.getMark().setLongitude(getCompoundMarks().get(0).getLongitude());
+            boat.getMark().setLatitude(getCompoundMarks().get(0).getLatitude());
         }
     }
 

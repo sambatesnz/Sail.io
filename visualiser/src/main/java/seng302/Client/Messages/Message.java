@@ -113,6 +113,7 @@ public class Message {
                 break;
             case XML_MESSAGE:
                 XMLMessage xmlMessage = new XMLMessage(body);
+                System.out.println("Received an XML of type " + xmlMessage.getXmlMessageSubtype());
                 passXML(xmlMessage.getXmlString(), xmlMessage.getXmlMessageSubtype());
                 break;
             case RACE_START:

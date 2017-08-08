@@ -51,7 +51,7 @@ public class XMLParserTest {
 
     @Test
     public void checkCourseOrderCorrect() throws IOException {
-        List<Integer> courseOrder = raceParser.getCourseOrder();
+        List<Map<String, String>> courseOrder = raceParser.getCourseOrder();
         Assert.assertTrue(courseOrder.size() == 9);
     }
 

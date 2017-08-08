@@ -43,7 +43,7 @@ public class XMLParser {
     public static final String REGATTA_NAME = "RegattaName";
     public static final String COURSE_NAME = "CourseName";
     public static final String UTC_OFFSET = "UtcOffset";
-    public static final String ROUNDING = "RoundingUtility";
+    public static final String ROUNDING = "Rounding";
 
     private String xmlString;
     private Document xmlDoc;
@@ -204,7 +204,6 @@ public class XMLParser {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-//        courseOrder.sort(Comparator.comparingInt(CourseLimit::getSeqId));
         return courseOrder;
     }
 

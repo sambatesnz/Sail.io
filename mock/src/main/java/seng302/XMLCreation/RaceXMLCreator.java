@@ -70,7 +70,7 @@ public class RaceXMLCreator {
             compoundMarkSequence.addElement("Corner")
                     .addAttribute("SeqID", String.valueOf(seqId))
                     .addAttribute("CompoundMarkID", String.valueOf(mark.getId()))
-                    .addAttribute("RoundingUtility", "/TODO")
+                    .addAttribute("Rounding", mark.getRounding())
                     .addAttribute("ZoneSize", "/TODO");
             seqId++;
         }
