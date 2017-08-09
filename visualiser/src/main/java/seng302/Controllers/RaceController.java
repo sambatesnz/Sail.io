@@ -254,6 +254,7 @@ public class RaceController {
     private void updateBoatPositions() {
         final int SAIL_OFFSET = 7;
         for (int i = 0; i < boats.size(); i++) {
+            System.out.println("" + i + ": " + race.getBoats().get(i).getTargetMarkIndex());
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
                 double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
                 String speed = "";

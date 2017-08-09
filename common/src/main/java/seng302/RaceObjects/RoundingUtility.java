@@ -21,6 +21,7 @@ public class RoundingUtility {
         CompoundMark currentTarget = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey();
 
         if (currentTarget.getMarks().size() > 1) {
+            String rounding = courseRoundingInfo.get(boat.getTargetMarkIndex()).getValue();
             /*  More than 1 mark to pass, generally indicating a gate to pass between */
             Mark mark1 = currentTarget.getMarks().get(0);
             Mark mark2 = currentTarget.getMarks().get(1);
@@ -33,10 +34,10 @@ public class RoundingUtility {
 
                 If the getRounding method doesn't work, use:
                 courseRoundingInfo.get(boat.getTargetMarkIndex()).getValue() */
-            if (currentTarget.getRounding().equals("PS")) {
+            if (rounding.equals("PS")) {
                 approachingSide = RIGHT;
                 passedSide = LEFT;
-            } else if (currentTarget.getRounding().equals("SP")) {
+            } else if (rounding.equals("SP")) {
                 approachingSide = LEFT;
                 passedSide = RIGHT;
             }
@@ -102,12 +103,14 @@ public class RoundingUtility {
                 boat.updateRoundingStage();
             }
         }
+        if (String.valueOf(System.currentTimeMillis()).endsWith("0")) {
+            System.out.println(boat.getRoundingStage());
+        }
 
         /*  If the boat has fully rounded the mark, change its current target mark index to the next mark in the race */
         if (boat.getRoundingStage() == 3) {
             boat.resetRoundingStage();
             boat.incrementTargetMarkIndex();
-            // TODO: Send a Mark Rounding message to client(s)
         }
     }
 
