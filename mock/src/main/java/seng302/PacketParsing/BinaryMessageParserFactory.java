@@ -11,5 +11,16 @@ public abstract class BinaryMessageParserFactory {
 
     public BinaryMessageParserFactory(byte[] packet) {this.packet = packet;}
 
+    private int getMessageLength() {
+        return PacketParserUtils.getMessageBodyLength(packet);
+    }
+
+    protected byte[] getRaceBody() {
+        int messageLen = getMessageLength();
+        byte[] body = new byte[messageLen];
+        System.arraycopy(packet,15, body,0, messageLen);
+        return body;
+    }
+
     public abstract void updateRace(Race race);
 }

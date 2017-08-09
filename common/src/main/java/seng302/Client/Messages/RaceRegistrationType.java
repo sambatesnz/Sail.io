@@ -5,6 +5,7 @@ package seng302.Client.Messages;
  */
 public enum RaceRegistrationType {
 
+    DEFAULT(-1),
     VIEW(0),
     PARTICIPATE(1);
 
@@ -16,5 +17,15 @@ public enum RaceRegistrationType {
 
     public int getRegistrationType() {
         return this.registrationType;
+    }
+
+    public static RaceRegistrationType getType(int messageVal){
+        RaceRegistrationType messageType = DEFAULT;
+        for (RaceRegistrationType type: RaceRegistrationType.values()){
+            if (type.getRegistrationType() == messageVal) {
+                messageType = type;
+            }
+        }
+        return messageType;
     }
 }
