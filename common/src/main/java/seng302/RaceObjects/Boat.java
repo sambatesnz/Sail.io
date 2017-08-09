@@ -152,23 +152,28 @@ public class Boat {
         this.headingChanged = true;
     }
 
+    /**
+     * Sets the boat to the current VMG depending on the boats current heading and the wind direction
+     * Function will stop any current turning action when first pressed, then a consecutive press will activate VMG
+     * @param windHeading The current direction that the wind is coming from
+     */
     public void setHeadingToVMG(int windHeading) {
-        final double VMG_UPWIND = 180 - 105;
+        final double VMG_UPWIND = 180 - 105;  //needs to be 180 - vmg because of wind direction
         final double VMG_DOWNWIND = 180 - 60;
         boolean isClockwise = true;
         double finalHeading = heading;
         int relativeAngle = getRelativeAngle(windHeading, heading);
 
-        if (relativeAngle < 80) {
+        if (relativeAngle < 85) {
             finalHeading = (double) Math.floorMod((int) (windHeading + VMG_UPWIND), 360);
             isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
-        }else if (relativeAngle > 100 && relativeAngle < 180){
+        }else if (relativeAngle > 95 && relativeAngle < 180){
             finalHeading = (double) Math.floorMod((int)(windHeading + VMG_DOWNWIND), 360);
             isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
-        }else if (relativeAngle > 180 && relativeAngle < 260){
+        }else if (relativeAngle > 180 && relativeAngle < 265){
             finalHeading = (double) Math.floorMod((int)(windHeading - VMG_DOWNWIND), 360);
             isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
-        }else if (relativeAngle > 280){
+        }else if (relativeAngle > 275){
             finalHeading = (double) Math.floorMod((int)(windHeading - VMG_UPWIND), 360);
             isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
         }

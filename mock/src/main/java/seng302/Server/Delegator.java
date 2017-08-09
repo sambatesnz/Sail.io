@@ -11,7 +11,10 @@ public class Delegator {
         this.race = race;
     }
 
-
+    /**
+     * Takes in a Boat Action, and delegates functions to responds to the key-presses
+     * @param messageCommand Boat Action value
+     */
     public void processCommand(int messageCommand) {
         int boatID = 103; //Hardcoded to NZL for testing purposes, and while packets don't contain ID
         switch (messageCommand) {
