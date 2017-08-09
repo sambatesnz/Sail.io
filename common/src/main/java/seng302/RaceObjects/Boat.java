@@ -54,7 +54,6 @@ public class Boat {
     private int targetMarkIndex = 1;
     private int lastMarkIndex = 0;
     private int roundingStage = 0;
-    private boolean rightOfNextGate = true;
 
     /**
      * Gets the abbreviation of the name of the team's boat
@@ -496,14 +495,6 @@ public class Boat {
 
     public void updateRoundingStage() {
         roundingStage++;
-    }
-
-    public boolean isRightOfNextGate() {
-        return rightOfNextGate;
-    }
-
-    public void setRightOfNextGate(boolean rightOfNextGate) {
-        this.rightOfNextGate = rightOfNextGate;
     }
 }
 
