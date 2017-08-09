@@ -36,7 +36,7 @@ public class Delegator {
 
     /**
      * Forces the boat to change heading to VMG based on its current position
-     * @param sourceId source id of the boat
+     * @param sourceID source id of the boat
      */
     private void VMG(int sourceID) {
         Boat boat = race.getBoatByID(sourceID);
@@ -46,7 +46,7 @@ public class Delegator {
 
     /**
      * Forces the boat to tack/gybe based on its current position
-     * @param sourceId source id of the boat
+     * @param sourceID source id of the boat
      */
     private void tackOrGybeBoat(int sourceID) {
         Boat boat = race.getBoatByID(sourceID);

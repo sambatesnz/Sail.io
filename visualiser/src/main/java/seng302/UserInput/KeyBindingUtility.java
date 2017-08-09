@@ -34,7 +34,7 @@ public class KeyBindingUtility {
             BinaryMessage boatActionMessage;
             switch (event.getCode()) {
                 case SPACE:
-                    boatActionMessage = new BoatActionMessage(BoatAction.AUTOPILOT.getBoatAction());
+                    boatActionMessage = new BoatActionMessage(BoatAction.VMG.getBoatAction());
                     break;
                 case SHIFT:
                     if(sailStatus){
