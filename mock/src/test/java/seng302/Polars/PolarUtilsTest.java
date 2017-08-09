@@ -17,6 +17,7 @@ public class PolarUtilsTest {
     @Before
     public void setup() {
         testBoat = new Boat("Test", "t", 114, "TestLand");
+        testBoat.setSailsOut(true);
         testBoat.setSpeed(1000);
         testBoat.setHeading(120);
 

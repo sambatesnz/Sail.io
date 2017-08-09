@@ -30,7 +30,7 @@ public class BoatLocationMessage extends BinaryMessage {
     private byte[] trueWindSpeed;
     private byte[] trueWindDirection;
     private byte[] trueWindAngle;
-    private byte[] currentDrift;
+    private byte[] sailStatus;
     private byte[] currentSet;
     private byte[] rudderAngle;
 
@@ -46,7 +46,7 @@ public class BoatLocationMessage extends BinaryMessage {
                                short cog, int sog,
                                short apparentWindSpeed, short apparentWindAngle,
                                short trueWindSpeed, short trueWindDirection, short trueWindAngle,
-                               short currentDrift, short currentSet, short rudderAngle) {
+                               short sailStatus, short currentSet, short rudderAngle) {
 
         this.boatLocationMessage = new byte[MESSAGE_SIZE];
 
@@ -69,7 +69,7 @@ public class BoatLocationMessage extends BinaryMessage {
         this.trueWindSpeed = PacketGenerationUtils.shortToTwoBytes(trueWindSpeed );
         this.trueWindDirection = PacketGenerationUtils.shortToTwoBytes(trueWindDirection );
         this.trueWindAngle = PacketGenerationUtils.shortToTwoBytes(trueWindAngle );
-        this.currentDrift = PacketGenerationUtils.shortToTwoBytes(currentDrift );
+        this.sailStatus = PacketGenerationUtils.shortToTwoBytes(sailStatus );
         this.currentSet = PacketGenerationUtils.shortToTwoBytes(currentSet );
         this.rudderAngle = PacketGenerationUtils.shortToTwoBytes(rudderAngle );
 
@@ -96,7 +96,7 @@ public class BoatLocationMessage extends BinaryMessage {
         System.arraycopy(trueWindSpeed, firstIndex, boatLocationMessage, BoatLocationUtility.TRUE_WIND_SPEED.getIndex(), BoatLocationUtility.TRUE_WIND_SPEED.getSize());
         System.arraycopy(trueWindDirection, firstIndex, boatLocationMessage, BoatLocationUtility.TRUE_WIND_DIRECTION.getIndex(), BoatLocationUtility.TRUE_WIND_DIRECTION.getSize());
         System.arraycopy(trueWindAngle, firstIndex, boatLocationMessage, BoatLocationUtility.TRUE_WIND_ANGLE.getIndex(), BoatLocationUtility.TRUE_WIND_ANGLE.getSize());
-        System.arraycopy(currentDrift, firstIndex, boatLocationMessage, BoatLocationUtility.CURRENT_DRIFT.getIndex(), BoatLocationUtility.CURRENT_DRIFT.getSize());
+        System.arraycopy(sailStatus, firstIndex, boatLocationMessage, BoatLocationUtility.SAIL_STATUS.getIndex(), BoatLocationUtility.SAIL_STATUS.getSize());
         System.arraycopy(currentSet, firstIndex, boatLocationMessage, BoatLocationUtility.CURRENT_SET.getIndex(), BoatLocationUtility.CURRENT_SET.getSize());
         System.arraycopy(rudderAngle, firstIndex, boatLocationMessage, BoatLocationUtility.RUDDER_ANGLE.getIndex(), BoatLocationUtility.RUDDER_ANGLE.getSize());
         return boatLocationMessage;

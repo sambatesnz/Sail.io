@@ -72,6 +72,19 @@ public class Message {
     }
 
     /**
+     * Converts a section from an array of bytes into an integer.
+     * @param bytes The array to convert bytes from
+     * @param pos The starting index of the bytes desired to be converted
+     * @param len The number of bytes to be converted (from the given index)
+     * @return An integer, converted from the given bytes
+     */
+    public static int byteArrayToBool(byte[] bytes, int pos, int len){
+        byte[] intByte = new byte[4];
+        System.arraycopy(bytes, pos, intByte, 0, len);
+        return ByteBuffer.wrap(intByte).order(ByteOrder.LITTLE_ENDIAN).getInt();
+    }
+
+    /**
      * Converts a section from an array of bytes into a long.
      * @param bytes The array to convert bytes from
      * @param pos The starting index of the bytes desired to be converted

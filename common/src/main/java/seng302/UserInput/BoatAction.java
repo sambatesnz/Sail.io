@@ -1,4 +1,4 @@
-package seng302.UserInputController;
+package seng302.UserInput;
 
 /**
  * Enum for Boat Actions

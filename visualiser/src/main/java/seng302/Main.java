@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import seng302.Controllers.RaceViewController;
-import seng302.UserInputController.KeyBindingUtility;
+import seng302.UserInput.KeyBindingUtility;
 
 import java.io.IOException;
 
@@ -24,6 +24,7 @@ public class Main extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("RaceView.fxml"));
             RaceViewController raceViewController = new RaceViewController(primaryStage);
+
             Parent root = loader.load();
             Scene rootScene = new Scene(root);
             KeyBindingUtility.setKeyBindings(rootScene);
