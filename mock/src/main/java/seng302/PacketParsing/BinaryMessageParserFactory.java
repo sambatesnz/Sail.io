@@ -1,6 +1,6 @@
 package seng302.PacketParsing;
 
-import seng302.Race;
+import seng302.DataGeneration.IServerData;
 
 /**
  * Created by osr13 on 7/08/17.
@@ -22,5 +22,5 @@ public abstract class BinaryMessageParserFactory {
         return body;
     }
 
-    public abstract void updateRace(Race race);
+    public abstract void updateRace(IServerData race);
 }

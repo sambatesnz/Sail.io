@@ -22,7 +22,7 @@ public class Server2 {
         outputStreams = new Hashtable();
         receivedPackets = new LinkedBlockingQueue<>();
         this.connectionManager = new ConnectionManager(outputStreams, port, this);
-        raceHandler = new RaceHandler(this.mockRace.getRace());
+        raceHandler = new RaceHandler(this.mockRace);
         startEventLoop();
         //this.mockRace.beginGeneratingData();    //move this nephew
     }

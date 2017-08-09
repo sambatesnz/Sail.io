@@ -1,12 +1,10 @@
 package seng302.PacketParsing;
 
 import seng302.Client.Messages.RaceRegistrationType;
-import seng302.PacketGeneration.MessageType;
+import seng302.DataGeneration.IServerData;
 import seng302.PacketGeneration.PacketUtils;
-import seng302.PacketParsing.BinaryMessageParserFactory;
 import seng302.Race;
-
-import java.util.Arrays;
+import seng302.RaceObjects.Boat;
 
 /**
  * Created by osr13 on 7/08/17.
@@ -33,7 +31,9 @@ public class RaceRegistrationMessageParser extends BinaryMessageParserFactory {
     }
 
     @Override
-    public void updateRace(Race race) {
+    public void updateRace(IServerData raceData) {
+        Boat boat =  raceData.getRace().addBoat();
+        System.out.println(boat.getSourceId());
         System.out.println("recieved RRM!!!! (yeah kevin!)");
     }
 }

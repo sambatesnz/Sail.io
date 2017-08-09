@@ -1,5 +1,6 @@
 package seng302;
 
+import seng302.DataGeneration.IServerData;
 import seng302.PacketGeneration.MessageType;
 import seng302.PacketParsing.BinaryMessageParserFactory;
 import seng302.PacketParsing.BoatActionMessageParser;
@@ -11,16 +12,15 @@ import seng302.PacketParsing.RaceRegistrationMessageParser;
  */
 public class RaceHandler {
 
-    private final Race race;
+    private final IServerData race;
     private BinaryMessageParserFactory binaryMessageParserFactory;
 
-    public RaceHandler(Race race) {
+    public RaceHandler(IServerData race) {
         this.race = race;
     }
 
 
     public void updateRace(byte[] packet) {
-        MessageType type = PacketParserUtils.getMessageType(packet);
         BinaryMessageParserFactory myMessage = decideMessage(packet);
         myMessage.updateRace(this.race);
     }

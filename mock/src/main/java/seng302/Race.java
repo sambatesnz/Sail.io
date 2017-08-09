@@ -49,6 +49,8 @@ public class Race {
     private static final int DIRECTION_CHANGE_PROB = 25;
     private final long ONE_MINUTE_IN_MILLIS=60000;
 
+    private BoatGenerator boatGenerator;
+
     /**
      * Constructor for the race class.
      */
@@ -58,6 +60,7 @@ public class Race {
         // setWindHeading(190);
 
         setStartingWindSpeed();
+        boatGenerator = new BoatGenerator();
         this.windSpeed = this.startingWindSpeed;
         instantiateWindHeading();
 
@@ -67,7 +70,7 @@ public class Race {
         startingTime = new Date(t + ONE_MINUTE_IN_MILLIS / 4);
 
 
-        boats = getContestants();
+        boats = new ArrayList<Boat>();
         finishedBoats = new ArrayList<>();
         currentOrder = observableArrayList(boats);
         positionStrings = FXCollections.observableArrayList();
@@ -78,6 +81,14 @@ public class Race {
             boat.getMark().setLongitude(legs.get(0).getStart().getLongitude());
             boat.getMark().setLatitude(legs.get(0).getStart().getLatitude());
         }
+
+
+    }
+
+    public Boat addBoat(){
+        Boat boat = boatGenerator.generateBoat();
+        boats.add(boat);
+        return boat;
     }
 
     /**
