@@ -12,22 +12,24 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Server2 {
     private Hashtable outputStreams;
+    private ConnectionIdentifier connectionIdentifier;
     private IServerData mockRace;
     private ConnectionManager connectionManager;
     private Queue<byte[]> receivedPackets;
     private RaceHandler raceHandler;
 
-    public Server2(int port) throws IOException {
+    public Server2(int port) throws Exception {
         this.mockRace = new MockRace();
         outputStreams = new Hashtable();
+        connectionIdentifier = new ConnectionIdentifier();
         receivedPackets = new LinkedBlockingQueue<>();
-        this.connectionManager = new ConnectionManager(outputStreams, port, this);
+        this.connectionManager = new ConnectionManager(outputStreams, connectionIdentifier, port, this);
         raceHandler = new RaceHandler(this.mockRace);
         startEventLoop();
         //this.mockRace.beginGeneratingData();    //move this nephew
     }
 
-    private void startEventLoop() {
+    private void startEventLoop() throws Exception {
         boolean hasStarted = false;
 
         int numConnections = 0;
@@ -48,6 +50,10 @@ public class Server2 {
                 sendToAll();
             }
             updateMock();
+
+            if (connectionIdentifier.hasConnections()){
+                connectionIdentifier.getSocket(1);
+            }
         }
     }
 

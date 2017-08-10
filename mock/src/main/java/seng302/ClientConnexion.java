@@ -12,10 +12,13 @@ import java.util.Arrays;
 public class ClientConnexion extends Thread {
     private Server2 server;
     private Socket socket;
+    private int id;
 
-    public ClientConnexion(Server2 server, Socket socket) {
+    public ClientConnexion(Server2 server, Socket socket, int id) {
+        System.out.println(socket.getPort());
         this.server = server;
         this.socket = socket;
+        this.id = id;
         start();
     }
 
@@ -28,7 +31,9 @@ public class ClientConnexion extends Thread {
                 if (din.available() > HEADER_LEN) {
                     din.read(data);
                     boolean validPacket = validatePacket(data);
+
                     if (validPacket) {
+                        System.out.println("Client" + id + "has sent a packet");
                         server.addPacketToQueue(data);
                     }
                 }
