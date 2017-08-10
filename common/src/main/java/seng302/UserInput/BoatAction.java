@@ -5,7 +5,7 @@ package seng302.UserInput;
  */
 public enum BoatAction {
 
-    AUTOPILOT(1),
+    VMG(1),
     SAILS_IN(2),
     SAILS_OUT(3),
     TACK_OR_GYBE(4),

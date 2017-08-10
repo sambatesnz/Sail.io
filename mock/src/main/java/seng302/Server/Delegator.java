@@ -11,11 +11,15 @@ public class Delegator {
         this.race = race;
     }
 
-
+    /**
+     * Takes in a Boat Action, and delegates functions to responds to the key-presses
+     * @param messageCommand Boat Action value
+     */
     public void processCommand(int messageCommand) {
         int boatID = 103; //Hardcoded to NZL for testing purposes, and while packets don't contain ID
-
-        if (messageCommand == BoatAction.TACK_OR_GYBE.getBoatAction()) {
+        if (messageCommand == BoatAction.VMG.getBoatAction()) {
+            VMG(boatID);
+        } else if (messageCommand == BoatAction.TACK_OR_GYBE.getBoatAction()) {
             tackOrGybeBoat(boatID);
         } else if (messageCommand == BoatAction.UPWIND.getBoatAction()) {
             changeBoatHeading(boatID, true);
@@ -31,13 +35,23 @@ public class Delegator {
     }
 
     /**
-     * Forces the boat to tack/gybe based on its current position
-     * @param sourceId source id of the boat
+     * Forces the boat to change heading to VMG based on its current position
+     * @param sourceID source id of the boat
      */
-    public void tackOrGybeBoat(int sourceId) {
-        Boat boat = race.getBoatByID(sourceId);
-        int windDirection = race.getWindHeading();
-        boat.tackOrGybe(windDirection);
+    private void VMG(int sourceID) {
+        Boat boat = race.getBoatByID(sourceID);
+        int windHeading = race.getWindHeading();
+        boat.setHeadingToVMG(windHeading);
+    }
+
+    /**
+     * Forces the boat to tack/gybe based on its current position
+     * @param sourceID source id of the boat
+     */
+    private void tackOrGybeBoat(int sourceID) {
+        Boat boat = race.getBoatByID(sourceID);
+        int windHeading = race.getWindHeading();
+        boat.tackOrGybe(windHeading);
     }
 
     /**
@@ -45,9 +59,9 @@ public class Delegator {
      * @param sourceID The ID of the boat to be updated
      * @param upwind True if the boat is turning upwind, false if turning downwind
      */
-    public void changeBoatHeading(int sourceID, boolean upwind){
+    private void changeBoatHeading(int sourceID, boolean upwind){
         Boat boat = race.getBoatByID(sourceID);
-        int windDirection = race.getWindHeading();
-        boat.updateHeading(windDirection, upwind);
+        int windHeading = race.getWindHeading();
+        boat.updateHeading(windHeading, upwind);
     }
 }
