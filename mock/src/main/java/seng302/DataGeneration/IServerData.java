@@ -11,9 +11,13 @@ public interface IServerData {
 
     byte[] getDataForOne();
 
+    void addSingleMessage(byte[] message);
+
     boolean finished();
 
-    boolean ready();
+    boolean broadcastReady();
+
+    boolean singleMessageReady();
 
     void beginGeneratingData();
 

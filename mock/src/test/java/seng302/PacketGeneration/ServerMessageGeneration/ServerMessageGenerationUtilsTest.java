@@ -5,9 +5,8 @@ import org.junit.Test;
 import seng302.Client.Messages.RaceRegistrationMessage;
 import seng302.Client.Messages.RaceRegistrationType;
 import seng302.PacketGeneration.BinaryMessage;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import seng302.PacketGeneration.PacketGenerationUtils;
+import seng302.PacketParsing.PacketParserUtils;
 
 import static org.junit.Assert.*;
 
@@ -26,24 +25,23 @@ public class ServerMessageGenerationUtilsTest {
 
     @Test
     public void wrap() throws Exception{
-        int expected = 100;
+        int expected = 47262;
         byte[] wrappedMessage = ServerMessageGenerationUtils.wrap(message, expected);
-        byte header = wrappedMessage[0];
-        int actual = (int) header;
+        int actual = PacketParserUtils.byteArrayToInt(wrappedMessage, 0, 4);
         assertEquals(expected, actual);
     }
 
     @Test
     public void getHeaderId() throws Exception {
-        int expected = 100;
+        int expected = 47262;
         byte[] wrappedMessage = ServerMessageGenerationUtils.wrap(message, expected);
-        int actual = ServerMessageGenerationUtils.getHeaderId(wrappedMessage);
+        int actual = ServerMessageGenerationUtils.unwrapHeader(wrappedMessage);
         assertEquals(expected, actual);
     }
 
     @Test
     public void unwrapBody() throws Exception {
-        int expected = 100;
+        int expected = 47262;
         byte[] wrappedMessage = ServerMessageGenerationUtils.wrap(message, expected);
         byte[] unwrapped = ServerMessageGenerationUtils.unwrapBody(wrappedMessage);
         //Checks every value in the array because message and unwrapped are different object references

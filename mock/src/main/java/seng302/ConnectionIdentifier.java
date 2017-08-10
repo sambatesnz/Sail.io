@@ -1,5 +1,8 @@
 package seng302;
 
+import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
+import seng302.Server.Server;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -68,6 +71,21 @@ public class ConnectionIdentifier {
                 if (hasPackets) {
                     stream.write(bytes);
                 }
+            }
+        }
+    }
+
+    public void sendToOne(byte[] message) throws IOException {
+        int clientID = ServerMessageGenerationUtils.unwrapHeader(message);
+        byte[] messageToSend = ServerMessageGenerationUtils.unwrapBody(message);
+
+        synchronized (socketStreams) {
+            System.out.println(clientID);
+            Socket clientSocket = (Socket) socketStreams.get(clientID);
+            OutputStream stream = clientSocket.getOutputStream();
+            boolean hasPackets = messageToSend.length > 0;
+            if (hasPackets) {
+                stream.write(messageToSend);
             }
         }
     }

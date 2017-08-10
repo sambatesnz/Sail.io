@@ -2,8 +2,10 @@ package seng302.PacketParsing;
 
 import seng302.Client.Messages.RaceRegistrationType;
 import seng302.DataGeneration.IServerData;
+import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.PacketUtils;
-import seng302.Race;
+import seng302.PacketGeneration.ParticipantConfirmationGeneration.ParticipantConfirmationMessage;
+import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 import seng302.RaceObjects.Boat;
 
 /**
@@ -16,7 +18,7 @@ public class RaceRegistrationMessageParser extends BinaryMessageParserFactory {
 
     public RaceRegistrationMessageParser(byte[] packet) {
         super(packet);
-        this.body = this.getRaceBody();
+        this.body = this.getMessageBody();
         raceRegistrationType = parseRegistrationType();
     }
 
@@ -32,8 +34,16 @@ public class RaceRegistrationMessageParser extends BinaryMessageParserFactory {
 
     @Override
     public void updateRace(IServerData raceData) {
-        Boat boat =  raceData.getRace().addBoat();
-        System.out.println(boat.getSourceId());
+        if (raceRegistrationType ==  RaceRegistrationType.PARTICIPATE){
+            Boat boat =  raceData.getRace().addBoat();
+            System.out.println(boat.getSourceId());
+
+            BinaryMessage confirmationMessage = new ParticipantConfirmationMessage(boat.getSourceId());
+            byte[] message = confirmationMessage.createMessage();
+            byte[] wrappedMessage = ServerMessageGenerationUtils.wrap(message, super.getClientID());
+
+            raceData.addSingleMessage(wrappedMessage);
+        }
         System.out.println("received RRM!");
 
 

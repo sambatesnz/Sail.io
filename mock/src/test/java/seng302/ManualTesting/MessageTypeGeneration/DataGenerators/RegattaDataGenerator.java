@@ -42,13 +42,23 @@ public class RegattaDataGenerator implements IServerData {
     }
 
     @Override
+    public void addSingleMessage(byte[] message) {
+
+    }
+
+    @Override
     public boolean finished() {
         return false;
     }
 
     @Override
-    public boolean ready() {
+    public boolean broadcastReady() {
         return !bytes.isEmpty();
+    }
+
+    @Override
+    public boolean singleMessageReady() {
+        return false;
     }
 
     @Override

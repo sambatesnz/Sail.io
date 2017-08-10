@@ -30,7 +30,7 @@ public class ClientConnector extends Thread {
             e.printStackTrace();
         }
         while (!this.mockData.finished() && !socket.isClosed()){
-            if(this.mockData.ready()){
+            if(this.mockData.broadcastReady()){
                 byte[] data = this.mockData.getDataForAll();
                 try {
                     send(data);

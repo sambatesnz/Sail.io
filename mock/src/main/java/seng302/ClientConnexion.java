@@ -42,15 +42,7 @@ public class ClientConnexion extends Thread {
                         System.out.println("Client " + id + " has sent a packet");
 
                         byte[] wrappedMessage = ServerMessageGenerationUtils.wrap(data, id);
-
-
-
-
-//
-//                        System.out.println(Arrays.toString(data));
-//                        System.out.println(Arrays.toString(array));
-
-                        server.addPacketToQueue(data);
+                        server.addPacketToQueue(wrappedMessage);
                     }
                 }
             }

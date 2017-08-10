@@ -45,7 +45,8 @@ public class Server2 {
             if (connectionIdentifier.connectionAmount() > 0 && hasStarted) {
                 sendToAll();
             }
-            updateMock();
+            handleReceivedMessages();
+            sendSingleMessages();
 
             if (connectionIdentifier.hasConnections()){
                 connectionIdentifier.getSocket(connectionIdentifier.getConnections().get(0));
@@ -53,18 +54,19 @@ public class Server2 {
         }
     }
 
-    private void updateMock() {
+    private void handleReceivedMessages() {
         if (!receivedPackets.isEmpty()) {
             System.out.println("Packet Received - now need to parse it!");
             byte[] packets = receivedPackets.remove();
             raceHandler.updateRace(packets);
-            //PacketParserUtils.getMessageType(packets)
-
-            // TODO: Gotta Parse/Pass this information to some kind of parser, which then communicates with the MockRace.
-
         }
     }
 
+    private void sendSingleMessages() throws IOException {
+        if (mockRace.singleMessageReady()){
+            connectionIdentifier.sendToOne(mockRace.getDataForOne());
+        }
+    }
 
     private void sendToAll() throws IOException {
         byte[] bytes = this.mockRace.getDataForAll();

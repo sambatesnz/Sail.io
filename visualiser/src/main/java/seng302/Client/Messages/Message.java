@@ -69,6 +69,8 @@ public class Message {
             case BOAT_LOCATION:                                 //Boat Location
                 new LocationMessage(body, race);
                 break;
+            case PARTICIPANT_CONFIRMATION:
+                System.out.println("Kev");
         }
     }
 
