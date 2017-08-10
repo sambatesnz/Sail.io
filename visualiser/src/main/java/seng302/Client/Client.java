@@ -23,15 +23,20 @@ public class Client {
     private int port;
     private Race race;
 
-    public Client(Race race) {
+    public Client(Race race, String ipAddr, int port) {
         this.race = race;
         dataReceived = new byte[4300];
         clientSocket = null;
         streamInput = null;
         streamOutput = null;
         AppConfig config = new AppConfig();
-        serverName = config.getProperty(AppConfig.DATA_HOST_NAME);
-        port = Integer.parseInt(config.getProperty(AppConfig.DATA_HOST_PORT));
+        this.serverName = ipAddr;
+        System.out.println("ip = "+this.serverName);
+        this.port = port;
+        System.out.println(this.port);
+
+//        serverName = config.getProperty(AppConfig.DATA_HOST_NAME);
+//        port = Integer.parseInt(config.getProperty(AppConfig.DATA_HOST_PORT));
         try {
             host = new URL(serverName).getHost();
         } catch (MalformedURLException e) {

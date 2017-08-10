@@ -113,6 +113,8 @@ public class RaceController {
     private int viewUpdateCount = 0;
     private double windowWidth = 0;
     private double windowHeight = 0;
+    private String ipAddr;
+    private int port;
 
     private TimeZoneWrapper timeZoneWrapper;
     private final ImageView selectedImage = new ImageView();
@@ -138,6 +140,11 @@ public class RaceController {
     private boolean boatLocationDataInitialised = false;
     private boolean viewInitialised = false;
 
+    public RaceController(String ip, int port){
+        this.ipAddr = ip;
+        this.port = port;
+    }
+
 
     /**
      * initializes the race display.
@@ -146,10 +153,8 @@ public class RaceController {
     public void initialize() {
         race = new Race();
 
-
-
         Thread serverThread = new Thread(() -> {
-            Client client = new Client(race);
+            Client client = new Client(race, ipAddr, port);
             client.connect();
             client.processStreams();
         });
@@ -174,6 +179,7 @@ public class RaceController {
 
         startRaceListener();
     }
+
 
     private void initialiseZoomFollowing() {
         viewAnchorPane.setOnKeyPressed(event -> {
@@ -780,5 +786,10 @@ public class RaceController {
     private void updateNodeScale(Node nodeToScale) {
         nodeToScale.setScaleX(1/(1+Coordinate.getZoom()*0.9));
         nodeToScale.setScaleY(1/(1+Coordinate.getZoom()*0.9));
+    }
+
+    public void setAddr(String ip, int port) {
+        this.ipAddr = ip;
+        this.port = port;
     }
 }

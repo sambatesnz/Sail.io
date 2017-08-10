@@ -5,21 +5,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import seng302.UserInput.KeyBindingUtility;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-public class StartController {
+public class LobbyController {
 
-    private Button connectBtn;
+    private Button startRaceBtn;
     private Stage primaryStage;
-    @FXML private TextField ipField;
 
-    public StartController() {
+    public LobbyController() {
 //        this.primaryStage = mainStage;
 
         Coordinate.setWindowWidthX(800);
@@ -31,23 +27,16 @@ public class StartController {
 
     @FXML
     public void initialize(){
-        ipField.setText("localhost:4941");
+//        System.out.println(primaryStage);
     }
 
-
-    private void setAddress(RaceController raceController) {
-        String ipInput = ipField.getText();
-        String[] splitInput = ipInput.split(":");
-        System.out.println(raceController);
-        raceController.setAddr("http://" + splitInput[0], Integer.parseInt(splitInput[1]));
-    }
 
     /**
      * Called when the user selects the start race button.
      *
      * Changes from the start page to the raceview.
      */
-    public void connect() throws IOException {
+    public void startRace() throws IOException {
 //        Stage stage = startRaceBtn.getScene().getWindow();
 
 
@@ -55,14 +44,10 @@ public class StartController {
         System.out.println(primaryStage);
         RaceViewController raceViewController = new RaceViewController(primaryStage);
 
-        RaceController raceController = new RaceController(getIp(), getPort());
-        loader.setController(raceController);
         Parent root = loader.load();
-
         Scene rootScene = new Scene(root);
         primaryStage.setScene(rootScene);
         KeyBindingUtility.setKeyBindings(rootScene);
-        setAddress(raceController);
 
     }
 
@@ -79,15 +64,4 @@ public class StartController {
 
     }
 
-    private String getIp() {
-        String ipInput = ipField.getText();
-        String[] splitInput = ipInput.split(":");
-        return  ("http://" + splitInput[0]);
-    }
-
-    private int getPort() {
-        String ipInput = ipField.getText();
-        String[] splitInput = ipInput.split(":");
-        return (Integer.parseInt(splitInput[1]));
-    }
 }
