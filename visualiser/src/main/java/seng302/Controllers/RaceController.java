@@ -140,26 +140,16 @@ public class RaceController {
     private boolean boatLocationDataInitialised = false;
     private boolean viewInitialised = false;
 
-    public RaceController(String ip, int port){
-        this.ipAddr = ip;
-        this.port = port;
-    }
 
+    public RaceController(Race race){
+        this.race = race;
+    }
 
     /**
      * initializes the race display.
      */
     @FXML
     public void initialize() {
-        race = new Race();
-
-        Thread serverThread = new Thread(() -> {
-            Client client = new Client(race, ipAddr, port);
-            client.connect();
-            client.processStreams();
-        });
-        serverThread.start();
-
 
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);

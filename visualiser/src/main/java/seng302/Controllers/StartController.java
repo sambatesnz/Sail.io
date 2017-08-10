@@ -35,35 +35,29 @@ public class StartController {
     }
 
 
-    private void setAddress(RaceController raceController) {
-        String ipInput = ipField.getText();
-        String[] splitInput = ipInput.split(":");
-        System.out.println(raceController);
-        raceController.setAddr("http://" + splitInput[0], Integer.parseInt(splitInput[1]));
-    }
-
     /**
      * Called when the user selects the start race button.
      *
      * Changes from the start page to the raceview.
      */
     public void connect() throws IOException {
-//        Stage stage = startRaceBtn.getScene().getWindow();
 
+        //FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/Lobby.fxml"));
 
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
-        System.out.println(primaryStage);
+        //-??-//
         RaceViewController raceViewController = new RaceViewController(primaryStage);
+        //SEEMS LIKE WE JUST NEED THIS TO RUN STATEMENTS IN THE CONSTRUCTOR. CAN PROBABLY REMOVE.
 
-        RaceController raceController = new RaceController(getIp(), getPort());
-        loader.setController(raceController);
+        LobbyController lobbyController = new LobbyController(getIp(), getPort());
+        lobbyController.setPrimaryStage(primaryStage);
+        loader.setController(lobbyController);
         Parent root = loader.load();
 
         Scene rootScene = new Scene(root);
         primaryStage.setScene(rootScene);
-        KeyBindingUtility.setKeyBindings(rootScene);
-        setAddress(raceController);
 
+        KeyBindingUtility.setKeyBindings(rootScene);
     }
 
     public void setPrimaryStage(Stage primaryStage) {
