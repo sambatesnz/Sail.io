@@ -12,6 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Server2 {
     private Hashtable outputStreams;
+    private ConnectionIdentifier connectionIdentifier;
     private IServerData mockRace;
     private ConnectionManager connectionManager;
     private Queue<byte[]> receivedPackets;
@@ -20,8 +21,9 @@ public class Server2 {
     public Server2(int port) throws IOException {
         this.mockRace = new MockRace();
         outputStreams = new Hashtable();
+        connectionIdentifier = new ConnectionIdentifier();
         receivedPackets = new LinkedBlockingQueue<>();
-        this.connectionManager = new ConnectionManager(outputStreams, port, this);
+        this.connectionManager = new ConnectionManager(outputStreams, connectionIdentifier, port, this);
         raceHandler = new RaceHandler(this.mockRace);
         startEventLoop();
         //this.mockRace.beginGeneratingData();    //move this nephew
@@ -48,6 +50,7 @@ public class Server2 {
                 sendToAll();
             }
             updateMock();
+            connectionIdentifier.getSocket(1);
         }
     }
 

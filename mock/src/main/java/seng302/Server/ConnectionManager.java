@@ -1,6 +1,7 @@
 package seng302.Server;
 
 import seng302.ClientConnexion;
+import seng302.ConnectionIdentifier;
 import seng302.Server2;
 
 import java.io.DataOutputStream;
@@ -13,10 +14,12 @@ import java.util.List;
 
 public class ConnectionManager extends Thread {
     private Hashtable outputStreams;
+    private ConnectionIdentifier connectionIdentifier;
     private final ServerSocket listener;
     private Server2 server;
 
-    public ConnectionManager(Hashtable outputStreams, int port, Server2 server) throws IOException {
+    public ConnectionManager(Hashtable outputStreams, ConnectionIdentifier connectionIdentifier, int port, Server2 server) throws IOException {
+        this.connectionIdentifier = connectionIdentifier;
         this.outputStreams = outputStreams;
         this.listener = new ServerSocket(port);
         this.server = server;
@@ -40,6 +43,7 @@ public class ConnectionManager extends Thread {
                 e.printStackTrace();
             }
             outputStreams.put(s, dout);
+            connectionIdentifier.addSocket(s);
             new ClientConnexion(server, s);
         }
     }
