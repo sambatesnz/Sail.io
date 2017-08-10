@@ -3,6 +3,8 @@ package seng302.DataGeneration;
 
 import seng302.Race;
 
+import java.io.IOException;
+
 public interface IServerData {
 
     Race getRace();
@@ -23,6 +25,6 @@ public interface IServerData {
 
     void finishGeneratingData();
 
-    void addXMLPackets();
+    void addXMLPackets() throws IOException;
 
 }

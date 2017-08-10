@@ -85,8 +85,8 @@ public class Message {
                 case BOAT:
                     if (!race.isRaceReady()) {
                         race.setBoats(xmlParser.getBoats());
+                        boatsSet = true;
                     }
-                    boatsSet = true;
                     break;
                 case RACE:
                     race.setParticipants(xmlParser.getRaceParticipants());

@@ -305,4 +305,3 @@
         <Boat Type="Helicopter" SourceID="142" ShapeID="14" StoweName="HL2" ShortName="HEL2" ShorterName="Heli2" BoatName="Helicopter" PeliID="142" RadioIP="172.20.2.142"/>
     </Boats>
 </BoatConfig>
-         

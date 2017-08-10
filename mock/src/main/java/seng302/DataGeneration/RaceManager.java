@@ -9,6 +9,7 @@ import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.Race;
 import seng302.RaceObjects.Boat;
 import seng302.XMLCreation.RaceXMLCreator;
+import seng302.XMLCreation.XMLCreator;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
@@ -20,9 +21,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import static java.lang.System.currentTimeMillis;
 
 /**
- * Created by sba136 on 3/05/17.
+ * Manages the race
  */
-public class MockRace implements IServerData {
+public class RaceManager implements IServerData {
     private Race race;
     private BinaryMessage rsm;
     private Queue<byte[]> broadcastMessageQueue;
@@ -30,7 +31,7 @@ public class MockRace implements IServerData {
     private Timer timer = new Timer();
 
 
-    public MockRace(){
+    public RaceManager(){
         this.race = new Race();
         broadcastMessageQueue = new LinkedBlockingQueue<>();
         singularMessageQueue = new LinkedBlockingQueue<>();
@@ -95,32 +96,32 @@ public class MockRace implements IServerData {
     }
 
     @Override
-    public void addXMLPackets() {
+    public void addXMLPackets() throws IOException {
         generateXML();
     }
 
     class XMLSender extends TimerTask {
         @Override
         public void run() {
-            generateXML();
+            try {
+                generateXML();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void generateXML() {
+    private void generateXML() throws IOException {
         DataGenerator dataGenerator = new DataGenerator();
 
-        RaceXMLCreator creator = new RaceXMLCreator(race);
-        String xml = "";
-        try {
-            xml = creator.createDocument().asXML();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        XMLCreator raceXMLCreator = new RaceXMLCreator(race);
+        XMLCreator boatXMLCreator = new BoatXMLCreator(race.getBoats());
 
-        BinaryMessage raceXML =  new XMLMessage(xml, (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
+
+        BinaryMessage raceXML =  new XMLMessage(raceXMLCreator.getXML(), (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
         broadcastMessageQueue.add(raceXML.createMessage());
 
-        BinaryMessage boatsXML = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
+        BinaryMessage boatsXML = new XMLMessage(boatXMLCreator.getXML(), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
         broadcastMessageQueue.add(boatsXML.createMessage());
 
         BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);

@@ -1,9 +1,7 @@
 package seng302;
 
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
-import seng302.Server.Server;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;

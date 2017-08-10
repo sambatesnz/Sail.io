@@ -1,7 +1,7 @@
 package seng302;
 
 import seng302.DataGeneration.IServerData;
-import seng302.DataGeneration.MockRace;
+import seng302.DataGeneration.RaceManager;
 import seng302.Server.ConnectionListener;
 
 import java.io.*;
@@ -17,7 +17,16 @@ public class Server2 {
     private RaceHandler raceHandler;
 
     public Server2(int port) throws Exception {
-        this.mockRace = new MockRace();
+        this.mockRace = new RaceManager();
+        startup(port);
+    }
+
+    public Server2(int port, IServerData race) throws Exception {
+        this.mockRace = race;
+        startup(port);
+    }
+
+    private void startup(int port) throws Exception {
         connectionStore = new ConnectionStore();
         receivedPackets = new LinkedBlockingQueue<>();
         this.connectionListener = new ConnectionListener(connectionStore, port, this);
@@ -71,13 +80,6 @@ public class Server2 {
     private void sendToAll() throws IOException {
         byte[] bytes = this.mockRace.getDataForAll();
         connectionStore.sendToAll(bytes);
-    }
-
-
-
-    static public void main(String args[]) throws Exception {
-        int port = Integer.parseInt("4941");
-        new Server2(port);
     }
 
     public void addPacketToQueue(byte[] data) {
