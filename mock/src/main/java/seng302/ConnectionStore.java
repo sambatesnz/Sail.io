@@ -9,12 +9,17 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.*;
 
-public class ConnectionIdentifier {
+/**
+ * Client connections are added and removed through
+ * The Connection Store.
+ * Messages can be broadcasted to all connections or to a singlular connection
+ *
+ */
+public class ConnectionStore {
     private Hashtable socketStreams;
     private ArrayList<Integer> connections;
 
-
-    public ConnectionIdentifier() {
+    public ConnectionStore() {
         this.socketStreams = new Hashtable();
         connections  = new ArrayList<>();
     }
@@ -52,7 +57,7 @@ public class ConnectionIdentifier {
             }
         }
         if (socket == null){
-           throw new NullPointerException("Couldnt find socket");
+           throw new NullPointerException("Couldn't find socket with id " + id);
         }
         return socket;
     }
@@ -62,19 +67,34 @@ public class ConnectionIdentifier {
         return connections.size();
     }
 
-    public void sendToAll(byte[] bytes) throws IOException {
+    /**
+     * Tries to send a stream of bytes to all connected sockets
+     * @param bytes array of bytes you wish to send
+     * @throws IOException
+     */
+    public void sendToAll(byte[] bytes) {
         synchronized (socketStreams) {
             for (Object value: socketStreams.values()){
                 Socket socket = (Socket) value;
-                OutputStream stream = socket.getOutputStream();
-                boolean hasPackets = bytes.length > 0;
-                if (hasPackets) {
-                    stream.write(bytes);
+                try {
+                    boolean hasPackets = bytes.length > 0;
+                    if (hasPackets) {
+                        OutputStream stream = socket.getOutputStream();
+                        stream.write(bytes);
+                    }
+                } catch (IOException e) {
+                    System.out.println("removing connections");
+                    removeConnection(socket);
                 }
             }
         }
     }
 
+    /**
+     * Sends a message to a particular client
+     * @param message A server message (AC35 spec message wrapped with a header which is the clients id)
+     * @throws IOException
+     */
     public void sendToOne(byte[] message) throws IOException {
         int clientID = ServerMessageGenerationUtils.unwrapHeader(message);
         byte[] messageToSend = ServerMessageGenerationUtils.unwrapBody(message);
@@ -90,6 +110,10 @@ public class ConnectionIdentifier {
         }
     }
 
+    /**
+     * Removes a connection
+     * @param socket connection you wish to remove
+     */
     public void removeConnection(Socket socket) {
         int socketId = socket.getPort();
 

@@ -15,13 +15,12 @@ import java.util.Arrays;
 /**
  * Receives all packets FROM each Client - this includes the initial RRM, and the KeyStrokes.
  */
-public class ClientConnexion extends Thread {
+public class ClientConnection extends Thread {
     private Server2 server;
     private Socket socket;
     private int id;
 
-    public ClientConnexion(Server2 server, Socket socket, int id) {
-        System.out.println(socket.getPort());
+    public ClientConnection(Server2 server, Socket socket, int id) {
         this.server = server;
         this.socket = socket;
         this.id = id;
@@ -49,6 +48,7 @@ public class ClientConnexion extends Thread {
         } catch (EOFException ie) {
         } catch (IOException ie) {
             ie.printStackTrace();
+            server.removeConnection(socket);
         } finally {
             server.removeConnection(socket);
         }

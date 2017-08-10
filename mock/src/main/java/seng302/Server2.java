@@ -2,7 +2,7 @@ package seng302;
 
 import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.MockRace;
-import seng302.Server.ConnectionManager;
+import seng302.Server.ConnectionListener;
 
 import java.io.*;
 import java.net.*;
@@ -10,17 +10,17 @@ import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Server2 {
-    private ConnectionIdentifier connectionIdentifier;
+    private ConnectionStore connectionStore;
     private IServerData mockRace;
-    private ConnectionManager connectionManager;
+    private ConnectionListener connectionListener;
     private Queue<byte[]> receivedPackets;
     private RaceHandler raceHandler;
 
     public Server2(int port) throws Exception {
         this.mockRace = new MockRace();
-        connectionIdentifier = new ConnectionIdentifier();
+        connectionStore = new ConnectionStore();
         receivedPackets = new LinkedBlockingQueue<>();
-        this.connectionManager = new ConnectionManager(connectionIdentifier, port, this);
+        this.connectionListener = new ConnectionListener(connectionStore, port, this);
         raceHandler = new RaceHandler(this.mockRace);
         startEventLoop();
     }
@@ -32,24 +32,24 @@ public class Server2 {
 
         while (true) {
 
-            if (numConnections < connectionIdentifier.connectionAmount()){
+            if (numConnections < connectionStore.connectionAmount()){
                 System.out.println("new connection detected, resending the XML Packets.");
                 this.mockRace.addXMLPackets();
-                numConnections = connectionIdentifier.connectionAmount();
+                numConnections = connectionStore.connectionAmount();
             }
-            if (connectionIdentifier.connectionAmount() > 0 && !hasStarted) {
+            if (connectionStore.connectionAmount() > 0 && !hasStarted) {
                 System.out.println("Race will begin generating data now.");
                 this.mockRace.beginGeneratingData();
                 hasStarted = true;
             }
-            if (connectionIdentifier.connectionAmount() > 0 && hasStarted) {
+            if (connectionStore.connectionAmount() > 0 && hasStarted) {
                 sendToAll();
             }
             handleReceivedMessages();
             sendSingleMessages();
 
-            if (connectionIdentifier.hasConnections()){
-                connectionIdentifier.getSocket(connectionIdentifier.getConnections().get(0));
+            if (connectionStore.hasConnections()){
+                connectionStore.getSocket(connectionStore.getConnections().get(0));
             }
         }
     }
@@ -64,13 +64,13 @@ public class Server2 {
 
     private void sendSingleMessages() throws IOException {
         if (mockRace.singleMessageReady()){
-            connectionIdentifier.sendToOne(mockRace.getDataForOne());
+            connectionStore.sendToOne(mockRace.getDataForOne());
         }
     }
 
     private void sendToAll() throws IOException {
         byte[] bytes = this.mockRace.getDataForAll();
-        connectionIdentifier.sendToAll(bytes);
+        connectionStore.sendToAll(bytes);
     }
 
 
@@ -85,6 +85,6 @@ public class Server2 {
     }
 
     public void removeConnection(Socket s) {
-        connectionIdentifier.removeConnection(s);
+        connectionStore.removeConnection(s);
     }
 }
