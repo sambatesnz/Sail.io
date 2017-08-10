@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import seng302.Controllers.Coordinate;
 import seng302.Controllers.StartController;
 import seng302.UserInput.KeyBindingUtility;
 
@@ -40,6 +41,12 @@ public class Main extends Application {
             primaryStage.setScene((rootScene));
             primaryStage.setTitle("RaceView");
             primaryStage.show();
+
+            Coordinate.setWindowWidthX(800);
+            Coordinate.setWindowHeightY(600);
+
+            primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowWidthX((newValue).doubleValue()));
+            primaryStage.heightProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowHeightY(newValue.doubleValue()));
 
             startController.setPrimaryStage(primaryStage);
 

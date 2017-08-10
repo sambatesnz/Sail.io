@@ -42,12 +42,7 @@ public class StartController {
      */
     public void connect() throws IOException {
 
-        //FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/Lobby.fxml"));
-
-        //-??-//
-        RaceViewController raceViewController = new RaceViewController(primaryStage);
-        //SEEMS LIKE WE JUST NEED THIS TO RUN STATEMENTS IN THE CONSTRUCTOR. CAN PROBABLY REMOVE.
 
         LobbyController lobbyController = new LobbyController(getIp(), getPort());
         lobbyController.setPrimaryStage(primaryStage);

@@ -22,11 +22,10 @@
     <RowConstraints maxHeight="112.0" minHeight="0.0" prefHeight="45.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <TableView fx:id="contestantTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
         <columns>
-          <TableColumn prefWidth="137.0" text="Username" />
-          <TableColumn prefWidth="100.0" text="Rank" />
-            <TableColumn prefWidth="100.0" text="Ping" />
+          <TableColumn fx:id="teamColumn" prefWidth="137.0" text="Team Name" />
+          <TableColumn fx:id="clientColumn" prefWidth="100.0" text="Client ID" />
         </columns>
       </TableView>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time to Race Pre-Start:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
