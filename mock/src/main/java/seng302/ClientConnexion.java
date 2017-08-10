@@ -1,9 +1,14 @@
 package seng302;
 
+import seng302.PacketGeneration.PacketGenerationUtils;
+import seng302.PacketGeneration.PacketUtils;
+import seng302.PacketParsing.PacketParserUtils;
+
 import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -33,7 +38,26 @@ public class ClientConnexion extends Thread {
                     boolean validPacket = validatePacket(data);
 
                     if (validPacket) {
-                        System.out.println("Client" + id + "has sent a packet");
+                        System.out.println("Client " + id + " has sent a packet");
+
+                        int originalMessageLength = PacketParserUtils.getMessageLength(data);
+                        byte[] array = new byte[originalMessageLength + 5];
+                        System.arraycopy(data, 0, array, 5, originalMessageLength);
+
+                        byte[] padding = new byte[1];
+                        padding[0] = -1;
+                        System.arraycopy(padding, 0, array, 4, 1);
+
+                        byte[] header = PacketGenerationUtils.intToTwoBytes(id);
+
+                        System.arraycopy(header, 0, array, 0, 1);
+
+
+
+
+                        System.out.println(Arrays.toString(data));
+                        System.out.println(Arrays.toString(array));
+
                         server.addPacketToQueue(data);
                     }
                 }

@@ -10,6 +10,9 @@ import java.nio.ByteOrder;
  */
 public final class PacketParserUtils {
 
+    private static final int HEADER_SIZE = 15;
+    private static final int CRC_SIZE = 4;
+
 
     /**
      * Gets the message type of a binary message
@@ -72,5 +75,9 @@ public final class PacketParserUtils {
      */
     public static int getMessageBodyLength(byte[] data) {
         return byteArrayToInt(data, 13,2);
+    }
+
+    public static int getMessageLength(byte[] data) {
+        return HEADER_SIZE + getMessageBodyLength(data) + CRC_SIZE;
     }
 }
