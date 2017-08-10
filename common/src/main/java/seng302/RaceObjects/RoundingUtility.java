@@ -109,6 +109,10 @@ public class RoundingUtility {
 
         /*  If the boat has fully rounded the mark, change its current target mark index to the next mark in the race */
         if (boat.getRoundingStage() == 3) {
+            for (int i = 0; i < 10; i++) {
+                System.out.println("333333333333333333333333333");
+            }
+
             boat.resetRoundingStage();
             boat.incrementTargetMarkIndex();
         }

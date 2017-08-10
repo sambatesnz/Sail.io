@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static javafx.scene.input.KeyCode.Z;
+import static javafx.scene.paint.Color.BLACK;
 
 /**
  * Class that controls the race window and updates the race as it proceeds
@@ -95,6 +96,7 @@ public class RaceController {
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
     private WindArrow windArrow = new WindArrow();
+    private Group roundingArrow = new Group();
     private boolean showName = true;
     private boolean showSpeed = true;
     private boolean showFPS = true;
@@ -169,6 +171,7 @@ public class RaceController {
         fpsCounter = new FPSCounter(fpsLabel);
 
         initialiseZoomFollowing();
+        initialiseRoundingArrow();
         initialisePositionsTable();
         enableScrolling();
 
@@ -194,6 +197,10 @@ public class RaceController {
                 }
             }
         });
+    }
+
+    private void initialiseMarkRoundingSprites() {
+
     }
 
     private void initialisePositionsTable() {
@@ -254,7 +261,6 @@ public class RaceController {
     private void updateBoatPositions() {
         final int SAIL_OFFSET = 7;
         for (int i = 0; i < boats.size(); i++) {
-            System.out.println("" + i + ": " + race.getBoats().get(i).getTargetMarkIndex());
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
                 double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
                 String speed = "";
@@ -424,7 +430,56 @@ public class RaceController {
             compoundMarks.get(i).setX(Coordinate.getRelativeX(marks.get(i).getX()) - compoundMarks.get(i).getWidth() / 2);
             compoundMarks.get(i).setY(Coordinate.getRelativeY(marks.get(i).getY()) - compoundMarks.get(i).getHeight() / 2);
             updateNodeScale(compoundMarks.get(i));
+
+//            String cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()-1).get("CompoundMarkID");
+//            System.out.println(cmId + ", " + race.getCompoundMarks().get(i).getId());
+//            System.out.println(race.getCompoundMarks().size() + ", " + race.getCompoundMarks());
+//            System.out.println(compoundMarks.size() + ", " + compoundMarks);
+//            if (cmId.equals(race.getCompoundMarks().get(i).getId())) {
+//                System.out.println("USING ROUNDING ARROW");
+//                String rounding = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()-1).get("Rounding");
+////                add Rounding arrow here
+//                roundingArrow.setLayoutX(Coordinate.getRelativeX(marks.get(i).getX()) - compoundMarks.get(i).getWidth() / 2);
+//                roundingArrow.setLayoutY(Coordinate.getRelativeY(marks.get(i).getY()) - compoundMarks.get(i).getHeight() / 2);
+//            }
+//            race.getCompoundMarks();
         }
+
+        for (int i = 0; i < race.getCompoundMarks().size(); i++) {
+            String cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).get("CompoundMarkID");
+//            System.out.println(cmId + ", " + race.getCompoundMarks().get(i).getId());
+//            System.out.println(race.getCompoundMarks().size() + ", " + race.getCompoundMarks());
+            CompoundMark cm = race.getCompoundMarks().get(i);
+//            System.out.println(compoundMarks.size() + ", " + compoundMarks);
+            if (cmId.equals(String.valueOf(race.getCompoundMarks().get(i).getId()))) {
+//                System.out.println("USING ROUNDING ARROW");
+//                String rounding = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()-1).get("Rounding");
+//        //                add Rounding arrow here
+                roundingArrow.setLayoutX(Coordinate.getRelativeX(cm.getX()));
+                roundingArrow.setLayoutY(Coordinate.getRelativeY(cm.getY()));
+            }
+        }
+    }
+
+    private void initialiseRoundingArrow(){
+        Polyline a = new Polyline();
+        a.getPoints().addAll(
+                -10.0, -15.0,
+                      0.0, -25.0,
+                     -12.0, -30.0);
+        a.setFill(null);
+        a.setStroke(Color.GREEN);
+        a.setStrokeWidth(3);
+
+        Arc a1 = new Arc(0, 0, 25, 25, 90, 120);
+        a1.setType(ArcType.OPEN);
+        a1.setStroke(Color.GREEN);
+        a1.setFill(null);
+        a1.setStrokeWidth(3);
+
+        roundingArrow.getChildren().add(a1);
+        roundingArrow.getChildren().add(a);
+        group.getChildren().add(roundingArrow);
     }
 
     private void updateGates() {

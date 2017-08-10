@@ -2,9 +2,11 @@ package seng302.Server;
 
 import seng302.Race;
 import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.Mark;
 import seng302.UserInput.BoatAction;
 
 public class Delegator {
+    int ez = 1;
 
     private Race race;
     public Delegator(Race race) {
@@ -18,15 +20,21 @@ public class Delegator {
         if (messageCommand == BoatAction.TACK_OR_GYBE.getBoatAction()) {
             tackOrGybeBoat(boatID);
         } else if (messageCommand == BoatAction.UPWIND.getBoatAction()) {
-            changeBoatHeading(boatID, true);
-        } else if (messageCommand == BoatAction.DOWNWIND.getBoatAction()) {
-            changeBoatHeading(boatID, false);
-        } else if (messageCommand == BoatAction.SAILS_IN.getBoatAction()) {
             Boat boat = race.getBoatByID(boatID);
-            boat.setSailsOut(false);
+            boat.getMark().setX(boat.getX()+15*ez);
+//            changeBoatHeading(boatID, true);
+        } else if (messageCommand == BoatAction.DOWNWIND.getBoatAction()) {
+            Boat boat = race.getBoatByID(boatID);
+            boat.getMark().setY(boat.getY()+15*ez);
+//            changeBoatHeading(boatID, false);
+        } else if (messageCommand == BoatAction.SAILS_IN.getBoatAction()) {
+//            Boat boat = race.getBoatByID(boatID);
+//            boat.setSailsOut(false);
+            ez = 1;
         } else if (messageCommand == BoatAction.SAILS_OUT.getBoatAction()) {
             Boat boat = race.getBoatByID(boatID);
             boat.setSailsOut(true);
+            ez = -1;
         }
     }
 

@@ -326,6 +326,10 @@ public class Race {
         }
     }
 
+    public List<Map<String, String>> getCourseOrder() {
+        return courseOrder;
+    }
+
     public void setCourseOrder(List<Map<String, String>> courseOrder) {
         this.courseOrder = courseOrder;
         for (Map<String, String> orderedMark: courseOrder) {
