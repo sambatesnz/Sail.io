@@ -18,7 +18,7 @@ public class ConnectionManager extends Thread {
     private final ServerSocket listener;
     private Server2 server;
 
-    public ConnectionManager(Hashtable outputStreams, ConnectionIdentifier connectionIdentifier, int port, Server2 server) throws IOException {
+    public ConnectionManager(ConnectionIdentifier connectionIdentifier, int port, Server2 server) throws IOException {
         this.connectionIdentifier = connectionIdentifier;
         this.outputStreams = outputStreams;
         this.listener = new ServerSocket(port);
@@ -33,9 +33,6 @@ public class ConnectionManager extends Thread {
             try {
                 s = listener.accept();
                 System.out.println("Connection from " + s);
-                DataOutputStream dout = null;
-                dout = new DataOutputStream(s.getOutputStream());
-                outputStreams.put(s, dout);
                 int id = connectionIdentifier.addSocket(s);
                 new ClientConnexion(server, s, id);
             } catch (IOException e) {

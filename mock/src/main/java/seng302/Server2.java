@@ -2,7 +2,6 @@ package seng302;
 
 import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.MockRace;
-import seng302.PacketParsing.PacketParserUtils;
 import seng302.Server.ConnectionManager;
 
 import java.io.*;
@@ -11,7 +10,6 @@ import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Server2 {
-    private Hashtable outputStreams;
     private ConnectionIdentifier connectionIdentifier;
     private IServerData mockRace;
     private ConnectionManager connectionManager;
@@ -20,10 +18,9 @@ public class Server2 {
 
     public Server2(int port) throws Exception {
         this.mockRace = new MockRace();
-        outputStreams = new Hashtable();
         connectionIdentifier = new ConnectionIdentifier();
         receivedPackets = new LinkedBlockingQueue<>();
-        this.connectionManager = new ConnectionManager(outputStreams, connectionIdentifier, port, this);
+        this.connectionManager = new ConnectionManager(connectionIdentifier, port, this);
         raceHandler = new RaceHandler(this.mockRace);
         startEventLoop();
         //this.mockRace.beginGeneratingData();    //move this nephew
@@ -36,23 +33,23 @@ public class Server2 {
 
         while (true) {
 
-            if (numConnections < outputStreams.size()){
+            if (numConnections < connectionIdentifier.connectionAmount()){
                 System.out.println("new connection detected, resending the XML Packets.");
                 this.mockRace.addXMLPackets();
-                numConnections = outputStreams.size();
+                numConnections = connectionIdentifier.connectionAmount();
             }
-            if (outputStreams.size() > 0 && !hasStarted) {
+            if (connectionIdentifier.connectionAmount() > 0 && !hasStarted) {
                 System.out.println("Race will begin generating data now.");
                 this.mockRace.beginGeneratingData();
                 hasStarted = true;
             }
-            if (outputStreams.size() > 0 && hasStarted) {
+            if (connectionIdentifier.connectionAmount() > 0 && hasStarted) {
                 sendToAll();
             }
             updateMock();
 
             if (connectionIdentifier.hasConnections()){
-                connectionIdentifier.getSocket(1);
+                connectionIdentifier.getSocket(connectionIdentifier.getConnections().get(0));
             }
         }
     }
@@ -69,40 +66,24 @@ public class Server2 {
         }
     }
 
-    private Enumeration getOutputStreams() {
-        return outputStreams.elements();
-    }
 
     private void sendToAll() {
-        synchronized (outputStreams) {
-            byte[] bytes = this.mockRace.getData();
-            for (Enumeration e = getOutputStreams(); e.hasMoreElements(); ) {
-
-                DataOutputStream dout = (DataOutputStream) e.nextElement();
-                try {
-                    boolean hasPackets = bytes.length > 0;
-                    if (hasPackets) {
-                        dout.write(bytes);
-                    }
-                } catch (IOException ie) {
-                    System.out.println(ie);
-                }
-            }
-        }
+        byte[] bytes = this.mockRace.getData();
+        connectionIdentifier.sendToAll(bytes);
     }
 
-    void removeConnection(Socket s) {
-        synchronized (outputStreams) {
-            System.out.println("Removing connection to " + s);
-            outputStreams.remove(s);
-            try {
-                s.close();
-            } catch (IOException ie) {
-                System.out.println("Error closing " + s);
-                ie.printStackTrace();
-            }
-        }
-    }
+//    void removeConnection(Socket s) {
+//        synchronized (outputStreams) {
+//            System.out.println("Removing connection to " + s);
+//            outputStreams.remove(s);
+//            try {
+//                s.close();
+//            } catch (IOException ie) {
+//                System.out.println("Error closing " + s);
+//                ie.printStackTrace();
+//            }
+//        }
+//    }
 
     static public void main(String args[]) throws Exception {
         int port = Integer.parseInt("4941");

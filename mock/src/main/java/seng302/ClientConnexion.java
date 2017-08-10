@@ -42,7 +42,7 @@ public class ClientConnexion extends Thread {
         } catch (IOException ie) {
             ie.printStackTrace();
         } finally {
-            server.removeConnection(socket);
+//            server.removeConnection(socket);
         }
     }
 
