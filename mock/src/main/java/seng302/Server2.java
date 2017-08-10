@@ -23,7 +23,6 @@ public class Server2 {
         this.connectionManager = new ConnectionManager(connectionIdentifier, port, this);
         raceHandler = new RaceHandler(this.mockRace);
         startEventLoop();
-        //this.mockRace.beginGeneratingData();    //move this nephew
     }
 
     private void startEventLoop() throws Exception {
@@ -67,23 +66,12 @@ public class Server2 {
     }
 
 
-    private void sendToAll() {
-        byte[] bytes = this.mockRace.getData();
+    private void sendToAll() throws IOException {
+        byte[] bytes = this.mockRace.getDataForAll();
         connectionIdentifier.sendToAll(bytes);
     }
 
-//    void removeConnection(Socket s) {
-//        synchronized (outputStreams) {
-//            System.out.println("Removing connection to " + s);
-//            outputStreams.remove(s);
-//            try {
-//                s.close();
-//            } catch (IOException ie) {
-//                System.out.println("Error closing " + s);
-//                ie.printStackTrace();
-//            }
-//        }
-//    }
+
 
     static public void main(String args[]) throws Exception {
         int port = Integer.parseInt("4941");
@@ -92,5 +80,9 @@ public class Server2 {
 
     public void addPacketToQueue(byte[] data) {
         receivedPackets.add(data);
+    }
+
+    public void removeConnection(Socket s) {
+        connectionIdentifier.removeConnection(s);
     }
 }

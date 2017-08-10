@@ -28,12 +28,17 @@ public class RaceXmlDataGenerator implements IServerData{
     }
 
     @Override
-    public byte[] getData() {
+    public byte[] getDataForAll() {
         try {
             return bytes.remove();
         } catch (NoSuchElementException e) {
             return new byte[0];
         }
+    }
+
+    @Override
+    public byte[] getDataForOne() {
+        return new byte[0];
     }
 
     @Override

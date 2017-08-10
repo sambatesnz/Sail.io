@@ -5,8 +5,6 @@ import seng302.DataGeneration.IServerData;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 /**
  * Abstracts away Connections from running the race.
@@ -33,7 +31,7 @@ public class ClientConnector extends Thread {
         }
         while (!this.mockData.finished() && !socket.isClosed()){
             if(this.mockData.ready()){
-                byte[] data = this.mockData.getData();
+                byte[] data = this.mockData.getDataForAll();
                 try {
                     send(data);
                 } catch (IOException e) {

@@ -2,34 +2,29 @@ package seng302;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.*;
 
 public class ConnectionIdentifier {
     private Hashtable socketStreams;
+    private ArrayList<Integer> connections;
+
+
+    public ConnectionIdentifier() {
+        this.socketStreams = new Hashtable();
+        connections  = new ArrayList<>();
+    }
+
 
     public ArrayList<Integer> getConnections() {
         return connections;
     }
 
-    private ArrayList<Integer> connections;
-    private Hashtable outputStreams;
-
-
-    public ConnectionIdentifier() {
-        this.socketStreams = new Hashtable();
-        this.outputStreams = new Hashtable();
-        connections  = new ArrayList<>();
-    }
 
     public int addSocket(Socket socket) throws IOException {
         int id = socket.getPort();
-        DataOutputStream dout = null;
-        dout = new DataOutputStream(socket.getOutputStream());
         socketStreams.put(id, socket);
-        outputStreams.put(socket, dout);
         connections.add(id);
         return id;
     }
@@ -38,7 +33,7 @@ public class ConnectionIdentifier {
         return connections.size() > 0;
     }
 
-    private Enumeration getStreams() {
+    private Enumeration getIds() {
         return socketStreams.keys();
     }
 
@@ -46,7 +41,7 @@ public class ConnectionIdentifier {
     public Socket getSocket(int id) throws Exception {
         Socket socket = null;
         synchronized (socketStreams) {
-            for (Enumeration e = getStreams(); e.hasMoreElements(); ) {
+            for (Enumeration e = getIds(); e.hasMoreElements(); ) {
                 int socketId = (int) e.nextElement();
                 if (socketId == id) {
                     socket = (Socket) socketStreams.get(id);
@@ -59,29 +54,35 @@ public class ConnectionIdentifier {
         return socket;
     }
 
-    private Enumeration getOutputStreams() {
-        return outputStreams.elements();
-    }
-
 
     public int connectionAmount() {
         return connections.size();
     }
 
-    public void sendToAll(byte[] bytes) {
-        synchronized (outputStreams) {
-
-            for (Enumeration e = getOutputStreams(); e.hasMoreElements(); ) {
-
-                DataOutputStream dout = (DataOutputStream) e.nextElement();
-                try {
-                    boolean hasPackets = bytes.length > 0;
-                    if (hasPackets) {
-                        dout.write(bytes);
-                    }
-                } catch (IOException ie) {
-                    System.out.println(ie);
+    public void sendToAll(byte[] bytes) throws IOException {
+        synchronized (socketStreams) {
+            for (Object value: socketStreams.values()){
+                Socket socket = (Socket) value;
+                OutputStream stream = socket.getOutputStream();
+                boolean hasPackets = bytes.length > 0;
+                if (hasPackets) {
+                    stream.write(bytes);
                 }
+            }
+        }
+    }
+
+    public void removeConnection(Socket socket) {
+        int socketId = socket.getPort();
+
+        synchronized (socketStreams) {
+            System.out.println("Removing connection to " + socket);
+            socketStreams.remove(socketId);
+            try {
+                socket.close();
+            } catch (IOException ie) {
+                System.out.println("Error closing " + socket);
+                ie.printStackTrace();
             }
         }
     }

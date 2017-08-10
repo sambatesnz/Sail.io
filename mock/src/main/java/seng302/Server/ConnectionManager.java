@@ -13,14 +13,12 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class ConnectionManager extends Thread {
-    private Hashtable outputStreams;
     private ConnectionIdentifier connectionIdentifier;
     private final ServerSocket listener;
     private Server2 server;
 
     public ConnectionManager(ConnectionIdentifier connectionIdentifier, int port, Server2 server) throws IOException {
         this.connectionIdentifier = connectionIdentifier;
-        this.outputStreams = outputStreams;
         this.listener = new ServerSocket(port);
         this.server = server;
         this.start();
@@ -29,12 +27,12 @@ public class ConnectionManager extends Thread {
     public void run() {
         System.out.println("Listening on " + listener);
         while (true) {
-            Socket s = null;
+            Socket socket = null;
             try {
-                s = listener.accept();
-                System.out.println("Connection from " + s);
-                int id = connectionIdentifier.addSocket(s);
-                new ClientConnexion(server, s, id);
+                socket = listener.accept();
+                System.out.println("Connection from " + socket);
+                int socketID = connectionIdentifier.addSocket(socket);
+                new ClientConnexion(server, socket, socketID);
             } catch (IOException e) {
                 e.printStackTrace();
             }

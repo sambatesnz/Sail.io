@@ -25,13 +25,15 @@ import static java.lang.System.currentTimeMillis;
 public class MockRace implements IServerData {
     private Race race;
     private BinaryMessage rsm;
-    private Queue<byte[]> bytes;
-    Timer timer = new Timer();
+    private Queue<byte[]> broadcastMessageQueue;
+    private Queue<byte[]> singularMessageQueue;
+    private Timer timer = new Timer();
 
 
     public MockRace(){
         this.race = new Race();
-        bytes = new LinkedBlockingQueue<>();
+        broadcastMessageQueue = new LinkedBlockingQueue<>();
+        singularMessageQueue = new LinkedBlockingQueue<>();
     }
 
 
@@ -41,9 +43,18 @@ public class MockRace implements IServerData {
 
 
     @Override
-    public byte[] getData() {
+    public byte[] getDataForAll() {
         try {
-            return bytes.remove();
+            return broadcastMessageQueue.remove();
+        } catch (NoSuchElementException e) {
+            return new byte[0];
+        }
+    }
+
+    @Override
+    public byte[] getDataForOne() {
+        try {
+            return singularMessageQueue.remove();
         } catch (NoSuchElementException e) {
             return new byte[0];
         }
@@ -56,7 +67,7 @@ public class MockRace implements IServerData {
 
     @Override
     public boolean ready() {
-        return !bytes.isEmpty();
+        return !broadcastMessageQueue.isEmpty();
     }
 
     @Override
@@ -97,13 +108,13 @@ public class MockRace implements IServerData {
         }
 
         BinaryMessage raceXML =  new XMLMessage(xml, (short)0, XMLSubTypes.RACE.getSubType(),  (short) 0);
-        bytes.add(raceXML.createMessage());
+        broadcastMessageQueue.add(raceXML.createMessage());
 
         BinaryMessage boatsXML = new XMLMessage(dataGenerator.loadFile("Boats.xml"), (short)0, XMLSubTypes.BOAT.getSubType(), (short) 0);
-        bytes.add(boatsXML.createMessage());
+        broadcastMessageQueue.add(boatsXML.createMessage());
 
         BinaryMessage regattaXML = new XMLMessage(dataGenerator.loadFile("Regatta.xml"), (short)0, XMLSubTypes.REGATTA.getSubType(), (short) 0);
-        bytes.add(regattaXML.createMessage());
+        broadcastMessageQueue.add(regattaXML.createMessage());
     }
 
     class BoatPosSender extends TimerTask {
@@ -120,7 +131,7 @@ public class MockRace implements IServerData {
                         (short) 100, (short) 100, (short) 100,
                         (short) 100, (short) 100, (short) 100
                 );
-                bytes.add(boatLocationMessage.createMessage());
+                broadcastMessageQueue.add(boatLocationMessage.createMessage());
             }
         }
     }
@@ -145,7 +156,7 @@ public class MockRace implements IServerData {
                     (char)(race.getBoats().size() + 48),
                     race.getRaceType(),
                     race.getBoats());
-            bytes.add(rsm.createMessage());
+            broadcastMessageQueue.add(rsm.createMessage());
         }
     }
 

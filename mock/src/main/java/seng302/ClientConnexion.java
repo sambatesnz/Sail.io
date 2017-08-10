@@ -2,6 +2,7 @@ package seng302;
 
 import seng302.PacketGeneration.PacketGenerationUtils;
 import seng302.PacketGeneration.PacketUtils;
+import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 import seng302.PacketParsing.PacketParserUtils;
 
 import java.io.*;
@@ -40,23 +41,14 @@ public class ClientConnexion extends Thread {
                     if (validPacket) {
                         System.out.println("Client " + id + " has sent a packet");
 
-                        int originalMessageLength = PacketParserUtils.getMessageLength(data);
-                        byte[] array = new byte[originalMessageLength + 5];
-                        System.arraycopy(data, 0, array, 5, originalMessageLength);
-
-                        byte[] padding = new byte[1];
-                        padding[0] = -1;
-                        System.arraycopy(padding, 0, array, 4, 1);
-
-                        byte[] header = PacketGenerationUtils.intToTwoBytes(id);
-
-                        System.arraycopy(header, 0, array, 0, 1);
+                        byte[] wrappedMessage = ServerMessageGenerationUtils.wrap(data, id);
 
 
 
 
-                        System.out.println(Arrays.toString(data));
-                        System.out.println(Arrays.toString(array));
+//
+//                        System.out.println(Arrays.toString(data));
+//                        System.out.println(Arrays.toString(array));
 
                         server.addPacketToQueue(data);
                     }
@@ -66,7 +58,7 @@ public class ClientConnexion extends Thread {
         } catch (IOException ie) {
             ie.printStackTrace();
         } finally {
-//            server.removeConnection(socket);
+            server.removeConnection(socket);
         }
     }
 
@@ -74,18 +66,5 @@ public class ClientConnexion extends Thread {
         final int SYNC_BYTE_1 = 0;
         final int SYNC_BYTE_2 = 1;
         return data[SYNC_BYTE_1] == (byte) 0x47 && data[SYNC_BYTE_2] == (byte) 0x83;
-    }
-
-        /**
-         * Converts a section from an array of bytes into an integer.
-         * @param bytes The array to convert bytes from
-         * @param pos The starting index of the bytes desired to be converted
-         * @param len The number of bytes to be converted (from the given index)
-         * @return An integer, converted from the given bytes
-         */
-    public static int byteArrayToInt(byte[] bytes, int pos, int len){
-        byte[] intByte = new byte[4];
-        System.arraycopy(bytes, pos, intByte, 0, len);
-        return ByteBuffer.wrap(intByte).order(ByteOrder.LITTLE_ENDIAN).getInt();
     }
 }

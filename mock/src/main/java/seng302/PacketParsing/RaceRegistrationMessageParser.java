@@ -34,6 +34,8 @@ public class RaceRegistrationMessageParser extends BinaryMessageParserFactory {
     public void updateRace(IServerData raceData) {
         Boat boat =  raceData.getRace().addBoat();
         System.out.println(boat.getSourceId());
-        System.out.println("recieved RRM!!!! (yeah kevin!)");
+        System.out.println("received RRM!");
+
+
     }
 }

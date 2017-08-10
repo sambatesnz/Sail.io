@@ -7,7 +7,9 @@ public interface IServerData {
 
     Race getRace();
 
-    byte[] getData();
+    byte[] getDataForAll();
+
+    byte[] getDataForOne();
 
     boolean finished();
 
