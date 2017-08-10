@@ -25,29 +25,24 @@ public class Main extends Application {
         try {
 //            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("RaceView.fxml"));
 //            RaceViewController raceViewController = new RaceViewController(primaryStage);
-//
-//            Parent root = loader.load();
-//            Scene rootScene = new Scene(root);
-//            KeyBindingUtility.setKeyBindings(rootScene);
-//            primaryStage.setMinHeight(600);
-//            primaryStage.setMinWidth(800);
-//            primaryStage.setMaximized(true);
-//            primaryStage.setScene((rootScene));
-//            primaryStage.setTitle("RaceView");
-//            primaryStage.show();
+
 
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("StartingPage.fxml"));
-            StartController startController = new StartController(primaryStage);
 
             Parent root = loader.load();
             Scene rootScene = new Scene(root);
+
+            StartController startController = loader.getController();
+
             KeyBindingUtility.setKeyBindings(rootScene);
             primaryStage.setMinHeight(600);
             primaryStage.setMinWidth(800);
             primaryStage.setMaximized(true);
             primaryStage.setScene((rootScene));
-            primaryStage.setTitle("RaceVision by Full Mast");
+            primaryStage.setTitle("RaceView");
             primaryStage.show();
+
+            startController.setPrimaryStage(primaryStage);
 
         } catch (IOException ex) {
             ex.printStackTrace();
