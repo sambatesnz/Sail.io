@@ -14,7 +14,6 @@ import seng302.PacketParsing.RaceRegistrationMessageParser;
 public class RaceHandler {
 
     private final IServerData race;
-    private BinaryMessageParserFactory binaryMessageParserFactory;
 
     public RaceHandler(IServerData race) {
         this.race = race;

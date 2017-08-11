@@ -2,6 +2,7 @@ package seng302.Server;
 
 import seng302.Race;
 import seng302.RaceObjects.Boat;
+import seng302.UserInputController.BoatAction;
 
 public class Delegator {
 
@@ -12,14 +13,14 @@ public class Delegator {
     }
 
 
-    public void processCommand(int messageCommand) {
-        int boatID = 103; //Hardcoded to NZL for testing purposes, and while packets don't contain ID
+    public void processCommand(BoatAction messageCommand) {
+        int boatID = 101; //Hardcoded to NZL for testing purposes, and while packets don't contain ID
         switch (messageCommand) {
-            case 5: { //Upwind command
+            case UPWIND: {
                 changeBoatHeading(boatID, true);
                 break;
             }
-            case 6: { //Downwind command
+            case DOWNWIND: {
                 changeBoatHeading(boatID, false);
                 break;
             }
@@ -32,6 +33,7 @@ public class Delegator {
      * @param upwind True if the boat is turning upwind, false if turning downwind
      */
     public void changeBoatHeading(int sourceID, boolean upwind){
+        System.out.println("changed boat heading based on command");
         Boat boat = race.getBoatByID(sourceID);
         int windDirection = ((((race.updateWindDirection()  * 360) / 65536)+360)%360);  //TODO Make this into a function
         boat.updateHeading(windDirection, upwind);
