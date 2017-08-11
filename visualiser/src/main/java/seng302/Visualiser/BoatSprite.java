@@ -41,6 +41,8 @@ public class BoatSprite {
 
         stack = new Pane();
         stack.getChildren().add(boatIcon);
+        System.out.println("boat icon = " + boatIcon);
+        System.out.println("boat circle = " + controlCircle);
         stack.getChildren().add(controlCircle);
         stack.getChildren().add(wake);
         stack.getChildren().add(tc);
@@ -81,7 +83,14 @@ public class BoatSprite {
     }
 
     private void initialiseControlCircle(){
-        if (boatObject.getSourceId() == 103) {
+        if (boatObject.getSourceId() == 101) {
+            controlCircle = new Circle(10);
+            controlCircle.setCenterX(0);
+            controlCircle.setCenterY(0);
+            controlCircle.setStroke(Color.INDIANRED);
+            controlCircle.setFill(Color.TRANSPARENT);
+        }
+        if (boatObject.getSourceId() == 102) {
             controlCircle = new Circle(10);
             controlCircle.setCenterX(0);
             controlCircle.setCenterY(0);

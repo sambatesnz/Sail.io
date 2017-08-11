@@ -1,6 +1,7 @@
 package seng302.Client.Messages;
 
 
+import seng302.PacketParsing.PacketParserUtils;
 import seng302.Race.Race;
 
 /**
@@ -29,14 +30,14 @@ public class RaceStatusMessage {
      * @param bytes The array of bytes from the body of a race status packet
      */
     public RaceStatusMessage(byte[] bytes, Race race) {
-        currentTime = Message.byteArrayToLong(bytes, 1, 6);
-        raceID = Message.byteArrayToLong(bytes, 7, 4);
-        raceStatus = Message.byteArrayToInt(bytes, 11, 1);
-        expectedStartTime = Message.byteArrayToLong(bytes, 12, 6);
-        windDirection = Message.byteArrayToInt(bytes, 18, 2) * 360 / 65536.0;
-        windSpeed = Message.byteArrayToInt(bytes, 20, 2);
-        numBoatsInRace = Message.byteArrayToInt(bytes, 22, 1); //To convert from char to int
-        raceType = Message.byteArrayToInt(bytes, 23, 1);
+        currentTime = PacketParserUtils.byteArrayToLong(bytes, 1, 6);
+        raceID = PacketParserUtils.byteArrayToLong(bytes, 7, 4);
+        raceStatus = PacketParserUtils.byteArrayToInt(bytes, 11, 1);
+        expectedStartTime = PacketParserUtils.byteArrayToLong(bytes, 12, 6);
+        windDirection = PacketParserUtils.byteArrayToInt(bytes, 18, 2) * 360 / 65536.0;
+        windSpeed = PacketParserUtils.byteArrayToInt(bytes, 20, 2);
+        numBoatsInRace = PacketParserUtils.byteArrayToInt(bytes, 22, 1); //To convert from char to int
+        raceType = PacketParserUtils.byteArrayToInt(bytes, 23, 1);
         this.race = race;
 
 
@@ -44,11 +45,11 @@ public class RaceStatusMessage {
         int offset = 24;
 
         for (int i = 0; i < numBoatsInRace; i++) {
-            long boatSourceID = Message.byteArrayToLong(bytes, offset, 4);
-            int boatStatus = Message.byteArrayToInt(bytes, offset + 4, 1);
-            int boatLegNumber = Message.byteArrayToInt(bytes, offset + 5, 1);
-            long boatTimeToNextMark = Message.byteArrayToLong(bytes, offset + 8, 6);
-            long boatTimeToFinish = Message.byteArrayToLong(bytes, offset + 14, 6);
+            long boatSourceID = PacketParserUtils.byteArrayToLong(bytes, offset, 4);
+            int boatStatus = PacketParserUtils.byteArrayToInt(bytes, offset + 4, 1);
+            int boatLegNumber = PacketParserUtils.byteArrayToInt(bytes, offset + 5, 1);
+            long boatTimeToNextMark = PacketParserUtils.byteArrayToLong(bytes, offset + 8, 6);
+            long boatTimeToFinish = PacketParserUtils.byteArrayToLong(bytes, offset + 14, 6);
 
             BoatStatusMessage boatDetails = new BoatStatusMessage(boatSourceID, boatStatus,
                     boatLegNumber, boatTimeToNextMark, boatTimeToFinish, race);

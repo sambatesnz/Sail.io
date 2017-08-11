@@ -64,6 +64,11 @@ public final class  Coordinate {
     }
 
 
+    public static Mark getCenter() {
+        return center;
+    }
+
+
     /**
      * Zooming in decreases zoom value until a maximum zoom is reached
      */

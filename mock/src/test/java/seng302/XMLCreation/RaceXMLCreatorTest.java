@@ -9,12 +9,12 @@ import seng302.Race;
  */
 public class RaceXMLCreatorTest {
 
+
     @Test
-    public void test() throws Exception {
+    public void getXML() throws Exception {
         Race myRace = new Race();
         RaceXMLCreator race = new RaceXMLCreator(myRace);
-        Document d = race.createDocument();
-        System.out.println(d.asXML());
+        System.out.println(race.getXML());
         //System.out.println(race.createDocument().toString());
     }
 

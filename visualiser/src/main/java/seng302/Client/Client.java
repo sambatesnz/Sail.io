@@ -1,6 +1,9 @@
 package seng302.Client;
 
 import seng302.Client.Messages.Message;
+import seng302.Client.Messages.RaceRegistrationMessage;
+import seng302.Client.Messages.RaceRegistrationType;
+import seng302.PacketGeneration.BinaryMessage;
 import seng302.Race.Race;
 import seng302.UserInput.KeyBindingUtility;
 
@@ -120,6 +123,10 @@ public class Client {
             streamInput = new BufferedInputStream(clientSocket.getInputStream());
             streamOutput = new BufferedOutputStream(clientSocket.getOutputStream());
             race.setConnectedToServer(true);
+
+            BinaryMessage rrm = new RaceRegistrationMessage(RaceRegistrationType.PARTICIPATE);
+            streamOutput.write(rrm.createMessage());
+            streamOutput.flush();
         }
         catch (IOException e) {
             e.printStackTrace();

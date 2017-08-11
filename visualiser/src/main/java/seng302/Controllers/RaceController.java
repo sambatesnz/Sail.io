@@ -108,7 +108,6 @@ public class RaceController {
     private int raceSeconds = 0;
     private long lastTime = 0;
     private long timerUpdate = 1000000000;
-    private boolean raceStarted = false;
     private int frameCount = 0;
     private int viewUpdateCount = 0;
     private double windowWidth = 0;
@@ -116,10 +115,6 @@ public class RaceController {
     private String ipAddr;
     private int port;
 
-    private TimeZoneWrapper timeZoneWrapper;
-    private final ImageView selectedImage = new ImageView();
-    private Mark imagePos;
-    private final double IMAGE_SCALE = 1.7;
 
     // Sparkline variables
     @FXML    private NumberAxis xAxis;
@@ -225,7 +220,7 @@ public class RaceController {
 
                 if (race.isRaceReady() && boatLocationDataInitialised) {
                     updateBoatPositions();
-                    updateBoatPaths();
+                    //updateBoatPaths();
 
                 }
                 viewUpdateCount++;
@@ -238,9 +233,11 @@ public class RaceController {
 
                 if (sparkCounter > 100 && race.started()) {
                     sparkCounter = 0;
-                    updateSparkLineChart();
+                    //updateSparkLineChart(); //TODO undisable sparkline chart
                 }
                 sparkCounter++;
+
+
 
             }
         }.start();
@@ -336,9 +333,12 @@ public class RaceController {
 
     private void initialiseBoatMetaData() {
         if(race.boatsReady() && !boatMetaDataInitialised && race.isRaceReady()){
+            System.out.println("size = " + race.getBoats().size());
             for (int i = 0; i < race.getBoats().size(); i++) {
+                System.out.println("size inside stefan = " + race.getBoats().size());
                 BoatSprite boatSprite = new BoatSprite(race.getBoats().get(i));
                 boats.add(boatSprite);
+                System.out.println("number of boats added + " +  boats.size());
 
 
             }
@@ -360,7 +360,7 @@ public class RaceController {
 //                group.getChildren().add(path);
 //            }
 
-            createChart();
+            //createChart();
             boatMetaDataInitialised = true;
         }
     }
@@ -368,9 +368,11 @@ public class RaceController {
     private void initialiseBoatLocation() {
         if(!boatLocationDataInitialised && boatMetaDataInitialised) {
             boolean knowAllLocations = true;
+            System.out.println("initialising boat locations for " + race.getBoats().size() + " Boats..");
             for (int i = 0; i < race.getBoats().size(); i++) {
                 boolean knowsLocation = race.getBoats().get(i).isKnowsBoatLocation();
                 if (knowsLocation) {
+                    paths = new ArrayList<>();
                     Path path = new Path();
                     path.setStroke(race.getBoats().get(i).getColour());
                     path.getElements().add(new MoveTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
@@ -378,17 +380,21 @@ public class RaceController {
                     paths.add(path);
                     absolutePaths.add(new ArrayList<>());
 
+                    lastHeadings = new ArrayList<>();
+
                     lastHeadings.add(race.getBoats().get(i).getHeading());
                 } else {
                     knowAllLocations = false;
                 }
             }
+            System.out.println("knows all locations" + knowAllLocations);
             if (knowAllLocations) {
                 for (Path path : paths) {
                     group.getChildren().add(path);
                 }
-                boatLocationDataInitialised = true;
             }
+            boatLocationDataInitialised = true;
+
         }
     }
 
@@ -614,7 +620,8 @@ public class RaceController {
     private void updateSparkLineChart() {
         checkPositions();
         // Check the data is up to date.
-        // Retrieve the boat position data.
+        // Retrieve the boat position data.'
+        System.out.println("Amount of boats according to spark line: " + race.getBoats().size());
         for (int i = 0; i < race.getBoats().size(); i++) {
             // update the chart
             Number reversedOrder = race.getBoats().size() - race.getBoats().get(i).getPosition() + 1;

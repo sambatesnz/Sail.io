@@ -1,4 +1,4 @@
-package seng302.PacketGeneration.DataGenerator;
+package seng302.PacketGeneration.DataGeneration;
 
 import org.junit.Test;
 import seng302.DataGenerator;

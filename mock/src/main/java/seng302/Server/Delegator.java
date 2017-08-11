@@ -2,56 +2,45 @@ package seng302.Server;
 
 import seng302.Race;
 import seng302.RaceObjects.Boat;
-import seng302.UserInput.BoatAction;
+import seng302.UserInputController.BoatAction;
 
 public class Delegator {
 
     private Race race;
+
     public Delegator(Race race) {
         this.race = race;
     }
 
-    /**
-     * Takes in a Boat Action, and delegates functions to responds to the key-presses
-     * @param messageCommand Boat Action value
-     */
-    public void processCommand(int messageCommand) {
-        int boatID = 103; //Hardcoded to NZL for testing purposes, and while packets don't contain ID
-        if (messageCommand == BoatAction.VMG.getBoatAction()) {
-            VMG(boatID);
-        } else if (messageCommand == BoatAction.TACK_OR_GYBE.getBoatAction()) {
-            tackOrGybeBoat(boatID);
-        } else if (messageCommand == BoatAction.UPWIND.getBoatAction()) {
-            changeBoatHeading(boatID, true);
-        } else if (messageCommand == BoatAction.DOWNWIND.getBoatAction()) {
-            changeBoatHeading(boatID, false);
-        } else if (messageCommand == BoatAction.SAILS_IN.getBoatAction()) {
-            Boat boat = race.getBoatByID(boatID);
-            boat.setSailsOut(false);
-        } else if (messageCommand == BoatAction.SAILS_OUT.getBoatAction()) {
-            Boat boat = race.getBoatByID(boatID);
-            boat.setSailsOut(true);
+
+    public void processCommand(BoatAction messageCommand) {
+        int boatID = 101; //Hardcoded to NZL for testing purposes, and while packets don't contain ID
+        switch (messageCommand) {
+            case UPWIND:
+                changeBoatHeading(boatID, true);
+                break;
+            case DOWNWIND:
+                changeBoatHeading(boatID, false);
+                break;
+            case VMG:
+                VMG(boatID);
+                break;
+            case SAILS_IN: {
+                Boat boat = race.getBoatByID(boatID);
+                boat.setSailsOut(false);
+                break;
+            }
+            case SAILS_OUT:{
+                Boat boat = race.getBoatByID(boatID);
+                boat.setSailsOut(true);
+                break;
+            }
+
+
+
+
+
         }
-    }
-
-    /**
-     * Forces the boat to change heading to VMG based on its current position
-     * @param sourceID source id of the boat
-     */
-    private void VMG(int sourceID) {
-        Boat boat = race.getBoatByID(sourceID);
-        int windHeading = race.getWindHeading();
-        boat.setHeadingToVMG(windHeading);
-    }
-
-    /**
-     * Forces the boat to tack/gybe based on its current position
-     * @param sourceID source id of the boat
-     */
-    private void tackOrGybeBoat(int sourceID) {
-        Boat boat = race.getBoatByID(sourceID);
-        int windHeading = race.getWindHeading();
-        boat.tackOrGybe(windHeading);
     }
 
     /**
@@ -64,4 +53,43 @@ public class Delegator {
         int windHeading = race.getWindHeading();
         boat.updateHeading(windHeading, upwind);
     }
+
+    /**
+     //     * Forces the boat to change heading to VMG based on its current position
+     //     * @param sourceID source id of the boat
+     //     */
+    private void VMG(int sourceID) {
+        Boat boat = race.getBoatByID(sourceID);
+        int windHeading = race.getWindHeading();
+        boat.setHeadingToVMG(windHeading);
+    }
 }
+
+
+///* OLD CODE
+//    /**
+//     * Takes in a Boat Action, and delegates functions to responds to the key-presses
+//     * @param messageCommand Boat Action value
+//     */
+//public void processCommand(int messageCommand) {
+//    int boatID = 103; //Hardcoded to NZL for testing purposes, and while packets don't contain ID
+//    if (messageCommand == BoatAction.VMG.getBoatAction()) {
+//        VMG(boatID);
+//    } else if (messageCommand == BoatAction.TACK_OR_GYBE.getBoatAction()) {
+//        tackOrGybeBoat(boatID);
+//    } else if (messageCommand == BoatAction.UPWIND.getBoatAction()) {
+//        changeBoatHeading(boatID, true);
+//    } else if (messageCommand == BoatAction.DOWNWIND.getBoatAction()) {
+//        changeBoatHeading(boatID, false);
+//    } else if (messageCommand == BoatAction.SAILS_IN.getBoatAction()) {
+//        Boat boat = race.getBoatByID(boatID);
+//        boat.setSailsOut(false);
+//    } else if (messageCommand == BoatAction.SAILS_OUT.getBoatAction()) {
+//        Boat boat = race.getBoatByID(boatID);
+//        boat.setSailsOut(true);
+//    }
+//}
+//
+//
+//
+// */

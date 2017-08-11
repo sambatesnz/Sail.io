@@ -2,7 +2,7 @@ package seng302.ManualTesting.MessageTypeGeneration;
 
 import seng302.DataGeneration.IServerData;
 import seng302.ManualTesting.MessageTypeGeneration.DataGenerators.RegattaDataGenerator;
-import seng302.Server.Server;
+import seng302.Server2;
 
 import java.io.IOException;
 
@@ -11,9 +11,9 @@ import java.io.IOException;
  */
 public class RegattaXMLTest {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         IServerData regattaData = new RegattaDataGenerator();
-        new Server(4941, regattaData);
+        new Server2(4941, regattaData);
 
     }
 }
