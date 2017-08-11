@@ -83,23 +83,32 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    if (!race.isRaceReady()) {
+                    if (!race.started()) {
+                        System.out.println("Race hasnt started so updating boats...");
                         race.setBoats(xmlParser.getBoats());
                         boatsSet = true;
                     }
+                    if (!race.isRaceReady()) {
+
+                    }
+
                     break;
                 case RACE:
-                    race.setParticipants(xmlParser.getRaceParticipants());
-                    race.setBoundaries(xmlParser.getCourseLimits());
-                    List<CompoundMark> compoundMarks = xmlParser.getCourseLayout();
-                    race.setCompoundMarks(compoundMarks);
-                    race.setMarks(xmlParser.getMarks());
-                    race.setGates(compoundMarks);
-                    race.setCourseOrder(xmlParser.getCourseOrder());
-                    race.setStartTime(xmlParser.getRaceStartTime());
-                    race.setRaceXMLReceived(true);
-                    race.setViewReady(true);
-                    raceSet = true;
+                    if (!race.started()){
+                        System.out.println("Race hasnt started so updating race...");
+                        race.setParticipants(xmlParser.getRaceParticipants());
+                        race.setBoundaries(xmlParser.getCourseLimits());
+                        List<CompoundMark> compoundMarks = xmlParser.getCourseLayout();
+                        race.setCompoundMarks(compoundMarks);
+                        race.setMarks(xmlParser.getMarks());
+                        race.setGates(compoundMarks);
+                        race.setCourseOrder(xmlParser.getCourseOrder());
+                        race.setStartTime(xmlParser.getRaceStartTime());
+                        race.setRaceXMLReceived(true);
+                        race.setViewReady(true);
+                        raceSet = true;
+                    }
+
                     break;
             }
         } catch (IOException e) {

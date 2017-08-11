@@ -259,8 +259,6 @@ public class XMLParser {
                         String country = nnm.getNamedItem(COUNTRY).getNodeValue();
 
                         Boat boat = new Boat(boatName, shortName, srcId, country);
-                        System.out.println("adding Boat:");
-                        System.out.println(boat.getBoatName());
                         boats.put(srcId, boat);
                     }
                 }

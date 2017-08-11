@@ -365,6 +365,7 @@ public class Race {
     }
 
     public void setBoats(Map<Integer, Boat> boats) {
+        System.out.println("Amount of participants; " + participants.size());
         Map<Integer, Boat> actualBoats = new HashMap<>();
         for (int i = 0; i < participants.size(); i++) {
             Integer boatId = participants.get(i);
