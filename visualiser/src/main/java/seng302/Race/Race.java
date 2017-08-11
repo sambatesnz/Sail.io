@@ -39,6 +39,7 @@ public class Race {
     private long currentTime;
     private Mark viewMin;
     private Mark viewMax;
+    private boolean connectedToServer = false;
 
     private boolean raceXMLReceived;
 
@@ -60,6 +61,14 @@ public class Race {
         MarkStrings = FXCollections.observableArrayList();
         this.receivedRaceXML = false;
         hasRegatta = false;
+    }
+
+    public boolean isConnectedToServer() {
+        return connectedToServer;
+    }
+
+    public void setConnectedToServer(boolean connectedToServer) {
+        this.connectedToServer = connectedToServer;
     }
 
     public boolean isRaceXMLReceived() {

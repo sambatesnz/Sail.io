@@ -119,10 +119,12 @@ public class Client {
             System.out.println("Connected.");
             streamInput = new BufferedInputStream(clientSocket.getInputStream());
             streamOutput = new BufferedOutputStream(clientSocket.getOutputStream());
+            race.setConnectedToServer(true);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void disconnect() {

@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import seng302.Client.Client;
+import seng302.Race.Race;
 import seng302.UserInput.KeyBindingUtility;
 
 import java.io.IOException;
@@ -40,24 +42,35 @@ public class StartController {
      *
      * Changes from the start page to the raceview.
      */
-    public void connect() throws IOException {
+    @FXML
+    public void connect() throws IOException, InterruptedException {
+        System.out.println("connect");
+        ClientController clientController = new ClientController(getIp(), getPort());
+        boolean ready = clientController.startClient();
+        if (ready){
+            Race race = clientController.getRace();
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/Lobby.fxml"));
 
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/Lobby.fxml"));
+            LobbyController lobbyController = new LobbyController(race);
+            lobbyController.setPrimaryStage(primaryStage);
+            loader.setController(lobbyController);
+            Parent root = loader.load();
 
-        LobbyController lobbyController = new LobbyController(getIp(), getPort());
-        lobbyController.setPrimaryStage(primaryStage);
-        loader.setController(lobbyController);
-        Parent root = loader.load();
+            Scene rootScene = new Scene(root);
+            primaryStage.setScene(rootScene);
+            KeyBindingUtility.setKeyBindings(rootScene);
+        }
+        else{
+            System.out.println("no connecterino");
+        }
 
-        Scene rootScene = new Scene(root);
-        primaryStage.setScene(rootScene);
-
-        KeyBindingUtility.setKeyBindings(rootScene);
     }
+
+
+
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        System.out.println(this.primaryStage);
     }
 
     /**

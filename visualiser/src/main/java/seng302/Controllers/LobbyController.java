@@ -30,15 +30,12 @@ public class LobbyController {
     private String ipAddr;
     private int port;
 
-    public LobbyController(String ip, int port) {
-        this.ipAddr = ip;
-        this.port = port;
+    public LobbyController(Race race) {
+        this.race = race;
     }
 
     @FXML
     public void initialize(){
-
-        race = new Race();
 
         teamColumn.setCellValueFactory(
                 new PropertyValueFactory<Boat, String>("boatName")
@@ -48,14 +45,8 @@ public class LobbyController {
                 new PropertyValueFactory<Boat, String>("country")
         );
 
-        race.getBoats()
+        race.getBoats();
 
-        Thread serverThread = new Thread(() -> {
-            Client client = new Client(race, ipAddr, port);
-            client.connect();
-            client.processStreams();
-        });
-        serverThread.start();
     }
 
 
@@ -66,7 +57,6 @@ public class LobbyController {
      */
     public void startRace() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
-        System.out.println(primaryStage);
         Parent root = loader.load();
         Scene rootScene = new Scene(root);
         primaryStage.setScene(rootScene);
@@ -76,7 +66,6 @@ public class LobbyController {
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        System.out.println(this.primaryStage);
     }
     @FXML
     public void forceStart() throws IOException{
