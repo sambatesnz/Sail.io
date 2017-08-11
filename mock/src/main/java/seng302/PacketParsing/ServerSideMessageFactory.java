@@ -5,14 +5,14 @@ import seng302.PacketGeneration.PacketGenerationUtils;
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 
 /**
- * Created by osr13 on 7/08/17.
+ * Creators server side messages (a binary message wrapped in a header)
  */
-public abstract class BinaryMessageParserFactory {
+public abstract class ServerSideMessageFactory {
 
     private byte[] packet;
     private int clientID;
 
-    public BinaryMessageParserFactory(byte[] packet) {
+    public ServerSideMessageFactory(byte[] packet) {
         this.packet = ServerMessageGenerationUtils.unwrapBody(packet);
         this.clientID = ServerMessageGenerationUtils.unwrapHeader(packet);
     }

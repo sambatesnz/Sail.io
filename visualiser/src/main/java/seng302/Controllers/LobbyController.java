@@ -9,7 +9,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import seng302.Client.Client;
 import seng302.Race.Race;
 import seng302.RaceObjects.Boat;
 import seng302.UserInput.KeyBindingUtility;
@@ -60,7 +59,7 @@ public class LobbyController {
         Parent root = loader.load();
         Scene rootScene = new Scene(root);
         primaryStage.setScene(rootScene);
-        KeyBindingUtility.setKeyBindings(rootScene);
+        KeyBindingUtility.setKeyBindings(rootScene, race);
 
     }
 
@@ -77,7 +76,7 @@ public class LobbyController {
         Scene rootScene = new Scene(root);
         primaryStage.setScene(rootScene);
 
-        KeyBindingUtility.setKeyBindings(rootScene);
+        KeyBindingUtility.setKeyBindings(rootScene, race);
 
     }
 }

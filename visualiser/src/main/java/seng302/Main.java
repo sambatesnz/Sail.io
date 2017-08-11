@@ -34,7 +34,6 @@ public class Main extends Application {
 
             StartController startController = loader.getController();
 
-            KeyBindingUtility.setKeyBindings(rootScene);
             primaryStage.setMinHeight(600);
             primaryStage.setMinWidth(800);
             primaryStage.setMaximized(false);

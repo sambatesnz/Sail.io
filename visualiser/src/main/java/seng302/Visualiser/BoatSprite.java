@@ -28,7 +28,7 @@ public class BoatSprite {
     public static final int SAIL = 5;
 
 
-    public BoatSprite(Boat boat){
+    public BoatSprite(Boat boat, int clientSourceId){
         this.boatObject = boat;
         initialiseBoatIcon();
         initialiseWake();
@@ -36,14 +36,13 @@ public class BoatSprite {
         tc = new Circle(2);
         tc.setCenterX(0);
         tc.setCenterY(0);
-        initialiseControlCircle();
         initialiseSail();
 
         stack = new Pane();
         stack.getChildren().add(boatIcon);
         System.out.println("boat icon = " + boatIcon);
         System.out.println("boat circle = " + controlCircle);
-        stack.getChildren().add(controlCircle);
+        initialiseControlCircle(clientSourceId);
         stack.getChildren().add(wake);
         stack.getChildren().add(tc);
         stack.getChildren().add(text);
@@ -82,21 +81,19 @@ public class BoatSprite {
         boatIcon.setFill(boatObject.getColour().saturate().saturate());
     }
 
-    private void initialiseControlCircle(){
-        if (boatObject.getSourceId() == 101) {
+    private void initialiseControlCircle(int clientSourceId){
+        System.out.println("S O U R C E I D : " + clientSourceId);
+        if (clientSourceId == boatObject.getSourceId()) {
             controlCircle = new Circle(10);
             controlCircle.setCenterX(0);
             controlCircle.setCenterY(0);
             controlCircle.setStroke(Color.INDIANRED);
             controlCircle.setFill(Color.TRANSPARENT);
+        } else {
+            controlCircle = new Circle(0);
         }
-        if (boatObject.getSourceId() == 102) {
-            controlCircle = new Circle(10);
-            controlCircle.setCenterX(0);
-            controlCircle.setCenterY(0);
-            controlCircle.setStroke(Color.INDIANRED);
-            controlCircle.setFill(Color.TRANSPARENT);
-        }
+        stack.getChildren().add(controlCircle);
+
     }
 
     private void initialiseSail(){

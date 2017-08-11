@@ -48,6 +48,7 @@ public class Race {
     private boolean receivedRaceXML;
     private boolean viewReady;
     private boolean hasRegatta;
+    private int clientSourceId;
 
 
     /**
@@ -61,6 +62,7 @@ public class Race {
         MarkStrings = FXCollections.observableArrayList();
         this.receivedRaceXML = false;
         hasRegatta = false;
+        this.clientSourceId = 0;
     }
 
     public boolean isConnectedToServer() {
@@ -415,5 +417,13 @@ public class Race {
 
     public void setViewReady(boolean viewReady) {
         this.viewReady = viewReady;
+    }
+
+    public void setClientSourceId(int clientSourceId) {
+        this.clientSourceId = clientSourceId;
+    }
+
+    public int getClientSourceId(){
+        return this.clientSourceId;
     }
 }

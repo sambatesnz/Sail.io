@@ -336,7 +336,7 @@ public class RaceController {
             System.out.println("size = " + race.getBoats().size());
             for (int i = 0; i < race.getBoats().size(); i++) {
                 System.out.println("size inside stefan = " + race.getBoats().size());
-                BoatSprite boatSprite = new BoatSprite(race.getBoats().get(i));
+                BoatSprite boatSprite = new BoatSprite(race.getBoats().get(i), race.getClientSourceId());
                 boats.add(boatSprite);
                 System.out.println("number of boats added + " +  boats.size());
 

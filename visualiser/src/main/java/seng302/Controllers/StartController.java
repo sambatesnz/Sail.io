@@ -58,7 +58,7 @@ public class StartController {
 
             Scene rootScene = new Scene(root);
             primaryStage.setScene(rootScene);
-            KeyBindingUtility.setKeyBindings(rootScene);
+            KeyBindingUtility.setKeyBindings(rootScene, race);
         }
         else{
             System.out.println("no connecterino");

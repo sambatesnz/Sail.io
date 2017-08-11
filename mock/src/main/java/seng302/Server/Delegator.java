@@ -13,8 +13,8 @@ public class Delegator {
     }
 
 
-    public void processCommand(BoatAction messageCommand) {
-        int boatID = 101; //Hardcoded to NZL for testing purposes, and while packets don't contain ID
+    public void processCommand(BoatAction messageCommand, int boatID) {
+
         switch (messageCommand) {
             case UPWIND:
                 changeBoatHeading(boatID, true);

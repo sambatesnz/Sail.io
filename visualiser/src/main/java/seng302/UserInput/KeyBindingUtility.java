@@ -4,7 +4,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import seng302.PacketGeneration.BinaryMessage;
-import seng302.RaceObjects.Boat;
+import seng302.Race.Race;
 import seng302.UserInputController.BoatAction;
 
 import java.util.LinkedList;
@@ -20,6 +20,7 @@ public class KeyBindingUtility {
 
     private static boolean sailStatus;
     private static Queue<byte[]> bytes = new LinkedList<>();
+    private Race race;
 
 
     private KeyBindingUtility(){
@@ -30,13 +31,14 @@ public class KeyBindingUtility {
      * Apples the key bindings to the scene and adds an event listener for key presses
      * @param rootScene the scene you wish to key bind presses too
      */
-    public static void setKeyBindings(Scene rootScene) {
+    public static void setKeyBindings(Scene rootScene, Race race) {
 
         rootScene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 BinaryMessage boatActionMessage;
-                int sourceId = 103;
+                int sourceId = race.getClientSourceId();
+                System.out.println("client has a source id of " + sourceId);
                 switch (event.getCode()) {
                     case SPACE:
                         boatActionMessage = new BoatActionMessage(BoatAction.VMG, sourceId);

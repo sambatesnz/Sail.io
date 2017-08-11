@@ -41,7 +41,7 @@ public class BoatTurningSteps {
 
     @When("^the received boatAction packet is processed$")
     public void the_received_boatAction_packet_is_processed() throws Throwable {
-        delegator.processCommand(BoatAction.getAction(messageCommand));
+        delegator.processCommand(BoatAction.getAction(messageCommand), 101); //I love hard coding in boats
     }
 
     @Then("^the boats current heading is altered to (\\d+) degrees$")

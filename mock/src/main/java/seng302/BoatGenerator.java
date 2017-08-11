@@ -1,6 +1,5 @@
 package seng302;
 
-import seng302.Controllers.*;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.Mark;
 

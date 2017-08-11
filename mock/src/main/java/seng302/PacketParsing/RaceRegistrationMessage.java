@@ -11,12 +11,12 @@ import seng302.RaceObjects.Boat;
 /**
  * Created by osr13 on 7/08/17.
  */
-public class RaceRegistrationMessageParser extends BinaryMessageParserFactory {
+public class RaceRegistrationMessage extends ServerSideMessageFactory {
 
     private RaceRegistrationType raceRegistrationType;
     private byte[] body;
 
-    public RaceRegistrationMessageParser(byte[] packet) {
+    public RaceRegistrationMessage(byte[] packet) {
         super(packet);
         this.body = this.getMessageBody();
         raceRegistrationType = parseRegistrationType();

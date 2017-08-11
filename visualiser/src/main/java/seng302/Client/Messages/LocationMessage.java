@@ -12,7 +12,7 @@ import java.util.Map;
  * contained in the boat location packets
  */
 
-public class LocationMessage{
+public class LocationMessage {
     private long time;
     private int sourceID;
     private double latitude;
