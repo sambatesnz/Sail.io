@@ -9,6 +9,7 @@ import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.CourseLimit;
 import seng302.RaceObjects.Mark;
+import seng302.Rounding.Rounding;
 
 import java.io.IOException;
 
@@ -67,9 +68,9 @@ public class RaceXMLCreator {
         Element compoundMarkSequence = root.addElement("CompoundMarkSequence");
 
         int seqId = 1;
-        for (Pair<CompoundMark, String> pair: race.getCourseRoundingInfo()) {
+        for (Pair<CompoundMark, Rounding> pair: race.getCourseRoundingInfo()) {
             CompoundMark compoundMark = pair.getKey();
-            String rounding = pair.getValue();
+            String rounding = pair.getValue().getRounding();
 
             compoundMarkSequence.addElement("Corner")
                     .addAttribute("SeqID", String.valueOf(seqId))

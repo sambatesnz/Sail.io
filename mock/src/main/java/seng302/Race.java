@@ -6,6 +6,8 @@ import javafx.util.Pair;
 import seng302.PacketParsing.XMLParser;
 import seng302.Polars.PolarUtils;
 import seng302.RaceObjects.*;
+import seng302.Rounding.Rounding;
+import seng302.Rounding.RoundingUtility;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -23,7 +25,7 @@ import static seng302.PacketParsing.XMLParser.ROUNDING;
  */
 public class Race {
     private int numFinishers = 0;
-    private List<Pair<CompoundMark, String>> courseRoundingInfo;
+    private List<Pair<CompoundMark, Rounding>> courseRoundingInfo;
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
     private List<Boat> boats;
@@ -96,7 +98,7 @@ public class Race {
         windHeading = (short) random.nextInt(360);
     }
 
-    public List<Pair<CompoundMark, String>> getCourseRoundingInfo() {
+    public List<Pair<CompoundMark, Rounding>> getCourseRoundingInfo() {
         return courseRoundingInfo;
     }
 
@@ -346,7 +348,7 @@ public class Race {
                 Optional<CompoundMark> optional = compoundMarks.stream().filter(cm -> cm.getId() == compoundMarkID).findFirst();
                 if (optional.isPresent()) {
                     CompoundMark compoundMark = optional.get();
-                    String rounding = m.get(ROUNDING);
+                    Rounding rounding = Rounding.getEnum(m.get(ROUNDING));
                     courseRoundingInfo.add(new Pair<>(compoundMark, rounding));
                 } else {
                     System.err.println("No matching Compound mark id");
