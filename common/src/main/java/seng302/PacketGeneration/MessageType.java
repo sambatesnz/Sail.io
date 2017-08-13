@@ -11,7 +11,8 @@ public enum MessageType {
     RACE_START_STATUS(27),
     CHATTER_TEXT(36),
     BOAT_LOCATION(37),
-    BOAT_ACTION(100);
+    BOAT_ACTION(100),
+    MARK_ROUNDING(38);
 
     private int messageType;
 
