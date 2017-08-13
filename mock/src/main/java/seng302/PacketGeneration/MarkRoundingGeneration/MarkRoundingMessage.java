@@ -5,7 +5,8 @@ import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.PacketGenerationUtils;
 
 /**
- * Created by tjg73 on 13/08/17.
+ * For the Creation of the Mark Rounding Message Packets
+ * Packet body size should be 21 bytes
  */
 public class MarkRoundingMessage extends BinaryMessage {
 

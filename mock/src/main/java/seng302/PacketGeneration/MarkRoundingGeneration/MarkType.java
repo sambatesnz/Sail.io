@@ -1,7 +1,7 @@
 package seng302.PacketGeneration.MarkRoundingGeneration;
 
 /**
- * Created by tjg73 on 13/08/17.
+ * Represents the type of mark for a mark rounding
  */
 public enum MarkType {
     UNKNOWN(0),

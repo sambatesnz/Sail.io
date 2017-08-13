@@ -7,7 +7,6 @@ import seng302.PacketGeneration.PacketGenerationUtils;
 /**
  * For the Creation of the Boat Location Message Packets
  * Packet body size should be 56 bytes
- *
  */
 public class BoatLocationMessage extends BinaryMessage {
 
