@@ -423,8 +423,8 @@ public class Race {
                     }
 
                     //Increments the the distance by the speed
-                    double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
-                    double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
+                    double newX = boat.getX() + (boat.getSpeed()*0 / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
+                    double newY = boat.getY() + (boat.getSpeed()*0 / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
 
                     RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
 

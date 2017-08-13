@@ -49,10 +49,14 @@ public class BoatStatusMessage {
      */
     public void setBoatDetails() {
         if (null != boatDict && boatDict.containsKey(sourceID)) {
-            boatDict.get(sourceID).setStatus(status);
-            boatDict.get(sourceID).setCurrentLegIndex(legNumber);
-            boatDict.get(sourceID).setTimeToNextMark(estTimeToNextMark);
-            boatDict.get(sourceID).setTimeToFinish(estTimeToFinish);
+            Boat boat = boatDict.get(sourceID);
+            boat.setStatus(status);
+            boat.setCurrentLegIndex(legNumber);
+            if (boat.getTargetMarkIndex() < legNumber) {
+                boat.incrementTargetMarkIndex();
+            }
+            boat.setTimeToNextMark(estTimeToNextMark);
+            boat.setTimeToFinish(estTimeToFinish);
         }
     }
 }
