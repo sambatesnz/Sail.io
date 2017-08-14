@@ -122,9 +122,10 @@ public class RoundingUtility {
                 boat.updateRoundingStage();
             }
         }
-        if (String.valueOf(System.currentTimeMillis()).endsWith("0")) {
-            System.out.println(boat.getRoundingStage());
-        }
+//        if (((int) System.currentTimeMillis()) % 2 == 0) {
+        System.out.print(boat.getRoundingStage() + " ");
+        System.out.flush();
+//        }
 
         /*  If the boat has fully rounded the mark, change its current target mark index to the next mark in the race */
         if (boat.getRoundingStage() == 3) {

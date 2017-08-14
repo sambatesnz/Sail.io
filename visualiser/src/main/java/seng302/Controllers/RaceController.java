@@ -41,6 +41,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.atan2;
 import static javafx.scene.input.KeyCode.Z;
 import static javafx.scene.paint.Color.BLACK;
 
@@ -141,7 +143,7 @@ public class RaceController {
     private final int MULTIPLICATIVE_IDENTITY = 1;
     private FPSCounter fpsCounter;
     private int roundingArrowRotationClockwise = 0;
-    private int roundingArrowRotationAntiClockwise = 180;
+    private int roundingArrowRotationAntiClockwise = 0;
 
 
     private boolean boatMetaDataInitialised = false;
@@ -503,10 +505,18 @@ public class RaceController {
                 currentRoundingArrow1.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(0).getX()));
                 currentRoundingArrow1.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(0).getY()));
                 currentRoundingArrow1.setRotate(roundingArrowRotationClockwise);
+                updateNodeScale(currentRoundingArrow1);
                 if (cm.getMarks().size() > 1) {
+                    double x1 = cm.getMarks().get(0).getX();
+                    double y1 = cm.getMarks().get(0).getY();
+                    double x2 = cm.getMarks().get(1).getX();
+                    double y2 = cm.getMarks().get(1).getY();
+                    double angle = Math.toDegrees(atan2(y2 - y1, x2 - x1))*2;
+
                     currentRoundingArrow2.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(1).getX()));
                     currentRoundingArrow2.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(1).getY()));
-                    currentRoundingArrow2.setRotate(roundingArrowRotationAntiClockwise);
+                    currentRoundingArrow2.setRotate(roundingArrowRotationAntiClockwise-angle);
+                    updateNodeScale(currentRoundingArrow2);
                 }
             }
         }
