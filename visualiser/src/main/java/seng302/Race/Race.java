@@ -50,6 +50,7 @@ public class Race {
     private boolean viewReady;
     private boolean hasRegatta;
     private int clientSourceId;
+    public ObservableList<Boat> boatsObs;
 
 
     /**
@@ -64,6 +65,7 @@ public class Race {
         this.receivedRaceXML = false;
         hasRegatta = false;
         this.clientSourceId = 0;
+        boatsObs = FXCollections.observableArrayList();
     }
 
     public boolean isConnectedToServer() {
@@ -98,6 +100,9 @@ public class Race {
         return hasRegatta;
     }
 
+    public ObservableList<Boat> getBoatsObs() {
+        return boatsObs;
+    }
 
     public Mark getMapCenter() {
         return mapCenter;
@@ -386,6 +391,7 @@ public class Race {
             participatingBoats.put(boatId, boat);
         }
         this.boats = participatingBoats;
+        boatsObs.setAll(participatingBoats.values());
     }
 
     public boolean boatsReady(){

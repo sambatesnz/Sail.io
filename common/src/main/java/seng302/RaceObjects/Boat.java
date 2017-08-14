@@ -506,5 +506,9 @@ public class Boat {
     public boolean getHeadingChanged() {
         return headingChanged;
     }
+
+    public String toString(){
+        return boatName;
+    }
 }
 

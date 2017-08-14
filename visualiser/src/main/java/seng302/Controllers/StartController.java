@@ -59,6 +59,7 @@ public class StartController {
             Scene rootScene = new Scene(root);
             primaryStage.setScene(rootScene);
             KeyBindingUtility.setKeyBindings(rootScene, race);
+
             lobbyController.initialiseTable();
         }
         else{

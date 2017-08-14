@@ -1,5 +1,6 @@
 package seng302.Controllers;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,22 +10,24 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import seng302.Client.Client;
 import seng302.Race.Race;
 import seng302.RaceObjects.Boat;
 import seng302.UserInput.KeyBindingUtility;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LobbyController {
 
     private Button startRaceBtn;
     private Stage primaryStage;
     @FXML
-    private TableView contestantTable;
+    private TableView<Boat> contestantTable;
     @FXML
-    private TableColumn teamColumn;
+    private TableColumn<Boat, String> teamColumn;
     @FXML
-    private TableColumn clientColumn;
+    private TableColumn<Boat, String> clientColumn;
     private Race race;
     private String ipAddr;
     private int port;
@@ -39,7 +42,9 @@ public class LobbyController {
 
 
     }
+
     public void initialiseTable(){
+
 
         teamColumn.setCellValueFactory(
                 new PropertyValueFactory<Boat, String>("boatName")
@@ -49,8 +54,8 @@ public class LobbyController {
                 new PropertyValueFactory<Boat, String>("country")
         );
 
-        contestantTable.getItems().setAll(race.getBoatsMap().values());
 
+        contestantTable.setItems(race.boatsObs);
     }
 
     /**
@@ -70,6 +75,7 @@ public class LobbyController {
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
+
     @FXML
     public void forceStart() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
