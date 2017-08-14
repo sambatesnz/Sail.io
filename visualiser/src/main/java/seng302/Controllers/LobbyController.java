@@ -1,5 +1,8 @@
 package seng302.Controllers;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +15,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import seng302.Client.Client;
 import seng302.Race.Race;
 import seng302.RaceObjects.Boat;
@@ -22,7 +26,8 @@ import java.util.ArrayList;
 
 public class LobbyController {
 
-    private Button startRaceBtn;
+    @FXML
+    private Button forceStartBtn;
     private Stage primaryStage;
     @FXML
     private TableView<Boat> contestantTable;
@@ -40,16 +45,7 @@ public class LobbyController {
         this.race = race;
     }
 
-    @FXML
-    public void initialize(){
-
-
-
-    }
-
     public void initialiseTable(){
-
-
         teamColumn.setCellValueFactory(
                 new PropertyValueFactory<Boat, String>("boatName")
         );
@@ -61,22 +57,28 @@ public class LobbyController {
 
         contestantTable.setItems(race.boatsObs);
     }
+
+    @FXML
     public void initialiseTime(){
         timeToStart.textProperty().bind(race.timeToStartProperty());
-    }
 
-    /**
-     * Called when the user selects the start race button.
-     *
-     * Changes from the start page to the raceview.
-     */
-    public void startRace() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
-        Parent root = loader.load();
-        Scene rootScene = new Scene(root);
-        primaryStage.setScene(rootScene);
-        KeyBindingUtility.setKeyBindings(rootScene, race);
+        timeToStart.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue.equals(String.format(" %02d:%02d:%02d", 0, 1, 0))) {
 
+                    Platform.runLater(
+                        () -> {
+                            try {
+                                forceStart();
+                            } catch (Exception ignored) {
+                                ignored.printStackTrace();
+                            }
+                        }
+                    );
+                }
+            }
+        });
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -85,6 +87,7 @@ public class LobbyController {
 
     @FXML
     public void forceStart() throws IOException{
+        System.out.println("don't care");
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
         RaceController raceController = new RaceController(race);
         loader.setController(raceController);
