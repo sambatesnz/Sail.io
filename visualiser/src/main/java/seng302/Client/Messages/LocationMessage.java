@@ -39,6 +39,7 @@ public class LocationMessage {
         heading = PacketParserUtils.byteArrayToInt(bytes, 28, 2) * 360 / 65536.0;
         speedOverGround = Math.toIntExact((long) (PacketParserUtils.byteArrayToInt(bytes, 38, 2)));
         boatDict = race.getBoatsMap();
+        sailOut = bytes[50] == 1;
         this.race = race;
 
         setBoatLocation();
