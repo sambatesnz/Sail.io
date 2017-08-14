@@ -2,6 +2,7 @@ package seng302.Race;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.scene.paint.Color;
 import seng302.RaceObjects.*;
 
@@ -20,7 +21,7 @@ public class Race {
     private Map<Integer, Mark> marks;
     // Changing list of boats to hashmap. where key is boat SourceID, as retrieved from the xml message
 //    private List<Boat> boats;
-    private Map<Integer, Boat> boats;
+    private ObservableMap<Integer, Boat> boats;
     private List<Boat> finishedBoats;
     private List<Leg> legs;
     private List<Mark> boundaries;
@@ -328,8 +329,9 @@ public class Race {
      */
     public List<Boat> getBoats() {
         if (!raceReady){
-            return new ArrayList<>();
+            return FXCollections.observableList(new ArrayList<>());
         } else {
+            //return boats.values();
             return new ArrayList<>(boats.values());
         }
     }
@@ -377,14 +379,14 @@ public class Race {
 
     public void setBoats(Map<Integer, Boat> boats) {
         System.out.println("Amount of participants; " + participants.size());
-        Map<Integer, Boat> actualBoats = new HashMap<>();
+        ObservableMap<Integer, Boat> participatingBoats = FXCollections.observableHashMap();
         for (int i = 0; i < participants.size(); i++) {
             Integer boatId = participants.get(i);
             Boat boat = boats.get(boatId);
             boat.setColour(Color.valueOf(colourList.get(i)));
-            actualBoats.put(boatId, boat);
+            participatingBoats.put(boatId, boat);
         }
-        this.boats = actualBoats;
+        this.boats = participatingBoats;
     }
 
     public boolean boatsReady(){
@@ -403,7 +405,7 @@ public class Race {
         return boundaries;
     }
 
-    public Map<Integer, Boat> getBoatsMap() {
+    public ObservableMap<Integer, Boat> getBoatsMap() {
         return boats;
     }
 

@@ -36,6 +36,11 @@ public class LobbyController {
     @FXML
     public void initialize(){
 
+
+
+    }
+    public void initialiseTable(){
+
         teamColumn.setCellValueFactory(
                 new PropertyValueFactory<Boat, String>("boatName")
         );
@@ -44,10 +49,9 @@ public class LobbyController {
                 new PropertyValueFactory<Boat, String>("country")
         );
 
-        race.getBoats();
+        contestantTable.getItems().setAll(race.getBoatsMap().values());
 
     }
-
 
     /**
      * Called when the user selects the start race button.
