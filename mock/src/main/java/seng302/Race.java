@@ -8,6 +8,7 @@ import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.CourseLimit;
 import seng302.RaceObjects.Leg;
+import seng302.Server.RaceCreator;
 
 import java.io.IOException;
 import java.text.DateFormat;

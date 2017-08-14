@@ -1,27 +1,27 @@
-package seng302;
+package seng302.Server;
 
 import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.RaceManager;
-import seng302.Server.ConnectionListener;
+import seng302.RaceHandler;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class Server2 {
+public class Server {
     private ConnectionStore connectionStore;
     private IServerData mockRace;
     private ConnectionListener connectionListener;
     private Queue<byte[]> receivedPackets;
     private RaceHandler raceHandler;
 
-    public Server2(int port) throws Exception {
+    public Server(int port) throws Exception {
         this.mockRace = new RaceManager();
         startup(port);
     }
 
-    public Server2(int port, IServerData race) throws Exception {
+    public Server(int port, IServerData race) throws Exception {
         this.mockRace = race;
         startup(port);
     }
@@ -57,9 +57,6 @@ public class Server2 {
             handleReceivedMessages();
             sendSingleMessages();
 
-            if (connectionStore.hasConnections()){
-                connectionStore.getSocket(connectionStore.getConnections().get(0));
-            }
         }
     }
 

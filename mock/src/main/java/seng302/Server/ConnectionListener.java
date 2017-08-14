@@ -1,9 +1,5 @@
 package seng302.Server;
 
-import seng302.ClientConnection;
-import seng302.ConnectionStore;
-import seng302.Server2;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,9 +10,9 @@ import java.net.Socket;
 public class ConnectionListener extends Thread {
     private ConnectionStore connectionStore;
     private final ServerSocket listener;
-    private Server2 server;
+    private Server server;
 
-    public ConnectionListener(ConnectionStore connectionStore, int port, Server2 server) throws IOException {
+    public ConnectionListener(ConnectionStore connectionStore, int port, Server server) throws IOException {
         this.connectionStore = connectionStore;
         this.listener = new ServerSocket(port);
         this.server = server;

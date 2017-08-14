@@ -1,4 +1,4 @@
-package seng302;
+package seng302.Server;
 
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 
@@ -14,8 +14,8 @@ import java.util.*;
  *
  */
 public class ConnectionStore {
-    private Hashtable socketStreams;
-    private ArrayList<Integer> connections;
+    private final Hashtable socketStreams;
+    private List<Integer> connections;
 
     public ConnectionStore() {
         this.socketStreams = new Hashtable();
@@ -23,11 +23,12 @@ public class ConnectionStore {
     }
 
 
-    public ArrayList<Integer> getConnections() {
-        return connections;
-    }
-
-
+    /**
+     * Adds a socket connection to the tracked connections
+     * @param socket the socked you wish to add
+     * @return id of the socket that you added
+     * @throws IOException
+     */
     public int addSocket(Socket socket) throws IOException {
         int id = socket.getPort();
         socketStreams.put(id, socket);
@@ -35,35 +36,6 @@ public class ConnectionStore {
         return id;
     }
 
-    public boolean hasConnections(){
-        return connections.size() > 0;
-    }
-
-    private Enumeration getIds() {
-        return socketStreams.keys();
-    }
-
-
-    public Socket getSocket(int id) throws Exception {
-        Socket socket = null;
-        synchronized (socketStreams) {
-            for (Enumeration e = getIds(); e.hasMoreElements(); ) {
-                int socketId = (int) e.nextElement();
-                if (socketId == id) {
-                    socket = (Socket) socketStreams.get(id);
-                }
-            }
-        }
-        if (socket == null){
-           throw new NullPointerException("Couldn't find socket with id " + id);
-        }
-        return socket;
-    }
-
-
-    public int connectionAmount() {
-        return connections.size();
-    }
 
     /**
      * Tries to send a stream of bytes to all connected sockets
@@ -87,6 +59,7 @@ public class ConnectionStore {
             }
         }
     }
+
 
     /**
      * Sends a message to a particular client
@@ -125,5 +98,38 @@ public class ConnectionStore {
                 ie.printStackTrace();
             }
         }
+    }
+
+    public Socket getSocket(int id) throws Exception {
+        Socket socket = null;
+        synchronized (socketStreams) {
+            for (Enumeration e = getIds(); e.hasMoreElements(); ) {
+                int socketId = (int) e.nextElement();
+                if (socketId == id) {
+                    socket = (Socket) socketStreams.get(id);
+                }
+            }
+        }
+        if (socket == null){
+            throw new NullPointerException("Couldn't find socket with id " + id);
+        }
+        return socket;
+    }
+
+
+    public int connectionAmount() {
+        return connections.size();
+    }
+
+    public boolean hasConnections(){
+        return connections.size() > 0;
+    }
+
+    private Enumeration getIds() {
+        return socketStreams.keys();
+    }
+
+    public List<Integer> getConnections() {
+        return connections;
     }
 }

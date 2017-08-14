@@ -1,26 +1,20 @@
-package seng302;
+package seng302.Server;
 
-import seng302.PacketGeneration.PacketGenerationUtils;
-import seng302.PacketGeneration.PacketUtils;
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
-import seng302.PacketParsing.PacketParserUtils;
+import seng302.Server.Server;
 
 import java.io.*;
 import java.net.*;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Receives all packets FROM each Client - this includes the initial RRM, and the KeyStrokes.
  */
 public class ClientConnection extends Thread {
-    private Server2 server;
+    private Server server;
     private Socket socket;
     private int id;
 
-    public ClientConnection(Server2 server, Socket socket, int id) {
+    public ClientConnection(Server server, Socket socket, int id) {
         this.server = server;
         this.socket = socket;
         this.id = id;

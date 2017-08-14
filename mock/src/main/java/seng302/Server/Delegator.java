@@ -35,12 +35,20 @@ public class Delegator {
                 boat.setSailsOut(true);
                 break;
             }
-
-
-
-
-
+            case TACK_OR_GYBE:
+                tackOrGybeBoat(boatID);
+                break;
         }
+    }
+
+    /**
+     * Forces the boat to tack/gybe based on its current position
+     * @param sourceID source id of the boat
+     */
+    private void tackOrGybeBoat(int sourceID) {
+        Boat boat = race.getBoatByID(sourceID);
+        int windHeading = race.getWindHeading();
+        boat.tackOrGybe(windHeading);
     }
 
     /**
