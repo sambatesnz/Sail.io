@@ -11,7 +11,7 @@ public class RaceRegistrationMessage extends BinaryMessage {
 
     private byte[] raceRegistrationMessage;
     private byte[] registrationType;
-    private static final int MESSAGE_SIZE = 4;
+    private static final int MESSAGE_SIZE = 1;
 
 
     /**
@@ -19,7 +19,7 @@ public class RaceRegistrationMessage extends BinaryMessage {
      * @param registrationType
      */
     public RaceRegistrationMessage(RaceRegistrationType registrationType) {
-        this.registrationType = PacketGenerationUtils.intToFourBytes(registrationType.getRegistrationType());
+        this.registrationType = PacketGenerationUtils.intToOneByte(registrationType.getRegistrationType());
         this.raceRegistrationMessage = new byte[MESSAGE_SIZE];
     }
 
@@ -32,5 +32,9 @@ public class RaceRegistrationMessage extends BinaryMessage {
     @Override
     protected int getMessageType() {
         return MessageType.RACE_REGISTRATION.getMessageType();
+    }
+
+    public static int getMessageSize() {
+        return MESSAGE_SIZE;
     }
 }
