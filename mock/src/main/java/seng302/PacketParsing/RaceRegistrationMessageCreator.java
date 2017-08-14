@@ -39,10 +39,16 @@ public class RaceRegistrationMessageCreator extends ServerSideMessageFactory {
     @Override
     public void updateRace(IServerData raceData) {
         if (raceRegistrationType ==  RaceRegistrationType.PARTICIPATE){
-            Boat boat =  raceData.getRace().addBoat();
-            System.out.println(boat.getSourceId());
+            BinaryMessage confirmationMessage;
+            if (raceData.getRace().getRaceStatus() == 1) {
+                Boat boat =  raceData.getRace().addBoat();
+                System.out.println(boat.getSourceId());
 
-            BinaryMessage confirmationMessage = new ParticipantConfirmationMessage(boat.getSourceId(), ConfirmationStatus.PLAYING);
+                confirmationMessage = new ParticipantConfirmationMessage(boat.getSourceId(), ConfirmationStatus.PLAYING);
+            }
+            else{
+                confirmationMessage = new ParticipantConfirmationMessage(0, ConfirmationStatus.SPECTATING);
+            }
             byte[] message = confirmationMessage.createMessage();
             byte[] wrappedMessage = ServerMessageGenerationUtils.wrap(message, super.getClientID());
 
