@@ -23,6 +23,10 @@ public class RoundingUtility {
      */
     public static void determineMarkRounding(List<Pair<CompoundMark, Rounding>> courseRoundingInfo, Boat boat) {
 
+        if (boat.getTargetMarkIndex() >= courseRoundingInfo.size()) {
+            return;
+        }
+
         CompoundMark currentTarget = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey();
 
         if (currentTarget.getMarks().size() > 1) {
