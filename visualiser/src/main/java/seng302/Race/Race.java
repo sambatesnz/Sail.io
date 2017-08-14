@@ -378,7 +378,6 @@ public class Race {
     }
 
     public void setBoats(Map<Integer, Boat> boats) {
-        System.out.println("Amount of participants; " + participants.size());
         ObservableMap<Integer, Boat> participatingBoats = FXCollections.observableHashMap();
         for (int i = 0; i < participants.size(); i++) {
             Integer boatId = participants.get(i);

@@ -21,9 +21,6 @@ public class ServerMessageGenerationUtils {
 
         byte[] header = PacketGenerationUtils.intToFourBytes(id);
         System.arraycopy(header, 0, wrappedMessage, HEADER_SOURCE_INDEX, HEADER_SIZE);
-
-        System.out.println(Arrays.toString(wrappedMessage));
-
         return wrappedMessage;
     }
 

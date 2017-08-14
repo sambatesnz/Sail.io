@@ -5,15 +5,15 @@ import seng302.Server.Delegator;
 import seng302.UserInputController.BoatAction;
 
 /**
- * Created by osr13 on 7/08/17.
+ * Takes a wrapped Boat Action message and tries to update the state of the boat based on its id
  */
-public class BoatActionMessage extends ServerSideMessageFactory {
+public class BoatActionMessageCreator extends ServerSideMessageFactory {
 
     private byte[] body;
     private BoatAction boatAction;
     private int sourceId;
 
-    public BoatActionMessage(byte[] packet) {
+    public BoatActionMessageCreator(byte[] packet) {
         super(packet);
         this.body = this.getMessageBody();
         this.boatAction = parseBoatAction();

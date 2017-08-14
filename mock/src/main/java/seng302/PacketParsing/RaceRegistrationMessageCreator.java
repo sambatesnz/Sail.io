@@ -8,15 +8,17 @@ import seng302.PacketGeneration.ParticipantConfirmationGeneration.ParticipantCon
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 import seng302.RaceObjects.Boat;
 
+import java.util.Arrays;
+
 /**
- * Created by osr13 on 7/08/17.
+ * Takes a wrapped race registration message and tries to add a boat if someone wants to participate
  */
-public class RaceRegistrationMessage extends ServerSideMessageFactory {
+public class RaceRegistrationMessageCreator extends ServerSideMessageFactory {
 
     private RaceRegistrationType raceRegistrationType;
     private byte[] body;
 
-    public RaceRegistrationMessage(byte[] packet) {
+    public RaceRegistrationMessageCreator(byte[] packet) {
         super(packet);
         this.body = this.getMessageBody();
         raceRegistrationType = parseRegistrationType();
