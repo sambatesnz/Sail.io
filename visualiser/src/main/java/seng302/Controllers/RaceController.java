@@ -96,7 +96,8 @@ public class RaceController {
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
     private WindArrow windArrow = new WindArrow();
-    private Group roundingArrow = new Group();
+    private Group roundingArrow1 = new Group();
+    private Group roundingArrow2 = new Group();
     private boolean showName = true;
     private boolean showSpeed = true;
     private boolean showFPS = true;
@@ -171,7 +172,8 @@ public class RaceController {
         fpsCounter = new FPSCounter(fpsLabel);
 
         initialiseZoomFollowing();
-        initialiseRoundingArrow();
+        initialiseRoundingArrow(roundingArrow1);
+        initialiseRoundingArrow(roundingArrow2);
         initialisePositionsTable();
         enableScrolling();
 
@@ -445,8 +447,9 @@ public class RaceController {
 //            race.getCompoundMarks();
         }
 
+        String cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).get("CompoundMarkID");
         for (int i = 0; i < race.getCompoundMarks().size(); i++) {
-            String cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).get("CompoundMarkID");
+
 //            System.out.println(cmId + ", " + race.getCompoundMarks().get(i).getId());
 //            System.out.println(race.getCompoundMarks().size() + ", " + race.getCompoundMarks());
             CompoundMark cm = race.getCompoundMarks().get(i);
@@ -455,13 +458,20 @@ public class RaceController {
 //                System.out.println("USING ROUNDING ARROW");
 //                String rounding = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()-1).get("Rounding");
 //        //                add Rounding arrow here
-                roundingArrow.setLayoutX(Coordinate.getRelativeX(cm.getX()));
-                roundingArrow.setLayoutY(Coordinate.getRelativeY(cm.getY()));
+                roundingArrow1.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(0).getX()));
+                roundingArrow1.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(0).getY()));
+                if (cm.getMarks().size() > 1) {
+                    roundingArrow2.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(1).getX()));
+                    roundingArrow2.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(1).getY()));
+                    roundingArrow2.setVisible(true);
+                } else {
+                    roundingArrow2.setVisible(false);
+                }
             }
         }
     }
 
-    private void initialiseRoundingArrow(){
+    private void initialiseRoundingArrow(Group roundingArrow){
         Polyline a = new Polyline();
         a.getPoints().addAll(
                 -10.0, -15.0,
