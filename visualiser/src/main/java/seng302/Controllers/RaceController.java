@@ -87,7 +87,6 @@ public class RaceController {
 
     private Race race;
 
-    private final int playerBoat = 103;
     private List<BoatSprite> boats = new ArrayList<>();
     private List<Rectangle> compoundMarks = new ArrayList<>();
     private List<Line> gates = new ArrayList<>();
@@ -264,7 +263,7 @@ public class RaceController {
                 boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
                 // Temporary hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(i).getSourceId() == playerBoat) {
+                if (race.getBoats().get(i).getSourceId() == race. getClientSourceId()) {
                     updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
                 }
 
@@ -663,7 +662,7 @@ public class RaceController {
             Coordinate.setZoom(0);
             Coordinate.setTrackingBoat(false);
         } else {
-            boatToFollow = race.getBoatsMap().get(playerBoat);
+            boatToFollow = race.getBoatsMap().get(race.getClientSourceId());
             Coordinate.setZoom(zoomLevel);
             Coordinate.setTrackingBoat(true);
         }
