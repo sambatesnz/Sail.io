@@ -418,6 +418,7 @@ public class RaceController {
         if (race.isRaceXMLReceived()){
             updateGates();
             updateMarks();
+            updateRoundingArrows();
         }
     }
 
@@ -441,21 +442,10 @@ public class RaceController {
             compoundMarks.get(i).setX(Coordinate.getRelativeX(marks.get(i).getX()) - compoundMarks.get(i).getWidth() / 2);
             compoundMarks.get(i).setY(Coordinate.getRelativeY(marks.get(i).getY()) - compoundMarks.get(i).getHeight() / 2);
             updateNodeScale(compoundMarks.get(i));
-
-//            String cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()-1).get("CompoundMarkID");
-//            System.out.println(cmId + ", " + race.getCompoundMarks().get(i).getId());
-//            System.out.println(race.getCompoundMarks().size() + ", " + race.getCompoundMarks());
-//            System.out.println(compoundMarks.size() + ", " + compoundMarks);
-//            if (cmId.equals(race.getCompoundMarks().get(i).getId())) {
-//                System.out.println("USING ROUNDING ARROW");
-//                String rounding = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()-1).get("Rounding");
-////                add Rounding arrow here
-//                roundingArrow.setLayoutX(Coordinate.getRelativeX(marks.get(i).getX()) - compoundMarks.get(i).getWidth() / 2);
-//                roundingArrow.setLayoutY(Coordinate.getRelativeY(marks.get(i).getY()) - compoundMarks.get(i).getHeight() / 2);
-//            }
-//            race.getCompoundMarks();
         }
+    }
 
+    private void updateRoundingArrows() {
         if (race.getBoatsMap().get(playerBoat).getTargetMarkIndex() >= race.getCourseOrder().size()) {
             roundingArrow1.setVisible(false);
             roundingArrowMirrored1.setVisible(false);

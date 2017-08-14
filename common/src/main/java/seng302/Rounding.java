@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Mark rounding information and their string values
+ */
 public enum Rounding {
     PORT_STARBOARD("PS"),
     STARBOARD_PORT("SP"),
