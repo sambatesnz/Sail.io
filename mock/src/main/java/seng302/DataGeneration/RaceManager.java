@@ -150,8 +150,11 @@ public class RaceManager implements IServerData {
     class RaceRunner extends TimerTask {
         @Override
         public void run() {
-            race.updateBoats();
+            if(race.getRaceStatus() != 1) {
+                race.updateBoats();
+            }
             race.updateRaceInfo();
+
         }
     }
 

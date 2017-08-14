@@ -61,6 +61,7 @@ public class StartController {
             KeyBindingUtility.setKeyBindings(rootScene, race);
 
             lobbyController.initialiseTable();
+            lobbyController.initialiseTime();
         }
         else{
             System.out.println("no connecterino");

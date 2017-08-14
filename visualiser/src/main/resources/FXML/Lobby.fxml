@@ -29,7 +29,7 @@
         </columns>
       </TableView>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time to Race Pre-Start:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="TIME PLACEHOLDER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <Text fx:id="timeToStart" strokeType="OUTSIDE" strokeWidth="0.0" text="TIME PLACEHOLDER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
       <Button mnemonicParsing="false" text="I'm ready!" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
       <Button mnemonicParsing="false" onAction="#forceStart" prefHeight="25.0" prefWidth="98.0" text="Force Start" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="XML Status" GridPane.columnIndex="1" fx:id="xmlStatusText" />

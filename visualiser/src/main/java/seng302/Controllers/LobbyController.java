@@ -6,9 +6,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import seng302.Client.Client;
 import seng302.Race.Race;
@@ -30,6 +32,8 @@ public class LobbyController {
     private TableColumn<Boat, String> clientColumn;
     private Race race;
     private String ipAddr;
+    @FXML
+    private Text timeToStart;
     private int port;
 
     public LobbyController(Race race) {
@@ -56,6 +60,9 @@ public class LobbyController {
 
 
         contestantTable.setItems(race.boatsObs);
+    }
+    public void initialiseTime(){
+        timeToStart.textProperty().bind(race.timeToStartProperty());
     }
 
     /**

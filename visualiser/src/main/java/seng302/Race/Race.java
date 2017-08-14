@@ -1,5 +1,6 @@
 package seng302.Race;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -8,6 +9,7 @@ import seng302.RaceObjects.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
@@ -51,6 +53,7 @@ public class Race {
     private boolean hasRegatta;
     private int clientSourceId;
     public ObservableList<Boat> boatsObs;
+    private SimpleStringProperty timeToStart;
 
 
     /**
@@ -66,6 +69,7 @@ public class Race {
         hasRegatta = false;
         this.clientSourceId = 0;
         boatsObs = FXCollections.observableArrayList();
+        timeToStart = new SimpleStringProperty();
     }
 
     public boolean isConnectedToServer() {
@@ -263,7 +267,21 @@ public class Race {
      * @param expectedStartTime The time that the race is expected to start
      */
     public void setExpectedStartTime(long expectedStartTime) {
+        long raceTime;
         this.expectedStartTime = expectedStartTime;
+        int raceHours = 0;
+        int raceMinutes = 0;
+        int raceSeconds = 0;
+        raceTime = getExpectedStartTime() - getCurrentTime();
+
+        raceHours = (int) TimeUnit.MILLISECONDS.toHours(raceTime);
+        raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(raceTime) -
+            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(raceTime)));
+        raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceTime) -
+            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
+
+
+        timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
     }
 
     /**
@@ -433,4 +451,13 @@ public class Race {
     public int getClientSourceId(){
         return this.clientSourceId;
     }
+
+    public String getTimeToStart() {
+        return timeToStart.get();
+    }
+
+    public SimpleStringProperty timeToStartProperty() {
+        return timeToStart;
+    }
+
 }
