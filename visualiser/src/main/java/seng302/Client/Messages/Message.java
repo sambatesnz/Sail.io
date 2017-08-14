@@ -74,8 +74,6 @@ public class Message {
             case PARTICIPANT_CONFIRMATION:
                 ClientSideMessageParser messageParser = new ClientParticipantConfirmationMessage(body);
                 messageParser.updateRace(race);
-
-                System.out.println("Kev");
         }
     }
 
