@@ -480,7 +480,7 @@ public class Boat {
         return lastMarkIndex;
     }
 
-    public void incrementTargetMarkIndex() {
+    public void passMark() {
         targetMarkIndex++;
         lastMarkIndex++;
     }

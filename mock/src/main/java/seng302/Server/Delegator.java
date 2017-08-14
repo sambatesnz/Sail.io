@@ -6,8 +6,6 @@ import seng302.RaceObjects.Mark;
 import seng302.UserInput.BoatAction;
 
 public class Delegator {
-    int ez = 1;
-
     private Race race;
     public Delegator(Race race) {
         this.race = race;
@@ -20,21 +18,15 @@ public class Delegator {
         if (messageCommand == BoatAction.TACK_OR_GYBE.getBoatAction()) {
             tackOrGybeBoat(boatID);
         } else if (messageCommand == BoatAction.UPWIND.getBoatAction()) {
-            Boat boat = race.getBoatByID(boatID);
-            boat.getMark().setX(boat.getX()+15*ez);
-//            changeBoatHeading(boatID, true);
+            changeBoatHeading(boatID, true);
         } else if (messageCommand == BoatAction.DOWNWIND.getBoatAction()) {
-            Boat boat = race.getBoatByID(boatID);
-            boat.getMark().setY(boat.getY()+15*ez);
-//            changeBoatHeading(boatID, false);
+            changeBoatHeading(boatID, false);
         } else if (messageCommand == BoatAction.SAILS_IN.getBoatAction()) {
-//            Boat boat = race.getBoatByID(boatID);
-//            boat.setSailsOut(false);
-            ez = 1;
+            Boat boat = race.getBoatByID(boatID);
+            boat.setSailsOut(false);
         } else if (messageCommand == BoatAction.SAILS_OUT.getBoatAction()) {
             Boat boat = race.getBoatByID(boatID);
             boat.setSailsOut(true);
-            ez = -1;
         }
     }
 

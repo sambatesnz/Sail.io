@@ -130,7 +130,7 @@ public class RoundingUtility {
         /*  If the boat has fully rounded the mark, change its current target mark index to the next mark in the race */
         if (boat.getRoundingStage() == 3) {
             boat.resetRoundingStage();
-            boat.incrementTargetMarkIndex();
+            boat.passMark();
         }
     }
 

@@ -53,7 +53,7 @@ public class BoatStatusMessage {
             boat.setStatus(status);
             boat.setCurrentLegIndex(legNumber);
             if (boat.getTargetMarkIndex() < legNumber) {
-                boat.incrementTargetMarkIndex();
+                boat.passMark();
             }
             boat.setTimeToNextMark(estTimeToNextMark);
             boat.setTimeToFinish(estTimeToFinish);
