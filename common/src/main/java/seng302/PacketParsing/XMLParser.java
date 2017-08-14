@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import seng302.RaceObjects.*;
+import seng302.Rounding;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -180,10 +181,10 @@ public class XMLParser {
         return raceStartTime;
     }
 
-    public List<Map<String, String>> getCourseOrder() {
+    public List<Leg> getCourseOrder() {
         NodeList nodes = xmlDoc.getElementsByTagName(COMPOUND_MARK_SEQUENCE).item(0).getChildNodes();
-//        List<Integer> courseOrder = new ArrayList<>();
         List<Map<String, String>> courseOrder = new ArrayList<>();
+        List<Leg> legs = new ArrayList<>();
         try {
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
@@ -201,10 +202,13 @@ public class XMLParser {
                 }
             }
             courseOrder.sort(Comparator.comparingInt(o -> Integer.parseInt(o.get(SEQ_ID))));
+            for (Map<String, String> map: courseOrder) {
+                legs.add(new Leg(Rounding.getEnum(map.get(ROUNDING)), Integer.parseInt(map.get(COMPOUND_MARK_ID))));
+            }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        return courseOrder;
+        return legs;
     }
 
     public List<CompoundMark> getCourseLayout() {

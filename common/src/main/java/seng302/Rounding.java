@@ -1,4 +1,4 @@
-package seng302.Rounding;
+package seng302;
 
 import java.util.Collections;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package seng302.Rounding;
+package seng302;
 
 
 import javafx.util.Pair;
@@ -8,7 +8,7 @@ import seng302.RaceObjects.Mark;
 
 import java.util.List;
 
-import static seng302.Rounding.Rounding.*;
+import static seng302.Rounding.*;
 
 public class RoundingUtility {
     
@@ -128,10 +128,6 @@ public class RoundingUtility {
 
         /*  If the boat has fully rounded the mark, change its current target mark index to the next mark in the race */
         if (boat.getRoundingStage() == 3) {
-            for (int i = 0; i < 10; i++) {
-                System.out.println("333333333333333333333333333");
-            }
-
             boat.resetRoundingStage();
             boat.incrementTargetMarkIndex();
         }

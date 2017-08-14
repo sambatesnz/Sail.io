@@ -6,8 +6,6 @@ import javafx.util.Pair;
 import seng302.PacketParsing.XMLParser;
 import seng302.Polars.PolarUtils;
 import seng302.RaceObjects.*;
-import seng302.Rounding.Rounding;
-import seng302.Rounding.RoundingUtility;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -30,7 +28,6 @@ public class Race {
     private List<CompoundMark> gates;
     private List<Boat> boats;
     private List<Boat> finishedBoats;
-    private List<Leg> legs;
     private List<CourseLimit> boundaries;
     private short windHeading;
     private short startingWindSpeed;
@@ -269,15 +266,6 @@ public class Race {
     }
 
     /**
-     * Get the legs in the race
-     *
-     * @return the legs in the race
-     */
-    public List<Leg> getLegs() {
-        return legs;
-    }
-
-    /**
      * Get the boats competing
      *
      * @return the boats competing
@@ -332,7 +320,7 @@ public class Race {
 
             compoundMarks = xmlParser.getCourseLayout();
             boundaries = xmlParser.getCourseLimits();
-            List<Map<String, String>> courseOrder = xmlParser.getCourseOrder();
+            List<Leg> courseOrder = xmlParser.getCourseOrder();
 
 
             gates = new ArrayList<>();
@@ -343,12 +331,12 @@ public class Race {
             }
 
             courseRoundingInfo = new ArrayList<>();
-            for (Map<String, String> m: courseOrder) {
-                int compoundMarkID = Integer.parseInt(m.get(COMPOUND_MARK_ID));
+            for (Leg leg: courseOrder) {
+                int compoundMarkID = leg.getCompoundMarkId();
                 Optional<CompoundMark> optional = compoundMarks.stream().filter(cm -> cm.getId() == compoundMarkID).findFirst();
                 if (optional.isPresent()) {
                     CompoundMark compoundMark = optional.get();
-                    Rounding rounding = Rounding.getEnum(m.get(ROUNDING));
+                    Rounding rounding = leg.getRounding();
                     courseRoundingInfo.add(new Pair<>(compoundMark, rounding));
                 } else {
                     System.err.println("No matching Compound mark id");

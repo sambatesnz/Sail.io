@@ -31,11 +31,13 @@ import seng302.Race.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.Mark;
+import seng302.Rounding;
 import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
 import seng302.Visualiser.WindArrow;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -98,6 +100,9 @@ public class RaceController {
     private WindArrow windArrow = new WindArrow();
     private Group roundingArrow1 = new Group();
     private Group roundingArrow2 = new Group();
+    private Group roundingArrowMirrored1 = new Group();
+    private Group roundingArrowMirrored2 = new Group();
+
     private boolean showName = true;
     private boolean showSpeed = true;
     private boolean showFPS = true;
@@ -135,6 +140,8 @@ public class RaceController {
     private final int SPARKLINEHEIGHT = 239;
     private final int MULTIPLICATIVE_IDENTITY = 1;
     private FPSCounter fpsCounter;
+    private int roundingArrowRotationClockwise = 0;
+    private int roundingArrowRotationAntiClockwise = 180;
 
 
     private boolean boatMetaDataInitialised = false;
@@ -172,8 +179,8 @@ public class RaceController {
         fpsCounter = new FPSCounter(fpsLabel);
 
         initialiseZoomFollowing();
-        initialiseRoundingArrow(roundingArrow1);
-        initialiseRoundingArrow(roundingArrow2);
+        initialiseRoundingArrow();
+//        roundingArrow1.setScaleX(-1););
         initialisePositionsTable();
         enableScrolling();
 
@@ -447,49 +454,120 @@ public class RaceController {
 //            race.getCompoundMarks();
         }
 
-        String cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).get("CompoundMarkID");
+        int cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getCompoundMarkId();
         for (int i = 0; i < race.getCompoundMarks().size(); i++) {
-
-//            System.out.println(cmId + ", " + race.getCompoundMarks().get(i).getId());
-//            System.out.println(race.getCompoundMarks().size() + ", " + race.getCompoundMarks());
             CompoundMark cm = race.getCompoundMarks().get(i);
-//            System.out.println(compoundMarks.size() + ", " + compoundMarks);
-            if (cmId.equals(String.valueOf(race.getCompoundMarks().get(i).getId()))) {
-//                System.out.println("USING ROUNDING ARROW");
-//                String rounding = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()-1).get("Rounding");
-//        //                add Rounding arrow here
-                roundingArrow1.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(0).getX()));
-                roundingArrow1.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(0).getY()));
-                if (cm.getMarks().size() > 1) {
-                    roundingArrow2.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(1).getX()));
-                    roundingArrow2.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(1).getY()));
-                    roundingArrow2.setVisible(true);
-                } else {
+            if (cmId == race.getCompoundMarks().get(i).getId()) {
+                Rounding markRounding = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getRounding();
+                int rotationIncrement;
+                Group currentRoundingArrow1;
+                Group currentRoundingArrow2 = roundingArrow2;
+                if (markRounding == Rounding.STARBOARD) {
+                    roundingArrow1.setVisible(false);
+                    roundingArrowMirrored1.setVisible(true);
                     roundingArrow2.setVisible(false);
+                    roundingArrowMirrored2.setVisible(false);
+                    rotationIncrement = 3;
+                    currentRoundingArrow1 = roundingArrowMirrored1;
+
+                } else if (markRounding == Rounding.STARBOARD_PORT) {
+                    roundingArrow1.setVisible(false);
+                    roundingArrowMirrored1.setVisible(true);
+                    roundingArrow2.setVisible(true);
+                    roundingArrowMirrored2.setVisible(false);
+                    rotationIncrement = 3;
+                    currentRoundingArrow1 = roundingArrowMirrored1;
+                    currentRoundingArrow2 = roundingArrow2;
+
+                } else if (markRounding == Rounding.PORT) {
+                    roundingArrow1.setVisible(true);
+                    roundingArrowMirrored1.setVisible(false);
+                    roundingArrow2.setVisible(false);
+                    roundingArrowMirrored2.setVisible(false);
+                    rotationIncrement = -3;
+                    currentRoundingArrow1 = roundingArrow1;
+
+                } else {
+                    roundingArrow1.setVisible(true);
+                    roundingArrowMirrored1.setVisible(false);
+                    roundingArrow2.setVisible(false);
+                    roundingArrowMirrored2.setVisible(true);
+                    rotationIncrement = -3;
+                    currentRoundingArrow1 = roundingArrow1;
+                    currentRoundingArrow2 = roundingArrowMirrored2;
+                }
+
+                roundingArrowRotationClockwise += rotationIncrement;
+                roundingArrowRotationAntiClockwise -= rotationIncrement;
+
+                currentRoundingArrow1.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(0).getX()));
+                currentRoundingArrow1.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(0).getY()));
+                currentRoundingArrow1.setRotate(roundingArrowRotationClockwise);
+                if (cm.getMarks().size() > 1) {
+                    currentRoundingArrow2.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(1).getX()));
+                    currentRoundingArrow2.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(1).getY()));
+                    currentRoundingArrow2.setRotate(roundingArrowRotationAntiClockwise);
                 }
             }
         }
     }
 
-    private void initialiseRoundingArrow(Group roundingArrow){
-        Polyline a = new Polyline();
-        a.getPoints().addAll(
+    private void initialiseRoundingArrow() {
+        roundingArrow1 = createRoundingArrow();
+        roundingArrow2 = createRoundingArrow();
+        roundingArrowMirrored1 = createMirroredRoundingArrow();
+        roundingArrowMirrored2 = createMirroredRoundingArrow();
+
+        group.getChildren().addAll(roundingArrow1, roundingArrow2, roundingArrowMirrored1, roundingArrowMirrored2);
+    }
+
+    private Group createRoundingArrow() {
+        Group roundingArrow = new Group();
+
+        Circle rotationBase = new Circle(35);
+        rotationBase.setOpacity(0);
+
+        Polyline arrow = new Polyline();
+        arrow.getPoints().addAll(
+                10.0, -15.0,
+                0.0, -25.0,
+                12.0, -30.0);
+        Arc arc = new Arc(0, 0, 25, 25, 330, 120);
+        arc.setType(ArcType.OPEN);
+
+        for (Shape shape: Arrays.asList(arrow, arc)) {
+            shape.setFill(null);
+            shape.setStroke(Color.GREEN);
+            shape.setStrokeWidth(3);
+        }
+        roundingArrow.getChildren().addAll(arrow, arc, rotationBase);
+
+        return roundingArrow;
+    }
+
+    private Group createMirroredRoundingArrow() {
+        Group roundingArrow = new Group();
+
+        Circle rotationBase = new Circle(35);
+        rotationBase.setOpacity(0);
+
+
+        Polyline arrowMirrored = new Polyline();
+        arrowMirrored.getPoints().addAll(
                 -10.0, -15.0,
-                      0.0, -25.0,
-                     -12.0, -30.0);
-        a.setFill(null);
-        a.setStroke(Color.GREEN);
-        a.setStrokeWidth(3);
+                0.0, -25.0,
+                -12.0, -30.0);
+        Arc arcMirrored = new Arc(0, 0, 25, 25, 90, 120);
+        arcMirrored.setType(ArcType.OPEN);
 
-        Arc a1 = new Arc(0, 0, 25, 25, 90, 120);
-        a1.setType(ArcType.OPEN);
-        a1.setStroke(Color.GREEN);
-        a1.setFill(null);
-        a1.setStrokeWidth(3);
+        for (Shape shape: Arrays.asList(arrowMirrored, arcMirrored)) {
+            shape.setFill(null);
+            shape.setStroke(Color.GREEN);
+            shape.setStrokeWidth(3);
+        }
+        roundingArrow.getChildren().addAll(arrowMirrored, arcMirrored, rotationBase);
 
-        roundingArrow.getChildren().add(a1);
-        roundingArrow.getChildren().add(a);
-        group.getChildren().add(roundingArrow);
+        return roundingArrow;
     }
 
     private void updateGates() {

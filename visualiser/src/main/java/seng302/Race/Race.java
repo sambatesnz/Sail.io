@@ -25,9 +25,8 @@ public class Race {
 //    private List<Boat> boats;
     private Map<Integer, Boat> boats;
     private List<Boat> finishedBoats;
-    private List<Leg> legs;
     private List<Mark> boundaries;
-    private List<Map<String, String>> courseOrder;
+    private List<Leg> courseOrder;
     private double windHeading;
     private double windSpeed;
     private ObservableList<Boat> currentOrder;
@@ -307,14 +306,6 @@ public class Race {
     }
 
     /**
-     * Get the legs in the race
-     * @return the legs in the race
-     */
-    public List<Leg> getLegs() {
-        return legs;
-    }
-
-    /**
      * Get the boats competing
      * @return the boats competing
      */
@@ -326,20 +317,12 @@ public class Race {
         }
     }
 
-    public List<Map<String, String>> getCourseOrder() {
+    public List<Leg> getCourseOrder() {
         return courseOrder;
     }
 
-    public void setCourseOrder(List<Map<String, String>> courseOrder) {
+    public void setCourseOrder(List<Leg> courseOrder) {
         this.courseOrder = courseOrder;
-        for (Map<String, String> orderedMark: courseOrder) {
-            for (CompoundMark mark: compoundMarks) {
-                if (mark.getId() == Integer.parseInt(orderedMark.get(COMPOUND_MARK_ID))) {
-                    mark.setRounding(orderedMark.get(ROUNDING));
-                }
-            }
-        }
-
     }
 
     public void setCompoundMarks(List<CompoundMark> compoundMarks) {

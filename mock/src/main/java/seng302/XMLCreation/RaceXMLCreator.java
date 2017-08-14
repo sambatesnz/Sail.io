@@ -9,7 +9,7 @@ import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.CourseLimit;
 import seng302.RaceObjects.Mark;
-import seng302.Rounding.Rounding;
+import seng302.Rounding;
 
 import java.io.IOException;
 
