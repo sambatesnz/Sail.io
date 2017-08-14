@@ -82,7 +82,6 @@ public class BoatSprite {
     }
 
     private void initialiseControlCircle(int clientSourceId){
-        System.out.println("S O U R C E I D : " + clientSourceId);
         if (clientSourceId == boatObject.getSourceId()) {
             controlCircle = new Circle(10);
             controlCircle.setCenterX(0);

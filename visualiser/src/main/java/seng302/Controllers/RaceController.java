@@ -164,7 +164,6 @@ public class RaceController {
         startRaceListener();
     }
 
-
     private void initialiseZoomFollowing() {
         viewAnchorPane.setOnKeyPressed(event -> {
             if (event.getCode().equals(Z)) {
@@ -235,8 +234,6 @@ public class RaceController {
                     //updateSparkLineChart(); //TODO undisable sparkline chart
                 }
                 sparkCounter++;
-
-
 
             }
         }.start();
@@ -478,7 +475,7 @@ public class RaceController {
 
         offset.setX(boatToFollow.getX() - race.getMapCenter().getX());
         offset.setY(boatToFollow.getY() - race.getMapCenter().getY());
-
+        System.out.println(offset.getX() + " " + offset.getY());
         return offset;
     }
 
@@ -489,9 +486,9 @@ public class RaceController {
     private void updateViewLayout(){
         if(race.isViewReady() && viewInitialised){
             Coordinate.updateBorder();
+            System.out.println("calculating offset....");
             Coordinate.setOffset(calculateOffset());
             Coordinate.updateViewCoordinates();
-
         }
 
         if(Coordinate.getWindowHeightY() != windowHeight || Coordinate.getWindowWidthX() != windowWidth) {

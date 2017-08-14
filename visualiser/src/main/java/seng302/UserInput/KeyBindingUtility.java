@@ -38,7 +38,6 @@ public class KeyBindingUtility {
             public void handle(KeyEvent event) {
                 BinaryMessage boatActionMessage;
                 int sourceId = race.getClientSourceId();
-                System.out.println("client has a source id of " + sourceId);
                 switch (event.getCode()) {
                     case SPACE:
                         boatActionMessage = new BoatActionMessage(BoatAction.VMG, sourceId);
