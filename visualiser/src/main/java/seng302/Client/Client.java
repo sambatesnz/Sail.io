@@ -6,6 +6,7 @@ import seng302.Client.Messages.RaceRegistrationType;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.Race.Race;
 import seng302.UserInput.KeyBindingUtility;
+import seng302.UserInput.PracticeMessage;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -53,7 +54,7 @@ public class Client {
     public void processStreams() {
         while (clientSocket != null && streamInput != null && streamOutput != null) {
             try {
-                Thread.sleep(0);
+                Thread.sleep(1);
                 nextMessage();
                 sendMessage();
             } catch (Exception e) {
@@ -101,6 +102,17 @@ public class Client {
         System.arraycopy(body, 0, message, HEADER_LEN, messageLength);
         Message packet = new Message(message, race);
         packet.parseMessage();
+    }
+
+    /**
+     * Sends PracticeMessage over a socket stream indicating a practice race
+     * @throws IOException if problem writing to stream
+     */
+    public void sendPracticeMessage() throws IOException {
+        PracticeMessage practiceMessage = new PracticeMessage();
+        byte[] packetToSend = practiceMessage.createMessage();
+        streamOutput.write(packetToSend);
+        streamOutput.flush();
     }
 
     /**

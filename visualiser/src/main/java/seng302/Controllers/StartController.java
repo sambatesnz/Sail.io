@@ -75,7 +75,7 @@ public class StartController {
         Platform.runLater(
                 () -> statusLbl.setText("connecting...")
         );
-        ClientController clientController = new ClientController(getIp(), getPort());
+        ClientController clientController = new ClientController(getIp(), getPort(), true);
         clientController.startClient();
         Race race = clientController.getRace();
 
@@ -84,7 +84,7 @@ public class StartController {
                 Platform.runLater(
                         () -> {
                             try {
-                                practiceConnect(race);
+                                practiceView(race);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -96,7 +96,7 @@ public class StartController {
         });
     }
 
-    private void practiceConnect(Race race) throws IOException {
+    private void practiceView(Race race) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
         RaceController raceController = new RaceController(race);
         loader.setController(raceController);
@@ -128,7 +128,6 @@ public class StartController {
 
     @FXML
     private void practiceClick() throws IOException {
-        PracticeMessage practiceMessage = new PracticeMessage();
         try {
             connectPractice();
         } catch (InterruptedException e) {

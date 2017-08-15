@@ -16,12 +16,12 @@ import java.util.Arrays;
 /**
  * Takes a wrapped race registration message and tries to add a boat if someone wants to participate
  */
-public class RaceRegistrationMessageCreator extends ServerSideMessageFactory {
+public class RaceRegistrationMessageCreatorReceiver extends ServerSideMessageFactory {
 
     private RaceRegistrationType raceRegistrationType;
     private byte[] body;
 
-    public RaceRegistrationMessageCreator(byte[] packet) {
+    public RaceRegistrationMessageCreatorReceiver(byte[] packet) {
         super(packet);
         this.body = this.getMessageBody();
         raceRegistrationType = parseRegistrationType();

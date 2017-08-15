@@ -13,10 +13,7 @@ import seng302.XMLCreation.RaceXMLCreator;
 import seng302.XMLCreation.XMLCreator;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Queue;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.lang.System.currentTimeMillis;

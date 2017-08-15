@@ -50,7 +50,7 @@ public class Race {
     private static final int FORTY_KNOTS = 20577;
     private static final int FIVE_KNOTS = 2573;
     private static final int DIRECTION_CHANGE_PROB = 25;
-    private final long ONE_MINUTE_IN_MILLIS=60000;
+    private final long ONE_MINUTE_IN_MILLIS = 60000;
 
     private BoatGenerator boatGenerator;
 
@@ -68,7 +68,7 @@ public class Race {
         instantiateWindHeading();
 
         Calendar date = Calendar.getInstance();
-        long t= date.getTimeInMillis();
+        long t = date.getTimeInMillis();
 
         startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 3);
 
