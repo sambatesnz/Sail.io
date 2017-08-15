@@ -17,11 +17,11 @@ public class MarkRoundingSteps {
     public void the_race_is_already_running() throws Throwable {
         IServerData mockData = new RaceManager(); //Default race
         race = mockData.getRace();
+        boat = race.addBoat();
     }
 
     @Given("^a boat is passing mark (\\d+)$")
     public void a_boat_is_passing_mark(int markNumber) throws Throwable {
-        boat = race.getBoatByID(103);
         for (int i = 0; i < markNumber-1; i++) {
             boat.passMark();
         }
