@@ -3,13 +3,16 @@ package seng302.PacketParsing;
 
 
 import javafx.scene.paint.Color;
+import jdk.internal.org.xml.sax.SAXParseException;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import seng302.RaceObjects.*;
 import seng302.Rounding;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.time.LocalDateTime;
@@ -18,33 +21,33 @@ import java.util.*;
 
 public class XMLParser {
 
-    public static final String LATITUDE = "Lat";
-    public static final String LONGITUDE = "Lon";
-    public static final String COMPOUND_MARK_ID = "CompoundMarkID";
-    public static final String TYPE = "Type";
-    public static final String YACHT = "Yacht";
-    public static final String COURSE = "Course";
-    public static final String COURSE_LIMIT = "CourseLimit";
-    public static final String PARTICIPANTS = "Participants";
-    public static final String RACESTARTTIME = "RaceStartTime";
-    public static final String TIME = "Time";
-    public static final String START = "Start";
-    public static final String SEQ_ID = "SeqID";
-    public static final String NAME = "Name";
-    public static final String TARGETLAT = "TargetLat";
-    public static final String TARGETLON = "TargetLng";
-    public static final String SOURCEID = "SourceID";
-    public static final String SHORTNAME = "ShortName";
-    public static final String BOATNAME = "BoatName";
-    public static final String COUNTRY = "Country";
-    public static final String COMPOUND_MARK_SEQUENCE = "CompoundMarkSequence";
-    public static final String BOATS = "Boats";
-    public static final String REGATTA = "RegattaConfig";
-    public static final String REGATTA_ID = "RegattaID";
-    public static final String REGATTA_NAME = "RegattaName";
-    public static final String COURSE_NAME = "CourseName";
-    public static final String UTC_OFFSET = "UtcOffset";
-    public static final String ROUNDING = "Rounding";
+    private static final String LATITUDE = "Lat";
+    private static final String LONGITUDE = "Lon";
+    private static final String COMPOUND_MARK_ID = "CompoundMarkID";
+    private static final String TYPE = "Type";
+    private static final String YACHT = "Yacht";
+    private static final String COURSE = "Course";
+    private static final String COURSE_LIMIT = "CourseLimit";
+    private static final String PARTICIPANTS = "Participants";
+    private static final String RACESTARTTIME = "RaceStartTime";
+    private static final String TIME = "Time";
+    private static final String START = "Start";
+    private static final String SEQ_ID = "SeqID";
+    private static final String NAME = "Name";
+    private static final String TARGETLAT = "TargetLat";
+    private static final String TARGETLON = "TargetLng";
+    private static final String SOURCEID = "SourceID";
+    private static final String SHORTNAME = "ShortName";
+    private static final String BOATNAME = "BoatName";
+    private static final String COUNTRY = "Country";
+    private static final String COMPOUND_MARK_SEQUENCE = "CompoundMarkSequence";
+    private static final String BOATS = "Boats";
+    private static final String REGATTA = "RegattaConfig";
+    private static final String REGATTA_ID = "RegattaID";
+    private static final String REGATTA_NAME = "RegattaName";
+    private static final String COURSE_NAME = "CourseName";
+    private static final String UTC_OFFSET = "UtcOffset";
+    private static final String ROUNDING = "Rounding";
 
     private String xmlString;
     private Document xmlDoc;
@@ -74,7 +77,7 @@ public class XMLParser {
             Document doc = builder.parse(new InputSource(new StringReader(xmlString)));
             doc.getDocumentElement().normalize();
             return doc;
-        } catch (Exception e) {
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             e.printStackTrace();
         }
         return null;
@@ -136,7 +139,10 @@ public class XMLParser {
      * @return Arraylist containing the gate order
      */
     public List<Integer> getRaceParticipants() {
-        NodeList nodes = xmlDoc.getElementsByTagName(PARTICIPANTS).item(0).getChildNodes();
+        NodeList nodes = xmlDoc
+                .getElementsByTagName(PARTICIPANTS)
+                .item(0)
+                .getChildNodes();
         ArrayList<Integer> participants = new ArrayList<>();
         try {
             for (int i = 0; i < nodes.getLength(); i++) {

@@ -5,7 +5,10 @@ import javafx.collections.ObservableList;
 import javafx.util.Pair;
 import seng302.PacketParsing.XMLParser;
 import seng302.Polars.PolarUtils;
-import seng302.RaceObjects.*;
+import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.CompoundMark;
+import seng302.RaceObjects.CourseLimit;
+import seng302.RaceObjects.Leg;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -14,8 +17,6 @@ import java.util.*;
 
 import static java.lang.Math.*;
 import static javafx.collections.FXCollections.observableArrayList;
-import static seng302.PacketParsing.XMLParser.COMPOUND_MARK_ID;
-import static seng302.PacketParsing.XMLParser.ROUNDING;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35

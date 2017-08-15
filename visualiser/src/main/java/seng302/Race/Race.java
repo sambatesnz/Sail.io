@@ -8,9 +8,6 @@ import seng302.RaceObjects.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static seng302.PacketParsing.XMLParser.COMPOUND_MARK_ID;
-import static seng302.PacketParsing.XMLParser.ROUNDING;
-
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
  * This displays a text-based play by play commentary of the race as it happens
