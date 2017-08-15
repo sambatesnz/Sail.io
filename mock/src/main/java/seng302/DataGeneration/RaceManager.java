@@ -3,6 +3,7 @@ package seng302.DataGeneration;
 import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
+import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketGeneration.RaceStatusGeneration.RaceStatusMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
@@ -150,7 +151,7 @@ public class RaceManager implements IServerData {
     class RaceRunner extends TimerTask {
         @Override
         public void run() {
-            if(race.getRaceStatus() != 1) {
+            if(race.getRaceStatus() != RaceStatus.WARNING) {
                 race.updateBoats();
             }
             race.updateRaceInfo();
@@ -163,7 +164,7 @@ public class RaceManager implements IServerData {
         public void run() {
             rsm = new RaceStatusMessage(currentTimeMillis(),
                     race.getRaceID(),
-                    race.getRaceStatus(),
+                    race.getRaceStatus().value(),
                     race.getStartingTime().getTime(),
                     race.updateWindDirection(),
                     race.retrieveWindSpeed(),   // retrieve a new randomly generated wind speed

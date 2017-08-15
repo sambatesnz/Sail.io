@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.paint.Color;
+import seng302.PacketGeneration.RaceStatus;
 import seng302.RaceObjects.*;
 
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class Race {
     private ObservableList<Boat> currentOrder;
     private ObservableList<String> MarkStrings;
     private long expectedStartTime;
-    private int raceStatus;
+    private RaceStatus raceStatus;
     public boolean finished = false;
     private Mark mapCenter;
     private boolean raceReady = false;
@@ -304,16 +305,16 @@ public class Race {
      * 10: Prestart (more than 3:00 until start)
      * @return The status of the race
      */
-    public int getRaceStatus() {
+    public RaceStatus getRaceStatus() {
         return raceStatus;
     }
 
     public boolean started() {
-        return raceStatus == 3;
+        return raceStatus == RaceStatus.STARTED;
     }
 
     public boolean notGoing() {
-        return !started() && raceStatus != 1 && raceStatus != 2 && raceStatus != 3 && raceStatus != 10;
+        return !started() && raceStatus != RaceStatus.WARNING && raceStatus != RaceStatus.PREP && raceStatus != RaceStatus.STARTED && raceStatus != RaceStatus.PRESTART;
     }
 
     /**
@@ -331,7 +332,7 @@ public class Race {
      * 10: Prestart (more than 3:00 until start)
      * @param raceStatus The status of the race
      */
-    public void setRaceStatus(int raceStatus) {
+    public void setRaceStatus(RaceStatus raceStatus) {
         this.raceStatus = raceStatus;
     }
 

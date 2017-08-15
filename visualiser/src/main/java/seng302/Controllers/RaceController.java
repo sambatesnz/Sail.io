@@ -348,14 +348,9 @@ public class RaceController {
 
     private void initialiseBoatMetaData() {
         if(race.boatsReady() && !boatMetaDataInitialised && race.isRaceReady()){
-            System.out.println("size = " + race.getBoats().size());
             for (int i = 0; i < race.getBoats().size(); i++) {
-                System.out.println("size inside stefan = " + race.getBoats().size());
                 BoatSprite boatSprite = new BoatSprite(race.getBoats().get(i), race.getClientSourceId());
                 boats.add(boatSprite);
-                System.out.println("number of boats added + " +  boats.size());
-
-
             }
 ////                Path path = new Path();
 ////                path.setStroke(race.getBoats().get(i).getColour());
@@ -383,7 +378,6 @@ public class RaceController {
     private void initialiseBoatLocation() {
         if(!boatLocationDataInitialised && boatMetaDataInitialised) {
             boolean knowAllLocations = true;
-            System.out.println("initialising boat locations for " + race.getBoats().size() + " Boats..");
             for (int i = 0; i < race.getBoats().size(); i++) {
                 boolean knowsLocation = race.getBoats().get(i).isKnowsBoatLocation();
                 if (knowsLocation) {
@@ -402,7 +396,6 @@ public class RaceController {
                     knowAllLocations = false;
                 }
             }
-            System.out.println("knows all locations" + knowAllLocations);
             if (knowAllLocations) {
                 for (Path path : paths) {
                     group.getChildren().add(path);
@@ -627,7 +620,6 @@ public class RaceController {
 
         offset.setX(boatToFollow.getX() - race.getMapCenter().getX());
         offset.setY(boatToFollow.getY() - race.getMapCenter().getY());
-        System.out.println(offset.getX() + " " + offset.getY());
         return offset;
     }
 
@@ -638,7 +630,6 @@ public class RaceController {
     private void updateViewLayout(){
         if(race.isViewReady() && viewInitialised){
             Coordinate.updateBorder();
-            System.out.println("calculating offset....");
             Coordinate.setOffset(calculateOffset());
             Coordinate.updateViewCoordinates();
         }
@@ -770,7 +761,6 @@ public class RaceController {
         checkPositions();
         // Check the data is up to date.
         // Retrieve the boat position data.'
-        System.out.println("Amount of boats according to spark line: " + race.getBoats().size());
         for (int i = 0; i < race.getBoats().size(); i++) {
             // update the chart
             Number reversedOrder = race.getBoats().size() - race.getBoats().get(i).getPosition() + 1;
