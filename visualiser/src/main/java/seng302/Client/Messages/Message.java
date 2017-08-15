@@ -86,7 +86,7 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    if (!race.started()) {
+                    if (race.getRaceStatus() == 1) {
                         System.out.println("Race hasnt started so updating boats...");
                         race.setBoats(xmlParser.getBoats());
                         boatsSet = true;
