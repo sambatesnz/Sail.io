@@ -4,7 +4,7 @@ import seng302.Client.Messages.Message;
 import seng302.Client.Messages.RaceRegistrationMessage;
 import seng302.Client.Messages.RaceRegistrationType;
 import seng302.PacketGeneration.BinaryMessage;
-import seng302.Race.Race;
+import seng302.RaceObjects.Race;
 import seng302.UserInput.KeyBindingUtility;
 
 import java.io.*;

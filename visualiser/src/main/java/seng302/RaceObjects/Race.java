@@ -1,6 +1,5 @@
-package seng302.Race;
+package seng302.RaceObjects;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -8,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.paint.Color;
 import seng302.PacketGeneration.RaceStatus;
-import seng302.RaceObjects.*;
 
 import java.time.LocalDateTime;
 import java.util.*;

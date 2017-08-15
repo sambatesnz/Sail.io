@@ -4,15 +4,12 @@ import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketParsing.PacketParserUtils;
 import seng302.PacketParsing.XMLParser;
-import seng302.Race.Race;
+import seng302.RaceObjects.Race;
 import seng302.RaceObjects.CompoundMark;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
 import java.util.List;
-
-import static seng302.PacketGeneration.MessageType.RACE_STATUS;
 
 /**
  * Class to read in packets from a socket stream and distribute them to their relative

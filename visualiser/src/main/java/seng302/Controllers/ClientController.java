@@ -1,9 +1,7 @@
 package seng302.Controllers;
 
-import javafx.scene.control.cell.PropertyValueFactory;
 import seng302.Client.Client;
-import seng302.Race.Race;
-import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.Race;
 
 public class ClientController {
     private Race race;

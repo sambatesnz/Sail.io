@@ -4,7 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import seng302.Controllers.Coordinate;
 import seng302.Controllers.TimeZoneWrapper;
-import seng302.Race.Race;
+import seng302.RaceObjects.Race;
 
 /**
  * This is a work in progress

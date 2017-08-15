@@ -3,7 +3,7 @@ package seng302.Client.Messages;
 
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketParsing.PacketParserUtils;
-import seng302.Race.Race;
+import seng302.RaceObjects.Race;
 
 /**
  * Class that holds anc can update the details for a race given by a race status packet.
