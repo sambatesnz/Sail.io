@@ -25,9 +25,8 @@
           <TableColumn fx:id="clientColumn" prefWidth="100.0" text="Client ID" />
         </columns>
       </TableView>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time to Race Pre-Start:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time to Race Start:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Text fx:id="timeToStart" strokeType="OUTSIDE" strokeWidth="0.0" text="TIME PLACEHOLDER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
       <Button fx:id="forceStartBtn" mnemonicParsing="false" onAction="#forceStart" prefHeight="25.0" prefWidth="98.0" text="Force Start" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="XML Status" GridPane.columnIndex="1" fx:id="xmlStatusText" />
    </children>
 </GridPane>
