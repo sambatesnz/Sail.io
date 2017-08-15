@@ -15,7 +15,7 @@
     <left>
         <AnchorPane maxWidth="248" minWidth="248" prefWidth="248">
          <children>
-            <SplitPane fx:id="sidePanelSplit" dividerPositions="0.8804" orientation="VERTICAL" prefHeight="728.0" prefWidth="249.0">
+            <SplitPane fx:id="sidePanelSplit" orientation="VERTICAL" prefHeight="728.0" prefWidth="249.0">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                      <children>
@@ -30,18 +30,6 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                             </TableView>
-                     </children>
-                  </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="557.0" prefWidth="158.0">
-                     <children>
-                        <LineChart fx:id="sparklinesChart" layoutX="-3.0" layoutY="-5.0" prefHeight="234.0" prefWidth="251.0" stylesheets="@../CSS/Sparkline.css">
-                          <xAxis>
-                            <NumberAxis side="BOTTOM" fx:id="xAxis" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis fx:id="yAxis" side="LEFT" />
-                          </yAxis>
-                        </LineChart>
                      </children>
                   </AnchorPane>
               </items>

@@ -226,7 +226,7 @@ public class RaceController {
                 if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0){
                     positionTable.refresh();
                     positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
-                    positionTable.setPrefHeight(Coordinate.getWindowHeightY() - SPARKLINEHEIGHT);
+                    positionTable.setPrefHeight(Coordinate.getWindowHeightY());
                 }
 
                 if (sparkCounter > 100 && race.started()) {
@@ -567,8 +567,12 @@ public class RaceController {
     private Polyline newWake(double speed){
         Polyline wake = new Polyline();
         wake.getPoints().addAll(0.0, -speed,
-                0.0, speed);
-        wake.setStroke(Color.CYAN);
+                -0.2 * speed, speed,
+                0.2 * speed,
+                speed, 0.0, -speed);
+        wake.setStroke(new Color(0.0f, 1.0f, 1.0f, 0.3));
+        wake.setFill(new Color(0.0f, 1.0f, 1.0f, 0.3));
+
         return wake;
     }
 
