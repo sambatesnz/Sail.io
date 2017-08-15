@@ -10,7 +10,7 @@
     Round a mark correctly by travelling the 
     same direction as indicated by the rounding arrow. 
     
-    Attempt to round a mark incorrectly by travelling the opposite way to the 
+    Attempt to round a mark incorrectly by travailling the opposite way to the 
     direction indicated by the rounding arrow.
     
     Round a gate correctly by travelling through the two marks in the same direction 
@@ -43,4 +43,9 @@
     - Date: 14/8/2017
     - Current Commit of Branch: 56f2b20
     - Performed By: Jonathan Travaille, Abel Svoboda
+    - Result: Pass
+        
+    - Date: 15/8/2017
+    - Current Commit of Branch: 56f2b20
+    - Performed By: Sam Bates
     - Result: Pass
