@@ -3,7 +3,6 @@ package seng302.PacketParsing;
 
 
 import javafx.scene.paint.Color;
-import jdk.internal.org.xml.sax.SAXParseException;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
