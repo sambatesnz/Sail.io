@@ -45,6 +45,11 @@
             <artifactId>dom4j</artifactId>
             <version>1.6.1</version>
         </dependency>
+        <dependency>
+            <groupId>seng302</groupId>
+            <artifactId>visualiser</artifactId>
+            <version>0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

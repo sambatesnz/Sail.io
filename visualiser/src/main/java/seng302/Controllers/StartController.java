@@ -1,8 +1,6 @@
 package seng302.Controllers;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,17 +9,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import seng302.Client.Client;
 import seng302.Race.Race;
 import seng302.UserInput.KeyBindingUtility;
+import seng302.UserInput.PracticeMessage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class StartController {
 
-    private Button connectBtn;
+    @FXML private Button connectBtn;
+    @FXML private Button practiceBtn;
     private Stage primaryStage;
     @FXML private TextField ipField;
     @FXML private Label statusLbl;
@@ -50,34 +47,66 @@ public class StartController {
      */
     @FXML
     public void connect() throws IOException, InterruptedException {
-        System.out.println("wynowork");
         Platform.runLater(
-            () -> {
-                statusLbl.setText("connecting...");
-            }
+            () -> statusLbl.setText("connecting...")
         );
         ClientController clientController = new ClientController(getIp(), getPort());
         clientController.startClient();
-            Race race = clientController.getRace();
+        Race race = clientController.getRace();
 
-            race.connectedToServerProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue.equals(1)) {
-                    Platform.runLater(
+        race.connectedToServerProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals(1)) {
+                Platform.runLater(
+                    () -> {
+                        try {
+                            newConnection(race);
+                        } catch (InterruptedException | IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                );
+            } else if (newValue.equals(2)) {
+                statusLbl.setText("Could not connect");
+            }
+        });
+    }
+
+    private void connectPractice() throws InterruptedException {
+        Platform.runLater(
+                () -> statusLbl.setText("connecting...")
+        );
+        ClientController clientController = new ClientController(getIp(), getPort());
+        clientController.startClient();
+        Race race = clientController.getRace();
+
+        race.connectedToServerProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals(1)) {
+                Platform.runLater(
                         () -> {
                             try {
-                                newConnection(race);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                practiceConnect(race);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
-                    );
-                } else if (newValue.equals(2)) {
-                    statusLbl.setText("Could not connect");
-                }
-            });
-        }
+                );
+            } else if (newValue.equals(2)) {
+                statusLbl.setText("Could not connect");
+            }
+        });
+    }
+
+    private void practiceConnect(Race race) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
+        RaceController raceController = new RaceController(race);
+        loader.setController(raceController);
+        Parent root = loader.load();
+
+        Scene rootScene = new Scene(root);
+        primaryStage.setScene(rootScene);
+
+        KeyBindingUtility.setKeyBindings(rootScene, race);
+    }
 
     private void newConnection(Race race) throws InterruptedException, IOException {
 
@@ -95,6 +124,16 @@ public class StartController {
             lobbyController.initialiseTable();
             lobbyController.initialiseTime();
 
+    }
+
+    @FXML
+    private void practiceClick() throws IOException {
+        PracticeMessage practiceMessage = new PracticeMessage();
+        try {
+            connectPractice();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
