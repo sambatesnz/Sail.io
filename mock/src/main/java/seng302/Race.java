@@ -402,11 +402,8 @@ public class Race {
 
         for (Boat boat : boats) {
             if (!finishedBoats.contains(boat)) {
-                boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
-            for (Boat boat : boats) {
-                if (!finishedBoats.contains(boat)) {
-
-                    // boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);  //Not being actively used
+                //boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
+              //Not being actively used
 
                 if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
                     PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
@@ -419,11 +416,11 @@ public class Race {
 
                 boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
                 boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
-                if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {
-                    String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
-                    boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
-                    boat.setCurrentLegIndex(boat.getCurrentLegIndex() + 1);
-                    RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
+//                if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {
+//                    String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
+//                    boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
+//                    boat.setCurrentLegIndex(boat.getCurrentLegIndex() + 1);
+                RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
 
                     /*CompoundMark currentTarget = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey();
                     double xTarget = currentTarget.getX();
@@ -496,7 +493,7 @@ public class Race {
             windHeadingChanged = false;
             windSpeedChanged = false;
         }
-    }
+
 
 
     public void updateRaceInfo(){

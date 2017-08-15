@@ -445,6 +445,7 @@ public class RaceController {
     }
 
     private void updateRoundingArrows() {
+        int playerBoat = race.getClientSourceId();
         if (race.getBoatsMap().get(playerBoat).getTargetMarkIndex() >= race.getCourseOrder().size()) {
             roundingArrow1.setVisible(false);
             roundingArrowMirrored1.setVisible(false);

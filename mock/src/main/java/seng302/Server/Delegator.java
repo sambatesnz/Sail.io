@@ -2,8 +2,6 @@ package seng302.Server;
 
 import seng302.Race;
 import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.Mark;
-import seng302.UserInput.BoatAction;
 import seng302.UserInputController.BoatAction;
 
 public class Delegator {

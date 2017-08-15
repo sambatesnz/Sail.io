@@ -4,7 +4,8 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
-import seng302.DataGeneration.MockRace;
+import seng302.DataGeneration.IServerData;
+import seng302.DataGeneration.RaceManager;
 import seng302.Race;
 import seng302.RaceObjects.Boat;
 
@@ -14,7 +15,7 @@ public class MarkRoundingSteps {
 
     @Given("^the race is already running$")
     public void the_race_is_already_running() throws Throwable {
-        MockRace mockData = new MockRace(); //Default race
+        IServerData mockData = new RaceManager(); //Default race
         race = mockData.getRace();
     }
 
