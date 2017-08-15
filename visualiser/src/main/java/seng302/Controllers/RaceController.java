@@ -92,7 +92,6 @@ public class RaceController {
 
     private Race race;
 
-    private final int playerBoat = 103;
     private List<BoatSprite> boats = new ArrayList<>();
     private List<Rectangle> compoundMarks = new ArrayList<>();
     private List<Line> gates = new ArrayList<>();
@@ -118,16 +117,13 @@ public class RaceController {
     private int raceSeconds = 0;
     private long lastTime = 0;
     private long timerUpdate = 1000000000;
-    private boolean raceStarted = false;
     private int frameCount = 0;
     private int viewUpdateCount = 0;
     private double windowWidth = 0;
     private double windowHeight = 0;
+    private String ipAddr;
+    private int port;
 
-    private TimeZoneWrapper timeZoneWrapper;
-    private final ImageView selectedImage = new ImageView();
-    private Mark imagePos;
-    private final double IMAGE_SCALE = 1.7;
 
     // Sparkline variables
     @FXML    private NumberAxis xAxis;
@@ -151,22 +147,15 @@ public class RaceController {
     private boolean viewInitialised = false;
 
 
+    public RaceController(Race race){
+        this.race = race;
+    }
+
     /**
      * initializes the race display.
      */
     @FXML
     public void initialize() {
-        race = new Race();
-
-
-
-        Thread serverThread = new Thread(() -> {
-            Client client = new Client(race);
-            client.connect();
-            client.processStreams();
-        });
-        serverThread.start();
-
 
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
@@ -247,7 +236,7 @@ public class RaceController {
 
                 if (race.isRaceReady() && boatLocationDataInitialised) {
                     updateBoatPositions();
-                    updateBoatPaths();
+                    //updateBoatPaths();
 
                 }
                 viewUpdateCount++;
@@ -260,7 +249,7 @@ public class RaceController {
 
                 if (sparkCounter > 100 && race.started()) {
                     sparkCounter = 0;
-                    updateSparkLineChart();
+                    //updateSparkLineChart(); //TODO undisable sparkline chart
                 }
                 sparkCounter++;
 
@@ -289,7 +278,7 @@ public class RaceController {
                 boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
                 // Temporary hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(i).getSourceId() == playerBoat) {
+                if (race.getBoats().get(i).getSourceId() == race. getClientSourceId()) {
                     updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
                 }
 
@@ -310,14 +299,15 @@ public class RaceController {
                 //Sails
                 Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
                 updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.SAIL));
-                if (!race.getBoats().get(i).isSailsOut()){
-                    boats.get(i).sailIn();
-                    sail.getTransforms().clear();
-                    sail.getTransforms().add(new Rotate(race.getWindHeading() + 180, 0,0));
-                } else {
+                if (race.getBoats().get(i).isSailsOut()){
                     boats.get(i).sailOut();
                     sail.getTransforms().clear();
                     sail.getTransforms().add(new Rotate(race.getWindHeading() + 150, 0,0));
+                } else {
+                    boats.get(i).sailIn();
+                    sail.getTransforms().clear();
+                    sail.getTransforms().add(new Rotate(race.getWindHeading() + 180, 0,0));
+
                 }
                 double sailLength = 720d / 45d;
                 sail.setLayoutY((1/(1 + Coordinate.getZoom() * 0.9)) * (sailLength)/2 - SAIL_OFFSET);
@@ -358,9 +348,12 @@ public class RaceController {
 
     private void initialiseBoatMetaData() {
         if(race.boatsReady() && !boatMetaDataInitialised && race.isRaceReady()){
+            System.out.println("size = " + race.getBoats().size());
             for (int i = 0; i < race.getBoats().size(); i++) {
-                BoatSprite boatSprite = new BoatSprite(race.getBoats().get(i));
+                System.out.println("size inside stefan = " + race.getBoats().size());
+                BoatSprite boatSprite = new BoatSprite(race.getBoats().get(i), race.getClientSourceId());
                 boats.add(boatSprite);
+                System.out.println("number of boats added + " +  boats.size());
 
 
             }
@@ -382,7 +375,7 @@ public class RaceController {
 //                group.getChildren().add(path);
 //            }
 
-            createChart();
+            //createChart();
             boatMetaDataInitialised = true;
         }
     }
@@ -390,9 +383,11 @@ public class RaceController {
     private void initialiseBoatLocation() {
         if(!boatLocationDataInitialised && boatMetaDataInitialised) {
             boolean knowAllLocations = true;
+            System.out.println("initialising boat locations for " + race.getBoats().size() + " Boats..");
             for (int i = 0; i < race.getBoats().size(); i++) {
                 boolean knowsLocation = race.getBoats().get(i).isKnowsBoatLocation();
                 if (knowsLocation) {
+                    paths = new ArrayList<>();
                     Path path = new Path();
                     path.setStroke(race.getBoats().get(i).getColour());
                     path.getElements().add(new MoveTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
@@ -400,17 +395,21 @@ public class RaceController {
                     paths.add(path);
                     absolutePaths.add(new ArrayList<>());
 
+                    lastHeadings = new ArrayList<>();
+
                     lastHeadings.add(race.getBoats().get(i).getHeading());
                 } else {
                     knowAllLocations = false;
                 }
             }
+            System.out.println("knows all locations" + knowAllLocations);
             if (knowAllLocations) {
                 for (Path path : paths) {
                     group.getChildren().add(path);
                 }
-                boatLocationDataInitialised = true;
             }
+            boatLocationDataInitialised = true;
+
         }
     }
 
@@ -627,7 +626,7 @@ public class RaceController {
 
         offset.setX(boatToFollow.getX() - race.getMapCenter().getX());
         offset.setY(boatToFollow.getY() - race.getMapCenter().getY());
-
+        System.out.println(offset.getX() + " " + offset.getY());
         return offset;
     }
 
@@ -638,9 +637,9 @@ public class RaceController {
     private void updateViewLayout(){
         if(race.isViewReady() && viewInitialised){
             Coordinate.updateBorder();
+            System.out.println("calculating offset....");
             Coordinate.setOffset(calculateOffset());
             Coordinate.updateViewCoordinates();
-
         }
 
         if(Coordinate.getWindowHeightY() != windowHeight || Coordinate.getWindowWidthX() != windowWidth) {
@@ -769,7 +768,8 @@ public class RaceController {
     private void updateSparkLineChart() {
         checkPositions();
         // Check the data is up to date.
-        // Retrieve the boat position data.
+        // Retrieve the boat position data.'
+        System.out.println("Amount of boats according to spark line: " + race.getBoats().size());
         for (int i = 0; i < race.getBoats().size(); i++) {
             // update the chart
             Number reversedOrder = race.getBoats().size() - race.getBoats().get(i).getPosition() + 1;
@@ -810,7 +810,7 @@ public class RaceController {
             Coordinate.setZoom(0);
             Coordinate.setTrackingBoat(false);
         } else {
-            boatToFollow = race.getBoatsMap().get(playerBoat);
+            boatToFollow = race.getBoatsMap().get(race.getClientSourceId());
             Coordinate.setZoom(zoomLevel);
             Coordinate.setTrackingBoat(true);
         }
@@ -931,5 +931,10 @@ public class RaceController {
     private void updateNodeScale(Node nodeToScale) {
         nodeToScale.setScaleX(1/(1+Coordinate.getZoom()*0.9));
         nodeToScale.setScaleY(1/(1+Coordinate.getZoom()*0.9));
+    }
+
+    public void setAddr(String ip, int port) {
+        this.ipAddr = ip;
+        this.port = port;
     }
 }

@@ -1,6 +1,9 @@
 package seng302.Client;
 
 import seng302.Client.Messages.Message;
+import seng302.Client.Messages.RaceRegistrationMessage;
+import seng302.Client.Messages.RaceRegistrationType;
+import seng302.PacketGeneration.BinaryMessage;
 import seng302.Race.Race;
 import seng302.UserInput.KeyBindingUtility;
 
@@ -23,15 +26,20 @@ public class Client {
     private int port;
     private Race race;
 
-    public Client(Race race) {
+    public Client(Race race, String ipAddr, int port) {
         this.race = race;
         dataReceived = new byte[4300];
         clientSocket = null;
         streamInput = null;
         streamOutput = null;
         AppConfig config = new AppConfig();
-        serverName = config.getProperty(AppConfig.DATA_HOST_NAME);
-        port = Integer.parseInt(config.getProperty(AppConfig.DATA_HOST_PORT));
+        this.serverName = ipAddr;
+        System.out.println("ip = "+this.serverName);
+        this.port = port;
+        System.out.println(this.port);
+
+//        serverName = config.getProperty(AppConfig.DATA_HOST_NAME);
+//        port = Integer.parseInt(config.getProperty(AppConfig.DATA_HOST_PORT));
         try {
             host = new URL(serverName).getHost();
         } catch (MalformedURLException e) {
@@ -114,10 +122,17 @@ public class Client {
             System.out.println("Connected.");
             streamInput = new BufferedInputStream(clientSocket.getInputStream());
             streamOutput = new BufferedOutputStream(clientSocket.getOutputStream());
+            race.setConnectedToServer(1);
+
+            BinaryMessage rrm = new RaceRegistrationMessage(RaceRegistrationType.PARTICIPATE);
+            streamOutput.write(rrm.createMessage());
+            streamOutput.flush();
         }
         catch (IOException e) {
+            race.setConnectedToServer(2);
             e.printStackTrace();
         }
+
     }
 
     public void disconnect() {

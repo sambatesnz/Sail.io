@@ -3,9 +3,10 @@ package seng302.steps;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import seng302.DataGeneration.MockRace;
+import seng302.DataGeneration.RaceManager;
 import seng302.Race;
 import seng302.Server.Delegator;
+import seng302.UserInputController.BoatAction;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +19,7 @@ public class BoatTurningSteps {
 
     @Given("^the race is running$")
     public void the_race_is_running() throws Throwable {
-        MockRace mockData = new MockRace(); //Default race
+        RaceManager mockData = new RaceManager(); //Default race
         race = mockData.getRace();
         delegator = new Delegator(race);
     }
@@ -40,7 +41,7 @@ public class BoatTurningSteps {
 
     @When("^the received boatAction packet is processed$")
     public void the_received_boatAction_packet_is_processed() throws Throwable {
-        delegator.processCommand(messageCommand);
+        delegator.processCommand(BoatAction.getAction(messageCommand), 101); //I love hard coding in boats
     }
 
     @Then("^the boats current heading is altered to (\\d+) degrees$")

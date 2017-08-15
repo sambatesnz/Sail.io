@@ -1,17 +1,30 @@
 package seng302.DataGeneration;
 
 
+import seng302.Race;
+
+import java.io.IOException;
+
 public interface IServerData {
 
-    byte[] getData();
+    Race getRace();
+
+    byte[] getDataForAll();
+
+    byte[] getDataForOne();
+
+    void addSingleMessage(byte[] message);
 
     boolean finished();
 
-    boolean ready();
+    boolean broadcastReady();
+
+    boolean singleMessageReady();
 
     void beginGeneratingData();
 
     void finishGeneratingData();
 
+    void addXMLPackets() throws IOException;
 
 }

@@ -13,17 +13,35 @@ import seng302.Rounding;
 
 import java.io.IOException;
 
-;
+
+/**
+ * Creates race xml dynamically based on the state of the race passed in
+ */
+public class RaceXMLCreator implements XMLCreator {
 
 
-public class RaceXMLCreator {
-
+    private Document xml;
     private Race race;
     private Document raceXML;
 
-    public Document createDocument() throws IOException {
 
-        Element root = this.raceXML.addElement("Race");
+    public RaceXMLCreator(Race race) throws IOException {
+        this.xml = createDocument(race);
+    }
+
+    @Override
+    public String getXML() throws IOException {
+        return xml.asXML();
+    }
+
+    /**
+     * Creates a Document of an xml race
+     */
+    private Document createDocument(Race race) throws IOException {
+
+        Document raceXML = DocumentHelper.createDocument();
+
+        Element root = raceXML.addElement("Race");
 
         root.addElement("CreationTimeDate").addText("/TODO");
 
@@ -39,6 +57,7 @@ public class RaceXMLCreator {
                 .addText("Fleet");
 
         Element participants = root.addElement("Participants");
+
 
         for (Boat b : race.getBoats()) {
             participants.addElement("Yacht")
@@ -104,19 +123,8 @@ public class RaceXMLCreator {
             seqId++;
         }
 
-        return this.raceXML;
+        return raceXML;
     }
-
-
-
-
-    public RaceXMLCreator(Race race){
-        this.race = race;
-        this.raceXML = DocumentHelper.createDocument();
-
-
-    }
-
 
 
 }

@@ -1,5 +1,6 @@
 package seng302;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.Pair;
@@ -9,6 +10,7 @@ import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.CourseLimit;
 import seng302.RaceObjects.Leg;
+import seng302.Server.RaceCreator;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -41,13 +43,15 @@ public class Race {
     private ObservableList<Boat> currentOrder;
     private ObservableList<String> positionStrings;
     private Date startingTime;
-    private Long timeToStart;
+    private SimpleStringProperty timeToStart;
     public boolean finished = false;
     private static final int TEN_KNOTS = 5145;
     private static final int FORTY_KNOTS = 20577;
     private static final int FIVE_KNOTS = 2573;
     private static final int DIRECTION_CHANGE_PROB = 25;
     private final long ONE_MINUTE_IN_MILLIS=60000;
+
+    private BoatGenerator boatGenerator;
 
     /**
      * Constructor for the race class.
@@ -58,16 +62,17 @@ public class Race {
         // setWindHeading(190);
 
         setStartingWindSpeed();
+        boatGenerator = new BoatGenerator();
         this.windSpeed = this.startingWindSpeed;
         instantiateWindHeading();
 
         Calendar date = Calendar.getInstance();
         long t= date.getTimeInMillis();
 
-        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS / 4);
+        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 3);
 
 
-        boats = getContestants();
+        boats = new ArrayList<Boat>();
         finishedBoats = new ArrayList<>();
         currentOrder = observableArrayList(boats);
         positionStrings = FXCollections.observableArrayList();
@@ -78,6 +83,14 @@ public class Race {
             boat.getMark().setLongitude(getCompoundMarks().get(0).getLongitude());
             boat.getMark().setLatitude(getCompoundMarks().get(0).getLatitude());
         }
+
+
+    }
+
+    public Boat addBoat(){
+        Boat boat = boatGenerator.generateBoat();
+        boats.add(boat);
+        return boat;
     }
 
     /**
@@ -343,22 +356,6 @@ public class Race {
                     System.err.println("No matching Compound mark id");
                 }
             }
-
-//            legs = new ArrayList<>();
-//            for (int i = 1; i < courseOrder.size(); i++) {
-//                int startId = courseOrder.get(i - 1);
-//                int destId = courseOrder.get(i);
-//                CompoundMark start = null;
-//                CompoundMark dest = null;
-//                for (CompoundMark compoundMark : compoundMarks) {
-//                    if (compoundMark.getId() == startId) {
-//                        start = compoundMark;
-//                    } else if (compoundMark.getId() == destId) {
-//                        dest = compoundMark;
-//                    }
-//                }
-//                legs.add(new Leg(start, dest));
-//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -400,23 +397,32 @@ public class Race {
      * Runs a portion of the race, updating boat positions and leg status
      */
     public void updateBoats() {
-        if (raceStatus == 3) {
-            double distanceMultiplier = 1;
-            double movementMultiplier = 1;
+        double distanceMultiplier = 1;
+        double movementMultiplier = 1;
 
+        for (Boat boat : boats) {
+            if (!finishedBoats.contains(boat)) {
+                boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
             for (Boat boat : boats) {
                 if (!finishedBoats.contains(boat)) {
 
                     // boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);  //Not being actively used
 
-                    if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
-                        PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
-                    }
+                if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
+                    PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
+                }
 
+                //Increments the the distance by the speed
                     //Increments the the distance by the speed
                     double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
                     double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
 
+                boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
+                boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
+                if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {
+                    String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
+                    boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
+                    boat.setCurrentLegIndex(boat.getCurrentLegIndex() + 1);
                     RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
 
                     /*CompoundMark currentTarget = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey();
@@ -447,34 +453,41 @@ public class Race {
                         boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
                         boat.setCurrentLegIndex(boat.getCurrentLegIndex() + 1);
 
-                        // Gives each boat it's race time to the last mark.
-                        boat.setRaceTime(currentTimeMillis());
-                        // Sorts the boats in order. Attempts by leg it's doing first, then by time to complete last leg from start.
-                        currentOrder.sort((boat1, boat2) -> {
-                            if (boat1.getCurrentLegIndex() == boat2.getCurrentLegIndex()) {
-                                return Long.compare(boat1.getRaceTime(), boat2.getRaceTime());
-                            } else {
-                                return Integer.compare(boat2.getCurrentLegIndex(), boat1.getCurrentLegIndex());
-                            }
-                        });
-
-                        if (boat.getCurrentLegIndex() == legs.size()) {
-//                        System.out.println(boat.getName() + " finished race!");
-                            numFinishers++;
-                            boat.setSpeed(0);
-                            finishedBoats.add(boat);
-                            if (numFinishers == boats.size()) {
-                                finished = true;
-                                return;
-                            }
+                    // Gives each boat it's race time to the last mark.
+                    boat.setRaceTime(currentTimeMillis());
+                    // Sorts the boats in order. Attempts by leg it's doing first, then by time to complete last leg from start.
+                    currentOrder.sort((boat1, boat2) -> {
+                        if (boat1.getCurrentLegIndex() == boat2.getCurrentLegIndex()) {
+                            return Long.compare(boat1.getRaceTime(), boat2.getRaceTime());
                         } else {
-                            if (boat.getSourceId() != 103) {
-                                boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
-                            }
+                            return Integer.compare(boat2.getCurrentLegIndex(), boat1.getCurrentLegIndex());
+                        }
+                    });
+
+                    if (boat.getCurrentLegIndex() == legs.size()) {
+//                        System.out.println(boat.getName() + " finished race!");
+                        numFinishers++;
+                        boat.setSpeed(0);
+                        finishedBoats.add(boat);
+                        if (numFinishers == boats.size()) {
+                            finished = true;
+                            return;
+                        }
+                    } else {
+                        if (boat.getSourceId() != 103) {
+                            boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
+                        }
 //                        System.out.println(boat.getName() + " passed " + passed + ", now sailing to " +
 //                                legs.get(boat.getCurrentLegIndex()).getDest().getName() + " with a heading of " +
 //                                String.format("%.2f", legs.get(boat.getCurrentLegIndex()).getHeading()) + "°");
 //                    }
+                    }
+                }
+            }
+            boat.setHeadingChangedToFalse();
+        }
+        windHeadingChanged = false;
+        windSpeedChanged = false;
                         }
                     }*/
                 }
@@ -485,15 +498,15 @@ public class Race {
         }
     }
 
-    public Long getTimeToStart() {
-        return timeToStart;
-    }
-
 
     public void updateRaceInfo(){
-        this.timeToStart = startingTime.getTime() - new Date().getTime();
+        //this.timeToStart = startingTime.getTime() - new Date().getTime();
         if (startingTime.getTime() < new Date().getTime()){
             setRaceStatus(3);
+        }else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS){
+            setRaceStatus(2);
+        }else {
+            setRaceStatus(1);
         }
     }
 

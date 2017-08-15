@@ -5,6 +5,7 @@ import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
+import seng302.Race;
 
 import java.util.NoSuchElementException;
 import java.util.Queue;
@@ -20,8 +21,14 @@ public class RaceXmlDataGenerator implements IServerData{
 
     Timer timer = new Timer();
 
+
     @Override
-    public byte[] getData() {
+    public Race getRace() {
+        return null;
+    }
+
+    @Override
+    public byte[] getDataForAll() {
         try {
             return bytes.remove();
         } catch (NoSuchElementException e) {
@@ -30,13 +37,28 @@ public class RaceXmlDataGenerator implements IServerData{
     }
 
     @Override
+    public byte[] getDataForOne() {
+        return new byte[0];
+    }
+
+    @Override
+    public void addSingleMessage(byte[] message) {
+
+    }
+
+    @Override
     public boolean finished() {
         return false;
     }
 
     @Override
-    public boolean ready() {
+    public boolean broadcastReady() {
         return !bytes.isEmpty();
+    }
+
+    @Override
+    public boolean singleMessageReady() {
+        return false;
     }
 
     @Override
@@ -48,6 +70,11 @@ public class RaceXmlDataGenerator implements IServerData{
     public void finishGeneratingData() {
         System.out.println("Threads cancelled");
         timer.cancel();
+    }
+
+    @Override
+    public void addXMLPackets() {
+
     }
 
     private class RaceXMLSender extends TimerTask {

@@ -5,7 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import seng302.Controllers.RaceViewController;
+import seng302.Controllers.Coordinate;
+import seng302.Controllers.StartController;
 import seng302.UserInput.KeyBindingUtility;
 
 import java.io.IOException;
@@ -22,19 +23,31 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("RaceView.fxml"));
-            RaceViewController raceViewController = new RaceViewController(primaryStage);
+//            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("RaceView.fxml"));
+//            RaceViewController raceViewController = new RaceViewController(primaryStage);
+
+
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/StartingPage.fxml"));
 
             Parent root = loader.load();
             Scene rootScene = new Scene(root);
-            KeyBindingUtility.setKeyBindings(rootScene);
+
+            StartController startController = loader.getController();
+
             primaryStage.setMinHeight(600);
             primaryStage.setMinWidth(800);
-            primaryStage.setMaximized(true);
+            primaryStage.setMaximized(false);
             primaryStage.setScene((rootScene));
             primaryStage.setTitle("RaceView");
             primaryStage.show();
 
+            Coordinate.setWindowWidthX(800);
+            Coordinate.setWindowHeightY(600);
+
+            primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowWidthX((newValue).doubleValue()));
+            primaryStage.heightProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowHeightY(newValue.doubleValue()));
+
+            startController.setPrimaryStage(primaryStage);
 
         } catch (IOException ex) {
             ex.printStackTrace();

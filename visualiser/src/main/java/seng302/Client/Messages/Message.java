@@ -1,33 +1,24 @@
 package seng302.Client.Messages;
 
+import seng302.PacketGeneration.MessageType;
+import seng302.PacketParsing.PacketParserUtils;
 import seng302.PacketParsing.XMLParser;
 import seng302.Race.Race;
 import seng302.RaceObjects.CompoundMark;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static seng302.PacketGeneration.MessageType.RACE_STATUS;
 
 /**
  * Class to read in packets from a socket stream and distribute them to their relative
  * message handler.
  */
 public class Message {
-    private static final int HEARTBEAT = 1;
-    private static final int RACE_STATUS = 12;
-    private static final int XML_MESSAGE = 26;
-    private static final int BOAT_LOCATION = 37;
-    private static final int DISPLAY = 20;
-    private static final int RACE_START = 27;
-    private final int REGATTA = 5;
-    private final int RACE = 6;
-    private final int BOAT = 7;
-    private int syncByte1;
-    private int syncByte2;
-    private int messageType;
+    private MessageType messageType;
     private int messageLen;
     private byte body[];
     private byte crc[];
@@ -47,54 +38,13 @@ public class Message {
      */
     public Message(byte[] data, Race race){
         this.race = race;
-        syncByte1 = byteArrayToInt(data, 0, 1);
-        syncByte2 = byteArrayToInt(data, 1,1);
-        messageType = byteArrayToInt(data, 2,1);
-        messageLen = byteArrayToInt(data, 13,2);
+        messageType =  PacketParserUtils.getMessageType(data);
+        messageLen =  PacketParserUtils.getMessageBodyLength(data);
 
         body = new byte[messageLen];
         System.arraycopy(data,15, body,0, messageLen);
         crc = new byte[4];
         System.arraycopy(data,15 + messageLen, crc,0, 4);
-    }
-
-    /**
-     * Converts a section from an array of bytes into an integer.
-     * @param bytes The array to convert bytes from
-     * @param pos The starting index of the bytes desired to be converted
-     * @param len The number of bytes to be converted (from the given index)
-     * @return An integer, converted from the given bytes
-     */
-    public static int byteArrayToInt(byte[] bytes, int pos, int len){
-        byte[] intByte = new byte[4];
-        System.arraycopy(bytes, pos, intByte, 0, len);
-        return ByteBuffer.wrap(intByte).order(ByteOrder.LITTLE_ENDIAN).getInt();
-    }
-
-    /**
-     * Converts a section from an array of bytes into an integer.
-     * @param bytes The array to convert bytes from
-     * @param pos The starting index of the bytes desired to be converted
-     * @param len The number of bytes to be converted (from the given index)
-     * @return An integer, converted from the given bytes
-     */
-    public static int byteArrayToBool(byte[] bytes, int pos, int len){
-        byte[] intByte = new byte[4];
-        System.arraycopy(bytes, pos, intByte, 0, len);
-        return ByteBuffer.wrap(intByte).order(ByteOrder.LITTLE_ENDIAN).getInt();
-    }
-
-    /**
-     * Converts a section from an array of bytes into a long.
-     * @param bytes The array to convert bytes from
-     * @param pos The starting index of the bytes desired to be converted
-     * @param len The number of bytes to be converted (from the given index)
-     * @return A long, converted from the given bytes
-     */
-    public static long byteArrayToLong(byte[] bytes, int pos, int len) {
-        byte[] intByte = new byte[8];
-        System.arraycopy(bytes, pos, intByte, 0, len);
-        return ByteBuffer.wrap(intByte).order(ByteOrder.LITTLE_ENDIAN).getInt();
     }
 
 
@@ -104,39 +54,30 @@ public class Message {
      */
     public void parseMessage() throws UnsupportedEncodingException {
         switch (messageType) {
-            case HEARTBEAT:
+            case HEART_BEAT:
                 break;
             case RACE_STATUS:
                 new RaceStatusMessage(body, race);
                 break;
-            case DISPLAY:
+            case DISPLAY_TEXT_MESSAGE:
                 break;
             case XML_MESSAGE:
                 XMLMessage xmlMessage = new XMLMessage(body);
-                passXML(xmlMessage.getXmlString(), xmlMessage.getXmlMessageSubtype());
+                MessageType subType = MessageType.getType(xmlMessage.getXmlMessageSubtype());
+                passXML(xmlMessage.getXmlString(), subType);
                 break;
-            case RACE_START:
-                break;
-            case 29:                                            //Yacht Event Code
-                break;
-            case 31:                                            //Yacht Action Code
-                break;
-            case 36:                                            //Chatter Text
+            case RACE_START_STATUS:
                 break;
             case BOAT_LOCATION:                                 //Boat Location
                 new LocationMessage(body, race);
                 break;
-            case 38:                                            //Mark Rounding
-                break;
-            case 44:                                            //Course Wind
-                break;
-            case 47:                                            //Avg Wind
-                break;
+            case PARTICIPANT_CONFIRMATION:
+                ClientSideMessageParser messageParser = new ClientParticipantConfirmationMessage(body);
+                messageParser.updateRace(race);
         }
     }
 
-    public void passXML(String xmlString, int subType) {
-        LocalDateTime startTime = LocalDateTime.now();
+    public void passXML(String xmlString, MessageType subType) {
         try {
             XMLParser xmlParser = new XMLParser(xmlString);
             switch(subType) {
@@ -145,10 +86,11 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    if (!race.isRaceReady()) {
+                    if (race.getRaceStatus() == 1) {
+                        System.out.println("Race hasnt started so updating boats...");
                         race.setBoats(xmlParser.getBoats());
+                        boatsSet = true;
                     }
-                    boatsSet = true;
                     break;
                 case RACE:
                     race.setParticipants(xmlParser.getRaceParticipants());
@@ -171,15 +113,6 @@ public class Message {
         }
 
         if (regattaSet && boatsSet && raceSet) {
-//            int zid = race.getRegatta().getUtcOffset();
-//            String zidStr = String.valueOf(zid);
-//            if (zid > 0) {
-//                zidStr = "+" + String.valueOf(zid);
-//            }
-//            ZoneId zoneId = ZoneId.of(zidStr);
-//            long epoch = startTime.atZone(zoneId).toEpochSecond();
-//            race.setExpectedStartTime(epoch);
-//            race.setViewParams();
             race.setRaceReady(true);
         }
     }

@@ -6,6 +6,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.floorMod;
 import static java.lang.Math.round;
 
 /**
@@ -34,6 +35,217 @@ public class Boat {
     private boolean headingChanged;
     private boolean sailsOut = false;
 
+    private boolean upwindMemory = false;
+    private boolean downwindMemory = false;
+    private boolean plusMemory = false;
+
+    private Thread turningThread;
+    private Boolean stopTurnThread = false;
+
+    /**
+     * Constructs a boat
+     * @param name the name of the boat/team
+     */
+    public Boat(String name, String shortName, int sourceId, String country) {
+        this.boatName = name;
+        this.shortName = shortName;
+        this.sourceId = sourceId;
+        this.country = country;
+        this.knowsBoatLocation = false;
+        this.mark = new Mark();
+        this.raceTime = Integer.toUnsignedLong(0);
+        this.headingChanged = false;
+    }
+
+    /**
+     * Used to create a boat for testing purposes.
+     * @param sourceID  boat source id
+     */
+    public Boat(Integer sourceID) {
+        this.sourceId = sourceID;
+    }
+
+    /**
+     * Tacks or Gybes the boat depending on which way the boat is oriented to the wind. Calling this
+     * function while the boat is already tacking or gybing will stop the last tack or gybe instead.
+     * @param windDirection The direction the wind is currently coming from
+     */
+    public void tackOrGybe(int windDirection) {
+        boolean isClockwise = true;
+        double headingDif = (360 + heading - windDirection) % 360;
+        double finalHeading = heading;
+        if (headingDif < 90) {      // Tack counter-clockwise
+            finalHeading = windDirection + 360 - headingDif;
+            isClockwise = false;
+        } else if (headingDif > 270 && headingDif < 360) { // Tack clockwise
+            finalHeading = windDirection + 360 - headingDif;
+            isClockwise = true;
+        } else if (headingDif > 90 && headingDif < 180) {   // Gybe clockwise
+            finalHeading = windDirection + 180 + (180 - headingDif);
+            isClockwise = true;
+        } else if (headingDif < 270 && headingDif > 180) {  // Gybe counter-clockwise
+            finalHeading = windDirection + 180 - (headingDif - 180);
+            isClockwise = false;
+        }
+        finalHeading = (360 + finalHeading) % 360;
+
+        updateStopTurnThread();
+
+        turnBoat(isClockwise, finalHeading);
+
+    }
+
+    /**
+     * Increments or decrements the boat heading by a set amount (currently 3 degrees but default)
+     * towards or away from the current wind direction based on the command upwind, or downwind.
+     * @param windDirection The current direction that the wind is coming from
+     * @param upwind Whether to increment the heading towards (true) or away
+     *               from (false) the current wind direction
+     */
+    public void updateHeading(int windDirection, boolean upwind) {
+        updateStopTurnThread();
+
+        double headingMinusWind = (360 + heading - windDirection) % 360;
+        if (upwind) {   // turning upwind
+            downwindMemory = false;
+            if (upwindMemory && heading == windDirection) {
+                if (plusMemory) {
+                    heading += HEADING_INCREMENT;
+                } else {
+                    heading -= HEADING_INCREMENT;
+                }
+                upwindMemory = false;
+            }
+            if (headingMinusWind > 180) {
+                heading += HEADING_INCREMENT;
+                upwindMemory = true;
+                plusMemory = true;
+            } else {
+                heading -= HEADING_INCREMENT;
+                upwindMemory = true;
+                plusMemory = false;
+            }
+        } else {        // turning downwind
+            upwindMemory = false;
+            if (downwindMemory && heading == windDirection) {
+                if (plusMemory) {
+                    heading += HEADING_INCREMENT;
+                } else {
+                    heading -= HEADING_INCREMENT;
+                }
+                downwindMemory = false;
+            }
+            if (headingMinusWind > 180) {
+                heading -= HEADING_INCREMENT;
+                downwindMemory = true;
+                plusMemory = false;
+            } else {
+                heading += HEADING_INCREMENT;
+                downwindMemory = true;
+                plusMemory = true;
+            }
+        }
+        if (heading > 359) {
+            heading -= 360;
+        } else if (heading < 0) {
+            heading += 360;
+        }
+        this.headingChanged = true;
+    }
+
+    /**
+     * Sets the boat to the current VMG depending on the boats current heading and the wind direction
+     * Function will stop any current turning action when first pressed, then a consecutive press will activate VMG
+     * @param windHeading The current direction that the wind is coming from
+     */
+    public void setHeadingToVMG(int windHeading) {
+        final double VMG_UPWIND = 180 - 105;  //needs to be 180 - vmg because of wind direction
+        final double VMG_DOWNWIND = 180 - 60;
+        boolean isClockwise = true;
+        double finalHeading = heading;
+        int relativeAngle = getRelativeAngle(windHeading, heading);
+
+        if (relativeAngle < 85) {
+            finalHeading = (double) Math.floorMod((int) (windHeading + VMG_UPWIND), 360);
+            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
+        }else if (relativeAngle > 95 && relativeAngle < 180){
+            finalHeading = (double) Math.floorMod((int)(windHeading + VMG_DOWNWIND), 360);
+            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
+        }else if (relativeAngle > 180 && relativeAngle < 265){
+            finalHeading = (double) Math.floorMod((int)(windHeading - VMG_DOWNWIND), 360);
+            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
+        }else if (relativeAngle > 275){
+            finalHeading = (double) Math.floorMod((int)(windHeading - VMG_UPWIND), 360);
+            isClockwise = getRelativeAngle((int)finalHeading, heading) >= 180;
+        }
+        updateStopTurnThread();
+        turnBoat(isClockwise, finalHeading);
+    }
+
+    private int getRelativeAngle(int angle1, double angle2){
+        return Math.floorMod(((int)angle2 - angle1), 360);
+    }
+
+
+    private void turnBoat(boolean isClockwise, double finalHeading) {
+
+        turningThread = new Thread("Boat Turning") {
+            public void run() {
+                if (isClockwise) {
+                    while ((heading < finalHeading - 2 || heading > finalHeading + 2) && !stopTurnThread) {
+                        heading += HEADING_INCREMENT;
+                        if (heading > 360) {
+                            heading -= 360;
+                        }
+                        headingChanged = true;
+                        try {
+                            Thread.sleep(17);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    while ((heading > finalHeading + 2 || heading < finalHeading - 2) && !stopTurnThread) {
+                        heading -= HEADING_INCREMENT;
+                        if (heading < 0) {
+                            heading += 360;
+                        }
+                        headingChanged = true;
+                        try {
+                            Thread.sleep(17);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                if(!stopTurnThread){
+                    heading = finalHeading; // Sets heading to final heading. This is needed because the code above only gets within 2.
+                }
+            }
+        };
+        turningThread.start();
+    }
+
+
+    /**
+     * Converts and then returns current boat speed (originally in mm/sec) in knots.
+     * @return boat speed in knots
+     */
+    public double getSpeedInKnots() {
+        double val = speed * 1.9438444924574 / 1000;
+        DecimalFormat df = new DecimalFormat("#.#");
+        df.setRoundingMode(RoundingMode.CEILING);
+        return Double.valueOf(df.format(val));
+    }
+
+    private void updateStopTurnThread(){
+        stopTurnThread = turningThread != null && turningThread.isAlive();
+    }
+
+    public void setHeadingChangedToFalse() {
+        this.headingChanged = false;
+    }
+
     public boolean isSailsOut() {
         return sailsOut;
     }
@@ -41,15 +253,6 @@ public class Boat {
     public void setSailsOut(boolean sailsOut) {
         this.sailsOut = sailsOut;
     }
-
-    private boolean upwindMemory = false;
-    private boolean downwindMemory = false;
-    private boolean plusMemory = false;
-
-    private double finalHeading = heading;
-    private boolean addHeading = false;
-    private Thread turningThread;
-    private Boolean stopTurnThread = false;
 
     private int targetMarkIndex = 1;
     private int lastMarkIndex = 0;
@@ -91,34 +294,9 @@ public class Boat {
      */
     public void setRaceTime(Long time) { this.raceTime = time; }
 
-    /**
-     * Constructs a boat
-     * @param name the name of the boat/team
-     */
-    public Boat(String name, String shortName, int sourceId, String country) {
-        this.boatName = name;
-        this.shortName = shortName;
-        this.sourceId = sourceId;
-        this.country = country;
-        this.knowsBoatLocation = false;
-        this.mark = new Mark();
-        this.raceTime = Integer.toUnsignedLong(0);
-        this.headingChanged = false;
-    }
-
     public void setMark(Mark mark) {
         this.mark = mark;
     }
-
-    /**
-     * Used to create a boat for testing purposes.
-     * @param sourceID  boat source id
-     */
-    public Boat(Integer sourceID) {
-        this.sourceId = sourceID;
-    }
-
-
 
     /**
      * Get the boats colour
@@ -333,143 +511,8 @@ public class Boat {
         return headingChanged;
     }
 
-    /**
-     * Tacks or Gybes the boat depending on which way the boat is oriented to the wind. Calling this
-     * function while the boat is already tacking or gybing will stop the last tack or gybe instead.
-     * @param windDirection The direction the wind is currently coming from
-     */
-    public void tackOrGybe(int windDirection) {
-        double headingDif = (360 + heading - windDirection) % 360;
-        finalHeading = heading;
-        if (headingDif < 90) {      // Tack counter-clockwise
-            finalHeading = windDirection + 360 - headingDif;
-            addHeading = false;
-        } else if (headingDif > 270 && headingDif < 360) { // Tack clockwise
-            finalHeading = windDirection + 360 - headingDif;
-            addHeading = true;
-        } else if (headingDif > 90 && headingDif < 180) {   // Gybe clockwise
-            finalHeading = windDirection + 180 + (180 - headingDif);
-            addHeading = true;
-        } else if (headingDif < 270 && headingDif > 180) {  // Gybe counter-clockwise
-            finalHeading = windDirection + 180 - (headingDif - 180);
-            addHeading = false;
-        }
-        finalHeading = (360 + finalHeading) % 360;
-
-        if (turningThread != null && turningThread.isAlive()) {
-            stopTurnThread = true;
-            return;
-        } else {
-            stopTurnThread = false;
-        }
-        turningThread = new Thread("Boat Turning") {
-            public void run() {
-                if (addHeading) {
-                    while ((heading < finalHeading - 2 || heading > finalHeading + 2) && !stopTurnThread) {
-                        heading += HEADING_INCREMENT;
-                        if (heading > 360) {
-                            heading -= 360;
-                        }
-                        headingChanged = true;
-                        try {
-                            Thread.sleep(100);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else {
-                    while ((heading > finalHeading + 2 || heading < finalHeading - 2) && !stopTurnThread) {
-                        heading -= HEADING_INCREMENT;
-                        if (heading < 0) {
-                            heading += 360;
-                        }
-                        headingChanged = true;
-                        try {
-                            Thread.sleep(100);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        };
-
-        turningThread.start();
-    }
-
-    /**
-     * Increments or decrements the boat heading by a set amount (currently 3 degrees but default)
-     * towards or away from the current wind direction based on the command upwind, or downwind.
-     * @param windDirection The current direction that the wind is coming from
-     * @param upwind Whether to increment the heading towards (true) or away
-     *               from (false) the current wind direction
-     */
-    public void updateHeading(int windDirection, boolean upwind) {
-        stopTurnThread = true;
-
-        double headingMinusWind = (360 + heading - windDirection) % 360;
-        if (upwind) {   // turning upwind
-            downwindMemory = false;
-            if (upwindMemory && heading == windDirection) {
-                if (plusMemory) {
-                    heading += HEADING_INCREMENT;
-                } else {
-                    heading -= HEADING_INCREMENT;
-                }
-                upwindMemory = false;
-            }
-            if (headingMinusWind > 180) {
-                heading += HEADING_INCREMENT;
-                upwindMemory = true;
-                plusMemory = true;
-            } else {
-                heading -= HEADING_INCREMENT;
-                upwindMemory = true;
-                plusMemory = false;
-            }
-        } else {        // turning downwind
-
-            upwindMemory = false;
-            if (downwindMemory && heading == windDirection) {
-                if (plusMemory) {
-                    heading += HEADING_INCREMENT;
-                } else {
-                    heading -= HEADING_INCREMENT;
-                }
-                downwindMemory = false;
-            }
-            if (headingMinusWind > 180) {
-                heading -= HEADING_INCREMENT;
-                downwindMemory = true;
-                plusMemory = false;
-            } else {
-                heading += HEADING_INCREMENT;
-                downwindMemory = true;
-                plusMemory = true;
-            }
-        }
-        if (heading > 359) {
-            heading -= 360;
-        } else if (heading < 0) {
-            heading += 360;
-        }
-        this.headingChanged = true;
-    }
-
-    public void setHeadingChangedToFalse() {
-        this.headingChanged = false;
-    }
-
-
-    /**
-     * Converts and then returns current boat speed (originally in mm/sec) in knots.
-     * @return boat speed in knots
-     */
-    public double getSpeedInKnots() {
-        double val = speed * 1.9438444924574 / 1000;
-        DecimalFormat df = new DecimalFormat("#.#");
-        df.setRoundingMode(RoundingMode.CEILING);
-        return Double.valueOf(df.format(val));
+    public String toString(){
+        return boatName;
     }
 
     public int getTargetMarkIndex() {

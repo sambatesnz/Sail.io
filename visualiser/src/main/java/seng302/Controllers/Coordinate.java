@@ -63,7 +63,6 @@ public final class  Coordinate {
         }
     }
 
-
     /**
      * Zooming in decreases zoom value until a maximum zoom is reached
      */

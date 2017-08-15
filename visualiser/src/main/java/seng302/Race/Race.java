@@ -1,12 +1,17 @@
 package seng302.Race;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.scene.paint.Color;
 import seng302.RaceObjects.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
@@ -20,7 +25,7 @@ public class Race {
     private Map<Integer, Mark> marks;
     // Changing list of boats to hashmap. where key is boat SourceID, as retrieved from the xml message
 //    private List<Boat> boats;
-    private Map<Integer, Boat> boats;
+    private ObservableMap<Integer, Boat> boats;
     private List<Boat> finishedBoats;
     private List<Mark> boundaries;
     private List<Leg> courseOrder;
@@ -38,6 +43,7 @@ public class Race {
     private long currentTime;
     private Mark viewMin;
     private Mark viewMax;
+    private SimpleIntegerProperty connectedToServer = new SimpleIntegerProperty(0);
 
     private boolean raceXMLReceived;
 
@@ -46,6 +52,9 @@ public class Race {
     private boolean receivedRaceXML;
     private boolean viewReady;
     private boolean hasRegatta;
+    private int clientSourceId;
+    public ObservableList<Boat> boatsObs;
+    private SimpleStringProperty timeToStart;
 
 
     /**
@@ -59,6 +68,21 @@ public class Race {
         MarkStrings = FXCollections.observableArrayList();
         this.receivedRaceXML = false;
         hasRegatta = false;
+        this.clientSourceId = 0;
+        boatsObs = FXCollections.observableArrayList();
+        timeToStart = new SimpleStringProperty();
+    }
+
+    public int isConnectedToServer() {
+        return connectedToServer.get();
+    }
+
+    public SimpleIntegerProperty connectedToServerProperty() {
+        return connectedToServer;
+    }
+
+    public void setConnectedToServer(int connectedToServer) {
+        this.connectedToServer.set(connectedToServer);
     }
 
     public boolean isRaceXMLReceived() {
@@ -85,6 +109,9 @@ public class Race {
         return hasRegatta;
     }
 
+    public ObservableList<Boat> getBoatsObs() {
+        return boatsObs;
+    }
 
     public Mark getMapCenter() {
         return mapCenter;
@@ -245,7 +272,21 @@ public class Race {
      * @param expectedStartTime The time that the race is expected to start
      */
     public void setExpectedStartTime(long expectedStartTime) {
+        long raceTime;
         this.expectedStartTime = expectedStartTime;
+        int raceHours = 0;
+        int raceMinutes = 0;
+        int raceSeconds = 0;
+        raceTime = getExpectedStartTime() - getCurrentTime();
+
+        raceHours = (int) TimeUnit.MILLISECONDS.toHours(raceTime);
+        raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(raceTime) -
+            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(raceTime)));
+        raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceTime) -
+            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
+
+
+        timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
     }
 
     /**
@@ -308,8 +349,9 @@ public class Race {
      */
     public List<Boat> getBoats() {
         if (!raceReady){
-            return new ArrayList<>();
+            return FXCollections.observableList(new ArrayList<>());
         } else {
+            //return boats.values();
             return new ArrayList<>(boats.values());
         }
     }
@@ -360,14 +402,15 @@ public class Race {
     }
 
     public void setBoats(Map<Integer, Boat> boats) {
-        Map<Integer, Boat> actualBoats = new HashMap<>();
+        ObservableMap<Integer, Boat> participatingBoats = FXCollections.observableHashMap();
         for (int i = 0; i < participants.size(); i++) {
             Integer boatId = participants.get(i);
             Boat boat = boats.get(boatId);
             boat.setColour(Color.valueOf(colourList.get(i)));
-            actualBoats.put(boatId, boat);
+            participatingBoats.put(boatId, boat);
         }
-        this.boats = actualBoats;
+        this.boats = participatingBoats;
+        boatsObs.setAll(participatingBoats.values());
     }
 
     public boolean boatsReady(){
@@ -386,7 +429,7 @@ public class Race {
         return boundaries;
     }
 
-    public Map<Integer, Boat> getBoatsMap() {
+    public ObservableMap<Integer, Boat> getBoatsMap() {
         return boats;
     }
 
@@ -401,4 +444,21 @@ public class Race {
     public void setViewReady(boolean viewReady) {
         this.viewReady = viewReady;
     }
+
+    public void setClientSourceId(int clientSourceId) {
+        this.clientSourceId = clientSourceId;
+    }
+
+    public int getClientSourceId(){
+        return this.clientSourceId;
+    }
+
+    public String getTimeToStart() {
+        return timeToStart.get();
+    }
+
+    public SimpleStringProperty timeToStartProperty() {
+        return timeToStart;
+    }
+
 }
