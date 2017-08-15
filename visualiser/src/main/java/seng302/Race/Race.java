@@ -1,5 +1,7 @@
 package seng302.Race;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,7 +44,7 @@ public class Race {
     private long currentTime;
     private Mark viewMin;
     private Mark viewMax;
-    private boolean connectedToServer = false;
+    private SimpleIntegerProperty connectedToServer = new SimpleIntegerProperty(0);
 
     private boolean raceXMLReceived;
 
@@ -72,12 +74,16 @@ public class Race {
         timeToStart = new SimpleStringProperty();
     }
 
-    public boolean isConnectedToServer() {
+    public int isConnectedToServer() {
+        return connectedToServer.get();
+    }
+
+    public SimpleIntegerProperty connectedToServerProperty() {
         return connectedToServer;
     }
 
-    public void setConnectedToServer(boolean connectedToServer) {
-        this.connectedToServer = connectedToServer;
+    public void setConnectedToServer(int connectedToServer) {
+        this.connectedToServer.set(connectedToServer);
     }
 
     public boolean isRaceXMLReceived() {

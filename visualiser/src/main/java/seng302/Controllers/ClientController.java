@@ -19,7 +19,7 @@ public class ClientController {
      * Starts a race and tries to establish connection to a server
      * @return True if the client connects to the server, false otherwise.
      */
-    public boolean startClient() throws InterruptedException {
+    public void startClient() throws InterruptedException {
 
         try {
             race = new Race();
@@ -30,17 +30,16 @@ public class ClientController {
             });
             serverThread.start();
         }catch (Exception e){
-            return false;
+            System.out.println("WAT");
         }
         System.out.println("race ready = "+ race.isConnectedToServer());
 
         long startTime = System.currentTimeMillis();
-        while(!race.isConnectedToServer()&&(System.currentTimeMillis()-startTime)<3000)
-        {
-            System.out.println(race.isConnectedToServer());
-            Thread.sleep(10);
-        }
-        return race.isConnectedToServer();
+//        while(!race.isConnectedToServer()&&(System.currentTimeMillis()-startTime)<3000)
+//        {
+//            System.out.println(race.isConnectedToServer());
+//            Thread.sleep(10);
+//        }
     }
 
     public Race getRace() {

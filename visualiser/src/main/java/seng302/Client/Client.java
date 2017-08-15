@@ -122,13 +122,14 @@ public class Client {
             System.out.println("Connected.");
             streamInput = new BufferedInputStream(clientSocket.getInputStream());
             streamOutput = new BufferedOutputStream(clientSocket.getOutputStream());
-            race.setConnectedToServer(true);
+            race.setConnectedToServer(1);
 
             BinaryMessage rrm = new RaceRegistrationMessage(RaceRegistrationType.PARTICIPATE);
             streamOutput.write(rrm.createMessage());
             streamOutput.flush();
         }
         catch (IOException e) {
+            race.setConnectedToServer(2);
             e.printStackTrace();
         }
 

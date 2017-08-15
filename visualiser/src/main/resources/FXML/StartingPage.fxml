@@ -21,5 +21,6 @@
       <Text layoutX="346.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Like the song)" />
       <Text layoutX="4.0" layoutY="593.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Developed by Full Mast" />
       <Text layoutX="297.0" layoutY="328.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IP:" />
+      <Label fx:id="statusLbl" alignment="CENTER" layoutX="309.0" layoutY="379.0" prefHeight="15.0" prefWidth="171.0" />
    </children>
 </AnchorPane>

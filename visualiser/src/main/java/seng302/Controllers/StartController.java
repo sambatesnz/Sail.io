@@ -1,10 +1,14 @@
 package seng302.Controllers;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import seng302.Client.Client;
@@ -20,6 +24,7 @@ public class StartController {
     private Button connectBtn;
     private Stage primaryStage;
     @FXML private TextField ipField;
+    @FXML private Label statusLbl;
 
     public StartController() {
 //        this.primaryStage = mainStage;
@@ -34,6 +39,7 @@ public class StartController {
     @FXML
     public void initialize(){
         ipField.setText("localhost:4941");
+        statusLbl.setText("");
     }
 
 
@@ -44,11 +50,37 @@ public class StartController {
      */
     @FXML
     public void connect() throws IOException, InterruptedException {
-        System.out.println("connect");
+        System.out.println("wynowork");
+        Platform.runLater(
+            () -> {
+                statusLbl.setText("connecting...");
+            }
+        );
         ClientController clientController = new ClientController(getIp(), getPort());
-        boolean ready = clientController.startClient();
-        if (ready){
+        clientController.startClient();
             Race race = clientController.getRace();
+
+            race.connectedToServerProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue.equals(1)) {
+                    Platform.runLater(
+                        () -> {
+                            try {
+                                newConnection(race);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    );
+                } else if (newValue.equals(2)) {
+                    statusLbl.setText("Could not connect");
+                }
+            });
+        }
+
+    private void newConnection(Race race) throws InterruptedException, IOException {
+
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/Lobby.fxml"));
 
             LobbyController lobbyController = new LobbyController(race);
@@ -62,10 +94,6 @@ public class StartController {
 
             lobbyController.initialiseTable();
             lobbyController.initialiseTime();
-        }
-        else{
-            System.out.println("no connecterino");
-        }
 
     }
 
