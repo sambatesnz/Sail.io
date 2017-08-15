@@ -1,6 +1,7 @@
 package seng302.Client.Messages;
 
 
+import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketParsing.PacketParserUtils;
 import seng302.Race.Race;
 
@@ -12,7 +13,7 @@ import seng302.Race.Race;
 public class RaceStatusMessage {
     private long currentTime;
     private long raceID;
-    private int raceStatus;
+    private RaceStatus raceStatus;
     private long expectedStartTime;
     private double windDirection;
     private int windSpeed;
@@ -32,7 +33,8 @@ public class RaceStatusMessage {
     public RaceStatusMessage(byte[] bytes, Race race) {
         currentTime = PacketParserUtils.byteArrayToLong(bytes, 1, 6);
         raceID = PacketParserUtils.byteArrayToLong(bytes, 7, 4);
-        raceStatus = PacketParserUtils.byteArrayToInt(bytes, 11, 1);
+        int raceStatus = PacketParserUtils.byteArrayToInt(bytes, 11, 1);
+        this.raceStatus = RaceStatus.getStatus(raceStatus);
         expectedStartTime = PacketParserUtils.byteArrayToLong(bytes, 12, 6);
         windDirection = PacketParserUtils.byteArrayToInt(bytes, 18, 2) * 360 / 65536.0;
         windSpeed = PacketParserUtils.byteArrayToInt(bytes, 20, 2);

@@ -2,6 +2,7 @@ package seng302.PacketGeneration.RaceStatusGeneration;
 
 import org.junit.Test;
 import seng302.PacketGeneration.PacketUtils;
+import seng302.PacketGeneration.RaceStatus;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,6 +1,7 @@
 package seng302.Client.Messages;
 
 import seng302.PacketGeneration.MessageType;
+import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketParsing.PacketParserUtils;
 import seng302.PacketParsing.XMLParser;
 import seng302.Race.Race;
@@ -86,8 +87,7 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    if (race.getRaceStatus() == 1) {
-                        System.out.println("Race hasnt started so updating boats...");
+                    if (race.getRaceStatus() == RaceStatus.WARNING) {
                         race.setBoats(xmlParser.getBoats());
                         boatsSet = true;
                     }

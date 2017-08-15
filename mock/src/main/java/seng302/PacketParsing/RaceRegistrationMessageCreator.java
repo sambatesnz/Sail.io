@@ -7,6 +7,7 @@ import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.PacketUtils;
 import seng302.PacketGeneration.ParticipantConfirmationGeneration.ConfirmationStatus;
 import seng302.PacketGeneration.ParticipantConfirmationGeneration.ParticipantConfirmationMessage;
+import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 import seng302.RaceObjects.Boat;
 
@@ -40,7 +41,7 @@ public class RaceRegistrationMessageCreator extends ServerSideMessageFactory {
     public void updateRace(IServerData raceData) {
         if (raceRegistrationType ==  RaceRegistrationType.PARTICIPATE){
             BinaryMessage confirmationMessage;
-            if (raceData.getRace().getRaceStatus() == 1) {
+            if (raceData.getRace().getRaceStatus() == RaceStatus.WARNING) {
                 Boat boat =  raceData.getRace().addBoat();
                 System.out.println(boat.getSourceId());
 

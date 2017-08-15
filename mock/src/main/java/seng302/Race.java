@@ -3,6 +3,7 @@ package seng302;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketParsing.XMLParser;
 import seng302.Polars.PolarUtils;
 import seng302.RaceObjects.Boat;
@@ -39,7 +40,7 @@ public class Race {
     private Boolean windSpeedChanged = false;
     private int raceID;
     private char raceType;
-    private int raceStatus = 1;
+    private RaceStatus raceStatus = RaceStatus.WARNING;
     private ObservableList<Boat> currentOrder;
     private ObservableList<String> positionStrings;
     private Date startingTime;
@@ -216,11 +217,11 @@ public class Race {
         return raceType;
     }
 
-    public void setRaceStatus(int raceStatus) {
+    public void setRaceStatus(RaceStatus raceStatus) {
         this.raceStatus = raceStatus;
     }
 
-    public int getRaceStatus() {
+    public RaceStatus getRaceStatus() {
         return raceStatus;
     }
 
@@ -465,11 +466,11 @@ public class Race {
     public void updateRaceInfo(){
         //this.timeToStart = startingTime.getTime() - new Date().getTime();
         if (startingTime.getTime() < new Date().getTime()){
-            setRaceStatus(3);
+            raceStatus = RaceStatus.STARTED;
         }else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS){
-            setRaceStatus(2);
+            raceStatus = RaceStatus.PREP;
         }else {
-            setRaceStatus(1);
+            raceStatus = RaceStatus.WARNING;
         }
     }
 
