@@ -56,6 +56,7 @@ public class Server {
             }
             handleReceivedMessages();
             sendSingleMessages();
+            Thread.sleep(1);
 
         }
     }

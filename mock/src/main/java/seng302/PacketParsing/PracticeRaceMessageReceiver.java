@@ -23,5 +23,6 @@ public class PracticeRaceMessageReceiver extends ServerSideMessageFactory {
         long t = date.getTimeInMillis();
         int oneMinInMillis = 60000;
         race.getRace().setStartingTime(new Date(t + oneMinInMillis));
+        race.getRace().setRaceTime(new Date(15 * 60));
     }
 }

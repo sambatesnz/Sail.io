@@ -44,8 +44,9 @@ public class Race {
     private ObservableList<Boat> currentOrder;
     private ObservableList<String> positionStrings;
     private Date startingTime;
+    private Date raceTime;
     private SimpleStringProperty timeToStart;
-    public boolean finished = false;
+    private boolean finished = false;
     private static final int TEN_KNOTS = 5145;
     private static final int FORTY_KNOTS = 20577;
     private static final int FIVE_KNOTS = 2573;
@@ -118,9 +119,16 @@ public class Race {
         this.startingTime = startingTime;
     }
 
+    public void setRaceTime(Date raceTime) {
+        this.raceTime = raceTime;
+    }
+
+    public Date getRaceTime() {
+        return raceTime;
+    }
+
     /**
      * Setter for finishedBoat, mainly to allow for testing.
-     *
      * @param finishedBoats set the finished list of boats
      */
     public void setFinishedBoats(List<Boat> finishedBoats) {
@@ -129,7 +137,6 @@ public class Race {
 
     /**
      * Setter for current order, mainly to allow for testing.
-     *
      * @param currentOrder sets the current order of boats
      */
     public void setCurrentOrder(ObservableList<Boat> currentOrder) {
@@ -138,7 +145,6 @@ public class Race {
 
     /**
      * Getter for finished boat list.
-     *
      * @return finished boat list.
      */
     public List<Boat> getFinishedBoats() {
@@ -311,7 +317,6 @@ public class Race {
 
     /**
      * Creates an ArrayList of boats competing in the current race
-     *
      * @return The ArrayList of boats
      */
     private ArrayList<Boat> getContestants() {
@@ -327,7 +332,6 @@ public class Race {
 
     /**
      * Reads the course.xml file to get the attributes of things on the course
-     *
      * @param fileName the filename to parse
      */
     private void parseCourseXML(String fileName) {
@@ -371,7 +375,6 @@ public class Race {
 
     /**
      * Reads the Race.xml file to get the attributes of things of the race.
-     *
      * @param fileName the filename to parse
      */
     private void parseRaceXML(String fileName) {
@@ -384,11 +387,6 @@ public class Race {
         }
     }
 
-    /**
-     * Get the gates
-     *
-     * @return the gates
-     */
     public List<CompoundMark> getGates() {
         return gates;
     }
@@ -397,7 +395,7 @@ public class Race {
         final long ONE_MINUTE_IN_MILLIS=60000;
         TimeZone tz = TimeZone.getTimeZone("NZST");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); // Quoted "Z" to indicate UTC, no timezone offset
-         df.setTimeZone(tz);
+        df.setTimeZone(tz);
         return df.format(startingTime);
     }
 
