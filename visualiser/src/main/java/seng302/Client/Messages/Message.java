@@ -86,17 +86,11 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    System.out.println("Race hasnt started so updating boats...");
-                    race.setBoats(xmlParser.getBoats());
-                    boatsSet = true;
-
                     if (!race.started()) {
-
+                        System.out.println("Race hasnt started so updating boats...");
+                        race.setBoats(xmlParser.getBoats());
+                        boatsSet = true;
                     }
-                    if (!race.isRaceReady()) {
-
-                    }
-
                     break;
                 case RACE:
                     race.setParticipants(xmlParser.getRaceParticipants());
