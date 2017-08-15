@@ -34,12 +34,8 @@ public class Client {
         streamOutput = null;
         AppConfig config = new AppConfig();
         this.serverName = ipAddr;
-        System.out.println("ip = "+this.serverName);
         this.port = port;
-        System.out.println(this.port);
 
-//        serverName = config.getProperty(AppConfig.DATA_HOST_NAME);
-//        port = Integer.parseInt(config.getProperty(AppConfig.DATA_HOST_PORT));
         try {
             host = new URL(serverName).getHost();
         } catch (MalformedURLException e) {

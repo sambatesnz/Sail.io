@@ -86,4 +86,8 @@ public class Server {
     public void removeConnection(Socket s) {
         connectionStore.removeConnection(s);
     }
+
+    public int connectionSize() {
+        return connectionStore.connectionAmount();
+    }
 }

@@ -50,7 +50,6 @@ public class StartController {
      */
     @FXML
     public void connect() throws IOException, InterruptedException {
-        System.out.println("wynowork");
         Platform.runLater(
             () -> {
                 statusLbl.setText("connecting...");

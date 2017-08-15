@@ -69,7 +69,7 @@ public class Message {
                 break;
             case RACE_START_STATUS:
                 break;
-            case BOAT_LOCATION:                                 //Boat Location
+            case BOAT_LOCATION:
                 new LocationMessage(body, race);
                 break;
             case PARTICIPANT_CONFIRMATION:
@@ -78,7 +78,7 @@ public class Message {
         }
     }
 
-    public void passXML(String xmlString, MessageType subType) {
+    private void passXML(String xmlString, MessageType subType) {
         try {
             XMLParser xmlParser = new XMLParser(xmlString);
             switch(subType) {
@@ -100,10 +100,8 @@ public class Message {
                     race.setMarks(xmlParser.getMarks());
                     race.setGates(compoundMarks);
                     race.setCourseOrder(xmlParser.getCourseOrder());
-//                    startTime = xmlParser.getRaceStartTime();
                     race.setStartTime(xmlParser.getRaceStartTime());
                     race.setRaceXMLReceived(true);
-                    //race.setViewParams();
                     race.setViewReady(true);
                     raceSet = true;
                     break;
