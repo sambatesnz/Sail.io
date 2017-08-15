@@ -228,8 +228,7 @@ public class RaceController {
 
                 if (race.isRaceReady() && boatLocationDataInitialised) {
                     updateBoatPositions();
-                    //updateBoatPaths();
-
+                    updateBoatPaths();
                 }
                 viewUpdateCount++;
 
@@ -313,15 +312,14 @@ public class RaceController {
         int skipAmount = 15;
         for (int i = 0; i < boats.size(); i++){
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
-                if (viewUpdateCount % skipAmount == 1) {
+                if (viewUpdateCount % skipAmount == 0) {
                     if (absolutePaths.get(i).size() > pathPoints) {
                         paths.get(i).getElements().remove(1);
                         absolutePaths.get(i).remove(0);
                     }
+                    absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+                    paths.get(i).getElements().add(new LineTo());
                 }
-
-                absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-                paths.get(i).getElements().add(new LineTo());
                 lastHeadings.set(i, race.getBoats().get(i).getHeading());
 
                 ((MoveTo) paths.get(i).getElements().get(0))
@@ -370,10 +368,11 @@ public class RaceController {
     private void initialiseBoatLocation() {
         if(!boatLocationDataInitialised && boatMetaDataInitialised) {
             boolean knowAllLocations = true;
+            paths = new ArrayList<>();
+            lastHeadings = new ArrayList<>();
             for (int i = 0; i < race.getBoats().size(); i++) {
                 boolean knowsLocation = race.getBoats().get(i).isKnowsBoatLocation();
                 if (knowsLocation) {
-                    paths = new ArrayList<>();
                     Path path = new Path();
                     path.setStroke(race.getBoats().get(i).getColour());
                     path.getElements().add(new MoveTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
@@ -381,7 +380,6 @@ public class RaceController {
                     paths.add(path);
                     absolutePaths.add(new ArrayList<>());
 
-                    lastHeadings = new ArrayList<>();
 
                     lastHeadings.add(race.getBoats().get(i).getHeading());
                 } else {

@@ -16,8 +16,8 @@ import java.io.IOException;
 
 public class StartController {
 
-    private Button connectBtn;
-    private Stage primaryStage;
+    @FXML private Button connectBtn;
+    @FXML private Stage primaryStage;
     @FXML private TextField ipField;
     @FXML private Label statusLbl;
 
