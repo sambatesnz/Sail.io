@@ -13,8 +13,8 @@ public class PracticeRaceMessageReceiver extends ServerSideMessageFactory {
     private byte meaning;
     private int boatSourceId;
 
-    private static final byte START = 0;
-    private static final byte END = 1;
+    public static final byte START = 0;
+    public static final byte END = 1;
 
     public PracticeRaceMessageReceiver(byte[] packet) {
         super(packet);
@@ -37,5 +37,9 @@ public class PracticeRaceMessageReceiver extends ServerSideMessageFactory {
             race.getRace().setPracticeRace(false);
             Message.resetData();
         }
+    }
+
+    public byte getMeaning() {
+        return meaning;
     }
 }

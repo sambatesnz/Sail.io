@@ -4,6 +4,7 @@ import seng302.DataGeneration.IServerData;
 import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 import seng302.PacketParsing.*;
+import seng302.Server.ConnectionListener;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -14,8 +15,10 @@ import java.util.Date;
 public class RaceHandler {
 
     private IServerData race;
+    private ConnectionListener connectionListener;
 
-    public RaceHandler(IServerData race) {
+    public RaceHandler(IServerData race, ConnectionListener connectionListener) {
+        this.connectionListener = connectionListener;
         this.race = race;
     }
 
@@ -37,6 +40,11 @@ public class RaceHandler {
                 break;
             case PRACTICE:
                 parser = new PracticeRaceMessageReceiver(packet);
+                if (((PracticeRaceMessageReceiver) parser).getMeaning() == PracticeRaceMessageReceiver.START) {
+                    connectionListener.setListening(false);
+                } else {
+                    connectionListener.setListening(true);
+                }
                 break;
         }
         return parser;

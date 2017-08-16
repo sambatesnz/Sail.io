@@ -29,8 +29,8 @@ public class Server {
     private void startup(int port) throws Exception {
         connectionStore = new ConnectionStore(mockRace);
         receivedPackets = new LinkedBlockingQueue<>();
-        this.connectionListener = new ConnectionListener(connectionStore, port, this);
-        raceHandler = new RaceHandler(this.mockRace);
+        connectionListener = new ConnectionListener(connectionStore, port, this);
+        raceHandler = new RaceHandler(this.mockRace, connectionListener);
         startEventLoop();
     }
 

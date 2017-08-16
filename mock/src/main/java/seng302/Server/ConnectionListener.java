@@ -11,6 +11,7 @@ public class ConnectionListener extends Thread {
     private ConnectionStore connectionStore;
     private final ServerSocket listener;
     private Server server;
+    private boolean listening = true;
 
     public ConnectionListener(ConnectionStore connectionStore, int port, Server server) throws IOException {
         this.connectionStore = connectionStore;
@@ -25,6 +26,10 @@ public class ConnectionListener extends Thread {
             Socket socket = null;
             try {
                 socket = listener.accept();
+                if (!listening) {
+                    socket.close();
+                    continue;
+                }
                 System.out.println("Connection from " + socket);
                 int socketID = connectionStore.addSocket(socket);
                 new ClientConnection(server, socket, socketID);
@@ -37,5 +42,9 @@ public class ConnectionListener extends Thread {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setListening(boolean listening) {
+        this.listening = listening;
     }
 }
