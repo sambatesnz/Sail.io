@@ -661,6 +661,9 @@ public class RaceController {
             resetZoom();
             Coordinate.setTrackingBoat(false);
         } else {
+            if (race.getBoatsMap() == null) {
+                return;
+            }
             boatToFollow = race.getBoatsMap().get(race.getClientSourceId());
             Coordinate.setZoom(zoomLevel);
             Coordinate.setTrackingBoat(true);

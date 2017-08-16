@@ -35,33 +35,37 @@ public class ClientController {
     }
 
     private void checkPracticeRace() {
-        try {
-            client.sendPracticeMessage(new PracticeMessage(PracticeMessage.START));
-            Timer raceTimer = new Timer();
-            raceTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    try {
-                        client.sendPracticeMessage(new PracticeMessage(PracticeMessage.END, race.getBoats().get(0).getSourceId()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Platform.runLater(
-                            () -> {
-                                Coordinate.setTrackingBoat(false);
-                                race.finishRace();
-                                race.setRaceReady(false);
-                                Message.resetData();
-                                client.disconnect();
-                                primaryStage.setScene(startScene);
-                            }
-                    );
-
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    client.sendPracticeMessage(new PracticeMessage(PracticeMessage.START));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }, 1000 * 30);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            }
+        }, 1000);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    client.sendPracticeMessage(new PracticeMessage(PracticeMessage.END, race.getBoats().get(0).getSourceId()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(
+                        () -> {
+                            Coordinate.setTrackingBoat(false);
+                            race.finishRace();
+                            race.setRaceReady(false);
+                            Message.resetData();
+                            client.disconnect();
+                            primaryStage.setScene(startScene);
+                        }
+                );
+
+            }
+        }, 1000 * 9);
     }
 
     /**

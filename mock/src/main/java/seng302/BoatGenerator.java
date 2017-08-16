@@ -11,13 +11,12 @@ public class BoatGenerator {
     private static int LOWEST_SOURCE_ID = 101;
     private int sourceId;
 
-    public BoatGenerator () {
+    public BoatGenerator() {
         this.sourceId = LOWEST_SOURCE_ID;
     }
 
     public Boat generateBoat(){
         Boat boat = new Boat("Kevin" + String.valueOf(sourceId), "KVN", sourceId, "kevin land");
-//        Mark mark = new Mark();
         Mark mark = new Mark(57.670335, 11.8279330);
         boat.setMark(mark);
         sourceId++;
@@ -27,5 +26,4 @@ public class BoatGenerator {
     public int getLowestSourceId(){
         return LOWEST_SOURCE_ID;
     }
-
 }

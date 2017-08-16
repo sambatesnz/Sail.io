@@ -80,6 +80,4 @@ public class RaceStatusMessage {
         race.setRaceStatus(raceStatus);
         race.setCurrentTime(currentTime);
     }
-
-
 }

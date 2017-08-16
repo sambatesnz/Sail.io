@@ -41,7 +41,9 @@ public class RaceRegistrationMessageCreatorReceiver extends ServerSideMessageFac
     public void updateRace(IServerData raceData) {
         if (raceRegistrationType ==  RaceRegistrationType.PARTICIPATE){
             BinaryMessage confirmationMessage;
-            if (raceData.getRace().getRaceStatus() == RaceStatus.WARNING) {
+            RaceStatus status = raceData.getRace().getRaceStatus();
+            System.out.println("STATUS: " + status);
+            if (status == RaceStatus.WARNING) {
                 Boat boat = raceData.getRace().addBoat();
                 System.out.println("Adding boat with sourceId: " + boat.getSourceId());
 

@@ -2,6 +2,7 @@ package seng302.PacketParsing;
 
 import seng302.Client.Messages.Message;
 import seng302.DataGeneration.IServerData;
+import seng302.PacketGeneration.RaceStatus;
 import seng302.Server.Delegator;
 import seng302.UserInputController.BoatAction;
 
@@ -38,10 +39,11 @@ public class PracticeRaceMessageReceiver extends ServerSideMessageFactory {
         int oneMinInMillis = 60000;
         if (this.meaning == START) {
             System.out.println("==============================UPDATING THE RACE TIME TO 1 MIN==============================");
-            race.getRace().setStartingTime(new Date(t + oneMinInMillis));
+            race.getRace().setStartingTime(new Date(t + oneMinInMillis + 1000*5));
+            race.getRace().setRaceStatus(RaceStatus.ABANDONED);
         } else if (this.meaning == END) {
-            System.out.println("==============================UPDATING THE RACE TIME TO 3 MIN==============================");
-            race.getRace().setStartingTime(new Date(t + oneMinInMillis*3));
+            System.out.println("==============================UPDATING THE RACE TIME TO 5 MIN==============================");
+            race.getRace().setStartingTime(new Date(t + oneMinInMillis*5));
             race.getRace().removeBoat(boatSourceId);
             Message.resetData();
         }
