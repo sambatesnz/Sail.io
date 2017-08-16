@@ -652,7 +652,8 @@ public class RaceController {
     }
 
     /**
-     * resets the view back to its original state
+     * Resets the view back to its original state.
+     * If the boat map is null, it has no effect.
      */
     public void resetViewButtonPressed() {
         if (followingBoat) {

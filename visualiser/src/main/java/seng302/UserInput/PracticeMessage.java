@@ -34,6 +34,7 @@ public class PracticeMessage  extends BinaryMessage {
         this.boatSourceId = PacketGenerationUtils.intToFourBytes(boatSourceid);
     }
 
+
     @Override
     public byte[] getBody() {
         practiceRaceMessage[0] = meaning;

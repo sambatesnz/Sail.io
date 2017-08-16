@@ -84,6 +84,10 @@ public class Race {
         }
     }
 
+    /**
+     * When called, removes the boat from the race, both the current boats, and the boats that have finished.
+     * @param sourceId the source id of the boat to be removed.
+     */
     public void removeBoat(int sourceId) {
         boats.removeIf(boat -> boat.getSourceId() == sourceId);
         finishedBoats.removeIf(boat -> boat.getSourceId() == sourceId);
