@@ -158,7 +158,6 @@ public class RaceController {
 
         race.finishedProperty().addListener((observable, oldValue, raceFinished) -> {
             if (raceFinished) {
-                System.out.println("STOPpING RACE CONTROLLER LOOP");
                 stopRaceListener();
             }
         });

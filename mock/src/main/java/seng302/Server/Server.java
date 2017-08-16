@@ -40,7 +40,6 @@ public class Server {
         int numConnections = 0;
 
         while (true) {
-
             if (numConnections < connectionStore.connectionAmount()){
                 System.out.println("new connection detected, resending the XML Packets.");
                 this.mockRace.addXMLPackets();
@@ -57,13 +56,11 @@ public class Server {
             handleReceivedMessages();
             sendSingleMessages();
             Thread.sleep(1);
-
         }
     }
 
     private void handleReceivedMessages() {
         if (!receivedPackets.isEmpty()) {
-            System.out.println("Packet Received - now need to parse it!");
             byte[] packets = receivedPackets.remove();
             raceHandler.updateRace(packets);
         }

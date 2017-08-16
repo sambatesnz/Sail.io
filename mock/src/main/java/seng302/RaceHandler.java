@@ -39,7 +39,6 @@ public class RaceHandler {
                 parser = new PracticeRaceMessageReceiver(packet);
                 break;
         }
-        System.out.println("Type: " + type);
         return parser;
     }
 }

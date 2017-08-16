@@ -92,7 +92,6 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    System.out.println("passXML, " + race.getRaceStatus());
                     if (race.getRaceStatus() == RaceStatus.WARNING) {
                         race.setBoats(xmlParser.getBoats());
                         boatsSet = true;

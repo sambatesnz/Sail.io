@@ -401,7 +401,6 @@ public class Race {
                     // Sorts the boats in order. Attempts by leg it's doing first, then by time to complete last leg from start.
 
                     if (boat.getCurrentLegIndex() == legs.size()) {
-//                        System.out.println(boat.getName() + " finished race!");
                         numFinishers++;
                         boat.setSpeed(0);
                         finishedBoats.add(boat);
