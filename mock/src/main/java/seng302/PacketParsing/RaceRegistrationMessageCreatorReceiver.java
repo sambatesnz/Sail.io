@@ -39,6 +39,7 @@ public class RaceRegistrationMessageCreatorReceiver extends ServerSideMessageFac
 
     @Override
     public void updateRace(IServerData raceData) {
+        if (raceData.getRace().isPracticeRace()) return;
         if (raceRegistrationType ==  RaceRegistrationType.PARTICIPATE){
             BinaryMessage confirmationMessage;
             RaceStatus status = raceData.getRace().getRaceStatus();

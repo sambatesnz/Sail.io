@@ -63,9 +63,8 @@ public class ClientController {
                             primaryStage.setScene(startScene);
                         }
                 );
-
             }
-        }, 1000 * 9);
+        }, 1000 * 80);
     }
 
     /**

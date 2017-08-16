@@ -40,11 +40,12 @@ public class PracticeRaceMessageReceiver extends ServerSideMessageFactory {
         if (this.meaning == START) {
             System.out.println("==============================UPDATING THE RACE TIME TO 1 MIN==============================");
             race.getRace().setStartingTime(new Date(t + oneMinInMillis + 1000*5));
-            race.getRace().setRaceStatus(RaceStatus.ABANDONED);
+            race.getRace().setPracticeRace(true);
         } else if (this.meaning == END) {
             System.out.println("==============================UPDATING THE RACE TIME TO 5 MIN==============================");
-            race.getRace().setStartingTime(new Date(t + oneMinInMillis*5));
+            race.getRace().setStartingTime(new Date(t + oneMinInMillis*3));
             race.getRace().removeBoat(boatSourceId);
+            race.getRace().setPracticeRace(false);
             Message.resetData();
         }
     }
