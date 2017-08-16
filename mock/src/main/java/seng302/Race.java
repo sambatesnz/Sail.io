@@ -72,7 +72,7 @@ public class Race {
         Calendar date = Calendar.getInstance();
         long t= date.getTimeInMillis();
 
-        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 3/2);
+        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 3);
 
 
         boats = new ArrayList<Boat>();
