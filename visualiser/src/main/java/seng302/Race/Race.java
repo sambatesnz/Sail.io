@@ -423,10 +423,6 @@ public class Race {
         return boats != null;
     }
 
-    /**
-     * Get the gates
-     * @return the gates
-     */
     public List<CompoundMark> getGates() {
         return gates;
     }

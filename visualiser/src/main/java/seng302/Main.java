@@ -37,7 +37,7 @@ public class Main extends Application {
             primaryStage.setMinHeight(600);
             primaryStage.setMinWidth(800);
             primaryStage.setMaximized(false);
-            primaryStage.setScene((rootScene));
+            primaryStage.setScene(rootScene);
             primaryStage.setTitle("RaceView");
             primaryStage.show();
 
@@ -48,6 +48,7 @@ public class Main extends Application {
             primaryStage.heightProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowHeightY(newValue.doubleValue()));
 
             startController.setPrimaryStage(primaryStage);
+            startController.setStartScene(rootScene);
 
         } catch (IOException ex) {
             ex.printStackTrace();

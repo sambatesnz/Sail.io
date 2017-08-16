@@ -30,6 +30,11 @@ public class Message {
     private static boolean raceSet = false;
 
 
+    public static void resetData() {
+        boatsSet = false;
+        regattaSet = false;
+        raceSet = false;
+    }
 
     /**
      * Constructor for the class. Takes an array of bytes, extracts information from the header

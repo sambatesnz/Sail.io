@@ -15,7 +15,7 @@ public class BoatActionMessageReceiver extends ServerSideMessageFactory {
 
     public BoatActionMessageReceiver(byte[] packet) {
         super(packet);
-        this.body = this.getMessageBody();
+        this.body = getMessageBody();
         this.boatAction = parseBoatAction();
         this.sourceId = parseSourceId();
     }

@@ -52,12 +52,12 @@ public class Client {
      * Handles both incoming and outgoing packets
      */
     public void processStreams() {
-        while (clientSocket != null && streamInput != null && streamOutput != null) {
+        while (clientSocket != null && clientSocket.isClosed() && streamInput != null && streamOutput != null) {
             try {
                 Thread.sleep(1);
                 nextMessage();
                 sendMessage();
-            } catch (Exception e) {
+            } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
             Arrays.fill(dataReceived, (byte)0);
@@ -108,8 +108,7 @@ public class Client {
      * Sends PracticeMessage over a socket stream indicating a practice race
      * @throws IOException if problem writing to stream
      */
-    public void sendPracticeMessage() throws IOException {
-        PracticeMessage practiceMessage = new PracticeMessage();
+    public void sendPracticeMessage(PracticeMessage practiceMessage) throws IOException {
         byte[] packetToSend = practiceMessage.createMessage();
         streamOutput.write(packetToSend);
         streamOutput.flush();

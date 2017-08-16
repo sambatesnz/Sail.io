@@ -231,7 +231,7 @@ public class RaceController {
 
                 if (sparkCounter > 100 && race.started()) {
                     sparkCounter = 0;
-                    //updateSparkLineChart(); //TODO undisable sparkline chart
+                    //updateSparkLineChart(); //TODO undisabel sparkline chart
                 }
                 sparkCounter++;
 

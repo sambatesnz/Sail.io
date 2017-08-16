@@ -22,6 +22,7 @@ public class StartController {
     private Stage primaryStage;
     @FXML private TextField ipField;
     @FXML private Label statusLbl;
+    private Scene rootScene;
 
     public StartController() {
 //        this.primaryStage = mainStage;
@@ -75,7 +76,7 @@ public class StartController {
         Platform.runLater(
                 () -> statusLbl.setText("connecting...")
         );
-        ClientController clientController = new ClientController(getIp(), getPort(), true);
+        ClientController clientController = new ClientController(getIp(), getPort(), true, primaryStage, rootScene);
         clientController.startClient();
         Race race = clientController.getRace();
 
@@ -126,6 +127,9 @@ public class StartController {
 
     }
 
+    /**
+     * Called when the user clicks the practice race start button.
+     */
     @FXML
     private void practiceClick() throws IOException {
         try {
@@ -135,19 +139,12 @@ public class StartController {
         }
     }
 
-
-
-
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
-    /**
-     * Called when the user clicks the practice race start button.
-     * Runs a server locally, which the client application automatically connects with using a message click.
-     */
-    public void practiceRace() {
-
+    public void setStartScene(Scene rootScene) {
+        this.rootScene = rootScene;
     }
 
     private String getIp() {
