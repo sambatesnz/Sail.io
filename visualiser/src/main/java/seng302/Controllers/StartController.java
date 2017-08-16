@@ -19,9 +19,9 @@ public class StartController {
 
     @FXML private Button connectBtn;
     @FXML private Button practiceBtn;
-    private Stage primaryStage;
     @FXML private TextField ipField;
     @FXML private Label statusLbl;
+    private Stage primaryStage;
     private Scene rootScene;
 
     public StartController() {

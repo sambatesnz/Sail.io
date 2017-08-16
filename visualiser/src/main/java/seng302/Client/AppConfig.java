@@ -22,7 +22,6 @@ public class AppConfig {
         InputStream input = null;
         try {
             input = getClass().getClassLoader().getResourceAsStream(CONFIG_FILE_LOCATION);
-            System.out.println(input);
             this.prop.load(input);
         } catch (IOException ex) {
             ex.printStackTrace();

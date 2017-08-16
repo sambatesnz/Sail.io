@@ -3,9 +3,9 @@ package seng302.Controllers;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -15,8 +15,6 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -24,9 +22,6 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Scale;
-import javafx.scene.transform.Translate;
-import seng302.Client.Client;
 import seng302.Race.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
@@ -113,6 +108,7 @@ public class RaceController {
     private double windowHeight = 0;
     private String ipAddr;
     private int port;
+    private AnimationTimer raceListener;
 
 
     // Sparkline variables
@@ -137,6 +133,7 @@ public class RaceController {
 
     public RaceController(Race race){
         this.race = race;
+        resetZoom();
     }
 
     /**
@@ -144,10 +141,8 @@ public class RaceController {
      */
     @FXML
     public void initialize() {
-
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
-
 
         group.getChildren().add(windArrow);
 
@@ -161,6 +156,14 @@ public class RaceController {
         initialisePositionsTable();
         enableScrolling();
 
+        race.finishedProperty().addListener((observable, oldValue, raceFinished) -> {
+            if (raceFinished) {
+                System.out.println("STOPpING RACE CONTROLLER LOOP");
+                stopRaceListener();
+            }
+        });
+
+        initialiseRaceListener();
         startRaceListener();
     }
 
@@ -197,9 +200,8 @@ public class RaceController {
         });
     }
 
-    private void startRaceListener() {
-        new AnimationTimer() {
-
+    private void initialiseRaceListener() {
+        raceListener = new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
                 rotateWindArrow();
@@ -233,11 +235,22 @@ public class RaceController {
                     sparkCounter = 0;
                     //updateSparkLineChart(); //TODO undisabel sparkline chart
                 }
+                if (race.isFinished()) {
+                    raceListener.stop();
+                }
                 sparkCounter++;
-
             }
-        }.start();
+        };
+    }
 
+
+
+    public void startRaceListener() {
+        raceListener.start();
+    }
+
+    public void stopRaceListener() {
+        raceListener.stop();
     }
 
     private void updateBoatPositions() {
@@ -450,7 +463,7 @@ public class RaceController {
             Coordinate.setViewMin(race.getViewMin().getCopy());
             Coordinate.setViewMax(race.getViewMax().getCopy());
 
-            centerOfScreen = new Boat(-1);
+            centerOfScreen = new Boat(-1, "CenterOfScreen");
             centerOfScreen.setMark(race.getMapCenter());
 
             if (!Coordinate.isTrackingBoat()) {
@@ -465,7 +478,6 @@ public class RaceController {
 
     private Mark calculateOffset(){
         Mark offset = new Mark();
-
         offset.setX(boatToFollow.getX() - race.getMapCenter().getX());
         offset.setY(boatToFollow.getY() - race.getMapCenter().getY());
         return offset;
@@ -473,6 +485,7 @@ public class RaceController {
 
     private void resetZoom() {
         boatToFollow = centerOfScreen;
+        Coordinate.setZoom(0);
     }
 
     private void updateViewLayout(){
@@ -646,7 +659,6 @@ public class RaceController {
         if (followingBoat) {
             zoomLevel = Coordinate.getZoom();
             resetZoom();
-            Coordinate.setZoom(0);
             Coordinate.setTrackingBoat(false);
         } else {
             boatToFollow = race.getBoatsMap().get(race.getClientSourceId());

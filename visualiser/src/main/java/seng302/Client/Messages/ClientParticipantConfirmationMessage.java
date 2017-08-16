@@ -18,8 +18,7 @@ public class ClientParticipantConfirmationMessage extends ClientSideMessageParse
         super(body);
         this.message = body;
         this.sourceId = parseBody();
-        System.out.println(Arrays.toString(body));
-        System.out.println("Client has SOURCE ID of " + this.sourceId);
+        System.out.println("Client SOURCE ID: " + this.sourceId);
     }
 
     private int parseBody() {

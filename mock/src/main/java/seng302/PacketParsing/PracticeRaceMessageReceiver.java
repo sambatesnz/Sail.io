@@ -12,14 +12,23 @@ import java.util.Date;
  * Tries to update the race so that it is a practice race
  */
 public class PracticeRaceMessageReceiver extends ServerSideMessageFactory {
+    private byte[] body;
     private byte meaning;
+    private int boatSourceId;
 
-    public static final byte START = 0;
-    public static final byte END = 1;
+    private static final byte START = 0;
+    private static final byte END = 1;
 
     public PracticeRaceMessageReceiver(byte[] packet) {
         super(packet);
-        this.meaning = getMessageBody()[0];
+        this.body = getMessageBody();
+        this.meaning = body[0];
+        this.boatSourceId = parseBoatSourceId();
+    }
+
+    private int parseBoatSourceId() {
+        int sourceId = PacketParserUtils.byteArrayToInt(body, 1, 4);
+        return sourceId;
     }
 
     @Override
@@ -30,11 +39,11 @@ public class PracticeRaceMessageReceiver extends ServerSideMessageFactory {
         if (this.meaning == START) {
             System.out.println("==============================UPDATING THE RACE TIME TO 1 MIN==============================");
             race.getRace().setStartingTime(new Date(t + oneMinInMillis));
-        } else {
+        } else if (this.meaning == END) {
             System.out.println("==============================UPDATING THE RACE TIME TO 3 MIN==============================");
             race.getRace().setStartingTime(new Date(t + oneMinInMillis*3));
+            race.getRace().removeBoat(boatSourceId);
             Message.resetData();
         }
-//        race.getRace().setRaceTime(new Date(15 * 60));
     }
 }

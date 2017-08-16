@@ -98,7 +98,6 @@ public class ConnectionStore {
         int socketId = socket.getPort();
 
         synchronized (socketStreams) {
-            race.getRace().removeBoat();
             System.out.println("Removing connection to " + socket);
             socketStreams.remove(socketId);
             try {

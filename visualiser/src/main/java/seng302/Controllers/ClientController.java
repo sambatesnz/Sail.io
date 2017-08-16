@@ -1,8 +1,6 @@
 package seng302.Controllers;
 
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import seng302.Client.Client;
@@ -11,7 +9,6 @@ import seng302.Race.Race;
 import seng302.UserInput.PracticeMessage;
 
 import java.io.IOException;
-import java.lang.management.PlatformLoggingMXBean;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,12 +42,14 @@ public class ClientController {
                 @Override
                 public void run() {
                     try {
-                        client.sendPracticeMessage(new PracticeMessage(PracticeMessage.END));
+                        client.sendPracticeMessage(new PracticeMessage(PracticeMessage.END, race.getBoats().get(0).getSourceId()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     Platform.runLater(
                             () -> {
+                                Coordinate.setTrackingBoat(false);
+                                race.finishRace();
                                 race.setRaceReady(false);
                                 Message.resetData();
                                 client.disconnect();
@@ -59,7 +58,7 @@ public class ClientController {
                     );
 
                 }
-            }, 1000 * 10);
+            }, 1000 * 30);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,10 +78,6 @@ public class ClientController {
             client.processStreams();
         });
         serverThread.start();
-
-        System.out.println("race ready = "+ race.isConnectedToServer());
-
-        long startTime = System.currentTimeMillis();
     }
 
     public Race getRace() {

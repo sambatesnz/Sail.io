@@ -40,8 +40,6 @@ public class BoatSprite {
 
         stack = new Pane();
         stack.getChildren().add(boatIcon);
-        System.out.println("boat icon = " + boatIcon);
-        System.out.println("boat circle = " + controlCircle);
         initialiseControlCircle(clientSourceId);
         stack.getChildren().add(wake);
         stack.getChildren().add(tc);

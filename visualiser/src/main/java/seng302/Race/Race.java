@@ -1,5 +1,6 @@
 package seng302.Race;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -36,7 +37,7 @@ public class Race {
     private ObservableList<String> MarkStrings;
     private long expectedStartTime;
     private RaceStatus raceStatus;
-    public boolean finished = false;
+    private BooleanProperty finished;
     private Mark mapCenter;
     private boolean raceReady = false;
     private List<Integer> participants;
@@ -65,6 +66,8 @@ public class Race {
         finishedBoats = new ArrayList<>();
         raceXMLReceived = false;
         viewReady = false;
+        finished = new SimpleBooleanProperty(false);
+
 
         MarkStrings = FXCollections.observableArrayList();
         this.receivedRaceXML = false;
@@ -185,12 +188,6 @@ public class Race {
         center.setLongitude((max.getLongitude() + min.getLongitude()) / 2);
         return center;
     }
-
-    /**
-     * calculates the offset of the currently selected boat to follow
-     * Note that if no boats selected that boat to follow is set to a 'dummy' default boat at the center
-     * @return a mark representing the current boat to follows offset with the original center
-     */
 
     /**
      * Getter for finished boat list.
@@ -445,4 +442,15 @@ public class Race {
         return timeToStart;
     }
 
+    public void finishRace() {
+        finished.setValue(true);
+    }
+
+    public boolean isFinished() {
+        return finished.getValue();
+    }
+
+    public BooleanProperty finishedProperty() {
+        return finished;
+    }
 }

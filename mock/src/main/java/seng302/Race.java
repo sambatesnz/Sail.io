@@ -19,7 +19,6 @@ import java.util.*;
 
 import static java.lang.Math.*;
 import static java.lang.System.currentTimeMillis;
-import static javafx.collections.FXCollections.observableArrayList;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
@@ -43,7 +42,6 @@ public class Race {
     private RaceStatus raceStatus = RaceStatus.WARNING;
     private ObservableList<String> positionStrings;
     private Date startingTime;
-    private Date raceTime;
     private SimpleStringProperty timeToStart;
     private boolean finished = false;
     private static final int TEN_KNOTS = 5145;
@@ -85,9 +83,9 @@ public class Race {
         }
     }
 
-    public void removeBoat() {
-        //remove from boats
-        //remove from finished boats if there
+    public void removeBoat(int sourceId) {
+        boats.removeIf(boat -> boat.getSourceId() == sourceId);
+        finishedBoats.removeIf(boat -> boat.getSourceId() == sourceId);
     }
 
     public Boat addBoat(){
@@ -118,14 +116,6 @@ public class Race {
 
     public void setStartingTime(Date startingTime) {
         this.startingTime = startingTime;
-    }
-
-    public void setRaceTime(Date raceTime) {
-        this.raceTime = raceTime;
-    }
-
-    public Date getRaceTime() {
-        return raceTime;
     }
 
 //    /**

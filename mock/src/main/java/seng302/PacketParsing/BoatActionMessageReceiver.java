@@ -22,7 +22,6 @@ public class BoatActionMessageReceiver extends ServerSideMessageFactory {
 
     private int parseSourceId() {
         int sourceId = PacketParserUtils.byteArrayToInt(body, 1, 4);
-        System.out.println("BOAT SOURCE ID YO " + sourceId);
         return sourceId;
     }
 
@@ -36,7 +35,6 @@ public class BoatActionMessageReceiver extends ServerSideMessageFactory {
     public void updateRace(IServerData race) {
         Delegator delegator = new Delegator(race.getRace());
         delegator.processCommand(boatAction, sourceId);
-        System.out.println("recieved boat action message");
     }
 
 }

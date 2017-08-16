@@ -57,16 +57,13 @@ public class Client {
                 Thread.sleep(1);
                 nextMessage();
                 sendMessage();
-            } catch (InterruptedException | IOException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
+            }  catch (IOException e) {
                 break;
             }
             Arrays.fill(dataReceived, (byte)0);
         }
-//        System.out.println(clientSocket.isClosed());
-//        System.out.println("streamInput: " + streamInput);
-//        System.out.println("streamOutput: " + streamOutput);
-        System.out.println("DISCONNECTING after processing streams");
         disconnect();
     }
 
@@ -143,7 +140,6 @@ public class Client {
             BinaryMessage rrm = new RaceRegistrationMessage(RaceRegistrationType.PARTICIPATE);
             streamOutput.write(rrm.createMessage());
             streamOutput.flush();
-            System.out.println("is client socket closed? " + clientSocket.isClosed());
         }
         catch (IOException e) {
             race.setConnectedToServer(2);
