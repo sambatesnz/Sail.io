@@ -59,7 +59,7 @@ public class ClientController {
                     );
 
                 }
-            }, 1000 * 4);
+            }, 1000 * 10);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,10 +1,12 @@
 package seng302.Server;
 
+import seng302.DataGeneration.IServerData;
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.*;
 
 /**
@@ -14,12 +16,14 @@ import java.util.*;
  *
  */
 public class ConnectionStore {
-    private final Hashtable socketStreams;
+    private final Hashtable<Integer, Socket> socketStreams;
     private List<Integer> connections;
+    private IServerData race;
 
-    public ConnectionStore() {
-        this.socketStreams = new Hashtable();
+    public ConnectionStore(IServerData race) {
+        this.socketStreams = new Hashtable<>();
         connections  = new ArrayList<>();
+        this.race = race;
     }
 
 
@@ -76,7 +80,12 @@ public class ConnectionStore {
             OutputStream stream = clientSocket.getOutputStream();
             boolean hasPackets = messageToSend.length > 0;
             if (hasPackets) {
-                stream.write(messageToSend);
+                try {
+                    stream.write(messageToSend);
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                    removeConnection(clientSocket);
+                }
             }
         }
     }
@@ -89,6 +98,7 @@ public class ConnectionStore {
         int socketId = socket.getPort();
 
         synchronized (socketStreams) {
+            race.getRace().removeBoat();
             System.out.println("Removing connection to " + socket);
             socketStreams.remove(socketId);
             try {
@@ -106,7 +116,7 @@ public class ConnectionStore {
             for (Enumeration e = getIds(); e.hasMoreElements(); ) {
                 int socketId = (int) e.nextElement();
                 if (socketId == id) {
-                    socket = (Socket) socketStreams.get(id);
+                    socket = socketStreams.get(id);
                 }
             }
         }

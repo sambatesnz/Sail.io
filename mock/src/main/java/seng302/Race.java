@@ -41,7 +41,6 @@ public class Race {
     private int raceID;
     private char raceType;
     private RaceStatus raceStatus = RaceStatus.WARNING;
-    private ObservableList<Boat> currentOrder;
     private ObservableList<String> positionStrings;
     private Date startingTime;
     private Date raceTime;
@@ -74,9 +73,8 @@ public class Race {
         startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 3);
 
 
-        boats = new ArrayList<Boat>();
+        boats = new ArrayList<>();
         finishedBoats = new ArrayList<>();
-        currentOrder = observableArrayList(boats);
         positionStrings = FXCollections.observableArrayList();
         for (Boat boat : boats) {
             int speed = (new Random().nextInt(5000) + 100);
@@ -85,8 +83,11 @@ public class Race {
             boat.getMark().setLongitude(legs.get(0).getStart().getLongitude());
             boat.getMark().setLatitude(legs.get(0).getStart().getLatitude());
         }
+    }
 
-
+    public void removeBoat() {
+        //remove from boats
+        //remove from finished boats if there
     }
 
     public Boat addBoat(){
@@ -127,29 +128,21 @@ public class Race {
         return raceTime;
     }
 
-    /**
-     * Setter for finishedBoat, mainly to allow for testing.
-     * @param finishedBoats set the finished list of boats
-     */
-    public void setFinishedBoats(List<Boat> finishedBoats) {
-        this.finishedBoats = finishedBoats;
-    }
+//    /**
+//     * Setter for finishedBoat, mainly to allow for testing.
+//     * @param finishedBoats set the finished list of boats
+//     */
+//    public void setFinishedBoats(List<Boat> finishedBoats) {
+//        this.finishedBoats = finishedBoats;
+//    }
 
-    /**
-     * Setter for current order, mainly to allow for testing.
-     * @param currentOrder sets the current order of boats
-     */
-    public void setCurrentOrder(ObservableList<Boat> currentOrder) {
-        this.currentOrder = currentOrder;
-    }
-
-    /**
-     * Getter for finished boat list.
-     * @return finished boat list.
-     */
-    public List<Boat> getFinishedBoats() {
-        return finishedBoats;
-    }
+//    /**
+//     * Getter for finished boat list.
+//     * @return finished boat list.
+//     */
+//    public List<Boat> getFinishedBoats() {
+//        return finishedBoats;
+//    }
 
     /**
      * Get the wind direction.
@@ -231,38 +224,23 @@ public class Race {
         return raceStatus;
     }
 
-    /**
-     * Takes the list of finished boats and creates a list of strings.
-     *
-     * @return positionStrings, an OberservableList of strings with in the order of finishers.
-     */
-    public ObservableList<String> getPositionStrings() {
-        if (!positionStrings.isEmpty()) {
-            positionStrings.clear();
-        }
-        positionStrings.add("Race Results");
-        int i = 1;
-        for (Boat boat : finishedBoats) {
-            positionStrings.add(i + ": " + boat.getName());
-            i++;
-        }
-        return positionStrings;
-    }
-
-    /**
-     * Getter for the observableList currentOrder. Gets the current position of the boats and adds it to the boat
-     * position attribute.
-     *
-     * @return currentOrder as an observable list.
-     */
-    public ObservableList<Boat> getCurrentOrder() {
-        int i = 1;
-        for (Boat boat : currentOrder) {
-            boat.setPosition(i);
-            i++;
-        }
-        return currentOrder;
-    }
+//    /**
+//     * Takes the list of finished boats and creates a list of strings.
+//     *
+//     * @return positionStrings, an OberservableList of strings with in the order of finishers.
+//     */
+//    public ObservableList<String> getPositionStrings() {
+//        if (!positionStrings.isEmpty()) {
+//            positionStrings.clear();
+//        }
+//        positionStrings.add("Race Results");
+//        int i = 1;
+//        for (Boat boat : finishedBoats) {
+//            positionStrings.add(i + ": " + boat.getName());
+//            i++;
+//        }
+//        return positionStrings;
+//    }
 
     /**
      * Sets the current direction of the wind
@@ -426,13 +404,6 @@ public class Race {
                     // Gives each boat it's race time to the last mark.
                     boat.setRaceTime(currentTimeMillis());
                     // Sorts the boats in order. Attempts by leg it's doing first, then by time to complete last leg from start.
-                    currentOrder.sort((boat1, boat2) -> {
-                        if (boat1.getCurrentLegIndex() == boat2.getCurrentLegIndex()) {
-                            return Long.compare(boat1.getRaceTime(), boat2.getRaceTime());
-                        } else {
-                            return Integer.compare(boat2.getCurrentLegIndex(), boat1.getCurrentLegIndex());
-                        }
-                    });
 
                     if (boat.getCurrentLegIndex() == legs.size()) {
 //                        System.out.println(boat.getName() + " finished race!");

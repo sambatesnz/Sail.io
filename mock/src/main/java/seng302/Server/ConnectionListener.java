@@ -31,6 +31,11 @@ public class ConnectionListener extends Thread {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

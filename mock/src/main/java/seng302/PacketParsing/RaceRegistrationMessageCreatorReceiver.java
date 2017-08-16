@@ -42,12 +42,11 @@ public class RaceRegistrationMessageCreatorReceiver extends ServerSideMessageFac
         if (raceRegistrationType ==  RaceRegistrationType.PARTICIPATE){
             BinaryMessage confirmationMessage;
             if (raceData.getRace().getRaceStatus() == RaceStatus.WARNING) {
-                Boat boat =  raceData.getRace().addBoat();
-                System.out.println(boat.getSourceId());
+                Boat boat = raceData.getRace().addBoat();
+                System.out.println("Adding boat with sourceId: " + boat.getSourceId());
 
                 confirmationMessage = new ParticipantConfirmationMessage(boat.getSourceId(), ConfirmationStatus.PLAYING);
-            }
-            else{
+            } else {
                 confirmationMessage = new ParticipantConfirmationMessage(0, ConfirmationStatus.SPECTATING);
             }
             byte[] message = confirmationMessage.createMessage();
@@ -56,7 +55,5 @@ public class RaceRegistrationMessageCreatorReceiver extends ServerSideMessageFac
             raceData.addSingleMessage(wrappedMessage);
         }
         System.out.println("received RRM!");
-
-
     }
 }

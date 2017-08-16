@@ -33,7 +33,6 @@ public class Race {
     private List<Integer> courseOrder;
     private double windHeading;
     private double windSpeed;
-    private ObservableList<Boat> currentOrder;
     private ObservableList<String> MarkStrings;
     private long expectedStartTime;
     private RaceStatus raceStatus;
@@ -194,14 +193,6 @@ public class Race {
      */
 
     /**
-     * Setter for current order, mainly to allow for testing.
-     * @param currentOrder sets the current order of boats
-     */
-    public void setCurrentOrder(ObservableList<Boat> currentOrder) {
-        this.currentOrder = currentOrder;
-    }
-
-    /**
      * Getter for finished boat list.
      * @return finished boat list.
      */
@@ -226,15 +217,6 @@ public class Race {
             i++;
         }
         return MarkStrings;
-    }
-
-    /**
-     * Getter for the observableList currentOrder. Gets the current Mark of the boats and adds it to the boat
-     * Mark attribute.
-     * @return currentOrder as an observable list.
-     */
-    public ObservableList<Boat> getCurrentOrder() {
-        return FXCollections.observableArrayList(boats.values());
     }
 
     /**

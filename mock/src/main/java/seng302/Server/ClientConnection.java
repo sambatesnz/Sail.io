@@ -42,9 +42,9 @@ public class ClientConnection extends Thread {
         } catch (EOFException e) {
         } catch (IOException e) {
             e.printStackTrace();
+            server.removeConnection(socket);
         } finally {
             System.out.println("==================================REMOVING CONNECTION++++ " + socket);
-            server.removeConnection(socket);
         }
     }
 

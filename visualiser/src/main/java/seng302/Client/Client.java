@@ -52,24 +52,29 @@ public class Client {
      * Handles both incoming and outgoing packets
      */
     public void processStreams() {
-        while (clientSocket != null && clientSocket.isClosed() && streamInput != null && streamOutput != null) {
+        while (clientSocket != null && !clientSocket.isClosed() && streamInput != null && streamOutput != null) {
             try {
                 Thread.sleep(1);
                 nextMessage();
                 sendMessage();
             } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
+                break;
             }
             Arrays.fill(dataReceived, (byte)0);
         }
+//        System.out.println(clientSocket.isClosed());
+//        System.out.println("streamInput: " + streamInput);
+//        System.out.println("streamOutput: " + streamOutput);
+        System.out.println("DISCONNECTING after processing streams");
         disconnect();
     }
 
-    private void nextMessage() throws IOException{
+    private void nextMessage() throws IOException {
 
         final int HEADER_LEN = 15;
         final int CRC_LEN = 4;
-        if (streamInput.available() < HEADER_LEN){
+        if (streamInput.available() < HEADER_LEN) {
             return;
         }
         byte[] head = new byte[HEADER_LEN];
@@ -138,6 +143,7 @@ public class Client {
             BinaryMessage rrm = new RaceRegistrationMessage(RaceRegistrationType.PARTICIPATE);
             streamOutput.write(rrm.createMessage());
             streamOutput.flush();
+            System.out.println("is client socket closed? " + clientSocket.isClosed());
         }
         catch (IOException e) {
             race.setConnectedToServer(2);
