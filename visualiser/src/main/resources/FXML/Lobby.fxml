@@ -21,7 +21,7 @@
       <TableView fx:id="contestantTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
         <columns>
           <TableColumn fx:id="teamColumn" prefWidth="137.0" text="Team Name" />
-          <TableColumn fx:id="clientColumn" prefWidth="100.0" text="Client ID" />
+          <TableColumn fx:id="clientColumn" prefWidth="100.0" text="Country" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
