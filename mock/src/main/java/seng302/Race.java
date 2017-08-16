@@ -37,6 +37,7 @@ public class Race {
     private int windSpeed;
     private Boolean windHeadingChanged = false;
     private Boolean windSpeedChanged = false;
+    private boolean practiceRace = false;
     private int raceID;
     private char raceType;
     private RaceStatus raceStatus = RaceStatus.WARNING;
@@ -92,6 +93,14 @@ public class Race {
         Boat boat = boatGenerator.generateBoat();
         boats.add(boat);
         return boat;
+    }
+
+    public boolean isPracticeRace() {
+        return practiceRace;
+    }
+
+    public void makePracticeRace() {
+        this.practiceRace = true;
     }
 
     /**
