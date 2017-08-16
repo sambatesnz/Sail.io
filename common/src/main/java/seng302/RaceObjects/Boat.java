@@ -42,6 +42,10 @@ public class Boat {
     private Thread turningThread;
     private Boolean stopTurnThread = false;
 
+    private int targetMarkIndex = 0;
+    private int lastMarkIndex = -1;
+    private int roundingStage = 0;
+
     /**
      * Constructs a boat
      * @param name the name of the boat/team
@@ -253,10 +257,6 @@ public class Boat {
     public void setSailsOut(boolean sailsOut) {
         this.sailsOut = sailsOut;
     }
-
-    private int targetMarkIndex = 1;
-    private int lastMarkIndex = 0;
-    private int roundingStage = 0;
 
     /**
      * Gets the abbreviation of the name of the team's boat

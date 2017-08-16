@@ -36,7 +36,6 @@ public class BoatActionMessageCreator extends ServerSideMessageFactory {
     public void updateRace(IServerData race) {
         Delegator delegator = new Delegator(race.getRace());
         delegator.processCommand(boatAction, sourceId);
-        System.out.println("recieved boat action message");
     }
 
 }

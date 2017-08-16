@@ -36,7 +36,14 @@ public class TestClient extends Client{
 
     @Override
     protected void processStreams() {
-
+        while (super.clientSocket != null && super.streamInput != null && super.streamOutput != null) {
+            try {
+                Thread.sleep(0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        disconnect();
     }
 
 }

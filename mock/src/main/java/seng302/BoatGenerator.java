@@ -17,7 +17,6 @@ public class BoatGenerator {
 
     public Boat generateBoat(){
         Boat boat = new Boat("Kevin" + String.valueOf(sourceId), "KVN", sourceId, "kevin land");
-//        Mark mark = new Mark();
         Mark mark = new Mark(57.670335, 11.8279330);
         boat.setMark(mark);
         sourceId++;

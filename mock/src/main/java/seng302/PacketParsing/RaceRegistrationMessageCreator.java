@@ -42,12 +42,16 @@ public class RaceRegistrationMessageCreator extends ServerSideMessageFactory {
         if (raceRegistrationType ==  RaceRegistrationType.PARTICIPATE){
             BinaryMessage confirmationMessage;
             if (raceData.getRace().getRaceStatus() == RaceStatus.WARNING) {
-                Boat boat =  raceData.getRace().addBoat();
-                System.out.println(boat.getSourceId());
-
-                confirmationMessage = new ParticipantConfirmationMessage(boat.getSourceId(), ConfirmationStatus.PLAYING);
+                Boat boat = null;
+                try {
+                    boat = raceData.getRace().addBoat();
+                    confirmationMessage = new ParticipantConfirmationMessage(boat.getSourceId(), ConfirmationStatus.PLAYING);
+                } catch (Exception e) {
+                    //TODO refactor this class so it doesnt have to send same PCM in different places
+                    confirmationMessage = new ParticipantConfirmationMessage(0, ConfirmationStatus.SPECTATING);
+                }
             }
-            else{
+            else {
                 confirmationMessage = new ParticipantConfirmationMessage(0, ConfirmationStatus.SPECTATING);
             }
             byte[] message = confirmationMessage.createMessage();
@@ -55,7 +59,6 @@ public class RaceRegistrationMessageCreator extends ServerSideMessageFactory {
 
             raceData.addSingleMessage(wrappedMessage);
         }
-        System.out.println("received RRM!");
 
 
     }

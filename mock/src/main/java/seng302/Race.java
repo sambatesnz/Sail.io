@@ -51,6 +51,8 @@ public class Race {
     private static final int FIVE_KNOTS = 2573;
     private static final int DIRECTION_CHANGE_PROB = 25;
     private final long ONE_MINUTE_IN_MILLIS=60000;
+    private static int MAX_NUMBER_OF_BOATS = 20;
+
 
     private BoatGenerator boatGenerator;
 
@@ -70,7 +72,7 @@ public class Race {
         Calendar date = Calendar.getInstance();
         long t= date.getTimeInMillis();
 
-        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 3);
+        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 3/2);
 
 
         boats = new ArrayList<Boat>();
@@ -88,10 +90,19 @@ public class Race {
 
     }
 
-    public Boat addBoat(){
-        Boat boat = boatGenerator.generateBoat();
-        boats.add(boat);
-        return boat;
+    /**
+     * Adds a singular boat if it can
+     * @return boat
+     * @throws Exception
+     */
+    public Boat addBoat() throws Exception {
+        if (boats.size() < MAX_NUMBER_OF_BOATS){
+            Boat boat = boatGenerator.generateBoat();
+            boats.add(boat);
+            return boat;
+        } else {
+            throw new Exception("cannot create boat");
+        }
     }
 
     /**

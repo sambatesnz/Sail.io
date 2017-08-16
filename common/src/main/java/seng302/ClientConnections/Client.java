@@ -11,12 +11,12 @@ import java.net.URL;
  */
 public abstract class Client {
 
-    private String host;
-    private int port;
-    private Socket clientSocket;
+    protected String host;
+    protected int port;
+    protected Socket clientSocket;
 
-    private InputStream streamInput;
-    private OutputStream streamOutput;
+    protected InputStream streamInput;
+    protected OutputStream streamOutput;
 
     public Client(String ipAddress, int port){
         this.port = port;
