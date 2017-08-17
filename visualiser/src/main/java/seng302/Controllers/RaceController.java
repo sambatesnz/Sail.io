@@ -290,14 +290,20 @@ public class RaceController {
                 //Sails
                 Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
                 updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.SAIL));
+                double headingDif = (360 + boats.get(i).getBoat().getHeading() - race.getWindHeading()) % 360;
                 if (race.getBoats().get(i).isSailsOut()){
                     boats.get(i).sailOut();
                     sail.getTransforms().clear();
-                    sail.getTransforms().add(new Rotate(race.getWindHeading() + 150, 0,0));
+                    if (headingDif < 180 ) {
+                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 30, 0, 0));
+                    }
+                    else {
+                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 30, 0, 0));
+                    }
                 } else {
                     boats.get(i).sailIn();
                     sail.getTransforms().clear();
-                    sail.getTransforms().add(new Rotate(race.getWindHeading() + 180, 0,0));
+                    sail.getTransforms().add(new Rotate(race.getWindHeading(), 0,0));
 
                 }
                 double sailLength = 720d / 45d;

@@ -108,7 +108,7 @@ public class BoatSprite {
      */
     public void sailIn(){
         for(int i=0; i<720; i += 2){
-            sail.getPoints().set(i, Math.log(i+1)*Math.sin(Math.toRadians((System.currentTimeMillis()+i)/1.0d)));
+            sail.getPoints().set(i, Math.log(i+1)*0.25*Math.sin(Math.toRadians((System.currentTimeMillis()+i)/1.0d)));
             sail.getPoints().set(i + 1, i/45d);
         }
     }
