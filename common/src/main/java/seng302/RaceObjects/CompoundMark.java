@@ -19,10 +19,12 @@ public class CompoundMark {
     private double latitude;
 
     /**
-     * Constructs a landmark
-     * @param name the name of the landmark
-     * @param marks the position of the landmark in lat/long
-     * @param color the color that the landmark appears on the map.
+     * asd
+     * @param name Name of CM
+     * @param marks The points that the CM consists of
+     * @param color Color of the mark
+     * @param id the unique id
+     * @param type is it a gate or a mark etc
      */
     public CompoundMark(String name, ArrayList<Mark> marks, Color color, int id, String type) {
         this.name = name;

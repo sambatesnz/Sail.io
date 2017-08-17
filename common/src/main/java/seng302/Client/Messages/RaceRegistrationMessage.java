@@ -16,7 +16,7 @@ public class RaceRegistrationMessage extends BinaryMessage {
 
     /**
      * Constructor
-     * @param registrationType
+     * @param registrationType i.e. is the user a competitor, or a viewer etc.
      */
     public RaceRegistrationMessage(RaceRegistrationType registrationType) {
         this.registrationType = PacketGenerationUtils.intToOneByte(registrationType.getRegistrationType());

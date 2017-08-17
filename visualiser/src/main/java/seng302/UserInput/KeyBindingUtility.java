@@ -30,6 +30,7 @@ public class KeyBindingUtility {
     /**
      * Apples the key bindings to the scene and adds an event listener for key presses
      * @param rootScene the scene you wish to key bind presses too
+     * @param race main race of the app
      */
     public static void setKeyBindings(Scene rootScene, Race race) {
 
@@ -83,6 +84,7 @@ public class KeyBindingUtility {
 
     /**
      * Checks whether any keys have been pressed
+     * @return True is a key has been pressed and there is a message to send in bytes
      */
     public static boolean keyPressed() {
         return !bytes.isEmpty();

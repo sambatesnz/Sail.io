@@ -28,6 +28,7 @@ public class BoatStatusMessage {
      * @param legNumber The index of the leg the boat is currently in
      * @param estTimeToNextMark The estimated time for the boat to reach the next mark (in ms)
      * @param estTimeToFinish The estimated time for the boat to finish (in ms)
+     * @param race the race that is being raced
      */
     public BoatStatusMessage(long sourceID, int status, int legNumber,
                              long estTimeToNextMark, long estTimeToFinish, Race race) {

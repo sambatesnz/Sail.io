@@ -47,8 +47,11 @@ public class Boat {
     private int roundingStage = 0;
 
     /**
-     * Constructs a boat
-     * @param name the name of the boat/team
+     * Boat constructor
+     * @param name the name of the boat
+     * @param shortName e.g. NZL
+     * @param sourceId the unique boat id
+     * @param country e.g. New Zealand
      */
     public Boat(String name, String shortName, int sourceId, String country) {
         this.boatName = name;
@@ -320,6 +323,7 @@ public class Boat {
 
     /**
      * Set the current heading
+     * @param heading fff
      */
     public void setHeading(double heading) {
         this.heading = heading;

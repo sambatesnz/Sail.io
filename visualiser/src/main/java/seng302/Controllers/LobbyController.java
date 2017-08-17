@@ -51,6 +51,7 @@ public class LobbyController {
 
 
         contestantTable.setItems(race.boatsObs);
+        forceStartBtn.setVisible(false);  //Temporarily removed Force Start button for demonstration
     }
 
     @FXML
