@@ -7,11 +7,16 @@ import seng302.Client.Client;
 import seng302.Client.Messages.Message;
 import seng302.Race.Race;
 import seng302.UserInput.PracticeMessage;
+import seng302.UserInput.PracticeMessageMeaning;
 
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+/**
+ * Staging screen which creates a connection with the server
+ */
 public class ClientController {
     private Race race;
     private String ipAddr;
@@ -26,30 +31,40 @@ public class ClientController {
         this.port = port;
     }
 
-    public ClientController(String ip, int port, boolean practiceRace, Stage primaryStage, Scene startScene) {
+    /**
+     * This constructor creates a practice race
+     * @param ip ip address
+     * @param port port number
+     * @param primaryStage stage
+     * @param startScene scene
+     */
+    public ClientController(String ip, int port, Stage primaryStage, Scene startScene) {
         this.ipAddr = ip;
         this.port = port;
-        this.practiceRace = practiceRace;
+        this.practiceRace = true;
         this.primaryStage = primaryStage;
         this.startScene = startScene;
     }
 
     private void checkPracticeRace() {
+        final int MINUTE_AND_TWENTY_SECONDS = 80000;
+
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 try {
-                    client.sendPracticeMessage(new PracticeMessage(PracticeMessage.START));
+                    client.sendPracticeMessage(new PracticeMessage(PracticeMessageMeaning.START));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }, 1000);
+
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 try {
-                    client.sendPracticeMessage(new PracticeMessage(PracticeMessage.END, race.getBoats().get(0).getSourceId()));
+                    client.sendPracticeMessage(new PracticeMessage(PracticeMessageMeaning.END, race.getBoats().get(0).getSourceId()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -64,7 +79,7 @@ public class ClientController {
                         }
                 );
             }
-        }, 1000 * 80);
+        }, MINUTE_AND_TWENTY_SECONDS);
     }
 
     /**
