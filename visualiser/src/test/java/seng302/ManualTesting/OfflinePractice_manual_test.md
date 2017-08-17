@@ -89,6 +89,3 @@
     - Current Commit of branch: 723501bb056cf245dbf303752cd306b2053e9309
     - Performed By: Stefan Hall
     - Result: **Pass**
-
-
-
