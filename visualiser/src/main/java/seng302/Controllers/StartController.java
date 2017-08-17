@@ -76,7 +76,7 @@ public class StartController {
         Platform.runLater(
                 () -> statusLbl.setText("connecting...")
         );
-        ClientController clientController = new ClientController(getIp(), getPort(), true, primaryStage, rootScene);
+        ClientController clientController = new ClientController(getIp(), getPort(), primaryStage, rootScene);
         clientController.startClient();
         Race race = clientController.getRace();
 

@@ -5,6 +5,7 @@ import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 import seng302.PacketParsing.*;
 import seng302.Server.ConnectionListener;
+import seng302.UserInput.PracticeMessageMeaning;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -40,7 +41,8 @@ public class RaceHandler {
                 break;
             case PRACTICE:
                 parser = new PracticeRaceMessageReceiver(packet);
-                if (((PracticeRaceMessageReceiver) parser).getMeaning() == PracticeRaceMessageReceiver.START) {
+                if (((PracticeRaceMessageReceiver) parser).getMeaning() == PracticeMessageMeaning.START) {
+                    //If someone wants to practise, we have to limit all other incoming connections
                     connectionListener.setListening(false);
                 } else {
                     connectionListener.setListening(true);
