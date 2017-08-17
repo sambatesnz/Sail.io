@@ -29,8 +29,8 @@
             <Mark SeqID="2" Name="Wind Gate 2" TargetLat="57.6650170" TargetLng="11.8279170" SourceID="127" />
         </CompoundMark>
         <CompoundMark CompoundMarkID="5" Name="Mark4">
-            <Mark SeqID="1" Name="Finish Line 1" TargetLat="57.6712240" TargetLng="11.8444950" SourceID="128" />
-            <Mark SeqID="2" Name="Finish Line 2" TargetLat="57.6719240" TargetLng="11.8444950" SourceID="129" />
+            <Mark SeqID="1" Name="Finish Line 1" TargetLat="57.6711240" TargetLng="11.8444950" SourceID="128" />
+            <Mark SeqID="2" Name="Finish Line 2" TargetLat="57.6720240" TargetLng="11.8444950" SourceID="129" />
         </CompoundMark>
     </Course>
     <CompoundMarkSequence>
