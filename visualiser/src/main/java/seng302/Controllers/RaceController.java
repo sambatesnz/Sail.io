@@ -53,6 +53,7 @@ public class RaceController {
     private Group boundaryGroup;
     @FXML
     private Label clock;
+
     @FXML
     private Label localTimeZone;
     @FXML
