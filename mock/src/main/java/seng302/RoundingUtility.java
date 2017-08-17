@@ -49,7 +49,7 @@ public class RoundingUtility {
             String orientMark1 = RoundingUtility.getOrientation(boat.getX(), boat.getY(), mark1.getX(), mark1.getY(), dummyMark1x, dummyMark1y);
             String orientMark2 = RoundingUtility.getOrientation(boat.getX(), boat.getY(), mark2.getX(), mark2.getY(), dummyMark2x, dummyMark2y);
 
-            CompoundMark lastTarget = courseRoundingInfo.get(boat.getTargetMarkIndex() - 1).getKey();
+            CompoundMark lastTarget = courseRoundingInfo.get(boat.getLastMarkIndex()).getKey();
 
             String side = RoundingUtility.getOrientation(lastTarget.getX(), lastTarget.getY(), mark1.getX(), mark1.getY(), mark2.getX(), mark2.getY());
             String approachingSide;
@@ -61,7 +61,6 @@ public class RoundingUtility {
                 approachingSide = LEFT;
                 passedSide = RIGHT;
             }
-
             if ((rounding.equals(PORT_STARBOARD) && side.equals(RIGHT)) || (rounding.equals(STARBOARD_PORT) && side.equals(LEFT))) {
                 if (orientBetweenGates.equals(approachingSide)) {
                     if (orientMark1.equals(RIGHT) || orientMark2.equals(LEFT)) {
@@ -71,20 +70,29 @@ public class RoundingUtility {
                     }
                 } else if (orientBetweenGates.equals(passedSide) &&
                         (((orientMark1.equals(LEFT) && orientMark2.equals(RIGHT)) && boat.getRoundingStage() == 1) ||
-                        ((orientMark1.equals(RIGHT) || orientMark2.equals(LEFT)) && boat.getRoundingStage() == 2))) {
+                        ((orientMark1.equals(RIGHT) || orientMark2.equals(LEFT)) && boat.getRoundingStage() == 2)) ||
+                        (boat.getTargetMarkIndex() == 0 && (orientMark1.equals(LEFT) && orientMark2.equals(RIGHT)))) {
                     boat.updateRoundingStage();
                 }
             } else if ((rounding.equals(STARBOARD_PORT) && side.equals(RIGHT)) || (rounding.equals(PORT_STARBOARD) && side.equals(LEFT))) {
                 if (orientBetweenGates.equals(approachingSide)) {
+//                    System.out.println("ApproachingSide");
                     if (orientMark1.equals(RIGHT) || orientMark2.equals(LEFT)) {
                         boat.resetRoundingStage();
                     } else if (orientMark1.equals(LEFT) && orientMark2.equals(RIGHT) && boat.getRoundingStage() == 2) {
                         boat.updateRoundingStage();
+                        if (boat.getTargetMarkIndex() == 0 && boat.getRoundingStage() == 0) {
+                            boat.updateRoundingStage();
+                        }
                     }
                 } else if (orientBetweenGates.equals(passedSide)) {
+//                    System.out.println("PassedSide");
                     if ((orientMark1.equals(RIGHT) || orientMark2.equals(LEFT)) && boat.getRoundingStage() == 0 ||
                         (orientMark1.equals(LEFT) && orientMark2.equals(RIGHT)) && boat.getRoundingStage() == 1) {
                         boat.updateRoundingStage();
+                        if (boat.getTargetMarkIndex() == 0 && boat.getRoundingStage() == 2) {
+                            boat.updateRoundingStage();
+                        }
                     }
                 }
             }
@@ -128,7 +136,7 @@ public class RoundingUtility {
         }
 
         /*  If the boat has fully rounded the mark, change its current target mark index to the next mark in the race */
-        if (boat.getRoundingStage() == 3) {
+        if (boat.getRoundingStage() >= 3) {
             boat.resetRoundingStage();
             boat.passMark();
         }

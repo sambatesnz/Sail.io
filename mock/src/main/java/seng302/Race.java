@@ -393,7 +393,9 @@ public class Race {
 //                    String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
 //                    boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
 //                    boat.setCurrentLegIndex(boat.getCurrentLegIndex() + 1);
-                RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
+                if (raceStatus == RaceStatus.STARTED) {
+                    RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
+                }
 
                     /*CompoundMark currentTarget = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey();
                     double xTarget = currentTarget.getX();

@@ -42,7 +42,7 @@ public class Boat {
     private Thread turningThread;
     private Boolean stopTurnThread = false;
 
-    private int targetMarkIndex = 1;
+    private int targetMarkIndex = 0;
     private int lastMarkIndex = 0;
     private int roundingStage = 0;
 
@@ -530,7 +530,7 @@ public class Boat {
 
     public void passMark() {
         targetMarkIndex++;
-        lastMarkIndex++;
+        lastMarkIndex = targetMarkIndex - 1;
     }
 
     public int getRoundingStage() {

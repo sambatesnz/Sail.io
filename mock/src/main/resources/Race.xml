@@ -14,8 +14,8 @@
     </Participants>
     <Course>
         <CompoundMark CompoundMarkID="1" Name="Mark0">
-            <Mark SeqID="1" Name="Start Line 1" TargetLat="57.6703330" TargetLng="11.8279330" SourceID="122" />
-            <Mark SeqID="2" Name="Start Line 2" TargetLat="57.6703330" TargetLng="11.8271330" SourceID="123" />
+            <Mark SeqID="1" Name="Start Line 1" TargetLat="57.6703330" TargetLng="11.8289330" SourceID="122" />
+            <Mark SeqID="2" Name="Start Line 2" TargetLat="57.6703330" TargetLng="11.8261330" SourceID="123" />
         </CompoundMark>
         <CompoundMark CompoundMarkID="2" Name="Mark1">
             <Mark SeqID="1" Name="Mark1" TargetLat="57.6675700" TargetLng="11.8359880" SourceID="131" />
