@@ -57,6 +57,7 @@ public class XMLParser {
      * Creates an object that we can create files
      *
      * @param xml the relative location of the course xml file
+     * @throws IOException when the string cannot be created into a doc
      */
     public XMLParser(String xml) throws IOException {
         this.xmlString = xml.trim();

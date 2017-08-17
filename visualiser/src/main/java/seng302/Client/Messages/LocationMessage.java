@@ -29,6 +29,7 @@ public class LocationMessage {
      * packet as a parameter, and extracts the relevant information from it so it can
      * be passed on to the relevant boat.
      * @param bytes The array of bytes from the body of a boat location packet
+     * @param race The race being run
      */
     public LocationMessage(byte[] bytes, Race race) {
         time = PacketParserUtils.byteArrayToLong(bytes, 1, 6);

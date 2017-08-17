@@ -20,8 +20,8 @@ public class XMLMessage {
      * a parameter, and extracts the relevant information from the XML header (type of XML,
      * length of the XML message). Then creates a string from the XML message for use by
      * the parser.
-     * @param data The array of bytes from the body of an XML messsage packet
-     * @throws UnsupportedEncodingException
+     * @param data The array of bytes from the body of an XML message packet
+     * @throws UnsupportedEncodingException Thrown when a message is not how we expect it
      */
     public XMLMessage(byte[] data) throws UnsupportedEncodingException{
         xmlMessageSubtype = PacketParserUtils.byteArrayToInt(data, 9, 1);

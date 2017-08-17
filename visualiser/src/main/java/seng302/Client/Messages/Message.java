@@ -33,6 +33,7 @@ public class Message {
      * (such as the message type and length) and removes it from the rest of the data,
      * along with the CRC, in preparation for the message to be given to it's relative handler.
      * @param data The array of bytes containing the header, message and CRC
+     * @param race the race being run
      */
     public Message(byte[] data, Race race){
         this.race = race;
@@ -48,7 +49,7 @@ public class Message {
 
     /**
      * Gives the packet to the relative message handler based on the messageType
-     * @throws UnsupportedEncodingException
+     * @throws UnsupportedEncodingException when the message is not correct.
      */
     public void parseMessage() throws UnsupportedEncodingException {
         switch (messageType) {

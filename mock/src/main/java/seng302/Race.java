@@ -86,14 +86,12 @@ public class Race {
             boat.getMark().setLongitude(getCompoundMarks().get(0).getLongitude());
             boat.getMark().setLatitude(getCompoundMarks().get(0).getLatitude());
         }
-
-
     }
 
     /**
      * Adds a singular boat if it can
      * @return boat
-     * @throws Exception
+     * @throws Exception the boat could not be created
      */
     public Boat addBoat() throws Exception {
         if (boats.size() < MAX_NUMBER_OF_BOATS){
