@@ -40,8 +40,9 @@ public class StartController {
 
     /**
      * Called when the user selects the start race button.
-     *
      * Changes from the start page to the raceview.
+     * @throws IOException socket cannot read/write
+     * @throws InterruptedException one end of socket disconnected
      */
     @FXML
     public void connect() throws IOException, InterruptedException {

@@ -18,7 +18,7 @@ public class ParticipantConfirmationMessage extends BinaryMessage {
     /**
      * Creates a participation confirmation message
      * @param boatSourceId source id of boat
-     * @param status
+     * @param status status to send to client
      */
     public ParticipantConfirmationMessage(int boatSourceId, ConfirmationStatus status) {
         this.boatSourceId = PacketGenerationUtils.intToFourBytes(boatSourceId);

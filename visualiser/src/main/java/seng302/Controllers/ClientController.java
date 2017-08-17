@@ -13,9 +13,10 @@ public class ClientController {
         this.port = port;
     }
 
-    /**
-     * Starts a race and tries to establish connection to a server
-     * @return True if the client connects to the server, false otherwise.
+
+    /**Starts a race and tries to establish connection to a server
+     * returns true if the client connects to the server, false otherwise.
+     * @throws InterruptedException if client connection fails
      */
     public void startClient() throws InterruptedException {
 
