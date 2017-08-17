@@ -61,7 +61,7 @@ public class MultipleConnectionSteps {
         // Write code here that turns the phrase above into concrete actions
         numberOfConnections = numConnections;
         race = new RaceManager();
-        this.port = 4941;
+        this.port = 4940;
         makeServer(this.port, race);
        makeConnections(numConnections,this.port);
     }
