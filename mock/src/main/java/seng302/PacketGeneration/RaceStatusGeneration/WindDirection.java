@@ -10,7 +10,6 @@ public class WindDirection {
     public static short EAST = 0x4000;
     public static short SOUTH = (short) 0x8000;
 
-
     private enum Test {
         NORTH(0x8000),
         EAST(0x4000);

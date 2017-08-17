@@ -4,15 +4,12 @@ import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketParsing.PacketParserUtils;
 import seng302.PacketParsing.XMLParser;
-import seng302.Race.Race;
+import seng302.RaceObjects.Race;
 import seng302.RaceObjects.CompoundMark;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
 import java.util.List;
-
-import static seng302.PacketGeneration.MessageType.RACE_STATUS;
 
 /**
  * Class to read in packets from a socket stream and distribute them to their relative
@@ -41,6 +38,7 @@ public class Message {
      * (such as the message type and length) and removes it from the rest of the data,
      * along with the CRC, in preparation for the message to be given to it's relative handler.
      * @param data The array of bytes containing the header, message and CRC
+     * @param race the race being run
      */
     public Message(byte[] data, Race race){
         this.race = race;
@@ -56,7 +54,7 @@ public class Message {
 
     /**
      * Gives the packet to the relative message handler based on the messageType
-     * @throws UnsupportedEncodingException
+     * @throws UnsupportedEncodingException when the message is not correct.
      */
     public void parseMessage() throws UnsupportedEncodingException {
         switch (messageType) {
@@ -74,7 +72,7 @@ public class Message {
                 break;
             case RACE_START_STATUS:
                 break;
-            case BOAT_LOCATION:                                 //Boat Location
+            case BOAT_LOCATION:
                 new LocationMessage(body, race);
                 break;
             case PARTICIPANT_CONFIRMATION:
@@ -83,7 +81,7 @@ public class Message {
         }
     }
 
-    public void passXML(String xmlString, MessageType subType) {
+    private void passXML(String xmlString, MessageType subType) {
         try {
             XMLParser xmlParser = new XMLParser(xmlString);
             switch(subType) {
@@ -105,10 +103,8 @@ public class Message {
                     race.setMarks(xmlParser.getMarks());
                     race.setGates(compoundMarks);
                     race.setCourseOrder(xmlParser.getCourseOrder());
-//                    startTime = xmlParser.getRaceStartTime();
                     race.setStartTime(xmlParser.getRaceStartTime());
                     race.setRaceXMLReceived(true);
-                    //race.setViewParams();
                     race.setViewReady(true);
                     raceSet = true;
                     break;

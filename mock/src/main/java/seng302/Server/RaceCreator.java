@@ -23,6 +23,7 @@ public class RaceCreator {
     /**
      * Creates an object that we can create files
      * @param raceFileLocation the relative location of the course xml file
+     * @throws IOException if xml could not be found
      */
     public RaceCreator(String raceFileLocation) throws IOException {
         this.courseRelativeFileLocation = raceFileLocation;

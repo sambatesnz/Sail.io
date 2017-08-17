@@ -9,6 +9,9 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * Server for the applicaiton
+ */
 public class Server {
     private ConnectionStore connectionStore;
     private IServerData mockRace;
@@ -26,6 +29,12 @@ public class Server {
         startup(port);
     }
 
+
+    /**
+     * Starts the server on a specified port
+     * @param port port
+     * @throws Exception
+     */
     private void startup(int port) throws Exception {
         connectionStore = new ConnectionStore(mockRace);
         receivedPackets = new LinkedBlockingQueue<>();
@@ -34,6 +43,10 @@ public class Server {
         startEventLoop();
     }
 
+    /**
+     * Starts the busy wait loop of the server
+     * @throws Exception
+     */
     private void startEventLoop() throws Exception {
         boolean hasStarted = false;
 
@@ -83,5 +96,9 @@ public class Server {
 
     public void removeConnection(Socket s) {
         connectionStore.removeConnection(s);
+    }
+
+    public int connectionSize() {
+        return connectionStore.connectionAmount();
     }
 }

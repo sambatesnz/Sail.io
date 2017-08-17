@@ -14,14 +14,17 @@ public class CompoundMark {
     private Color color;
     private int id;
     private String type;
+    private String rounding;
     private double longitude;
     private double latitude;
 
     /**
-     * Constructs a landmark
-     * @param name the name of the landmark
-     * @param marks the position of the landmark in lat/long
-     * @param color the color that the landmark appears on the map.
+     * asd
+     * @param name Name of CM
+     * @param marks The points that the CM consists of
+     * @param color Color of the mark
+     * @param id the unique id
+     * @param type is it a gate or a mark etc
      */
     public CompoundMark(String name, ArrayList<Mark> marks, Color color, int id, String type) {
         this.name = name;
@@ -80,6 +83,14 @@ public class CompoundMark {
 
     public ArrayList<Mark> getMarks() {
         return marks;
+    }
+
+    public void setRounding(String rounding) {
+        this.rounding = rounding;
+    }
+
+    public String getRounding() {
+        return rounding;
     }
 
     public double getLongitude() {

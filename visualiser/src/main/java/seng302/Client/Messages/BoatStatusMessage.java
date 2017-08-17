@@ -1,7 +1,7 @@
 package seng302.Client.Messages;
 
 
-import seng302.Race.Race;
+import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 
 import java.util.Map;
@@ -28,6 +28,7 @@ public class BoatStatusMessage {
      * @param legNumber The index of the leg the boat is currently in
      * @param estTimeToNextMark The estimated time for the boat to reach the next mark (in ms)
      * @param estTimeToFinish The estimated time for the boat to finish (in ms)
+     * @param race the race that is being raced
      */
     public BoatStatusMessage(long sourceID, int status, int legNumber,
                              long estTimeToNextMark, long estTimeToFinish, Race race) {
@@ -49,10 +50,14 @@ public class BoatStatusMessage {
      */
     public void setBoatDetails() {
         if (null != boatDict && boatDict.containsKey(sourceID)) {
-            boatDict.get(sourceID).setStatus(status);
-            boatDict.get(sourceID).setCurrentLegIndex(legNumber);
-            boatDict.get(sourceID).setTimeToNextMark(estTimeToNextMark);
-            boatDict.get(sourceID).setTimeToFinish(estTimeToFinish);
+            Boat boat = boatDict.get(sourceID);
+            boat.setStatus(status);
+            boat.setCurrentLegIndex(legNumber);
+            if (boat.getTargetMarkIndex() < legNumber) {
+                boat.passMark();
+            }
+            boat.setTimeToNextMark(estTimeToNextMark);
+            boat.setTimeToFinish(estTimeToFinish);
         }
     }
 }

@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import seng302.Race.Race;
+import seng302.RaceObjects.Race;
 import seng302.UserInput.KeyBindingUtility;
 import seng302.UserInput.PracticeMessage;
 
@@ -18,7 +19,7 @@ import java.io.IOException;
 public class StartController {
 
     @FXML private Button connectBtn;
-    @FXML private Button practiceBtn;
+    @FXML private Stage primaryStage;
     @FXML private TextField ipField;
     @FXML private Label statusLbl;
     private Stage primaryStage;
@@ -43,8 +44,9 @@ public class StartController {
 
     /**
      * Called when the user selects the start race button.
-     *
      * Changes from the start page to the raceview.
+     * @throws IOException socket cannot read/write
+     * @throws InterruptedException one end of socket disconnected
      */
     @FXML
     public void connect() throws IOException, InterruptedException {

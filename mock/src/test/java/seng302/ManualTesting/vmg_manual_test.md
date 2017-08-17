@@ -6,7 +6,7 @@ correctly when the VMG button is pressed
 #####Context:
     
     Run the server
-    Connect a client to the server
+    Connect a testClient to the server
     Press the SPACE key while facing different angles
     Press the PGUP key right after the SPACE key
     

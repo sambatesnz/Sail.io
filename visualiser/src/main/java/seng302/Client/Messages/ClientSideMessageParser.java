@@ -1,7 +1,6 @@
 package seng302.Client.Messages;
 
-import seng302.PacketParsing.PacketParserUtils;
-import seng302.Race.Race;
+import seng302.RaceObjects.Race;
 
 /**
  * Parses client side messages (a binary message wrapped in a header)

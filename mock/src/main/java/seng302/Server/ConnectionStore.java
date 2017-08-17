@@ -13,7 +13,6 @@ import java.util.*;
  * Client connections are added and removed through
  * The Connection Store.
  * Messages can be broadcasted to all connections or to a singlular connection
- *
  */
 public class ConnectionStore {
     private final Hashtable<Integer, Socket> socketStreams;
@@ -31,9 +30,8 @@ public class ConnectionStore {
      * Adds a socket connection to the tracked connections
      * @param socket the socked you wish to add
      * @return id of the socket that you added
-     * @throws IOException
      */
-    public int addSocket(Socket socket) throws IOException {
+    public int addSocket(Socket socket) {
         int id = socket.getPort();
         socketStreams.put(id, socket);
         connections.add(id);
@@ -44,7 +42,6 @@ public class ConnectionStore {
     /**
      * Tries to send a stream of bytes to all connected sockets
      * @param bytes array of bytes you wish to send
-     * @throws IOException
      */
     public void sendToAll(byte[] bytes) {
         synchronized (socketStreams) {

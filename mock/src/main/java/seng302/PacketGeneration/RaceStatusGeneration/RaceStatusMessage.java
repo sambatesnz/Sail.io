@@ -106,7 +106,7 @@ public class RaceStatusMessage extends BinaryMessage {
 
         if (boats != null){
             for (Boat boat: boats){
-                BoatStatusMessage message = new BoatStatusMessage(boat.getSourceId(), (char)2, (char)boat.getCurrentLegIndex(), 1, 1);
+                BoatStatusMessage message = new BoatStatusMessage(boat.getSourceId(), (char)2, (char)boat.getTargetMarkIndex(), 1, 1);
                 body.put(message.getBoatStatusMessage());
             }
         }

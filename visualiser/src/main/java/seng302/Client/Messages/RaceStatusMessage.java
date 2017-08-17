@@ -3,7 +3,7 @@ package seng302.Client.Messages;
 
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketParsing.PacketParserUtils;
-import seng302.Race.Race;
+import seng302.RaceObjects.Race;
 
 /**
  * Class that holds anc can update the details for a race given by a race status packet.
@@ -29,6 +29,7 @@ public class RaceStatusMessage {
      * as a parameter, and extracts the relevant information from it so it can be used to
      * update the status of the race, and create Boat Status Messages for each boat in the race.
      * @param bytes The array of bytes from the body of a race status packet
+     * @param race the race being run
      */
     public RaceStatusMessage(byte[] bytes, Race race) {
         currentTime = PacketParserUtils.byteArrayToLong(bytes, 1, 6);

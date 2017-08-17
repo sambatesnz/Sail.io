@@ -5,7 +5,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import seng302.Client.Messages.Message;
-import seng302.Race.Race;
+import seng302.PacketGeneration.RaceStatus;
+import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 
 import java.util.ArrayList;
@@ -108,7 +109,7 @@ public class RaceStatusMessageTest {
 
     @Test
     public void raceStatusTest() {
-        Assert.assertEquals(3, race.getRaceStatus());
+        Assert.assertEquals(RaceStatus.STARTED, race.getRaceStatus());
     }
 
     @Test

@@ -5,7 +5,6 @@ import seng302.RaceObjects.Boat;
 import seng302.UserInputController.BoatAction;
 
 public class Delegator {
-
     private Race race;
 
     public Delegator(Race race) {

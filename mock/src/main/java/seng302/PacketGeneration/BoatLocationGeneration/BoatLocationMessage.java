@@ -7,7 +7,6 @@ import seng302.PacketGeneration.PacketGenerationUtils;
 /**
  * For the Creation of the Boat Location Message Packets
  * Packet body size should be 56 bytes
- *
  */
 public class BoatLocationMessage extends BinaryMessage {
 
@@ -78,27 +77,27 @@ public class BoatLocationMessage extends BinaryMessage {
 
     @Override
     public byte[] getBody() {
-        int firstIndex = 0;
-        System.arraycopy(versionNumber, firstIndex, boatLocationMessage, BoatLocationUtility.MESSAGE_VERSION.getIndex(), BoatLocationUtility.MESSAGE_VERSION.getSize());
-        System.arraycopy(time, firstIndex, boatLocationMessage, BoatLocationUtility.TIME.getIndex(), BoatLocationUtility.TIME.getSize());
-        System.arraycopy(sourceId, firstIndex, boatLocationMessage, BoatLocationUtility.SOURCE_ID.getIndex(), BoatLocationUtility.SOURCE_ID.getSize());
-        System.arraycopy(sequenceNumber, firstIndex, boatLocationMessage, BoatLocationUtility.SEQUENCE_NUMBER.getIndex(), BoatLocationUtility.SEQUENCE_NUMBER.getSize());
-        System.arraycopy(deviceType, firstIndex, boatLocationMessage, BoatLocationUtility.DEVICE_TYPE.getIndex(), BoatLocationUtility.DEVICE_TYPE.getSize());
-        System.arraycopy(latitude, firstIndex ,boatLocationMessage, BoatLocationUtility.LATITUDE.getIndex(), BoatLocationUtility.LATITUDE.getSize());
-        System.arraycopy(longitude, firstIndex ,boatLocationMessage, BoatLocationUtility.LONGITUDE.getIndex(), BoatLocationUtility.LONGITUDE.getSize());
-        System.arraycopy(altitude, firstIndex, boatLocationMessage, BoatLocationUtility.ALTITUDE.getIndex(), BoatLocationUtility.ALTITUDE.getSize());
-        System.arraycopy(heading, firstIndex, boatLocationMessage, BoatLocationUtility.HEADING.getIndex(), BoatLocationUtility.HEADING.getSize());
-        System.arraycopy(boatSpeed, firstIndex, boatLocationMessage, BoatLocationUtility.BOAT_SPEED.getIndex(), BoatLocationUtility.BOAT_SPEED.getSize());
-        System.arraycopy(cog, firstIndex, boatLocationMessage, BoatLocationUtility.COG.getIndex(), BoatLocationUtility.COG.getSize());
-        System.arraycopy(sog, firstIndex, boatLocationMessage, BoatLocationUtility.SOG.getIndex(), BoatLocationUtility.SOG.getSize());
-        System.arraycopy(apparentWindSpeed, firstIndex, boatLocationMessage, BoatLocationUtility.APPARENT_WIND_SPEED.getIndex(), BoatLocationUtility.APPARENT_WIND_SPEED.getSize());
-        System.arraycopy(apparentWindAngle, firstIndex, boatLocationMessage, BoatLocationUtility.APPARENT_WIND_ANGLE.getIndex(), BoatLocationUtility.APPARENT_WIND_ANGLE.getSize());
-        System.arraycopy(trueWindSpeed, firstIndex, boatLocationMessage, BoatLocationUtility.TRUE_WIND_SPEED.getIndex(), BoatLocationUtility.TRUE_WIND_SPEED.getSize());
-        System.arraycopy(trueWindDirection, firstIndex, boatLocationMessage, BoatLocationUtility.TRUE_WIND_DIRECTION.getIndex(), BoatLocationUtility.TRUE_WIND_DIRECTION.getSize());
-        System.arraycopy(trueWindAngle, firstIndex, boatLocationMessage, BoatLocationUtility.TRUE_WIND_ANGLE.getIndex(), BoatLocationUtility.TRUE_WIND_ANGLE.getSize());
-        System.arraycopy(sailStatus, firstIndex, boatLocationMessage, BoatLocationUtility.SAIL_STATUS.getIndex(), BoatLocationUtility.SAIL_STATUS.getSize());
-        System.arraycopy(currentSet, firstIndex, boatLocationMessage, BoatLocationUtility.CURRENT_SET.getIndex(), BoatLocationUtility.CURRENT_SET.getSize());
-        System.arraycopy(rudderAngle, firstIndex, boatLocationMessage, BoatLocationUtility.RUDDER_ANGLE.getIndex(), BoatLocationUtility.RUDDER_ANGLE.getSize());
+        int FIRST_INDEX = 0;
+        System.arraycopy(versionNumber, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.MESSAGE_VERSION.getIndex(), BoatLocationUtility.MESSAGE_VERSION.getSize());
+        System.arraycopy(time, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.TIME.getIndex(), BoatLocationUtility.TIME.getSize());
+        System.arraycopy(sourceId, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.SOURCE_ID.getIndex(), BoatLocationUtility.SOURCE_ID.getSize());
+        System.arraycopy(sequenceNumber, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.SEQUENCE_NUMBER.getIndex(), BoatLocationUtility.SEQUENCE_NUMBER.getSize());
+        System.arraycopy(deviceType, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.DEVICE_TYPE.getIndex(), BoatLocationUtility.DEVICE_TYPE.getSize());
+        System.arraycopy(latitude, FIRST_INDEX ,boatLocationMessage, BoatLocationUtility.LATITUDE.getIndex(), BoatLocationUtility.LATITUDE.getSize());
+        System.arraycopy(longitude, FIRST_INDEX ,boatLocationMessage, BoatLocationUtility.LONGITUDE.getIndex(), BoatLocationUtility.LONGITUDE.getSize());
+        System.arraycopy(altitude, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.ALTITUDE.getIndex(), BoatLocationUtility.ALTITUDE.getSize());
+        System.arraycopy(heading, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.HEADING.getIndex(), BoatLocationUtility.HEADING.getSize());
+        System.arraycopy(boatSpeed, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.BOAT_SPEED.getIndex(), BoatLocationUtility.BOAT_SPEED.getSize());
+        System.arraycopy(cog, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.COG.getIndex(), BoatLocationUtility.COG.getSize());
+        System.arraycopy(sog, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.SOG.getIndex(), BoatLocationUtility.SOG.getSize());
+        System.arraycopy(apparentWindSpeed, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.APPARENT_WIND_SPEED.getIndex(), BoatLocationUtility.APPARENT_WIND_SPEED.getSize());
+        System.arraycopy(apparentWindAngle, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.APPARENT_WIND_ANGLE.getIndex(), BoatLocationUtility.APPARENT_WIND_ANGLE.getSize());
+        System.arraycopy(trueWindSpeed, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.TRUE_WIND_SPEED.getIndex(), BoatLocationUtility.TRUE_WIND_SPEED.getSize());
+        System.arraycopy(trueWindDirection, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.TRUE_WIND_DIRECTION.getIndex(), BoatLocationUtility.TRUE_WIND_DIRECTION.getSize());
+        System.arraycopy(trueWindAngle, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.TRUE_WIND_ANGLE.getIndex(), BoatLocationUtility.TRUE_WIND_ANGLE.getSize());
+        System.arraycopy(sailStatus, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.SAIL_STATUS.getIndex(), BoatLocationUtility.SAIL_STATUS.getSize());
+        System.arraycopy(currentSet, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.CURRENT_SET.getIndex(), BoatLocationUtility.CURRENT_SET.getSize());
+        System.arraycopy(rudderAngle, FIRST_INDEX, boatLocationMessage, BoatLocationUtility.RUDDER_ANGLE.getIndex(), BoatLocationUtility.RUDDER_ANGLE.getSize());
         return boatLocationMessage;
     }
 

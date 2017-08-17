@@ -5,10 +5,13 @@ package seng302.PacketParsing;
 import javafx.scene.paint.Color;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import seng302.RaceObjects.*;
+import seng302.Rounding;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.time.LocalDateTime;
@@ -43,6 +46,7 @@ public class XMLParser {
     private static final String REGATTA_NAME = "RegattaName";
     private static final String COURSE_NAME = "CourseName";
     private static final String UTC_OFFSET = "UtcOffset";
+    private static final String ROUNDING = "Rounding";
 
     private String xmlString;
     private Document xmlDoc;
@@ -53,6 +57,7 @@ public class XMLParser {
      * Creates an object that we can create files
      *
      * @param xml the relative location of the course xml file
+     * @throws IOException when the string cannot be created into a doc
      */
     public XMLParser(String xml) throws IOException {
         this.xmlString = xml.trim();
@@ -72,7 +77,7 @@ public class XMLParser {
             Document doc = builder.parse(new InputSource(new StringReader(xmlString)));
             doc.getDocumentElement().normalize();
             return doc;
-        } catch (Exception e) {
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             e.printStackTrace();
         }
         return null;
@@ -134,7 +139,10 @@ public class XMLParser {
      * @return Arraylist containing the gate order
      */
     public List<Integer> getRaceParticipants() {
-        NodeList nodes = xmlDoc.getElementsByTagName(PARTICIPANTS).item(0).getChildNodes();
+        NodeList nodes = xmlDoc
+                .getElementsByTagName(PARTICIPANTS)
+                .item(0)
+                .getChildNodes();
         ArrayList<Integer> participants = new ArrayList<>();
         try {
             for (int i = 0; i < nodes.getLength(); i++) {
@@ -179,22 +187,34 @@ public class XMLParser {
         return raceStartTime;
     }
 
-    public List<Integer> getCourseOrder() {
+    public List<Leg> getCourseOrder() {
         NodeList nodes = xmlDoc.getElementsByTagName(COMPOUND_MARK_SEQUENCE).item(0).getChildNodes();
-        List<Integer> courseOrder = new ArrayList<>();
+        List<Map<String, String>> courseOrder = new ArrayList<>();
+        List<Leg> legs = new ArrayList<>();
         try {
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     NamedNodeMap nnm = node.getAttributes();
-                    courseOrder.add(Integer.parseInt(nnm.getNamedItem(COMPOUND_MARK_ID).getNodeValue()));
+                    String seqId = nnm.getNamedItem(SEQ_ID).getNodeValue();
+                    String compoundMarkId = nnm.getNamedItem(COMPOUND_MARK_ID).getNodeValue();
+                    String rounding = nnm.getNamedItem(ROUNDING).getNodeValue();
+                    Map<String, String> compoundMarkInfo = new HashMap<>();
+                    compoundMarkInfo.put(SEQ_ID, seqId);
+                    compoundMarkInfo.put(COMPOUND_MARK_ID, compoundMarkId);
+                    compoundMarkInfo.put(ROUNDING, rounding);
+
+                    courseOrder.add(compoundMarkInfo);
                 }
+            }
+            courseOrder.sort(Comparator.comparingInt(o -> Integer.parseInt(o.get(SEQ_ID))));
+            for (Map<String, String> map: courseOrder) {
+                legs.add(new Leg(Rounding.getEnum(map.get(ROUNDING)), Integer.parseInt(map.get(COMPOUND_MARK_ID))));
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-//        courseOrder.sort(Comparator.comparingInt(CourseLimit::getSeqId));
-        return courseOrder;
+        return legs;
     }
 
     public List<CompoundMark> getCourseLayout() {

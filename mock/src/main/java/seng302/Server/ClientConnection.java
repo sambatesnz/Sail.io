@@ -30,10 +30,7 @@ public class ClientConnection extends Thread {
                 if (din.available() > HEADER_LEN) {
                     din.read(data);
                     boolean validPacket = validatePacket(data);
-
                     if (validPacket) {
-                        System.out.println("Client " + id + " has sent a packet");
-
                         byte[] wrappedMessage = ServerMessageGenerationUtils.wrap(data, id);
                         server.addPacketToQueue(wrappedMessage);
                     }

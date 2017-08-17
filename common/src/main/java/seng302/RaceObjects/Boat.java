@@ -42,9 +42,16 @@ public class Boat {
     private Thread turningThread;
     private Boolean stopTurnThread = false;
 
+    private int targetMarkIndex = 1;
+    private int lastMarkIndex = 0;
+    private int roundingStage = 0;
+
     /**
-     * Constructs a boat
-     * @param name the name of the boat/team
+     * Boat constructor
+     * @param name the name of the boat
+     * @param shortName e.g. NZL
+     * @param sourceId the unique boat id
+     * @param country e.g. New Zealand
      */
     public Boat(String name, String shortName, int sourceId, String country) {
         this.boatName = name;
@@ -317,6 +324,7 @@ public class Boat {
 
     /**
      * Set the current heading
+     * @param heading fff
      */
     public void setHeading(double heading) {
         this.heading = heading;
@@ -510,6 +518,31 @@ public class Boat {
 
     public String toString(){
         return "Boat(" + boatName + ")";
+    }
+
+    public int getTargetMarkIndex() {
+        return targetMarkIndex;
+    }
+
+    public int getLastMarkIndex() {
+        return lastMarkIndex;
+    }
+
+    public void passMark() {
+        targetMarkIndex++;
+        lastMarkIndex++;
+    }
+
+    public int getRoundingStage() {
+        return roundingStage;
+    }
+
+    public void resetRoundingStage() {
+        roundingStage = 0;
+    }
+
+    public void updateRoundingStage() {
+        roundingStage++;
     }
 }
 

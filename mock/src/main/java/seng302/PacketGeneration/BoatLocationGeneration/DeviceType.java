@@ -5,15 +5,14 @@ package seng302.PacketGeneration.BoatLocationGeneration;
  * Racing yacht and unknown are only implemented but there are other fields
  */
 public enum DeviceType {
-
     UNKNOWN(0),
     RACING_YACHT(1);
-
 
     private int type;
 
     DeviceType(int type){
         this.type = type;
     }
+
     public int getType(){ return this.type;}
 }

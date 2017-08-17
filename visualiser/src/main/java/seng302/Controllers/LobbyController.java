@@ -3,26 +3,21 @@ package seng302.Controllers;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import seng302.Client.Client;
-import seng302.Race.Race;
+import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 import seng302.UserInput.KeyBindingUtility;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class LobbyController {
 
@@ -56,6 +51,7 @@ public class LobbyController {
 
 
         contestantTable.setItems(race.boatsObs);
+        forceStartBtn.setVisible(false);  //Temporarily removed Force Start button for demonstration
     }
 
     @FXML

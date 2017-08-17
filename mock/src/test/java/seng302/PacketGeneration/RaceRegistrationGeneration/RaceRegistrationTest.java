@@ -18,7 +18,7 @@ public class RaceRegistrationTest {
     public void raceRegistration() throws Exception {
         BinaryMessage rrm = new RaceRegistrationMessage(RaceRegistrationType.PARTICIPATE);
         byte[] actualMessage = new byte[4];
-        int regiType = PacketUtils.getIntFromByteArray(rrm.getBody(), 0, actualMessage, 4);
+        int regiType = PacketUtils.getIntFromByteArray(rrm.getBody(), 0, actualMessage, RaceRegistrationMessage.getMessageSize()   );
         assertEquals(regiType, RaceRegistrationType.PARTICIPATE.getRegistrationType());
     }
 }

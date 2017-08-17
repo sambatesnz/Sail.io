@@ -8,6 +8,7 @@ import seng302.Client.Messages.Message;
 import seng302.Race.Race;
 import seng302.UserInput.PracticeMessage;
 import seng302.UserInput.PracticeMessageMeaning;
+import seng302.RaceObjects.Race;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -82,8 +83,9 @@ public class ClientController {
         }, MINUTE_AND_TWENTY_SECONDS);
     }
 
-    /**
-     * Starts a race and tries to establish connection to a server
+    /**Starts a race and tries to establish connection to a server
+     * returns true if the client connects to the server, false otherwise.
+     * @throws InterruptedException if client connection fails
      */
     public void startClient() throws InterruptedException {
         race = new Race();

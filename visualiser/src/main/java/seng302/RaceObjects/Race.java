@@ -1,4 +1,4 @@
-package seng302.Race;
+package seng302.RaceObjects;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -9,7 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.paint.Color;
 import seng302.PacketGeneration.RaceStatus;
-import seng302.RaceObjects.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -29,9 +28,8 @@ public class Race {
 //    private List<Boat> boats;
     private ObservableMap<Integer, Boat> boats;
     private List<Boat> finishedBoats;
-    private List<Leg> legs;
     private List<Mark> boundaries;
-    private List<Integer> courseOrder;
+    private List<Leg> courseOrder;
     private double windHeading;
     private double windSpeed;
     private ObservableList<String> MarkStrings;
@@ -325,14 +323,6 @@ public class Race {
     }
 
     /**
-     * Get the legs in the race
-     * @return the legs in the race
-     */
-    public List<Leg> getLegs() {
-        return legs;
-    }
-
-    /**
      * Get the boats competing
      * @return the boats competing
      */
@@ -345,7 +335,11 @@ public class Race {
         }
     }
 
-    public void setCourseOrder(List<Integer> courseOrder) {
+    public List<Leg> getCourseOrder() {
+        return courseOrder;
+    }
+
+    public void setCourseOrder(List<Leg> courseOrder) {
         this.courseOrder = courseOrder;
     }
 

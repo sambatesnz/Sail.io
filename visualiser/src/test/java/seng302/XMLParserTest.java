@@ -4,10 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import seng302.PacketParsing.XMLParser;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.CompoundMark;
-import seng302.RaceObjects.CourseLimit;
-import seng302.RaceObjects.Regatta;
+import seng302.RaceObjects.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -51,7 +48,7 @@ public class XMLParserTest {
 
     @Test
     public void checkCourseOrderCorrect() throws IOException {
-        List<Integer> courseOrder = raceParser.getCourseOrder();
+        List<Leg> courseOrder = raceParser.getCourseOrder();
         Assert.assertTrue(courseOrder.size() == 9);
     }
 

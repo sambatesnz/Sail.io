@@ -16,6 +16,7 @@ public class ConnectionListener extends Thread {
     public ConnectionListener(ConnectionStore connectionStore, int port, Server server) throws IOException {
         this.connectionStore = connectionStore;
         this.listener = new ServerSocket(port);
+        System.out.println("starting server ...");
         this.server = server;
         this.start();
     }

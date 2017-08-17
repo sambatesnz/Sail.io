@@ -19,7 +19,6 @@ public enum BoatStatus {
         this.value = value;
     }
 
-
     /**
      * @return a char value corresponding to the enum name
      */

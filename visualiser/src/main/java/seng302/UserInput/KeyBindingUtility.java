@@ -4,7 +4,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import seng302.PacketGeneration.BinaryMessage;
-import seng302.Race.Race;
+import seng302.RaceObjects.Race;
 import seng302.UserInputController.BoatAction;
 
 import java.util.LinkedList;
@@ -29,6 +29,7 @@ public class KeyBindingUtility {
     /**
      * Adds the key bindings to the scene and adds an event listener for key presses
      * @param rootScene the scene you wish to key bind presses too
+     * @param race main race of the app
      */
     public static void setKeyBindings(Scene rootScene, Race race) {
 
@@ -78,6 +79,7 @@ public class KeyBindingUtility {
 
     /**
      * Checks whether any keys have been pressed
+     * @return True is a key has been pressed and there is a message to send in bytes
      */
     public static boolean keyPressed() {
         return !bytes.isEmpty();

@@ -23,17 +23,21 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import seng302.Race.Race;
+import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.Mark;
+import seng302.Rounding;
 import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
 import seng302.Visualiser.WindArrow;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.Math.atan2;
 import static javafx.scene.input.KeyCode.Z;
 
 /**
@@ -89,6 +93,11 @@ public class RaceController {
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
     private WindArrow windArrow = new WindArrow();
+    private Group roundingArrow1 = new Group();
+    private Group roundingArrow2 = new Group();
+    private Group roundingArrowMirrored1 = new Group();
+    private Group roundingArrowMirrored2 = new Group();
+
     private boolean showName = true;
     private boolean showSpeed = true;
     private boolean showFPS = true;
@@ -124,6 +133,8 @@ public class RaceController {
     private final int SPARKLINEHEIGHT = 239;
     private final int MULTIPLICATIVE_IDENTITY = 1;
     private FPSCounter fpsCounter;
+    private int roundingArrowRotationClockwise = 0;
+    private int roundingArrowRotationAntiClockwise = 0;
 
 
     private boolean boatMetaDataInitialised = false;
@@ -153,6 +164,8 @@ public class RaceController {
         fpsCounter = new FPSCounter(fpsLabel);
 
         initialiseZoomFollowing();
+        initialiseRoundingArrow();
+//        roundingArrow1.setScaleX(-1););
         initialisePositionsTable();
         enableScrolling();
 
@@ -187,6 +200,10 @@ public class RaceController {
         });
     }
 
+    private void initialiseMarkRoundingSprites() {
+
+    }
+
     private void initialisePositionsTable() {
         positionCol.setCellValueFactory(p -> {
             String pos = String.valueOf(p.getValue().getPosition());
@@ -219,15 +236,14 @@ public class RaceController {
 
                 if (race.isRaceReady() && boatLocationDataInitialised) {
                     updateBoatPositions();
-                    //updateBoatPaths();
-
+                    updateBoatPaths();
                 }
                 viewUpdateCount++;
 
                 if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0){
                     positionTable.refresh();
                     positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
-                    positionTable.setPrefHeight(Coordinate.getWindowHeightY() - SPARKLINEHEIGHT);
+                    positionTable.setPrefHeight(Coordinate.getWindowHeightY());
                 }
 
                 if (sparkCounter > 100 && race.started()) {
@@ -315,15 +331,14 @@ public class RaceController {
         int skipAmount = 15;
         for (int i = 0; i < boats.size(); i++){
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
-                if (viewUpdateCount % skipAmount == 1) {
+                if (viewUpdateCount % skipAmount == 0) {
                     if (absolutePaths.get(i).size() > pathPoints) {
                         paths.get(i).getElements().remove(1);
                         absolutePaths.get(i).remove(0);
                     }
+                    absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+                    paths.get(i).getElements().add(new LineTo());
                 }
-
-                absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-                paths.get(i).getElements().add(new LineTo());
                 lastHeadings.set(i, race.getBoats().get(i).getHeading());
 
                 ((MoveTo) paths.get(i).getElements().get(0))
@@ -372,10 +387,11 @@ public class RaceController {
     private void initialiseBoatLocation() {
         if(!boatLocationDataInitialised && boatMetaDataInitialised) {
             boolean knowAllLocations = true;
+            paths = new ArrayList<>();
+            lastHeadings = new ArrayList<>();
             for (int i = 0; i < race.getBoats().size(); i++) {
                 boolean knowsLocation = race.getBoats().get(i).isKnowsBoatLocation();
                 if (knowsLocation) {
-                    paths = new ArrayList<>();
                     Path path = new Path();
                     path.setStroke(race.getBoats().get(i).getColour());
                     path.getElements().add(new MoveTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
@@ -383,7 +399,6 @@ public class RaceController {
                     paths.add(path);
                     absolutePaths.add(new ArrayList<>());
 
-                    lastHeadings = new ArrayList<>();
 
                     lastHeadings.add(race.getBoats().get(i).getHeading());
                 } else {
@@ -404,6 +419,7 @@ public class RaceController {
         if (race.isRaceXMLReceived()){
             updateGates();
             updateMarks();
+            updateRoundingArrows();
         }
     }
 
@@ -428,6 +444,139 @@ public class RaceController {
             compoundMarks.get(i).setY(Coordinate.getRelativeY(marks.get(i).getY()) - compoundMarks.get(i).getHeight() / 2);
             updateNodeScale(compoundMarks.get(i));
         }
+    }
+
+    private void updateRoundingArrows() {
+        int playerBoat = race.getClientSourceId();
+        if (race.getBoatsMap().get(playerBoat).getTargetMarkIndex() >= race.getCourseOrder().size()) {
+            roundingArrow1.setVisible(false);
+            roundingArrowMirrored1.setVisible(false);
+            roundingArrow2.setVisible(false);
+            roundingArrowMirrored2.setVisible(false);
+        } else {
+            int cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getCompoundMarkId();
+            for (int i = 0; i < race.getCompoundMarks().size(); i++) {
+                CompoundMark cm = race.getCompoundMarks().get(i);
+                if (cmId == race.getCompoundMarks().get(i).getId()) {
+                    Rounding markRounding = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getRounding();
+                    int rotationIncrement;
+                    Group currentRoundingArrow1;
+                    Group currentRoundingArrow2 = roundingArrow2;
+                    if (markRounding == Rounding.STARBOARD) {
+                        roundingArrow1.setVisible(false);
+                        roundingArrowMirrored1.setVisible(true);
+                        roundingArrow2.setVisible(false);
+                        roundingArrowMirrored2.setVisible(false);
+                        rotationIncrement = 3;
+                        currentRoundingArrow1 = roundingArrowMirrored1;
+
+                    } else if (markRounding == Rounding.STARBOARD_PORT) {
+                        roundingArrow1.setVisible(false);
+                        roundingArrowMirrored1.setVisible(true);
+                        roundingArrow2.setVisible(true);
+                        roundingArrowMirrored2.setVisible(false);
+                        rotationIncrement = 3;
+                        currentRoundingArrow1 = roundingArrowMirrored1;
+                        currentRoundingArrow2 = roundingArrow2;
+
+                    } else if (markRounding == Rounding.PORT) {
+                        roundingArrow1.setVisible(true);
+                        roundingArrowMirrored1.setVisible(false);
+                        roundingArrow2.setVisible(false);
+                        roundingArrowMirrored2.setVisible(false);
+                        rotationIncrement = -3;
+                        currentRoundingArrow1 = roundingArrow1;
+
+                    } else {
+                        roundingArrow1.setVisible(true);
+                        roundingArrowMirrored1.setVisible(false);
+                        roundingArrow2.setVisible(false);
+                        roundingArrowMirrored2.setVisible(true);
+                        rotationIncrement = -3;
+                        currentRoundingArrow1 = roundingArrow1;
+                        currentRoundingArrow2 = roundingArrowMirrored2;
+                    }
+
+                    roundingArrowRotationClockwise += rotationIncrement;
+                    roundingArrowRotationAntiClockwise -= rotationIncrement;
+
+                    currentRoundingArrow1.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(0).getX()));
+                    currentRoundingArrow1.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(0).getY()));
+                    currentRoundingArrow1.setRotate(roundingArrowRotationClockwise);
+                    updateNodeScale(currentRoundingArrow1);
+                    if (cm.getMarks().size() > 1) {
+                        double x1 = cm.getMarks().get(0).getX();
+                        double y1 = cm.getMarks().get(0).getY();
+                        double x2 = cm.getMarks().get(1).getX();
+                        double y2 = cm.getMarks().get(1).getY();
+                        double angle = Math.toDegrees(atan2(y2 - y1, x2 - x1)) * 2;
+
+                        currentRoundingArrow2.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(1).getX()));
+                        currentRoundingArrow2.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(1).getY()));
+                        currentRoundingArrow2.setRotate(roundingArrowRotationAntiClockwise - angle);
+                        updateNodeScale(currentRoundingArrow2);
+                    }
+                }
+            }
+        }
+    }
+
+    private void initialiseRoundingArrow() {
+        roundingArrow1 = createRoundingArrow();
+        roundingArrow2 = createRoundingArrow();
+        roundingArrowMirrored1 = createMirroredRoundingArrow();
+        roundingArrowMirrored2 = createMirroredRoundingArrow();
+
+        group.getChildren().addAll(roundingArrow1, roundingArrow2, roundingArrowMirrored1, roundingArrowMirrored2);
+    }
+
+    private Group createRoundingArrow() {
+        Group roundingArrow = new Group();
+
+        Circle rotationBase = new Circle(35);
+        rotationBase.setOpacity(0);
+
+        Polyline arrow = new Polyline();
+        arrow.getPoints().addAll(
+                10.0, -15.0,
+                0.0, -25.0,
+                12.0, -30.0);
+        Arc arc = new Arc(0, 0, 25, 25, 330, 120);
+        arc.setType(ArcType.OPEN);
+
+        for (Shape shape: Arrays.asList(arrow, arc)) {
+            shape.setFill(null);
+            shape.setStroke(Color.GREEN);
+            shape.setStrokeWidth(3);
+        }
+        roundingArrow.getChildren().addAll(arrow, arc, rotationBase);
+
+        return roundingArrow;
+    }
+
+    private Group createMirroredRoundingArrow() {
+        Group roundingArrow = new Group();
+
+        Circle rotationBase = new Circle(35);
+        rotationBase.setOpacity(0);
+
+
+        Polyline arrowMirrored = new Polyline();
+        arrowMirrored.getPoints().addAll(
+                -10.0, -15.0,
+                0.0, -25.0,
+                -12.0, -30.0);
+        Arc arcMirrored = new Arc(0, 0, 25, 25, 90, 120);
+        arcMirrored.setType(ArcType.OPEN);
+
+        for (Shape shape: Arrays.asList(arrowMirrored, arcMirrored)) {
+            shape.setFill(null);
+            shape.setStroke(Color.GREEN);
+            shape.setStrokeWidth(3);
+        }
+        roundingArrow.getChildren().addAll(arrowMirrored, arcMirrored, rotationBase);
+
+        return roundingArrow;
     }
 
     private void updateGates() {
@@ -579,8 +728,12 @@ public class RaceController {
     private Polyline newWake(double speed){
         Polyline wake = new Polyline();
         wake.getPoints().addAll(0.0, -speed,
-                0.0, speed);
-        wake.setStroke(Color.CYAN);
+                -0.2 * speed, speed,
+                0.2 * speed,
+                speed, 0.0, -speed);
+        wake.setStroke(new Color(0.0f, 1.0f, 1.0f, 0.3));
+        wake.setFill(new Color(0.0f, 1.0f, 1.0f, 0.3));
+
         return wake;
     }
 

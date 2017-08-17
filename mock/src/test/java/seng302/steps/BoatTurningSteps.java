@@ -5,6 +5,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import seng302.DataGeneration.RaceManager;
 import seng302.Race;
+import seng302.RaceObjects.Boat;
 import seng302.Server.Delegator;
 import seng302.UserInputController.BoatAction;
 
@@ -16,12 +17,15 @@ public class BoatTurningSteps {
     Race race;
     Delegator delegator = new Delegator(race);
     int messageCommand;
+    int boatSourceId;
 
     @Given("^the race is running$")
     public void the_race_is_running() throws Throwable {
         RaceManager mockData = new RaceManager(); //Default race
         race = mockData.getRace();
         delegator = new Delegator(race);
+        Boat boat= race.addBoat();
+        boatSourceId = boat.getSourceId();
     }
 
     @Given("^a boatAction packet has been received with a value of (\\d+)$")
@@ -31,7 +35,7 @@ public class BoatTurningSteps {
 
     @Given("^the boats current heading is (\\d+) degrees$")
     public void the_boats_current_heading_is_degrees(int boatHeading) throws Throwable {
-        race.getBoatByID(103).setHeading(boatHeading);
+        race.getBoatByID(boatSourceId).setHeading(boatHeading);
     }
 
     @Given("^the current wind direction is (\\d+)$")
@@ -46,12 +50,12 @@ public class BoatTurningSteps {
 
     @Then("^the boats current heading is altered to (\\d+) degrees$")
     public void the_boats_current_heading_is_altered_to_degrees(int finalHeading) throws Throwable {
-        assertEquals(finalHeading, (int)race.getBoatByID(103).getHeading() );
+        assertEquals(finalHeading, (int)race.getBoatByID(boatSourceId).getHeading() );
     }
 
     @Then("^the boats final heading is altered to (\\d+) degrees$")
     public void the_boats_final_heading_is_altered_to_degrees(int finalHeading) throws Throwable {
         TimeUnit.SECONDS.sleep(5); //Need to wait for tack/gybe to finish its cycle
-        assertEquals(finalHeading, (int)race.getBoatByID(103).getHeading(), 1); //Margin of error within +- ~10 degress
+        assertEquals(finalHeading, (int)race.getBoatByID(boatSourceId).getHeading(), 1); //Margin of error within +- ~10 degress
     }
 }
