@@ -203,10 +203,11 @@ public class RaceController {
     }
 
     private void initialisePositionsTable() {
-        positionCol.setCellValueFactory(p -> {
-            String pos = String.valueOf(p.getValue().getPosition());
-            return new ReadOnlyObjectWrapper<>(pos);
-        });
+//        positionCol.setCellValueFactory(p -> {
+//            String pos = String.valueOf(p.getValue().getPosition());
+//            return new ReadOnlyObjectWrapper<>(pos);
+//        });
+        positionCol.setVisible(false);
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         speedCol.setCellValueFactory(p -> {
             String speed = String.valueOf(p.getValue().getSpeedInKnots());
