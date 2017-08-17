@@ -58,21 +58,17 @@ public class LobbyController {
     public void initialiseTime(){
         timeToStart.textProperty().bind(race.timeToStartProperty());
 
-        timeToStart.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue.equals(String.format(" %02d:%02d:%02d", 0, 1, 0))) {
-
-                    Platform.runLater(
-                        () -> {
-                            try {
-                                forceStart();
-                            } catch (Exception ignored) {
-                                ignored.printStackTrace();
-                            }
+        timeToStart.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals(String.format(" %02d:%02d:%02d", 0, 1, 0))) {
+                Platform.runLater(
+                    () -> {
+                        try {
+                            forceStart();
+                        } catch (Exception ignored) {
+                            ignored.printStackTrace();
                         }
-                    );
-                }
+                    }
+                );
             }
         });
     }
@@ -83,7 +79,6 @@ public class LobbyController {
 
     @FXML
     public void forceStart() throws IOException{
-        System.out.println("don't care");
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
         RaceController raceController = new RaceController(race);
         loader.setController(raceController);
@@ -93,6 +88,5 @@ public class LobbyController {
         primaryStage.setScene(rootScene);
 
         KeyBindingUtility.setKeyBindings(rootScene, race);
-
     }
 }

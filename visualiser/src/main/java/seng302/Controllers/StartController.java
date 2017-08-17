@@ -11,15 +11,17 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import seng302.RaceObjects.Race;
 import seng302.UserInput.KeyBindingUtility;
+import seng302.UserInput.PracticeMessage;
 
 import java.io.IOException;
 
 public class StartController {
 
     @FXML private Button connectBtn;
-    @FXML private Stage primaryStage;
     @FXML private TextField ipField;
     @FXML private Label statusLbl;
+    private Stage primaryStage;
+    private Scene rootScene;
 
     public StartController() {
 //        this.primaryStage = mainStage;
@@ -47,32 +49,65 @@ public class StartController {
     @FXML
     public void connect() throws IOException, InterruptedException {
         Platform.runLater(
-            () -> {
-                statusLbl.setText("connecting...");
-            }
+            () -> statusLbl.setText("connecting...")
         );
         ClientController clientController = new ClientController(getIp(), getPort());
         clientController.startClient();
-            Race race = clientController.getRace();
+        Race race = clientController.getRace();
 
-            race.connectedToServerProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue.equals(1)) {
-                    Platform.runLater(
+        race.connectedToServerProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals(1)) {
+                Platform.runLater(
+                    () -> {
+                        try {
+                            newConnection(race);
+                        } catch (InterruptedException | IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                );
+            } else if (newValue.equals(2)) {
+                statusLbl.setText("Could not connect");
+            }
+        });
+    }
+
+    private void connectPractice() throws InterruptedException {
+        Platform.runLater(
+                () -> statusLbl.setText("connecting...")
+        );
+        ClientController clientController = new ClientController(getIp(), getPort(), primaryStage, rootScene);
+        clientController.startClient();
+        Race race = clientController.getRace();
+
+        race.connectedToServerProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals(1)) {
+                Platform.runLater(
                         () -> {
                             try {
-                                newConnection(race);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                practiceView(race);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
-                    );
-                } else if (newValue.equals(2)) {
-                    statusLbl.setText("Could not connect");
-                }
-            });
-        }
+                );
+            } else if (newValue.equals(2)) {
+                statusLbl.setText("Could not connect");
+            }
+        });
+    }
+
+    private void practiceView(Race race) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
+        RaceController raceController = new RaceController(race);
+        loader.setController(raceController);
+        Parent root = loader.load();
+
+        Scene rootScene = new Scene(root);
+        primaryStage.setScene(rootScene);
+
+        KeyBindingUtility.setKeyBindings(rootScene, race);
+    }
 
     private void newConnection(Race race) throws InterruptedException, IOException {
 
@@ -92,19 +127,24 @@ public class StartController {
 
     }
 
-
-
+    /**
+     * Called when the user clicks the practice race start button.
+     */
+    @FXML
+    private void practiceClick() throws IOException {
+        try {
+            connectPractice();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
-    /**
-     * Called when the user clicks the practice race start button.
-     * Runs a server locally, which the client application automatically connects with using a message click.
-     */
-    public void practiceRace() {
-
+    public void setStartScene(Scene rootScene) {
+        this.rootScene = rootScene;
     }
 
     private String getIp() {

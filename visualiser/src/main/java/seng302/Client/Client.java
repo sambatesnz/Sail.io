@@ -6,6 +6,7 @@ import seng302.Client.Messages.RaceRegistrationType;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.RaceObjects.Race;
 import seng302.UserInput.KeyBindingUtility;
+import seng302.UserInput.PracticeMessage;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -47,24 +48,26 @@ public class Client {
      * Handles both incoming and outgoing packets
      */
     public void processStreams() {
-        while (clientSocket != null && streamInput != null && streamOutput != null) {
+        while (clientSocket != null && !clientSocket.isClosed() && streamInput != null && streamOutput != null) {
             try {
-                Thread.sleep(0);
+                Thread.sleep(1);
                 nextMessage();
                 sendMessage();
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
+            }  catch (IOException e) {
+                break;
             }
             Arrays.fill(dataReceived, (byte)0);
         }
         disconnect();
     }
 
-    private void nextMessage() throws IOException{
+    private void nextMessage() throws IOException {
 
         final int HEADER_LEN = 15;
         final int CRC_LEN = 4;
-        if (streamInput.available() < HEADER_LEN){
+        if (streamInput.available() < HEADER_LEN) {
             return;
         }
         byte[] head = new byte[HEADER_LEN];
@@ -97,6 +100,16 @@ public class Client {
         System.arraycopy(body, 0, message, HEADER_LEN, messageLength);
         Message packet = new Message(message, race);
         packet.parseMessage();
+    }
+
+    /**
+     * Sends PracticeMessage over a socket stream indicating a practice race
+     * @throws IOException if problem writing to stream
+     */
+    public void sendPracticeMessage(PracticeMessage practiceMessage) throws IOException {
+        byte[] packetToSend = practiceMessage.createMessage();
+        streamOutput.write(packetToSend);
+        streamOutput.flush();
     }
 
     /**

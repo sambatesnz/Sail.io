@@ -3,6 +3,7 @@ package seng302.Controllers;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -115,6 +116,7 @@ public class RaceController {
     private double windowHeight = 0;
     private String ipAddr;
     private int port;
+    private AnimationTimer raceListener;
 
 
     // Sparkline variables
@@ -148,10 +150,8 @@ public class RaceController {
      */
     @FXML
     public void initialize() {
-
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
-
 
         group.getChildren().add(windArrow);
 
@@ -167,6 +167,13 @@ public class RaceController {
         initialisePositionsTable();
         enableScrolling();
 
+        race.finishedProperty().addListener((observable, oldValue, raceFinished) -> {
+            if (raceFinished) {
+                stopRaceListener();
+            }
+        });
+
+        initialiseRaceListener();
         startRaceListener();
     }
 
@@ -207,9 +214,8 @@ public class RaceController {
         });
     }
 
-    private void startRaceListener() {
-        new AnimationTimer() {
-
+    private void initialiseRaceListener() {
+        raceListener = new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
                 rotateWindArrow();
@@ -223,13 +229,17 @@ public class RaceController {
 
                 initialiseBoatMetaData();
                 initialiseBoatLocation();
-                updateCourseLayout();
+                try {
+                    updateCourseLayout();
+                    if (race.isRaceReady() && boatLocationDataInitialised) {
+                        updateBoatPositions();
+                        updateBoatPaths();
+                    }
+                } catch (Exception e) {
+                }
                 updateBoundary();
 
-                if (race.isRaceReady() && boatLocationDataInitialised) {
-                    updateBoatPositions();
-                    updateBoatPaths();
-                }
+
                 viewUpdateCount++;
 
                 if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0){
@@ -240,13 +250,24 @@ public class RaceController {
 
                 if (sparkCounter > 100 && race.started()) {
                     sparkCounter = 0;
-                    //updateSparkLineChart(); //TODO undisable sparkline chart
+                    //updateSparkLineChart(); //TODO undisabel sparkline chart
+                }
+                if (race.isFinished()) {
+                    raceListener.stop();
                 }
                 sparkCounter++;
-
             }
-        }.start();
+        };
+    }
 
+
+
+    public void startRaceListener() {
+        raceListener.start();
+    }
+
+    public void stopRaceListener() {
+        raceListener.stop();
     }
 
     private void updateBoatPositions() {
@@ -598,7 +619,7 @@ public class RaceController {
             Coordinate.setViewMin(race.getViewMin().getCopy());
             Coordinate.setViewMax(race.getViewMax().getCopy());
 
-            centerOfScreen = new Boat(-1);
+            centerOfScreen = new Boat(-1, "CenterOfScreen");
             centerOfScreen.setMark(race.getMapCenter());
 
             if (!Coordinate.isTrackingBoat()) {
@@ -613,14 +634,14 @@ public class RaceController {
 
     private Mark calculateOffset(){
         Mark offset = new Mark();
-
         offset.setX(boatToFollow.getX() - race.getMapCenter().getX());
         offset.setY(boatToFollow.getY() - race.getMapCenter().getY());
         return offset;
     }
 
-    private void resetZoom() {
+    protected void resetZoom() {
         boatToFollow = centerOfScreen;
+        Coordinate.setZoom(0);
     }
 
     private void updateViewLayout(){
@@ -792,15 +813,18 @@ public class RaceController {
     }
 
     /**
-     * resets the view back to its original state
+     * Resets the view back to its original state.
+     * If the boat map is null, it has no effect.
      */
     public void resetViewButtonPressed() {
         if (followingBoat) {
             zoomLevel = Coordinate.getZoom();
             resetZoom();
-            Coordinate.setZoom(0);
             Coordinate.setTrackingBoat(false);
         } else {
+            if (race.getBoatsMap() == null) {
+                return;
+            }
             boatToFollow = race.getBoatsMap().get(race.getClientSourceId());
             Coordinate.setZoom(zoomLevel);
             Coordinate.setTrackingBoat(true);

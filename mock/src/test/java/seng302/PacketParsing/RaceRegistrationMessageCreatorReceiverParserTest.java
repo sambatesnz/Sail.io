@@ -8,14 +8,14 @@ import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationU
 
 import static org.junit.Assert.*;
 
-public class RaceRegistrationMessageCreatorParserTest {
+public class RaceRegistrationMessageCreatorReceiverParserTest {
 
     @Test
     public void ParticipationMessage() throws Exception{
         RaceRegistrationType expectedType = RaceRegistrationType.PARTICIPATE;
         BinaryMessage rrm = new RaceRegistrationMessage(expectedType);
         byte[] wrappedMessage= ServerMessageGenerationUtils.wrap(rrm.createMessage(), 10);
-        RaceRegistrationMessageCreator parser = new RaceRegistrationMessageCreator(wrappedMessage);
+        RaceRegistrationMessageCreatorReceiver parser = new RaceRegistrationMessageCreatorReceiver(wrappedMessage);
         assertEquals(expectedType, parser.getRegistrationType());
     }
 
@@ -24,7 +24,7 @@ public class RaceRegistrationMessageCreatorParserTest {
         RaceRegistrationType expectedType = RaceRegistrationType.VIEW;
         BinaryMessage rrm = new RaceRegistrationMessage(expectedType);
         byte[] wrappedMessage = ServerMessageGenerationUtils.wrap(rrm.createMessage(), 10);
-        RaceRegistrationMessageCreator parser = new RaceRegistrationMessageCreator(wrappedMessage);
+        RaceRegistrationMessageCreatorReceiver parser = new RaceRegistrationMessageCreatorReceiver(wrappedMessage);
         assertEquals(expectedType, parser.getRegistrationType());
     }
 

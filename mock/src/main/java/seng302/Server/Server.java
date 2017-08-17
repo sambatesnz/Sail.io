@@ -36,10 +36,10 @@ public class Server {
      * @throws Exception
      */
     private void startup(int port) throws Exception {
-        connectionStore = new ConnectionStore();
+        connectionStore = new ConnectionStore(mockRace);
         receivedPackets = new LinkedBlockingQueue<>();
-        this.connectionListener = new ConnectionListener(connectionStore, port, this);
-        raceHandler = new RaceHandler(this.mockRace);
+        connectionListener = new ConnectionListener(connectionStore, port, this);
+        raceHandler = new RaceHandler(this.mockRace, connectionListener);
         startEventLoop();
     }
 
@@ -53,7 +53,6 @@ public class Server {
         int numConnections = 0;
 
         while (true) {
-
             if (numConnections < connectionStore.connectionAmount()){
                 System.out.println("new connection detected, resending the XML Packets.");
                 this.mockRace.addXMLPackets();
@@ -69,7 +68,7 @@ public class Server {
             }
             handleReceivedMessages();
             sendSingleMessages();
-
+            Thread.sleep(1);
         }
     }
 

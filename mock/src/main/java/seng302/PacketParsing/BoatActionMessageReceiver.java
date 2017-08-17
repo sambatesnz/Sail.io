@@ -7,22 +7,21 @@ import seng302.UserInputController.BoatAction;
 /**
  * Takes a wrapped Boat Action message and tries to update the state of the boat based on its id
  */
-public class BoatActionMessageCreator extends ServerSideMessageFactory {
+public class BoatActionMessageReceiver extends ServerSideMessageFactory {
 
     private byte[] body;
     private BoatAction boatAction;
     private int sourceId;
 
-    public BoatActionMessageCreator(byte[] packet) {
+    public BoatActionMessageReceiver(byte[] packet) {
         super(packet);
-        this.body = this.getMessageBody();
+        this.body = getMessageBody();
         this.boatAction = parseBoatAction();
         this.sourceId = parseSourceId();
     }
 
     private int parseSourceId() {
         int sourceId = PacketParserUtils.byteArrayToInt(body, 1, 4);
-        System.out.println("BOAT SOURCE ID YO " + sourceId);
         return sourceId;
     }
 

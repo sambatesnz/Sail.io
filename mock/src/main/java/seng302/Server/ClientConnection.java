@@ -36,11 +36,7 @@ public class ClientConnection extends Thread {
                     }
                 }
             }
-        } catch (EOFException ie) {
-        } catch (IOException ie) {
-            ie.printStackTrace();
-            server.removeConnection(socket);
-        } finally {
+        } catch (IOException e) {
             server.removeConnection(socket);
         }
     }

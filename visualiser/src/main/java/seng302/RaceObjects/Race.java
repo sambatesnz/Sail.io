@@ -1,5 +1,7 @@
 package seng302.RaceObjects;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -30,11 +32,10 @@ public class Race {
     private List<Leg> courseOrder;
     private double windHeading;
     private double windSpeed;
-    private ObservableList<Boat> currentOrder;
     private ObservableList<String> MarkStrings;
     private long expectedStartTime;
     private RaceStatus raceStatus;
-    public boolean finished = false;
+    private BooleanProperty finished;
     private Mark mapCenter;
     private boolean raceReady = false;
     private List<Integer> participants;
@@ -63,6 +64,8 @@ public class Race {
         finishedBoats = new ArrayList<>();
         raceXMLReceived = false;
         viewReady = false;
+        finished = new SimpleBooleanProperty(false);
+
 
         MarkStrings = FXCollections.observableArrayList();
         this.receivedRaceXML = false;
@@ -185,20 +188,6 @@ public class Race {
     }
 
     /**
-     * calculates the offset of the currently selected boat to follow
-     * Note that if no boats selected that boat to follow is set to a 'dummy' default boat at the center
-     * @return a mark representing the current boat to follows offset with the original center
-     */
-
-    /**
-     * Setter for current order, mainly to allow for testing.
-     * @param currentOrder sets the current order of boats
-     */
-    public void setCurrentOrder(ObservableList<Boat> currentOrder) {
-        this.currentOrder = currentOrder;
-    }
-
-    /**
      * Getter for finished boat list.
      * @return finished boat list.
      */
@@ -223,15 +212,6 @@ public class Race {
             i++;
         }
         return MarkStrings;
-    }
-
-    /**
-     * Getter for the observableList currentOrder. Gets the current Mark of the boats and adds it to the boat
-     * Mark attribute.
-     * @return currentOrder as an observable list.
-     */
-    public ObservableList<Boat> getCurrentOrder() {
-        return FXCollections.observableArrayList(boats.values());
     }
 
     /**
@@ -416,10 +396,6 @@ public class Race {
         return boats != null;
     }
 
-    /**
-     * Get the gates
-     * @return the gates
-     */
     public List<CompoundMark> getGates() {
         return gates;
     }
@@ -460,4 +436,15 @@ public class Race {
         return timeToStart;
     }
 
+    public void finishRace() {
+        finished.setValue(true);
+    }
+
+    public boolean isFinished() {
+        return finished.getValue();
+    }
+
+    public BooleanProperty finishedProperty() {
+        return finished;
+    }
 }

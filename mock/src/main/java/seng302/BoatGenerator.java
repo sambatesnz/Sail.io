@@ -18,7 +18,7 @@ public class BoatGenerator {
             "CSS Alabama", "SS Great Britain"));
     private Map<String, List<String>> dataMap = new HashMap<>();
 
-    public BoatGenerator () {
+    public BoatGenerator() {
         this.sourceId = LOWEST_SOURCE_ID;
         dataMap.put("HMS Endeavour", new ArrayList<>(Arrays.asList("Great Britain", "END")));
         dataMap.put("The Black Pearl", new ArrayList<>(Arrays.asList("Origin Unknown", "TBP")));
@@ -52,5 +52,4 @@ public class BoatGenerator {
     public int getLowestSourceId(){
         return LOWEST_SOURCE_ID;
     }
-
 }

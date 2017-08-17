@@ -20,7 +20,6 @@ public class KeyBindingUtility {
 
     private static boolean sailStatus;
     private static Queue<byte[]> bytes = new LinkedList<>();
-    private Race race;
 
 
     private KeyBindingUtility(){
@@ -28,46 +27,42 @@ public class KeyBindingUtility {
     }
 
     /**
-     * Apples the key bindings to the scene and adds an event listener for key presses
+     * Adds the key bindings to the scene and adds an event listener for key presses
      * @param rootScene the scene you wish to key bind presses too
      * @param race main race of the app
      */
     public static void setKeyBindings(Scene rootScene, Race race) {
 
-        rootScene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                BinaryMessage boatActionMessage;
-                int sourceId = race.getClientSourceId();
-                switch (event.getCode()) {
-                    case SPACE:
-                        boatActionMessage = new BoatActionMessage(BoatAction.VMG, sourceId);
-                        break;
-                    case SHIFT:
-                        if(sailStatus){
-                            boatActionMessage = new BoatActionMessage(BoatAction.SAILS_IN, sourceId);
-                        } else {
-                            boatActionMessage = new BoatActionMessage(BoatAction.SAILS_OUT, sourceId);
-                        }
-                        alternateSailStatus();
-                        break;
-                    case ENTER:
-                        boatActionMessage = new BoatActionMessage(BoatAction.TACK_OR_GYBE, sourceId);
-                        break;
-                    case PAGE_UP:
-                        boatActionMessage = new BoatActionMessage(BoatAction.UPWIND, sourceId);
-                        break;
-                    case PAGE_DOWN:
-                        boatActionMessage = new BoatActionMessage(BoatAction.DOWNWIND, sourceId);
-                        break;
-                    default:
-                        return;
-                }
-                event.consume();
-                bytes.add(boatActionMessage.createMessage());
+        rootScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            BinaryMessage boatActionMessage;
+            int sourceId = race.getClientSourceId();
+            switch (event.getCode()) {
+                case SPACE:
+                    boatActionMessage = new BoatActionMessage(BoatAction.VMG, sourceId);
+                    break;
+                case SHIFT:
+                    if(sailStatus){
+                        boatActionMessage = new BoatActionMessage(BoatAction.SAILS_IN, sourceId);
+                    } else {
+                        boatActionMessage = new BoatActionMessage(BoatAction.SAILS_OUT, sourceId);
+                    }
+                    alternateSailStatus();
+                    break;
+                case ENTER:
+                    boatActionMessage = new BoatActionMessage(BoatAction.TACK_OR_GYBE, sourceId);
+                    break;
+                case PAGE_UP:
+                    boatActionMessage = new BoatActionMessage(BoatAction.UPWIND, sourceId);
+                    break;
+                case PAGE_DOWN:
+                    boatActionMessage = new BoatActionMessage(BoatAction.DOWNWIND, sourceId);
+                    break;
+                default:
+                    return;
             }
+            event.consume();
+            bytes.add(boatActionMessage.createMessage());
         });
-
     }
 
     /**

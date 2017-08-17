@@ -94,7 +94,6 @@ public class RaceStatusMessageTest {
 
     @Test
     public void raceWindHeadingTest() {
-        System.out.println(race.getWindHeading());
         Assert.assertEquals(180.0, race.getWindHeading(), 0.1);
     }
 

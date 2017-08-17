@@ -68,8 +68,9 @@ public class Boat {
      * Used to create a boat for testing purposes.
      * @param sourceID  boat source id
      */
-    public Boat(Integer sourceID) {
+    public Boat(Integer sourceID, String boatName) {
         this.sourceId = sourceID;
+        this.boatName = boatName;
     }
 
     /**
@@ -516,7 +517,7 @@ public class Boat {
     }
 
     public String toString(){
-        return boatName;
+        return "Boat(" + boatName + ")";
     }
 
     public int getTargetMarkIndex() {

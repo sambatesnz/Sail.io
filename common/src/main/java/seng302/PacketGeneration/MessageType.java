@@ -18,7 +18,8 @@ public enum MessageType {
     MARK_ROUNDING(38),
     RACE_REGISTRATION(55),
     PARTICIPANT_CONFIRMATION(56),
-    BOAT_ACTION(100);
+    BOAT_ACTION(100),
+    PRACTICE(99);
 
     private int messageType;
 
