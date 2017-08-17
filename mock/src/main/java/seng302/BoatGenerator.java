@@ -39,7 +39,11 @@ public class BoatGenerator {
         String boatName = boatNames.get(numberOfBoats % boatNames.size());
         List<String> boatData = dataMap.get(boatName);
         Boat boat = new Boat(boatName, boatData.get(1), sourceId, boatData.get(0));
-        Mark mark = new Mark(57.670335, 11.8279330);
+        boat.setHeading(180);
+//        Random generator = new Random();
+//        System.out.println(generator.nextDouble());
+        System.out.println(numberOfBoats);
+        Mark mark = new Mark(57.671335, 11.8271330 + numberOfBoats/1000.0);
         boat.setMark(mark);
         sourceId++;
         numberOfBoats++;
