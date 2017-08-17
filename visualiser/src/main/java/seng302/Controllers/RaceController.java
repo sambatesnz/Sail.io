@@ -22,7 +22,6 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
-import seng302.Race.Race;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
@@ -144,7 +143,6 @@ public class RaceController {
 
     public RaceController(Race race){
         this.race = race;
-        resetZoom();
     }
 
     /**
@@ -231,13 +229,17 @@ public class RaceController {
 
                 initialiseBoatMetaData();
                 initialiseBoatLocation();
-                updateCourseLayout();
+                try {
+                    updateCourseLayout();
+                    if (race.isRaceReady() && boatLocationDataInitialised) {
+                        updateBoatPositions();
+                        updateBoatPaths();
+                    }
+                } catch (Exception e) {
+                }
                 updateBoundary();
 
-                if (race.isRaceReady() && boatLocationDataInitialised) {
-                    updateBoatPositions();
-                    updateBoatPaths();
-                }
+
                 viewUpdateCount++;
 
                 if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0){
@@ -631,7 +633,7 @@ public class RaceController {
         return offset;
     }
 
-    private void resetZoom() {
+    protected void resetZoom() {
         boatToFollow = centerOfScreen;
         Coordinate.setZoom(0);
     }

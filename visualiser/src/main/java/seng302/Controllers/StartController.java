@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import seng302.Race.Race;
 import seng302.RaceObjects.Race;
 import seng302.UserInput.KeyBindingUtility;
 import seng302.UserInput.PracticeMessage;
@@ -19,7 +18,6 @@ import java.io.IOException;
 public class StartController {
 
     @FXML private Button connectBtn;
-    @FXML private Stage primaryStage;
     @FXML private TextField ipField;
     @FXML private Label statusLbl;
     private Stage primaryStage;

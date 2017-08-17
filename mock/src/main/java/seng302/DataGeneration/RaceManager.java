@@ -150,6 +150,7 @@ public class RaceManager implements IServerData {
         public void run() {
             if(race.getRaceStatus() != RaceStatus.WARNING) {
                 race.updateBoats();
+                race.updateBoats();
             }
             race.updateRaceInfo();
 

@@ -30,7 +30,7 @@ public class PracticeRaceMessageReceiver extends ServerSideMessageFactory {
             race.getRace().setStartingTime(new Date(currentTime + oneMinInMillis + 1000*5)); //Add five seconds
             race.getRace().setPracticeRace(true);
         } else if (this.meaning == PracticeMessageMeaning.END) {
-            race.getRace().setStartingTime(new Date(currentTime + oneMinInMillis*3));
+            race.getRace().setStartingTime(new Date(currentTime + oneMinInMillis * 3));
             race.getRace().removeBoat(boatSourceId);
             race.getRace().setPracticeRace(false);
         }

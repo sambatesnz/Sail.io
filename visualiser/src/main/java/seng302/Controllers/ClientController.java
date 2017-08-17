@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import seng302.Client.Client;
 import seng302.Client.Messages.Message;
-import seng302.Race.Race;
 import seng302.UserInput.PracticeMessage;
 import seng302.UserInput.PracticeMessageMeaning;
 import seng302.RaceObjects.Race;
@@ -77,6 +76,7 @@ public class ClientController {
                             Message.resetData();
                             client.disconnect();
                             primaryStage.setScene(startScene);
+                            Coordinate.setZoom(0);
                         }
                 );
             }
