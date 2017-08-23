@@ -19,8 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.Math.*;
-import static java.lang.System.currentTimeMillis;
-import static javafx.collections.FXCollections.observableArrayList;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
@@ -73,7 +71,7 @@ public class Race {
         Calendar date = Calendar.getInstance();
         long t = date.getTimeInMillis();
 
-        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 6/5);
+        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 8/5);
 
 
         boats = new ArrayList<>();
