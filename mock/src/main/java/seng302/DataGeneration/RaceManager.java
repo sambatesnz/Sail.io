@@ -85,6 +85,7 @@ public class RaceManager implements IServerData {
         timer.schedule(new RSMSender(), 100, 500);
         timer.schedule(new BoatPosSender(), 1000, 17);
         timer.schedule(new RaceRunner(), 2000, 17);
+        timer.schedule(new raceEventHandler(), 2000, 17);
     }
 
     @Override
@@ -145,15 +146,21 @@ public class RaceManager implements IServerData {
         }
     }
 
+    class raceEventHandler extends TimerTask {
+        @Override
+        public void run() {
+            //
+        }
+    }
+
+
     class RaceRunner extends TimerTask {
         @Override
         public void run() {
             if(race.getRaceStatus() != RaceStatus.WARNING) {
                 race.updateBoats();
-                race.updateBoats();
             }
             race.updateRaceInfo();
-
         }
     }
 

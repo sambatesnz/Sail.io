@@ -54,6 +54,7 @@ public class Race {
 
 
     private BoatGenerator boatGenerator;
+    private BoatManager boatManager;
 
     /**
      * Constructor for the race class.
@@ -64,6 +65,7 @@ public class Race {
         // setWindHeading(190);
 
         setStartingWindSpeed();
+        BoatManager boatManager = new BoatManager();
         boatGenerator = new BoatGenerator();
         this.windSpeed = this.startingWindSpeed;
         instantiateWindHeading();
@@ -386,6 +388,7 @@ public class Race {
                 if (raceStatus == RaceStatus.STARTED) {
                     RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
                 }
+
                 boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
                 boat.getMark().setY(newY);
             }
