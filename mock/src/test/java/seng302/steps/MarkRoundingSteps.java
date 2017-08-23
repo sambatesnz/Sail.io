@@ -22,7 +22,7 @@ public class MarkRoundingSteps {
 
     @Given("^a boat is passing mark (\\d+)$")
     public void a_boat_is_passing_mark(int markNumber) throws Throwable {
-        for (int i = 0; i < markNumber-1; i++) {
+        for (int i = 0; i < markNumber; i++) {
             boat.passMark();
         }
     }
