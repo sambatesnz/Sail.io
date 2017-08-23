@@ -1,11 +1,13 @@
 package seng302.PacketGeneration.XMLMessageGeneration;
 
+import seng302.PacketGeneration.MessageEnumUtility;
+
 /**
  * Utility Class for storing common functions
  * Used to generate packets/byte[array]
  */
 
-public enum XMLMessageUtility{
+public enum XMLMessageUtility implements MessageEnumUtility{
     MESSAGE_VERSION(0, 1),
     ACK_NUM(1, 2),
     TIME_STAMP(3, 6),
