@@ -130,7 +130,7 @@ public class RaceController {
     private int EARTH_RADIUS = 6371;
     private int METERS_CONVERSION = 1000;
     private final int SPARKLINEHEIGHT = 239;
-    private final double MULTIPLICATIVE_IDENTITY = 1;
+    private final double BOUNDARY_OPACITY = 0.5;
     private FPSCounter fpsCounter;
     private int roundingArrowRotationClockwise = 0;
     private int roundingArrowRotationAntiClockwise = 0;
@@ -809,7 +809,7 @@ public class RaceController {
             boundary.getPoints().add(Coordinate.getRelativeY(position.getY()));
         }
         boundary.setFill(Color.LIGHTBLUE);
-        boundary.setOpacity(MULTIPLICATIVE_IDENTITY/2);
+        boundary.setOpacity(BOUNDARY_OPACITY);
         return boundary;
     }
 
