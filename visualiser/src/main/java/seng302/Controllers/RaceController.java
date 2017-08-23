@@ -130,7 +130,7 @@ public class RaceController {
     private int EARTH_RADIUS = 6371;
     private int METERS_CONVERSION = 1000;
     private final int SPARKLINEHEIGHT = 239;
-    private final int MULTIPLICATIVE_IDENTITY = 1;
+    private final double MULTIPLICATIVE_IDENTITY = 1;
     private FPSCounter fpsCounter;
     private int roundingArrowRotationClockwise = 0;
     private int roundingArrowRotationAntiClockwise = 0;
@@ -237,6 +237,7 @@ public class RaceController {
                         updateBoatPaths();
                     }
                 } catch (Exception e) {
+                    System.out.println(e);
                 }
                 updateBoundary();
 
@@ -721,13 +722,11 @@ public class RaceController {
     private void checkPositions() {
 
         List<Boat> boats = race.getBoats();
-
         boats.sort((o1, o2) -> o1.getCurrentLegIndex()>o2.getCurrentLegIndex()?-1:o1.getCurrentLegIndex()<=o2.getCurrentLegIndex()?1: 0);
-        for (int i = 0; i < boats.size(); i += MULTIPLICATIVE_IDENTITY) {
-            int position = i + MULTIPLICATIVE_IDENTITY;
+        for (int i = 0; i < boats.size(); i++) {
+            int position = i + 1; //offset by 1 because noone can be in 0th position
             boats.get(i).setPosition(position);
         }
-
     }
     /**
      * Generates a line used for a wake
@@ -805,6 +804,7 @@ public class RaceController {
         Polygon boundary = new Polygon();
         List<Mark> boundaries = race.getBoundaries();
         for (Mark position : boundaries) {
+            //System.out.println(Coordinate.getRelativeX(position.getX()) + " --- " + Coordinate.getRelativeY(position.getY()) );
             boundary.getPoints().add(Coordinate.getRelativeX(position.getX()));
             boundary.getPoints().add(Coordinate.getRelativeY(position.getY()));
         }
@@ -912,7 +912,6 @@ public class RaceController {
             boundaryGroup.getChildren().clear();
             boundaryGroup.getChildren().add(boundary);
         }
-
     }
 
     /**
@@ -937,7 +936,6 @@ public class RaceController {
             raceMinutes = 0;
             raceSeconds = 0;
         }
-
         clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
     }
 
