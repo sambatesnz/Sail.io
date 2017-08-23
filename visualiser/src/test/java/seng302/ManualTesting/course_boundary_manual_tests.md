@@ -15,7 +15,12 @@
     - Date  23/08/2017
     - Current Commit of branch  77183f4
     - Performed By: Stefan & Jono
-    - Result    **Pass**
+    - Result  **Pass**
+    -
+    - Date  23/08/2017
+    - Current Commit of branch  b0c5a6e
+    - Performed By: Matt Simpson
+    - Result **Pass**
 
     
     
@@ -38,4 +43,34 @@
     - Current Commit of branch  77183f4
     - Performed By: Stefan & Jono
     - Result    **Pass**
+    -
+    - Date  23/08/2017
+    - Current Commit of branch  b0c5a6e
+    - Performed By: Matt Simpson
+    - Result    **Pass**
 
+
+
+##### Course Boundary Test number 3
+#####Context:
+    This test is to check whether show on a visualiser when connect to another server
+    To set up the test,
+    Follow the link: http://learn.canterbury.ac.nz/mod/folder/view.php?id=630398
+    download team 28's jar
+    Connect our visualer to an instance of their server
+    
+#####Expected Results:
+    Upon connection to our server, the course boundary should be vsible
+
+####Testing log:
+
+#####Test:
+    - Date  23/08/2017
+    - Current Commit of branch  b0c5a6e
+    - Performed By: Stefan & Jono
+    - Result    **Pass**
+    -
+    - Date  23/08/2017
+    - Current Commit of branch  b0c5a6e
+    - Performed By: Matt Simpson
+    - Result    **Pass**

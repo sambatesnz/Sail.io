@@ -804,7 +804,6 @@ public class RaceController {
         Polygon boundary = new Polygon();
         List<Mark> boundaries = race.getBoundaries();
         for (Mark position : boundaries) {
-            //System.out.println(Coordinate.getRelativeX(position.getX()) + " --- " + Coordinate.getRelativeY(position.getY()) );
             boundary.getPoints().add(Coordinate.getRelativeX(position.getX()));
             boundary.getPoints().add(Coordinate.getRelativeY(position.getY()));
         }
