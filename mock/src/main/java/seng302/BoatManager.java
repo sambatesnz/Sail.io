@@ -19,14 +19,19 @@ public class BoatManager {
     }
 
     public void addFinishedBoat(Boat boat) {
-        Boolean changed = finishedBoats.add(boat);
-        if (changed) {
-            boatsToSend.add(boat);
-
+        if (boat.isFinished()) {
+            Boolean changed = finishedBoats.add(boat);
+            if (changed) {
+                boatsToSend.add(boat);
+            }
         }
     }
 
+    public boolean hasABoatFinished() {
+        return boatsToSend.size() > 0;
+    }
 
-
-
+    public Boat getFinishedBoat() {
+        return boatsToSend.remove(0);
+    }
 }

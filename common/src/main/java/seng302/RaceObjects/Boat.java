@@ -46,6 +46,8 @@ public class Boat {
     private int lastMarkIndex = 0;
     private int roundingStage = 0;
 
+    private boolean finished;
+
     /**
      * Boat constructor
      * @param name the name of the boat
@@ -62,6 +64,7 @@ public class Boat {
         this.mark = new Mark();
         this.raceTime = Integer.toUnsignedLong(0);
         this.headingChanged = false;
+        this.finished = false;
     }
 
     /**
@@ -71,6 +74,7 @@ public class Boat {
     public Boat(Integer sourceID, String boatName) {
         this.sourceId = sourceID;
         this.boatName = boatName;
+        this.finished = false;
     }
 
     /**
@@ -543,6 +547,14 @@ public class Boat {
 
     public void updateRoundingStage() {
         roundingStage++;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 }
 
