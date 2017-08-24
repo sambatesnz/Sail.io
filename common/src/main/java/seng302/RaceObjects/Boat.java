@@ -538,7 +538,6 @@ public class Boat {
     public void passMark() {
         targetMarkIndex++;
         lastMarkIndex = targetMarkIndex - 1;
-        System.out.println(targetMarkIndex);  //Testing; to remove
     }
 
     public int getRoundingStage() {

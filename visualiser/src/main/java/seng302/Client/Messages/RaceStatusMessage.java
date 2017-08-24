@@ -80,9 +80,6 @@ public class RaceStatusMessage {
         race.setWindSpeed(windSpeed);
         race.setExpectedStartTime(expectedStartTime);
         race.setRaceStatus(raceStatus);
-        if (raceStatus == RaceStatus.FINISHED) {
-            System.out.println("The race is finished!");
-        }
         race.setCurrentTime(currentTime);
     }
 }

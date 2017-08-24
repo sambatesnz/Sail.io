@@ -74,6 +74,7 @@ public class Race {
         long t = date.getTimeInMillis();
 
         startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 6/5);
+        firstFinishTime = 0;
 
 
         boats = new ArrayList<>();
@@ -381,7 +382,7 @@ public class Race {
                 }
             }
 
-            if (isFinishTimerExpired() || areAllContestantsFinished()) {
+            if ((isFinishTimerExpired() || areAllContestantsFinished()) && !(raceStatus == RaceStatus.FINISHED)) {
                 raceStatus = RaceStatus.FINISHED;
             }
 
@@ -400,10 +401,8 @@ public class Race {
     }
 
     private boolean isFinishTimerExpired(){
-        System.out.println(System.currentTimeMillis());
-        System.out.println(firstFinishTime + ONE_MINUTE_IN_MILLIS);
-        System.out.println(System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS);
-        return (System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS);
+        return (firstFinishTime > 0) && (System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS);
+
     }
 
     private boolean areAllContestantsFinished() {
@@ -417,12 +416,14 @@ public class Race {
 
     public void updateRaceInfo(){
         //this.timeToStart = startingTime.getTime() - new Date().getTime();
-        if (startingTime.getTime() < new Date().getTime()){
-            raceStatus = RaceStatus.STARTED;
-        }else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS){
-            raceStatus = RaceStatus.PREP;
-        }else {
-            raceStatus = RaceStatus.WARNING;
+        if (!(raceStatus == RaceStatus.FINISHED)) {
+            if (startingTime.getTime() < new Date().getTime()) {
+                raceStatus = RaceStatus.STARTED;
+            } else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS) {
+                raceStatus = RaceStatus.PREP;
+            } else {
+                raceStatus = RaceStatus.WARNING;
+            }
         }
     }
 

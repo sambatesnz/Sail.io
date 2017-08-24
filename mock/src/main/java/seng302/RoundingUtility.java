@@ -24,7 +24,6 @@ public class RoundingUtility {
     public static void determineMarkRounding(List<Pair<CompoundMark, Rounding>> courseRoundingInfo, Boat boat) {
 
         if (boat.getTargetMarkIndex() >= courseRoundingInfo.size()) {
-            System.out.println("Hello! He is finished!");
             boat.setFinished(true);
             return;
         }
@@ -141,7 +140,6 @@ public class RoundingUtility {
         if (boat.getRoundingStage() >= 3) {
             boat.resetRoundingStage();
             boat.passMark();
-            System.out.println("Course size: " + courseRoundingInfo.size()); //Testing: To remove
         }
     }
 
