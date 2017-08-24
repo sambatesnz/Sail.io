@@ -6,6 +6,7 @@ import seng302.RaceObjects.Boat;
 import static org.junit.Assert.*;
 
 public class BoatGeneratorTest {
+
     @Test
     public void generateBoat() throws Exception {
         BoatGenerator boatGenerator = new BoatGenerator();
