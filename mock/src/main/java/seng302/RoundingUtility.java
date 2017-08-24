@@ -24,6 +24,7 @@ public class RoundingUtility {
     public static void determineMarkRounding(List<Pair<CompoundMark, Rounding>> courseRoundingInfo, Boat boat) {
 
         if (boat.getTargetMarkIndex() >= courseRoundingInfo.size()) {
+            boat.setFinished(true);
             return;
         }
 
@@ -153,7 +154,7 @@ public class RoundingUtility {
      * @param y1 y coordinate of hte second mark
      * @return "Left" if the point is left of the line, or "Right" if the point is to the right of (or on) the line
      */
-    public static String getOrientation(double x, double y, double x0, double y0, double x1, double y1) {
+    private static String getOrientation(double x, double y, double x0, double y0, double x1, double y1) {
         double value = (x1 - x0) * (y - y0) - (x - x0) * (y1 - y0);
 
         if (value > 0) {

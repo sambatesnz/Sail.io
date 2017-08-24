@@ -386,7 +386,11 @@ public class Race {
                 boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
 
                 if (raceStatus == RaceStatus.STARTED) {
-                    RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
+                    if (!boat.isFinished()) {
+                        RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
+                    } else {
+                        boatManager.addFinishedBoat(boat);
+                    }
                 }
 
                 boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
