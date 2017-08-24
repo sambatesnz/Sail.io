@@ -372,15 +372,19 @@ public class Race {
             if (raceStatus == RaceStatus.STARTED) {
                 if (!boat.isFinished()) {
                     RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
-                } else {
+                } else if (!boat.isAdded()) {
                     boatManager.addFinishedBoat(boat);
+                    boat.setAdded(true);
                     if (!raceFinishing) {
                         setFirstFinishTime();
-                    } else if (isFinishTimerExpired() || areAllContestantsFinished()) {
-                        raceStatus = RaceStatus.FINISHED;
                     }
                 }
             }
+
+            if (isFinishTimerExpired() || areAllContestantsFinished()) {
+                raceStatus = RaceStatus.FINISHED;
+            }
+
             boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
             boat.getMark().setY(newY);
             boat.setHeadingChangedToFalse();
@@ -396,6 +400,9 @@ public class Race {
     }
 
     private boolean isFinishTimerExpired(){
+        System.out.println(System.currentTimeMillis());
+        System.out.println(firstFinishTime + ONE_MINUTE_IN_MILLIS);
+        System.out.println(System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS);
         return (System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS);
     }
 

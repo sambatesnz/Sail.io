@@ -48,6 +48,7 @@ public class Boat {
 
     private boolean finished;
     private boolean connected;
+    public boolean added;
 
     /**
      * Boat constructor
@@ -537,6 +538,7 @@ public class Boat {
     public void passMark() {
         targetMarkIndex++;
         lastMarkIndex = targetMarkIndex - 1;
+        System.out.println(targetMarkIndex);  //Testing; to remove
     }
 
     public int getRoundingStage() {
@@ -562,5 +564,15 @@ public class Boat {
     public boolean isConnected() {
         return connected;
     }
+
+    public boolean isAdded() {
+        return added;
+    }
+
+    public void setAdded(boolean added) {
+        this.added = added;
+    }
+
+
 }
 
