@@ -376,10 +376,11 @@ public class Race {
                     boatManager.addFinishedBoat(boat);
                     if (!raceFinishing) {
                         setFirstFinishTime();
+                    } else if (isFinishTimerExpired() || areAllContestantsFinished()) {
+                        raceStatus = RaceStatus.FINISHED;
                     }
                 }
             }
-
             boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
             boat.getMark().setY(newY);
             boat.setHeadingChangedToFalse();
@@ -391,10 +392,20 @@ public class Race {
 
     private void setFirstFinishTime() {
         firstFinishTime = System.currentTimeMillis();
+        raceFinishing = true;
     }
 
     private boolean isFinishTimerExpired(){
         return (System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS);
+    }
+
+    private boolean areAllContestantsFinished() {
+        for (Boat boat : boats) {
+            if (!(boat.isFinished() || !boat.isConnected())){
+                return false;
+            }
+        }
+        return true;
     }
 
     public void updateRaceInfo(){

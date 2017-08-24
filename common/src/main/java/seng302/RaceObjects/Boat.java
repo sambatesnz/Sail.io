@@ -47,6 +47,7 @@ public class Boat {
     private int roundingStage = 0;
 
     private boolean finished;
+    private boolean connected;
 
     /**
      * Boat constructor
@@ -65,6 +66,7 @@ public class Boat {
         this.raceTime = Integer.toUnsignedLong(0);
         this.headingChanged = false;
         this.finished = false;
+        this.connected = true;
     }
 
     /**
@@ -555,6 +557,10 @@ public class Boat {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+
+    public boolean isConnected() {
+        return connected;
     }
 }
 
