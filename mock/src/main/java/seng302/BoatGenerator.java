@@ -42,7 +42,6 @@ public class BoatGenerator {
         boat.setHeading(180);
 //        Random generator = new Random();
 //        System.out.println(generator.nextDouble());
-        System.out.println(numberOfBoats);
         Mark mark = new Mark(57.671335, 11.8271330 + numberOfBoats/1000.0);
         boat.setMark(mark);
         sourceId++;

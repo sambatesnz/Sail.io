@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import seng302.Helper.BoatGeneratorExtension;
 import seng302.RaceObjects.Boat;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,7 +26,7 @@ public class BoatManagerTest {
 
     @Test
     public void addUnfinishedBoat() throws Exception {
-        Boat boat = boatGenerator.generateBoat(101);
+        Boat boat = boatGenerator.generateBoat();
         boatManager.addFinishedBoat(boat);
 
         boolean hasBoatFinished = boatManager.hasABoatFinished();
@@ -47,15 +49,19 @@ public class BoatManagerTest {
 
     @Test
     public void addMultipleBoats() throws Exception {
-        for (int i = 0; i < 5; i++) {
-            Boat boat = boatGenerator.generateBoat();
-            System.out.println(boat.getSourceId());
+        HashSet inputBoatsSet = new HashSet<>(Arrays.asList(240, 241, 242, 242, 243, 244));
+
+        for (int i = 240; i < 245; i++) {
+            Boat boat = boatGenerator.generateBoat(i);
             boat.setFinished(true);
             boatManager.addFinishedBoat(boat);
         }
 
+        HashSet outputBoats = new HashSet<>();
+        while (boatManager.hasABoatFinished()) {
+            outputBoats.add(boatManager.getFinishedBoat().getSourceId());
+        }
 
-
-
+        assertEquals(inputBoatsSet, outputBoats);
     }
 }
