@@ -30,11 +30,12 @@ public class RaceManager implements IServerData {
     private Queue<byte[]> broadcastMessageQueue;
     private Queue<byte[]> singularMessageQueue;
     private Timer timer = new Timer();
-    private BoatManager boatManager = new BoatManager();
+    private BoatManager boatManager;
 
 
     public RaceManager(){
         this.race = new Race();
+        boatManager = race.getBoatManager();
         broadcastMessageQueue = new LinkedBlockingQueue<>();
         singularMessageQueue = new LinkedBlockingQueue<>();
     }

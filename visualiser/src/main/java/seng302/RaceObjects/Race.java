@@ -24,8 +24,6 @@ public class Race {
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
     private Map<Integer, Mark> marks;
-    // Changing list of boats to hashmap. where key is boat SourceID, as retrieved from the xml message
-//    private List<Boat> boats;
     private ObservableMap<Integer, Boat> boats;
     private List<Boat> finishedBoats;
     private List<Mark> boundaries;

@@ -73,6 +73,7 @@ public class RaceStatusMessage {
      * - Wind Speed
      * - Expected Start Time
      * - Race Status
+     * - Current Time
      */
     public void updateRaceDetails() {
         race.setWindHeading(windDirection);

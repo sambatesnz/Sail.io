@@ -30,7 +30,6 @@ public class Race {
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
     private List<Boat> boats;
-    private List<Boat> finishedBoats;
     private List<CourseLimit> boundaries;
     private short windHeading;
     private short startingWindSpeed;
@@ -44,7 +43,7 @@ public class Race {
     private ObservableList<String> positionStrings;
     private Date startingTime;
     private SimpleStringProperty timeToStart;
-    private boolean finished = false;
+    private boolean raceFinishing = false;
     private static final int TEN_KNOTS = 5145;
     private static final int FORTY_KNOTS = 20577;
     private static final int FIVE_KNOTS = 2573;
@@ -52,9 +51,10 @@ public class Race {
     private final long ONE_MINUTE_IN_MILLIS = 60000;
     private static int MAX_NUMBER_OF_BOATS = 20;
 
-
     private BoatGenerator boatGenerator;
     private BoatManager boatManager;
+    private long firstFinishTime;
+
 
     /**
      * Constructor for the race class.
@@ -65,8 +65,8 @@ public class Race {
         // setWindHeading(190);
 
         setStartingWindSpeed();
-        BoatManager boatManager = new BoatManager();
         boatGenerator = new BoatGenerator();
+        boatManager = new BoatManager();
         this.windSpeed = this.startingWindSpeed;
         instantiateWindHeading();
 
@@ -77,7 +77,6 @@ public class Race {
 
 
         boats = new ArrayList<>();
-        finishedBoats = new ArrayList<>();
         positionStrings = FXCollections.observableArrayList();
         for (Boat boat : boats) {
             int speed = (new Random().nextInt(5000) + 100);
@@ -94,7 +93,6 @@ public class Race {
      */
     public void removeBoat(int sourceId) {
         boats.removeIf(boat -> boat.getSourceId() == sourceId);
-        finishedBoats.removeIf(boat -> boat.getSourceId() == sourceId);
     }
 
     /**
@@ -224,23 +222,10 @@ public class Race {
         return raceStatus;
     }
 
-//    /**
-//     * Takes the list of finished boats and creates a list of strings.
-//     *
-//     * @return positionStrings, an OberservableList of strings with in the order of finishers.
-//     */
-//    public ObservableList<String> getPositionStrings() {
-//        if (!positionStrings.isEmpty()) {
-//            positionStrings.clear();
-//        }
-//        positionStrings.add("Race Results");
-//        int i = 1;
-//        for (Boat boat : finishedBoats) {
-//            positionStrings.add(i + ": " + boat.getName());
-//            i++;
-//        }
-//        return positionStrings;
-//    }
+    public BoatManager getBoatManager() {
+        return boatManager;
+    }
+
 
     /**
      * Sets the current direction of the wind
@@ -373,36 +358,44 @@ public class Race {
         double movementMultiplier = 1;
 
         for (Boat boat : boats) {
-            if (!finishedBoats.contains(boat)) {
-                if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
-                    PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
-                }
-                //Increments the the distance by the speed
-                //Increments the the distance by the speed
-                double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
-                double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
+            if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
+                PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
+            }
+            //Increments the the distance by the speed
+            //Increments the the distance by the speed
+            double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
+            double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
 
-                boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
-                boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
+            boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
+            boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
 
-                if (raceStatus == RaceStatus.STARTED) {
-                    if (!boat.isFinished()) {
-                        RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
-                    } else {
-                        boatManager.addFinishedBoat(boat);
+            if (raceStatus == RaceStatus.STARTED) {
+                if (!boat.isFinished()) {
+                    RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
+                } else {
+                    boatManager.addFinishedBoat(boat);
+                    if (!raceFinishing) {
+                        setFirstFinishTime();
                     }
                 }
-
-                boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
-                boat.getMark().setY(newY);
             }
+
+            boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
+            boat.getMark().setY(newY);
             boat.setHeadingChangedToFalse();
         }
         windHeadingChanged = false;
         windSpeedChanged = false;
+
     }
 
+    private void setFirstFinishTime() {
+        firstFinishTime = System.currentTimeMillis();
+    }
 
+    private boolean isFinishTimerExpired(){
+        return (System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS);
+    }
 
     public void updateRaceInfo(){
         //this.timeToStart = startingTime.getTime() - new Date().getTime();
