@@ -81,7 +81,12 @@ public class LobbyController {
     public void forceStart() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
         RaceController raceController = new RaceController(race);
+        raceController.setFinishPaneController();
+//        raceController.loadFinishers();
+        raceController.setPrimaryStage(primaryStage);
+
         loader.setController(raceController);
+
         Parent root = loader.load();
 
         Scene rootScene = new Scene(root);

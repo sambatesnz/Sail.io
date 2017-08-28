@@ -71,7 +71,7 @@ public class Race {
         Calendar date = Calendar.getInstance();
         long t = date.getTimeInMillis();
 
-        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 8/5);
+        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 5/4);
 
 
         boats = new ArrayList<>();
@@ -357,7 +357,6 @@ public class Race {
     }
 
     public String getDateString() {
-        final long ONE_MINUTE_IN_MILLIS=60000;
         TimeZone tz = TimeZone.getTimeZone("NZST");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); // Quoted "Z" to indicate UTC, no timezone offset
         df.setTimeZone(tz);

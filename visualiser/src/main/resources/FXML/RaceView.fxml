@@ -63,10 +63,16 @@
                     </font>
                 </Label>
                 <Button fx:id="annotationBtn" layoutX="14.0" layoutY="600.0" mnemonicParsing="false" onAction="#annotationBtnClicked" text="Remove Annotations" />
+            <Button fx:id="toggleFinishersBtn" layoutX="14.0" layoutY="564.0" mnemonicParsing="false" onAction="#toggleFinishers" text="Show Finishers" />
                 <Button fx:id="fpsBtn" layoutX="14.0" layoutY="700.0" mnemonicParsing="false" onAction="#fpsBtnClicked" text="Remove FPS counter" />
                 <CheckBox fx:id="BoatSpeedCheckBox" layoutX="13.0" layoutY="439.0" mnemonicParsing="false" onAction="#ToggleBoatSpeedAnnotation" selected="true" text="Boat Speeds" />
                 <CheckBox fx:id="BoatNameCheckBox" layoutX="13.0" layoutY="421.0" mnemonicParsing="false" onAction="#ToggleBoatNameAnnotation" selected="true" text="Boat Names" />
-            <ListView fx:id="startersList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="200.0" visible="false" />
+            <ListView fx:id="startersList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="200.0" prefHeight="400.0" prefWidth="275.0" visible="false" />
+            <Pane fx:id="finishingPane" layoutX="291.0" layoutY="207.0" prefHeight="314.0" prefWidth="409.0" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="200.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Button" />
+               </children>
+            </Pane>
 
             </children>
        </AnchorPane>
