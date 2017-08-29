@@ -13,6 +13,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         IServerData mockData = new RaceManager(); //Default race
-        new Server(4941, mockData);
+        new Server(4942, mockData);
     }
 }   

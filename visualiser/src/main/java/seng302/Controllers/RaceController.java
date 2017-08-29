@@ -88,6 +88,8 @@ public class RaceController {
     private SplitPane sidePanelSplit;
     @FXML
     private Pane finishingPane;
+    @FXML
+    private Group finishingGroup;
     @FXML private CheckBox BoatNameCheckBox;
     @FXML private CheckBox BoatSpeedCheckBox;
     @FXML private Button toggleFinishersBtn;
@@ -671,6 +673,12 @@ public class RaceController {
             viewAnchorPane.setMinWidth(Coordinate.getWindowWidthX());
             viewAnchorPane.setMaxWidth(Coordinate.getWindowWidthX());
 
+            finishingGroup.setLayoutX(Coordinate.getWindowWidthX()/2);
+            finishingGroup.setLayoutY(Coordinate.getWindowHeightY()/2);
+
+            finishingPane.setLayoutX(Coordinate.getWindowWidthX()/2);
+            finishingPane.setLayoutY(Coordinate.getWindowHeightY()/2);
+
             fpsLabel.setLayoutX(Coordinate.getWindowWidthX() - 90);
             fpsLabel.setLayoutY(60);
             clock.setLayoutY(20);
@@ -991,6 +999,7 @@ public class RaceController {
         FXMLLoader fxmlLoader = new FXMLLoader();
         AnchorPane anchorPane = fxmlLoader.load(getClass().getClassLoader().getResource("FXML/FinishingPage.fxml").openStream());
         FinishingController finishingController = (FinishingController) fxmlLoader.getController();
+        finishingController.setPrimaryStage(primaryStage);
 
         System.out.println(finishingController);
         System.out.println(anchorPane);
