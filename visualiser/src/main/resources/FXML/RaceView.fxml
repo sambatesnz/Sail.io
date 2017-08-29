@@ -69,15 +69,12 @@
                 <CheckBox fx:id="BoatSpeedCheckBox" layoutX="13.0" layoutY="439.0" mnemonicParsing="false" onAction="#ToggleBoatSpeedAnnotation" selected="true" text="Boat Speeds" />
                 <CheckBox fx:id="BoatNameCheckBox" layoutX="13.0" layoutY="421.0" mnemonicParsing="false" onAction="#ToggleBoatNameAnnotation" selected="true" text="Boat Names" />
             <ListView fx:id="startersList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="200.0" prefHeight="400.0" prefWidth="275.0" visible="false" />
-            <Group fx:id="finishingGroup" layoutX="10.0" layoutY="-106.0" AnchorPane.bottomAnchor="157.0" AnchorPane.leftAnchor="235.0" AnchorPane.rightAnchor="123.0" AnchorPane.topAnchor="171.0">
-               <children>
-                  <Pane fx:id="finishingPane" layoutX="225.0" layoutY="277.0" maxHeight="9999.0" maxWidth="9999.0" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </Pane>
-               </children>
-            </Group>
+            <Group fx:id="finishingGroup" layoutX="10.0" layoutY="-106.0" AnchorPane.bottomAnchor="157.0" AnchorPane.leftAnchor="235.0" AnchorPane.rightAnchor="123.0" AnchorPane.topAnchor="171.0" />
+            <Pane fx:id="finishingPane" maxHeight="9999.0" maxWidth="9999.0" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Pane>
 
             </children>
        </AnchorPane>

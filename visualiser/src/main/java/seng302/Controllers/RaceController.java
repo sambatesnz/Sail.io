@@ -673,11 +673,11 @@ public class RaceController {
             viewAnchorPane.setMinWidth(Coordinate.getWindowWidthX());
             viewAnchorPane.setMaxWidth(Coordinate.getWindowWidthX());
 
-            finishingGroup.setLayoutX(Coordinate.getWindowWidthX()/2);
-            finishingGroup.setLayoutY(Coordinate.getWindowHeightY()/2);
+            finishingGroup.setLayoutX(Coordinate.getWindowWidthX()/2 - 300) ;
+            finishingGroup.setLayoutY(Coordinate.getWindowHeightY()/2 - 200);
 
-            finishingPane.setLayoutX(Coordinate.getWindowWidthX()/2);
-            finishingPane.setLayoutY(Coordinate.getWindowHeightY()/2);
+            finishingPane.setLayoutX(Coordinate.getWindowWidthX()/2 - 300);
+            finishingPane.setLayoutY(Coordinate.getWindowHeightY()/2 - 200);
 
             fpsLabel.setLayoutX(Coordinate.getWindowWidthX() - 90);
             fpsLabel.setLayoutY(60);
@@ -1000,12 +1000,8 @@ public class RaceController {
         AnchorPane anchorPane = fxmlLoader.load(getClass().getClassLoader().getResource("FXML/FinishingPage.fxml").openStream());
         FinishingController finishingController = (FinishingController) fxmlLoader.getController();
         finishingController.setPrimaryStage(primaryStage);
-
-        System.out.println(finishingController);
-        System.out.println(anchorPane);
-        System.out.println(finishingPane);
-        System.out.println(finishingPane.getChildren());
-
+        finishingController.setRace(race);
+        finishingController.initialiseTable();
         finishingPane.getChildren().setAll(anchorPane);
     }
 

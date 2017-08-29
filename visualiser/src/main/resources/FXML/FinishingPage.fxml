@@ -23,12 +23,11 @@
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
-                  <TableView layoutX="194.0" layoutY="60.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="finishersTable" layoutX="194.0" layoutY="60.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="Position" />
-                      <TableColumn prefWidth="75.0" text="Boat Name" />
-                        <TableColumn prefWidth="75.0" text="Finish Time" />
-                        <TableColumn prefWidth="75.0" text="Status" />
+                      <TableColumn fx:id="positionColumn" prefWidth="75.0" text="Position" />
+                      <TableColumn fx:id="boatColumn" prefWidth="75.0" text="Boat Name" />
+                        <TableColumn fx:id="finishTimeColumn" prefWidth="75.0" text="Finish Time" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
