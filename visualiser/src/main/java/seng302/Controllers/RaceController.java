@@ -75,6 +75,8 @@ public class RaceController {
     @FXML
     private TableColumn<Boat, String> speedCol;
     @FXML
+    private TableColumn<Boat, String> legCol;
+    @FXML
     private Label fpsLabel;
     @FXML
     private Button annotationBtn;
@@ -221,7 +223,11 @@ public class RaceController {
 //            String pos = String.valueOf(p.getValue().getPosition());
 //            return new ReadOnlyObjectWrapper<>(pos);
 //        });
-        positionCol.setVisible(false);
+//        positionCol.setVisible(false);
+
+
+        legCol.setCellValueFactory(new PropertyValueFactory<>("currentLegIndex"));
+        legCol.setSortType(TableColumn.SortType.ASCENDING);
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         speedCol.setCellValueFactory(p -> {
             String speed = String.valueOf(p.getValue().getSpeedInKnots());
