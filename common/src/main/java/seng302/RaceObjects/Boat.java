@@ -34,6 +34,7 @@ public class Boat {
     private boolean knowsBoatLocation;
     private boolean headingChanged;
     private boolean sailsOut = false;
+    private double size;
 
     private boolean isFinished = false;
     private boolean upwindMemory = false;
@@ -63,6 +64,7 @@ public class Boat {
         this.mark = new Mark();
         this.raceTime = Integer.toUnsignedLong(0);
         this.headingChanged = false;
+        this.size = 18;
     }
 
     /**
@@ -499,6 +501,14 @@ public class Boat {
      */
     public void setTimeToFinish(long timeToFinish) {
         this.timeToFinish = timeToFinish;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
     }
 
     public boolean isKnowsBoatLocation() {

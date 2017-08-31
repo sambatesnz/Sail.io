@@ -7,10 +7,7 @@ import javafx.util.Pair;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketParsing.XMLParser;
 import seng302.Polars.PolarUtils;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.CompoundMark;
-import seng302.RaceObjects.CourseLimit;
-import seng302.RaceObjects.Leg;
+import seng302.RaceObjects.*;
 import seng302.Server.RaceCreator;
 
 import java.io.IOException;
@@ -51,6 +48,7 @@ public class Race {
     private static final int DIRECTION_CHANGE_PROB = 25;
     private final long ONE_MINUTE_IN_MILLIS = 60000;
     private static int MAX_NUMBER_OF_BOATS = 20;
+    private static double MARK_SIZE = 5;
 
 
     private BoatGenerator boatGenerator;
@@ -375,6 +373,14 @@ public class Race {
                 //boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
               //Not being actively used
 
+                if (checkBoatCollisions(boat) == 1) {
+                    System.out.println("Collisions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                }
+
+                if (checkMarkCollisions(boat) == 1) {
+                    System.out.println("COLLIDING WITH THE MARK YO +++++++++++++++++++++++++++++++++++++++++++++");
+                }
+
                 if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
                     PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
                 }
@@ -478,4 +484,71 @@ public class Race {
     public void setPracticeRace(boolean practiceRace) {
         this.practiceRace = practiceRace;
     }
+
+    private int checkBoatCollisions(Boat boat) {
+
+        double boatX = boat.getMark().getX();
+        double boatY = boat.getMark().getY();
+
+        for (Boat collisionBoat : boats) {
+
+            if (boat != collisionBoat) {
+
+                double collisionX = collisionBoat.getMark().getX();
+                double collisionY = collisionBoat.getMark().getY();
+
+                double xDist = boatX - collisionX;
+                double yDist = boatY - collisionY;
+
+                double distance = sqrt((xDist * xDist) + (yDist * yDist));
+
+                if (distance < (boat.getSize() + collisionBoat.getSize())) {
+                    return 1;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private int checkMarkCollisions(Boat boat) {
+
+        Mark boatMark = boat.getMark();
+
+        for (CompoundMark mark : compoundMarks) {
+
+            if (mark.getType().equals("Gate")) {
+
+                ArrayList<Mark> gateMarks = mark.getMarks();
+
+                for (Mark gateMark : gateMarks) {
+                    if (checkCollisions(boatMark, gateMark, boat.getSize(), MARK_SIZE)) {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+    private boolean checkCollisions(Mark mark1, Mark mark2, double size1, double size2) {
+
+        double mark1X = mark1.getX();
+        double mark1Y = mark1.getY();
+
+        double mark2X = mark2.getX();
+        double mark2Y = mark2.getY();
+
+        double xDist = mark1X - mark2X;
+        double yDist = mark1Y - mark2Y;
+
+        double distance = sqrt((xDist * xDist) + (yDist * yDist));
+
+        if (distance < (size1 + size2)) {
+            return true;
+        }
+
+        return false;
+    }
+
 }
