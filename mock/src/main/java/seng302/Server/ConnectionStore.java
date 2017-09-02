@@ -1,6 +1,7 @@
 package seng302.Server;
 
 import seng302.DataGeneration.IServerData;
+import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Client connections are added and removed through
@@ -41,7 +43,8 @@ public class ConnectionStore {
      * @param bytes array of bytes you wish to send
      */
     public synchronized void sendToAll(byte[] bytes) {
-        for (Object value: socketStreams.values()){
+        Queue<Socket> socketToRemove = new LinkedBlockingQueue<>();
+        for (Object value : socketStreams.values()) {
             Socket socket = (Socket) value;
             try {
                 boolean hasPackets = bytes.length > 0;
@@ -51,8 +54,12 @@ public class ConnectionStore {
                 }
             } catch (IOException e) {
                 System.out.println("removing connections");
-                removeConnection(socket);
+                socketToRemove.add(socket);
+                //removeConnection(socket);
             }
+        }
+        for(Socket s : socketToRemove){
+            removeConnection(s);
         }
     }
 
@@ -88,13 +95,18 @@ public class ConnectionStore {
         int socketId = socket.getPort();
 
         System.out.println("Removing connection to " + socket);
-
         socketStreams.remove(socketId);
-        try {
-            socket.close();
-        } catch (IOException ie) {
-            System.out.println("Error closing " + socket);
-            ie.printStackTrace();
+        RaceStatus rs = race.getRace().getRaceStatus();
+        if(rs != RaceStatus.STARTED && rs != RaceStatus.PREP && rs != RaceStatus.FINISHED){
+            race.getRace().removeBoat(socketId);
+        }
+        {
+            try {
+                socket.close();
+            } catch (IOException ie) {
+                System.out.println("Error closing " + socket);
+                ie.printStackTrace();
+            }
         }
     }
 

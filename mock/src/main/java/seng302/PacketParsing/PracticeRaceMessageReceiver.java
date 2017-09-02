@@ -1,6 +1,5 @@
 package seng302.PacketParsing;
 
-import seng302.Client.Messages.Message;
 import seng302.DataGeneration.IServerData;
 import seng302.UserInput.PracticeMessageMeaning;
 

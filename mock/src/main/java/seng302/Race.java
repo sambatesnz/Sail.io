@@ -31,6 +31,7 @@ public class Race {
     private List<CompoundMark> gates;
     private List<Boat> boats;
     private List<Boat> finishedBoats;
+    private Map<Integer, Integer> clientIDs;
     private List<CourseLimit> boundaries;
     private short windHeading;
     private short startingWindSpeed;
@@ -71,11 +72,12 @@ public class Race {
         Calendar date = Calendar.getInstance();
         long t = date.getTimeInMillis();
 
-        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 5/4);
+        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 3/2);
 
 
         boats = new ArrayList<>();
         finishedBoats = new ArrayList<>();
+        clientIDs = new HashMap<>();
         positionStrings = FXCollections.observableArrayList();
         for (Boat boat : boats) {
             int speed = (new Random().nextInt(5000) + 100);
@@ -88,11 +90,19 @@ public class Race {
 
     /**
      * When called, removes the boat from the race, both the current boats, and the boats that have finished.
-     * @param sourceId the source id of the boat to be removed.
+     * Race should not be in STATUS WARNING, PREP, STARTED, or FINISHED for a multi-player race
+     * @param clientSocketSourceID the source id of the clients socket of the boat to be removed.
      */
-    public void removeBoat(int sourceId) {
-        boats.removeIf(boat -> boat.getSourceId() == sourceId);
-        finishedBoats.removeIf(boat -> boat.getSourceId() == sourceId);
+    public void removeBoat(int clientSocketSourceID) {
+        try {
+            int sourceId = clientIDs.get(clientSocketSourceID);
+            boats.removeIf(boat -> boat.getSourceId() == sourceId);
+            finishedBoats.removeIf(boat -> boat.getSourceId() == sourceId);
+            clientIDs.remove(clientSocketSourceID);
+        }catch (NullPointerException nullPoint){
+            System.out.println("Remove called on boat that has already been removed");
+            nullPoint.printStackTrace();
+        }
     }
 
     /**
@@ -100,9 +110,10 @@ public class Race {
      * @return boat
      * @throws Exception the boat could not be created
      */
-    public Boat addBoat() throws Exception {
+    public Boat addBoat(int clientSocketSourceID) throws Exception {
         if (boats.size() < MAX_NUMBER_OF_BOATS){
             Boat boat = boatGenerator.generateBoat();
+            clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
             return boat;
         } else {
@@ -367,101 +378,44 @@ public class Race {
      * Runs a portion of the race, updating boat positions and leg status
      */
     public void updateBoats() {
-        double distanceMultiplier = 1;
         double movementMultiplier = 1;
 
         for (Boat boat : boats) {
             if (!finishedBoats.contains(boat)) {
-                //boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
-              //Not being actively used
 
                 if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
                     PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
                 }
 
                 //Increments the the distance by the speed
-                    //Increments the the distance by the speed
-                    double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
-                    double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
+                double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
+                double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
 
                 boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
                 boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
-//                if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {
-//                    String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
-//                    boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
-//                    boat.setCurrentLegIndex(boat.getCurrentLegIndex() + 1);
+
                 if (raceStatus == RaceStatus.STARTED) {
                     RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
                 }
-
-                    /*CompoundMark currentTarget = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey();
-                    double xTarget = currentTarget.getX();
-                    double yTarget = currentTarget.getY();
-                    double xDummy = -yTarget;
-                    double yDummy = xTarget;
-
-                    String orientPerpendicular = RoundingUtility.getOrientation(boat, xTarget, yTarget, xDummy, yDummy);
-                    if (orientPerpendicular.equals("Left")) {
-                        CompoundMark lastTarget = courseRoundingInfo.get(boat.getLastMarkIndex()).getKey();
-                        double xLast = lastTarget.getX();
-                        double yLast = lastTarget.getY();
-                        String orientParallel = RoundingUtility.getOrientation(boat, xLast, yLast, xTarget, yTarget);
-                    }*/
-
-//
-//                    CompoundMark currentTarget = courseRoundingInfo.get(boat.getTargetMarkIndex()).getKey();
-//                    String orient = RoundingUtility.getOrientation(boat, lastTarget, currentTarget);
-
-
-                    boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
-                    boat.getMark().setY(newY);
-
-
-                    /*if (boat.getCurrentLegDistance() > legs.get(boat.getCurrentLegIndex()).getDistance()) {                           //Legacy code
-                        String passed = legs.get(boat.getCurrentLegIndex()).getDest().getName();
-                        boat.setCurrentLegDistance(boat.getCurrentLegDistance() - legs.get(boat.getCurrentLegIndex()).getDistance());
-                        boat.setCurrentLegIndex(boat.getCurrentLegIndex() + 1);
-
-                    // Gives each boat it's race time to the last mark.
-                    boat.setRaceTime(currentTimeMillis());
-                    // Sorts the boats in order. Attempts by leg it's doing first, then by time to complete last leg from start.
-
-                    if (boat.getCurrentLegIndex() == legs.size()) {
-                        numFinishers++;
-                        boat.setSpeed(0);
-                        finishedBoats.add(boat);
-                        if (numFinishers == boats.size()) {
-                            finished = true;
-                            return;
-                        }
-                    } else {
-                        if (boat.getSourceId() != 103) {
-                            boat.setHeading(legs.get(boat.getCurrentLegIndex()).getHeading());
-                        }
-//                        System.out.println(boat.getName() + " passed " + passed + ", now sailing to " +
-//                                legs.get(boat.getCurrentLegIndex()).getDest().getName() + " with a heading of " +
-//                                String.format("%.2f", legs.get(boat.getCurrentLegIndex()).getHeading()) + "°");
-//                    }
-                    }
-                }
+                boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
+                boat.getMark().setY(newY);
             }
             boat.setHeadingChangedToFalse();
         }
         windHeadingChanged = false;
         windSpeedChanged = false;
-                        }
-                    }*/
-                }
-                boat.setHeadingChangedToFalse();
-            }
-            windHeadingChanged = false;
-            windSpeedChanged = false;
-        }
+    }
 
 
 
     public void updateRaceInfo(){
         //this.timeToStart = startingTime.getTime() - new Date().getTime();
+        if (clientIDs.size() < 2){
+            raceStatus = RaceStatus.START_TIME_NOT_SET;
+            Calendar date = Calendar.getInstance();
+            long t = date.getTimeInMillis();
+            startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 3/2);
+        }
         if (startingTime.getTime() < new Date().getTime()){
             raceStatus = RaceStatus.STARTED;
         }else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS){

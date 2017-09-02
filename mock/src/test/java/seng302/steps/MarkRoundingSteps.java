@@ -17,7 +17,7 @@ public class MarkRoundingSteps {
     public void the_race_is_already_running() throws Throwable {
         IServerData mockData = new RaceManager(); //Default race
         race = mockData.getRace();
-        boat = race.addBoat();
+        boat = race.addBoat(0);
     }
 
     @Given("^a boat is passing mark (\\d+)$")

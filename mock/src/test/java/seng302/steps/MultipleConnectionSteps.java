@@ -91,7 +91,7 @@ public class MultipleConnectionSteps {
         this.port = 4942;
         makeServer(this.port, race);
         for (int i = 0; i < maxNumberOfPeople; i++) {
-            race.getRace().addBoat();
+            race.getRace().addBoat(0);
         }
     }
 
