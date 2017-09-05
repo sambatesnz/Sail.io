@@ -91,6 +91,7 @@ public class RaceController {
     private List<List<Point2D>> absolutePaths = new ArrayList<>();
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
+    private WindArrow ez;
     private WindArrow windArrow = new WindArrow();
     private Group roundingArrow1 = new Group();
     private Group roundingArrow2 = new Group();
@@ -163,6 +164,7 @@ public class RaceController {
 
         initialiseZoomFollowing();
         initialiseRoundingArrow();
+        initialiseNextMarkArrow();
 //        roundingArrow1.setScaleX(-1););
         initialisePositionsTable();
         enableScrolling();
@@ -285,6 +287,9 @@ public class RaceController {
                 if (showName) {
                     name = race.getBoats().get(i).getShortName();
                 }
+                int playerBoat = race.getClientSourceId();
+                ez.setTranslateX(Coordinate.getRelativeX(race.getBoatsMap().get(playerBoat).getX())-20);
+                ez.setTranslateY(Coordinate.getRelativeY(race.getBoatsMap().get(playerBoat).getY()));
                 //Position of boat, wake and annotations.
                 boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
                 boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
@@ -292,7 +297,7 @@ public class RaceController {
                 boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
                 // Temporary hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(i).getSourceId() == race. getClientSourceId()) {
+                if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
                     updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
                 }
 
@@ -587,6 +592,13 @@ public class RaceController {
         roundingArrow.getChildren().addAll(arrowMirrored, arcMirrored, rotationBase);
 
         return roundingArrow;
+    }
+
+    private void initialiseNextMarkArrow() {
+        int playerBoat = race.getClientSourceId();
+        ez = new WindArrow();
+
+        group.getChildren().add(ez);
     }
 
     private void updateGates() {
