@@ -3,8 +3,8 @@ Feature: Testing that when a boat goes within collision distance to another obje
     Given the race is already running
 
   Scenario Outline: A boat is within collision distance of another boat
-    Given there are 2 boats in the race
-    When 1 boat comes into collision distance of the other boat
+    Given There are 2 boats
+    When the boats are within the collision range
     Then a collision will be detected on both
     Examples:
     | MarkNumber | NextMark |

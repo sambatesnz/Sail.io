@@ -40,6 +40,7 @@ public class Boat {
     private boolean upwindMemory = false;
     private boolean downwindMemory = false;
     private boolean plusMemory = false;
+    private boolean isInCollision = false;
 
     private Thread turningThread;
     private Boolean stopTurnThread = false;
@@ -554,6 +555,14 @@ public class Boat {
 
     public void updateRoundingStage() {
         roundingStage++;
+    }
+
+    public boolean isInCollision() {
+        return isInCollision;
+    }
+
+    public void setInCollision(boolean inCollision) {
+        isInCollision = inCollision;
     }
 }
 

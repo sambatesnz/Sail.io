@@ -22,6 +22,7 @@ import static java.lang.Math.*;
  * This displays a text-based play by play commentary of the race as it happens
  */
 public class Race {
+    private Map<Pair<Boat, Boat>, BoatCollision> collisionMap;
     private int numFinishers = 0;
     private List<Pair<CompoundMark, Rounding>> courseRoundingInfo;
     private List<CompoundMark> compoundMarks;
@@ -49,6 +50,7 @@ public class Race {
     private final long ONE_MINUTE_IN_MILLIS = 60000;
     private static int MAX_NUMBER_OF_BOATS = 20;
     private static double MARK_SIZE = 5;
+
 
 
     private BoatGenerator boatGenerator;
@@ -373,12 +375,12 @@ public class Race {
                 //boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
               //Not being actively used
 
-                if (checkBoatCollisions(boat) == 1) {
-                    System.out.println("Collisions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                }
+                checkCollisions(boat);
+                    System.out.println("Collisions!!!!!!!!!!");
+
 
                 if (checkMarkCollisions(boat) == 1) {
-                    System.out.println("COLLIDING WITH THE MARK YO +++++++++++++++++++++++++++++++++++++++++++++");
+                    System.out.println("COLLIDING WITH THE MARK");
                 }
 
                 if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
@@ -531,24 +533,39 @@ public class Race {
         return -1;
     }
 
-    private boolean checkCollisions(Mark mark1, Mark mark2, double size1, double size2) {
+//    private boolean checkCollisions(Mark mark1, Mark mark2, double size1, double size2) {
+//
+//        double mark1X = mark1.getX();
+//        double mark1Y = mark1.getY();
+//
+//        double mark2X = mark2.getX();
+//        double mark2Y = mark2.getY();
+//
+//        double xDist = mark1X - mark2X;
+//        double yDist = mark1Y - mark2Y;
+//
+//        double distance = sqrt((xDist * xDist) + (yDist * yDist));
+//
+//        if (distance < (size1 + size2)) {
+//            return true;
+//        }
+//
+//        return false;
+//    }
+    private boolean checkCollisions(Boat boat) {
 
-        double mark1X = mark1.getX();
-        double mark1Y = mark1.getY();
-
-        double mark2X = mark2.getX();
-        double mark2Y = mark2.getY();
-
-        double xDist = mark1X - mark2X;
-        double yDist = mark1Y - mark2Y;
-
-        double distance = sqrt((xDist * xDist) + (yDist * yDist));
-
-        if (distance < (size1 + size2)) {
-            return true;
+        for (Boat checkBoat : boats) {
+            BoatCollision boat1Collision = collisionMap.get(boat).get(checkBoat);
+            BoatCollision boat2Collision = collisionMap.get(checkBoat).get(boat);
         }
-
-        return false;
+    }
+    private boolean initCollisions(){
+        for (Boat boat : boats){
+            for (Boat checkBoat : boats){
+                collisionMap.put(<boat, checkBoat>, new BoatCollision());
+            }
+        }
+        for
     }
 
 }
