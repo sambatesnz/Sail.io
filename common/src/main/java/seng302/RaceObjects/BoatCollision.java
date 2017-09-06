@@ -8,12 +8,19 @@ public class BoatCollision {
     private Boat collider2;
     private boolean isColliding;
 
-    private void Collision(Boat collider1, Boat collider2){
+    public BoatCollision(Boat collider1, Boat collider2){
         this.collider1 = collider1;
         this.collider2 = collider2;
+        this.isColliding = false;
     }
     
     public void updateCollision(){
+        if (collider1.getSourceId() == collider2.getSourceId()){
+            isColliding = false;
+            return;
+            //A boat can't collide with itself!
+        }
+
         double boat1X = collider1.getX();
         double boat1Y = collider1.getY();
         double boat2X = collider2.getX();

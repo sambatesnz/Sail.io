@@ -385,10 +385,7 @@ public class Race {
             if (!finishedBoats.contains(boat)) {
                 //boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
               //Not being actively used
-
-                checkCollision(boat);
-                    //System.out.println("Collisions!!!!!!!!!!");
-
+                if(checkBoatCollision(boat)) System.out.println("we're colliding kiddo.");;
 
                 if (checkMarkCollisions(boat) == 1) {
                     System.out.println("COLLIDING WITH THE MARK");
@@ -564,12 +561,12 @@ public class Race {
 
         return false;
     }
-    private boolean checkCollision(Boat boat) {
+    private boolean checkBoatCollision(Boat boat) {
 
         for (Boat checkBoat : boats) {
             BoatPair boatPair = new BoatPair(boat, checkBoat);
-            //BoatCollision boat1Collision = collisionMap.get(boatPair);
-            //BoatCollision boat2Collision = collisionMap.get(checkBoat).get(boat);
+            BoatCollision boat1Collision = collisionMap.get(boatPair);
+            if(boat1Collision.isColliding()) return true;
         }
         return false;
     }
@@ -585,7 +582,7 @@ public class Race {
                 if(!collisionMap.containsKey(new BoatPair(boat, checkBoat))){
 
                     System.out.println("new key: " + boatPair.getBoat1().getSourceId() + " + " + boatPair.getBoat2().getSourceId());
-                    collisionMap.put(boatPair, new BoatCollision());
+                    collisionMap.put(boatPair, new BoatCollision(boat, checkBoat));
                 }else{
                     System.out.println("KEY EXISTS: " + boatPair.getBoat1().getSourceId() + " + " + boatPair.getBoat2().getSourceId());
                 }
