@@ -6,7 +6,7 @@
     <packaging>pom</packaging>
     <version>0.0</version>
     <modules>
-        <module>mock</module>
+        <module>server</module>
         <module>visualiser</module>
         <module>common</module>
     </modules>
