@@ -24,7 +24,7 @@ public class BoatTurningSteps {
         RaceManager mockData = new RaceManager(); //Default race
         race = mockData.getRace();
         delegator = new Delegator(race);
-        Boat boat= race.addBoat();
+        Boat boat= race.addBoat(0);
         boatSourceId = boat.getSourceId();
     }
 

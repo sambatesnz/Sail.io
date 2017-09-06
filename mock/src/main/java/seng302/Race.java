@@ -30,6 +30,7 @@ public class Race {
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
     private List<Boat> boats;
+    private Map<Integer, Integer> clientIDs;
     private List<CourseLimit> boundaries;
     private short windHeading;
     private short startingWindSpeed;
@@ -39,7 +40,7 @@ public class Race {
     private boolean practiceRace = false;
     private int raceID;
     private char raceType;
-    private RaceStatus raceStatus = RaceStatus.WARNING;
+    private RaceStatus raceStatus = RaceStatus.START_TIME_NOT_SET;
     private ObservableList<String> positionStrings;
     private Date startingTime;
     private SimpleStringProperty timeToStart;
@@ -78,6 +79,7 @@ public class Race {
 
 
         boats = new ArrayList<>();
+        clientIDs = new HashMap<>();
         positionStrings = FXCollections.observableArrayList();
         for (Boat boat : boats) {
             int speed = (new Random().nextInt(5000) + 100);
@@ -90,10 +92,19 @@ public class Race {
 
     /**
      * When called, removes the boat from the race, both the current boats, and the boats that have finished.
-     * @param sourceId the source id of the boat to be removed.
+     * Race should not be in STATUS WARNING, PREP, STARTED, or FINISHED for a multi-player race
+     * @param clientSocketSourceID the source id of the clients socket of the boat to be removed.
      */
-    public void removeBoat(int sourceId) {
-        boats.removeIf(boat -> boat.getSourceId() == sourceId);
+    public void removeBoat(int clientSocketSourceID) {
+        try {
+            int sourceId = clientIDs.get(clientSocketSourceID);
+            boats.removeIf(boat -> boat.getSourceId() == sourceId);
+            finishedBoats.removeIf(boat -> boat.getSourceId() == sourceId);
+            clientIDs.remove(clientSocketSourceID);
+        }catch (NullPointerException nullPoint){
+            System.out.println("Remove called on boat that has already been removed");
+            nullPoint.printStackTrace();
+        }
     }
 
     /**
@@ -101,9 +112,10 @@ public class Race {
      * @return boat
      * @throws Exception the boat could not be created
      */
-    public Boat addBoat() throws Exception {
+    public Boat addBoat(int clientSocketSourceID) throws Exception {
         if (boats.size() < MAX_NUMBER_OF_BOATS){
             Boat boat = boatGenerator.generateBoat();
+            clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
             return boat;
         } else {
@@ -345,7 +357,6 @@ public class Race {
     }
 
     public String getDateString() {
-        final long ONE_MINUTE_IN_MILLIS=60000;
         TimeZone tz = TimeZone.getTimeZone("NZST");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); // Quoted "Z" to indicate UTC, no timezone offset
         df.setTimeZone(tz);
@@ -416,8 +427,13 @@ public class Race {
 
     public void updateRaceInfo(){
         //this.timeToStart = startingTime.getTime() - new Date().getTime();
-        if (!(raceStatus == RaceStatus.FINISHED)) {
-            if (startingTime.getTime() < new Date().getTime()) {
+        if (raceStatus != RaceStatus.FINISHED) {
+            if (clientIDs.size() < 2) {
+                raceStatus = RaceStatus.START_TIME_NOT_SET;
+                Calendar date = Calendar.getInstance();
+                long t = date.getTimeInMillis();
+                startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 3 / 2);
+            } else if (startingTime.getTime() < new Date().getTime()) {
                 raceStatus = RaceStatus.STARTED;
             } else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS) {
                 raceStatus = RaceStatus.PREP;

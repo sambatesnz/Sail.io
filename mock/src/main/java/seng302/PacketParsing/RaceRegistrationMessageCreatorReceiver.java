@@ -42,10 +42,10 @@ public class RaceRegistrationMessageCreatorReceiver extends ServerSideMessageFac
         if (raceData.getRace().isPracticeRace()) return;
         if (raceRegistrationType ==  RaceRegistrationType.PARTICIPATE){
             BinaryMessage confirmationMessage;
-            if (raceData.getRace().getRaceStatus() == RaceStatus.WARNING) {
+            if (raceData.getRace().getRaceStatus() == RaceStatus.WARNING || raceData.getRace().getRaceStatus() == RaceStatus.START_TIME_NOT_SET) {
                 Boat boat = null;
                 try {
-                    boat = raceData.getRace().addBoat();
+                    boat = raceData.getRace().addBoat(super.getClientID());
                     confirmationMessage = new ParticipantConfirmationMessage(boat.getSourceId(), ConfirmationStatus.PLAYING);
                 } catch (Exception e) {
                     //TODO refactor this class so it doesnt have to send same PCM in different places

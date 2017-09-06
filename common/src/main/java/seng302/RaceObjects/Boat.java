@@ -35,6 +35,7 @@ public class Boat {
     private boolean headingChanged;
     private boolean sailsOut = false;
 
+    private boolean isFinished = false;
     private boolean upwindMemory = false;
     private boolean downwindMemory = false;
     private boolean plusMemory = false;

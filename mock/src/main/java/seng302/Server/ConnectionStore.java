@@ -1,6 +1,7 @@
 package seng302.Server;
 
 import seng302.DataGeneration.IServerData;
+import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Client connections are added and removed through
@@ -16,12 +18,10 @@ import java.util.*;
  */
 public class ConnectionStore {
     private final Hashtable<Integer, Socket> socketStreams;
-    private List<Integer> connections;
     private IServerData race;
 
     public ConnectionStore(IServerData race) {
         this.socketStreams = new Hashtable<>();
-        connections  = new ArrayList<>();
         this.race = race;
     }
 
@@ -29,12 +29,11 @@ public class ConnectionStore {
     /**
      * Adds a socket connection to the tracked connections
      * @param socket the socked you wish to add
-     * @return id of the socket that you added
+     * @return id of the socket that you added (the sockets port number)
      */
     public int addSocket(Socket socket) {
         int id = socket.getPort();
         socketStreams.put(id, socket);
-        connections.add(id);
         return id;
     }
 
@@ -43,21 +42,24 @@ public class ConnectionStore {
      * Tries to send a stream of bytes to all connected sockets
      * @param bytes array of bytes you wish to send
      */
-    public void sendToAll(byte[] bytes) {
-        synchronized (socketStreams) {
-            for (Object value: socketStreams.values()){
-                Socket socket = (Socket) value;
-                try {
-                    boolean hasPackets = bytes.length > 0;
-                    if (hasPackets) {
-                        OutputStream stream = socket.getOutputStream();
-                        stream.write(bytes);
-                    }
-                } catch (IOException e) {
-                    System.out.println("removing connections");
-                    removeConnection(socket);
+    public synchronized void sendToAll(byte[] bytes) {
+        Queue<Socket> socketToRemove = new LinkedBlockingQueue<>();
+        for (Object value : socketStreams.values()) {
+            Socket socket = (Socket) value;
+            try {
+                boolean hasPackets = bytes.length > 0;
+                if (hasPackets) {
+                    OutputStream stream = socket.getOutputStream();
+                    stream.write(bytes);
                 }
+            } catch (IOException e) {
+                System.out.println("removing connections");
+                socketToRemove.add(socket);
+                //removeConnection(socket);
             }
+        }
+        for(Socket s : socketToRemove){
+            removeConnection(s);
         }
     }
 
@@ -67,22 +69,20 @@ public class ConnectionStore {
      * @param message A server message (AC35 spec message wrapped with a header which is the clients id)
      * @throws IOException
      */
-    public void sendToOne(byte[] message) throws IOException {
+    public synchronized void sendToOne(byte[] message) throws IOException {
         int clientID = ServerMessageGenerationUtils.unwrapHeader(message);
         byte[] messageToSend = ServerMessageGenerationUtils.unwrapBody(message);
 
-        synchronized (socketStreams) {
-            System.out.println(clientID);
-            Socket clientSocket = (Socket) socketStreams.get(clientID);
-            OutputStream stream = clientSocket.getOutputStream();
-            boolean hasPackets = messageToSend.length > 0;
-            if (hasPackets) {
-                try {
-                    stream.write(messageToSend);
-                } catch (SocketException e) {
-                    e.printStackTrace();
-                    removeConnection(clientSocket);
-                }
+        System.out.println(clientID);
+        Socket clientSocket = (Socket) socketStreams.get(clientID);
+        OutputStream stream = clientSocket.getOutputStream();
+        boolean hasPackets = messageToSend.length > 0;
+        if (hasPackets) {
+            try {
+                stream.write(messageToSend);
+            } catch (SocketException e) {
+                e.printStackTrace();
+                removeConnection(clientSocket);
             }
         }
     }
@@ -91,12 +91,16 @@ public class ConnectionStore {
      * Removes a connection
      * @param socket connection you wish to remove
      */
-    public void removeConnection(Socket socket) {
+    public synchronized void removeConnection(Socket socket) {
         int socketId = socket.getPort();
 
-        synchronized (socketStreams) {
-            System.out.println("Removing connection to " + socket);
-            socketStreams.remove(socketId);
+        System.out.println("Removing connection to " + socket);
+        socketStreams.remove(socketId);
+        RaceStatus rs = race.getRace().getRaceStatus();
+        if(rs != RaceStatus.STARTED && rs != RaceStatus.PREP && rs != RaceStatus.FINISHED){
+            race.getRace().removeBoat(socketId);
+        }
+        {
             try {
                 socket.close();
             } catch (IOException ie) {
@@ -106,29 +110,23 @@ public class ConnectionStore {
         }
     }
 
-    public Socket getSocket(int id) throws Exception {
-        Socket socket = null;
-        synchronized (socketStreams) {
-            for (Enumeration e = getIds(); e.hasMoreElements(); ) {
-                int socketId = (int) e.nextElement();
-                if (socketId == id) {
-                    socket = socketStreams.get(id);
-                }
-            }
-        }
+    public synchronized Socket getSocket(int id) throws Exception {
+        Socket socket = socketStreams.get(id);
+
         if (socket == null){
             throw new NullPointerException("Couldn't find socket with id " + id);
         }
+
         return socket;
     }
 
 
     public int connectionAmount() {
-        return connections.size();
+        return socketStreams.size();
     }
 
     public boolean hasConnections(){
-        return connections.size() > 0;
+        return socketStreams.size() > 0;
     }
 
     private Enumeration getIds() {
@@ -136,6 +134,6 @@ public class ConnectionStore {
     }
 
     public List<Integer> getConnections() {
-        return connections;
+        return Collections.list(socketStreams.keys());
     }
 }

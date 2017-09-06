@@ -25,7 +25,7 @@ public class Race {
     private List<CompoundMark> gates;
     private Map<Integer, Mark> marks;
     private ObservableMap<Integer, Boat> boats;
-    private List<Boat> finishedBoats;
+    private ObservableList<Boat> finishedBoats;
     private List<Mark> boundaries;
     private List<Leg> courseOrder;
     private double windHeading;
@@ -59,7 +59,7 @@ public class Race {
      * Constructor for the race class.
      */
     public Race() {
-        finishedBoats = new ArrayList<>();
+        finishedBoats = FXCollections.observableArrayList();
         raceXMLReceived = false;
         viewReady = false;
         finished = new SimpleBooleanProperty(false);
@@ -167,8 +167,9 @@ public class Race {
      * @param finishedBoats set the finished list of boats
      */
     public void setFinishedBoats(List<Boat> finishedBoats) {
-        this.finishedBoats = finishedBoats;
+        this.finishedBoats = FXCollections.observableArrayList(finishedBoats);
     }
+
 
 
     /**
@@ -189,7 +190,7 @@ public class Race {
      * Getter for finished boat list.
      * @return finished boat list.
      */
-    public List<Boat> getFinishedBoats() { return finishedBoats; }
+    public ObservableList<Boat> getFinishedBoats() { return finishedBoats; }
 
     public double getWindHeading() {
         return windHeading;
@@ -262,7 +263,6 @@ public class Race {
         raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceTime) -
             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
 
-
         timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
     }
 
@@ -290,7 +290,7 @@ public class Race {
     }
 
     public boolean notGoing() {
-        return !started() && raceStatus != RaceStatus.WARNING && raceStatus != RaceStatus.PREP && raceStatus != RaceStatus.STARTED && raceStatus != RaceStatus.PRESTART;
+        return raceStatus != RaceStatus.WARNING && raceStatus != RaceStatus.PREP && raceStatus != RaceStatus.STARTED && raceStatus != RaceStatus.PRESTART;
     }
 
     /**
@@ -363,7 +363,7 @@ public class Race {
     }
 
     public void setBoundaries(List<CourseLimit> courseLimits) {
-        boundaries = new ArrayList<>();
+        boundaries = Collections.synchronizedList(new ArrayList<>());
         for (CourseLimit cl: courseLimits) {
             boundaries.add(new Mark(cl.getLat(), cl.getLon()));
         }

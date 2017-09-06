@@ -72,7 +72,8 @@ public class RoundingUtility {
                 } else if (orientBetweenGates.equals(passedSide) &&
                         (((orientMark1.equals(LEFT) && orientMark2.equals(RIGHT)) && boat.getRoundingStage() == 1) ||
                         ((orientMark1.equals(RIGHT) || orientMark2.equals(LEFT)) && boat.getRoundingStage() == 2)) ||
-                        (boat.getTargetMarkIndex() == 0 && (orientMark1.equals(LEFT) && orientMark2.equals(RIGHT)))) {
+                        (boat.getTargetMarkIndex() == 0 && (orientMark1.equals(LEFT) && orientMark2.equals(RIGHT)) &&
+                                boat.getRoundingStage() >= 1)) {
                     boat.updateRoundingStage();
                 }
             } else if ((rounding.equals(STARBOARD_PORT) && side.equals(RIGHT)) || (rounding.equals(PORT_STARBOARD) && side.equals(LEFT))) {
