@@ -100,13 +100,12 @@ public class ConnectionStore {
         if(rs != RaceStatus.STARTED && rs != RaceStatus.PREP && rs != RaceStatus.FINISHED){
             race.getRace().removeBoat(socketId);
         }
-        {
-            try {
-                socket.close();
-            } catch (IOException ie) {
-                System.out.println("Error closing " + socket);
-                ie.printStackTrace();
-            }
+
+        try {
+            socket.close();
+        } catch (IOException ie) {
+            System.out.println("Error closing " + socket);
+            ie.printStackTrace();
         }
     }
 
