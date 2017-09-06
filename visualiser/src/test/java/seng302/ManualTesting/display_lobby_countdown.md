@@ -28,6 +28,13 @@
 #####Test:
 
 - Date: 06/09/2017
-- Current Commit of branch: ec2648ec294cb80d899c793ce1692e45135d0d30
+- Current Commit of branch: fefa9f4
 - Performed By: Tim
+- Result: *Pass*
+
+#####Test:
+
+- Date: 06/09/2017
+- Current Commit of branch: ec2648ec294cb80d899c793ce1692e45135d0d30
+- Performed By: Jono
 - Result: *Pass*
