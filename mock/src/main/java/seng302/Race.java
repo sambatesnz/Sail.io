@@ -22,6 +22,8 @@ import static java.lang.Math.*;
  * This displays a text-based play by play commentary of the race as it happens
  */
 public class Race {
+    private boolean boatsLocked = false;
+    private Map<BoatPair, BoatCollision> collisionMap;
     private int numFinishers = 0;
     private List<Pair<CompoundMark, Rounding>> courseRoundingInfo;
     private List<CompoundMark> compoundMarks;
@@ -49,6 +51,7 @@ public class Race {
     private final long ONE_MINUTE_IN_MILLIS = 60000;
     private static int MAX_NUMBER_OF_BOATS = 20;
     private static double MARK_SIZE = 5;
+
 
 
     private BoatGenerator boatGenerator;
@@ -82,6 +85,16 @@ public class Race {
             boat.getMark().setLongitude(getCompoundMarks().get(0).getLongitude());
             boat.getMark().setLatitude(getCompoundMarks().get(0).getLatitude());
         }
+    }
+
+    /**
+     * When called, the race is set as ready and the boats are locked.
+     */
+    public void readyRace(){
+        if(boatsLocked) return;
+
+        boatsLocked = true;
+        initCollisions();
     }
 
     /**
@@ -372,13 +385,10 @@ public class Race {
             if (!finishedBoats.contains(boat)) {
                 //boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
               //Not being actively used
-
-                if (checkBoatCollisions(boat) == 1) {
-                    System.out.println("Collisions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                }
+                if(checkBoatCollision(boat)) System.out.println("we're colliding kiddo.");;
 
                 if (checkMarkCollisions(boat) == 1) {
-                    System.out.println("COLLIDING WITH THE MARK YO +++++++++++++++++++++++++++++++++++++++++++++");
+                    System.out.println("COLLIDING WITH THE MARK");
                 }
 
                 if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
@@ -472,6 +482,7 @@ public class Race {
             raceStatus = RaceStatus.STARTED;
         }else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS){
             raceStatus = RaceStatus.PREP;
+            readyRace();
         }else {
             raceStatus = RaceStatus.WARNING;
         }
@@ -549,6 +560,34 @@ public class Race {
         }
 
         return false;
+    }
+    private boolean checkBoatCollision(Boat boat) {
+
+        for (Boat checkBoat : boats) {
+            BoatPair boatPair = new BoatPair(boat, checkBoat);
+            BoatCollision boat1Collision = collisionMap.get(boatPair);
+            if(boat1Collision.isColliding()) return true;
+        }
+        return false;
+    }
+    private void initCollisions(){
+        System.out.println("INIT COLLISIONS");
+        collisionMap = new HashMap<>();
+        for (Boat boat : boats){
+            for (Boat checkBoat : boats){
+                BoatPair boatPair = new BoatPair(boat, checkBoat);
+                System.out.println(collisionMap.containsKey(boatPair));
+                //System.out.println(boatPair);
+                //System.out.println(collisionMap.containsKey(boatPair));
+                if(!collisionMap.containsKey(new BoatPair(boat, checkBoat))){
+
+                    System.out.println("new key: " + boatPair.getBoat1().getSourceId() + " + " + boatPair.getBoat2().getSourceId());
+                    collisionMap.put(boatPair, new BoatCollision(boat, checkBoat));
+                }else{
+                    System.out.println("KEY EXISTS: " + boatPair.getBoat1().getSourceId() + " + " + boatPair.getBoat2().getSourceId());
+                }
+            }
+        }
     }
 
 }
