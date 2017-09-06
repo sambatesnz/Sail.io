@@ -366,7 +366,7 @@ public class Race {
     }
 
     public void setBoundaries(List<CourseLimit> courseLimits) {
-        boundaries = new ArrayList<>();
+        boundaries = Collections.synchronizedList(new ArrayList<>());
         for (CourseLimit cl: courseLimits) {
             boundaries.add(new Mark(cl.getLat(), cl.getLon()));
         }
