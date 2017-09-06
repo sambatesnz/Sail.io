@@ -410,8 +410,9 @@ public class Race {
                 }
             }
 
-            if ((isFinishTimerExpired() || areAllContestantsFinished()) && !(raceStatus == RaceStatus.FINISHED)) {
+            if ((isFinishTimerExpired() || areAllContestantsFinished()) && raceStatus != RaceStatus.FINISHED) {
                 raceStatus = RaceStatus.FINISHED;
+                System.out.println("Race is completely finished!");
             }
 
             boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
@@ -430,7 +431,6 @@ public class Race {
 
     private boolean isFinishTimerExpired(){
         return (firstFinishTime > 0) && (System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS);
-
     }
 
     private boolean areAllContestantsFinished() {
