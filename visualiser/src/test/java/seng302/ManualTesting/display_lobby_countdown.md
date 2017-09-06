@@ -23,11 +23,11 @@
 - Date: 06/09/2017
 - Current Commit of branch: 5433e5fb7de424e9236fcb317d674c7810ddc34b
 - Performed By: Tim
-- Result: Fail (timer reset but did not stop displaying when 2nd client disconnected)
+- Result: *Fail* (timer reset but did not stop displaying when 2nd client disconnected)
 
 #####Test:
 
 - Date: 06/09/2017
-- Current Commit of branch: 
+- Current Commit of branch: ec2648ec294cb80d899c793ce1692e45135d0d30
 - Performed By: Tim
-- Result: 
+- Result: *Pass*
