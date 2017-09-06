@@ -53,7 +53,6 @@ public class ConnectionStore {
                     stream.write(bytes);
                 }
             } catch (IOException e) {
-                System.out.println("removing connections");
                 socketToRemove.add(socket);
                 //removeConnection(socket);
             }
@@ -94,19 +93,19 @@ public class ConnectionStore {
     public synchronized void removeConnection(Socket socket) {
         int socketId = socket.getPort();
 
-        System.out.println("Removing connection to " + socket);
         socketStreams.remove(socketId);
         RaceStatus rs = race.getRace().getRaceStatus();
         if(rs != RaceStatus.STARTED && rs != RaceStatus.PREP && rs != RaceStatus.FINISHED){
             race.getRace().removeBoat(socketId);
+        } else {
+            race.getRace().setBoatAsDisconnected(socketId);
         }
-        {
-            try {
-                socket.close();
-            } catch (IOException ie) {
-                System.out.println("Error closing " + socket);
-                ie.printStackTrace();
-            }
+
+        try {
+            socket.close();
+        } catch (IOException ie) {
+            System.out.println("Error closing " + socket);
+            ie.printStackTrace();
         }
     }
 

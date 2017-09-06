@@ -49,7 +49,7 @@ public class Boat {
 
     private boolean finished;
     private boolean connected;
-    public boolean added;
+    private boolean added;
 
     /**
      * Boat constructor
@@ -560,6 +560,8 @@ public class Boat {
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
+
+    public void disconnect() { this.connected = false; }
 
     public boolean isConnected() {
         return connected;

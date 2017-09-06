@@ -72,6 +72,9 @@ public class Message {
                 break;
             case RACE_START_STATUS:
                 break;
+            case YACHT_EVENT:
+                System.out.println("Got a yacht event code, race finished I guess");
+                break;
             case BOAT_LOCATION:
                 new LocationMessage(body, race);
                 break;

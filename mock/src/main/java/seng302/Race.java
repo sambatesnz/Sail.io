@@ -71,10 +71,7 @@ public class Race {
         this.windSpeed = this.startingWindSpeed;
         instantiateWindHeading();
 
-        Calendar date = Calendar.getInstance();
-        long t = date.getTimeInMillis();
-
-        startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 6/5);
+        startingTime = getNewStartTime();
         firstFinishTime = 0;
 
 
@@ -91,6 +88,16 @@ public class Race {
     }
 
     /**
+     * Creates a new start time based on the current time
+     * @return a new time to start the race
+     */
+    private Date getNewStartTime() {
+        Calendar date = Calendar.getInstance();
+        long currentTime = date.getTimeInMillis();
+        return new Date(currentTime + ONE_MINUTE_IN_MILLIS * 3 / 2);
+    }
+
+    /**
      * When called, removes the boat from the race, both the current boats, and the boats that have finished.
      * Race should not be in STATUS WARNING, PREP, STARTED, or FINISHED for a multi-player race
      * @param clientSocketSourceID the source id of the clients socket of the boat to be removed.
@@ -99,12 +106,22 @@ public class Race {
         try {
             int sourceId = clientIDs.get(clientSocketSourceID);
             boats.removeIf(boat -> boat.getSourceId() == sourceId);
-            finishedBoats.removeIf(boat -> boat.getSourceId() == sourceId);
             clientIDs.remove(clientSocketSourceID);
         }catch (NullPointerException nullPoint){
             System.out.println("Remove called on boat that has already been removed");
             nullPoint.printStackTrace();
         }
+    }
+
+    /**
+     * Sets the connected flag on a boat to false, where the given boat is the one identified by
+     * the source id of the client in the map of boats to clients.
+     * @param clientSocketSourceID
+     */
+    public void setBoatAsDisconnected(int clientSocketSourceID) {
+        int sourceId = clientIDs.get(clientSocketSourceID);
+        Boat boat = getBoatByID(sourceId);
+        boat.disconnect();
     }
 
     /**
@@ -430,9 +447,7 @@ public class Race {
         if (raceStatus != RaceStatus.FINISHED) {
             if (clientIDs.size() < 2) {
                 raceStatus = RaceStatus.START_TIME_NOT_SET;
-                Calendar date = Calendar.getInstance();
-                long t = date.getTimeInMillis();
-                startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 3 / 2);
+                startingTime = getNewStartTime();
             } else if (startingTime.getTime() < new Date().getTime()) {
                 raceStatus = RaceStatus.STARTED;
             } else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS) {
@@ -450,4 +465,5 @@ public class Race {
     public void setPracticeRace(boolean practiceRace) {
         this.practiceRace = practiceRace;
     }
+
 }
