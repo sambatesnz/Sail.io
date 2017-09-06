@@ -2,6 +2,7 @@ package seng302.Server;
 
 import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.RaceManager;
+import seng302.PacketGeneration.RaceStatus;
 import seng302.RaceHandler;
 
 import java.io.*;
@@ -34,11 +35,12 @@ public class Server {
 
 
     /**
-     * Resets the race when
+     * Resets the race when the server RaceStatus becomes FINISHED.
      * @throws Exception
      */
     private void resetRace() throws Exception {
-        Thread.sleep(10000);            // Once the race finishes, the
+        System.out.println("GIVING USERS 10s TO LOOK AT RESULTS.");
+        Thread.sleep(10000);            // Once the race finishes, pause.
         this.mockRace = new RaceManager();
         System.out.println("Resetting the server's race.");
         setServerComponents();
@@ -72,10 +74,19 @@ public class Server {
      */
     private void startEventLoop() throws Exception {
         boolean hasStarted = false;
-
         int numConnections = 0;
 
-        while (true) {
+//        //--- THIS IS FOR TESTING WHETHER OR NOT THE OTHER CODE WORKS - REMOVE BEFORE MERGE
+//
+//        Thread serverThread = new Thread(() -> {
+//            mockRace.getRace().setRaceStatus(RaceStatus.FINISHED);
+//        });
+//        serverThread.sleep(40000);
+//        serverThread.start();
+//
+//        //---
+
+        while (!mockRace.finished()) {
             if (numConnections < connectionStore.connectionAmount()){
                 System.out.println("new connection detected, resending the XML Packets.");
                 this.mockRace.addXMLPackets();
@@ -93,6 +104,8 @@ public class Server {
             sendSingleMessages();
             Thread.sleep(1);
         }
+        connectionStore.purgeConnections();
+        resetRace();
     }
 
     private void handleReceivedMessages() {

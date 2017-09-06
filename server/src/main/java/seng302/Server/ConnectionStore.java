@@ -55,7 +55,6 @@ public class ConnectionStore {
             } catch (IOException e) {
                 System.out.println("removing connections");
                 socketToRemove.add(socket);
-                //removeConnection(socket);
             }
         }
         for(Socket s : socketToRemove){

@@ -66,7 +66,9 @@ public class RaceManager implements IServerData {
 
     @Override
     public boolean finished() {
-        return false;
+//        should this return something like:
+        return  race.getRaceStatus() == RaceStatus.FINISHED;
+//        return false;
     }
 
     @Override
