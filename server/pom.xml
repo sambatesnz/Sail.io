@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>seng302</groupId>
-    <artifactId>mock</artifactId>
+    <artifactId>server</artifactId>
     <packaging>jar</packaging>
     <version>0.0</version>
 
-    <name>FM_mock</name>
-    <url>https://eng-git.canterbury.ac.nz/SENG302-2016/team-4/mock</url>
+    <name>FM_server</name>
+    <url>https://eng-git.canterbury.ac.nz/SENG302-2016/team-4/server</url>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
