@@ -22,7 +22,8 @@ import static java.lang.Math.*;
  * This displays a text-based play by play commentary of the race as it happens
  */
 public class Race {
-    private Map<Pair<Boat, Boat>, BoatCollision> collisionMap;
+    private boolean boatsLocked = false;
+    private Map<BoatPair, BoatCollision> collisionMap;
     private int numFinishers = 0;
     private List<Pair<CompoundMark, Rounding>> courseRoundingInfo;
     private List<CompoundMark> compoundMarks;
@@ -84,6 +85,16 @@ public class Race {
             boat.getMark().setLongitude(getCompoundMarks().get(0).getLongitude());
             boat.getMark().setLatitude(getCompoundMarks().get(0).getLatitude());
         }
+    }
+
+    /**
+     * When called, the race is set as ready and the boats are locked.
+     */
+    public void readyRace(){
+        if(boatsLocked) return;
+
+        boatsLocked = true;
+        initCollisions();
     }
 
     /**
@@ -375,8 +386,8 @@ public class Race {
                 //boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
               //Not being actively used
 
-                checkCollisions(boat);
-                    System.out.println("Collisions!!!!!!!!!!");
+                checkCollision(boat);
+                    //System.out.println("Collisions!!!!!!!!!!");
 
 
                 if (checkMarkCollisions(boat) == 1) {
@@ -474,6 +485,7 @@ public class Race {
             raceStatus = RaceStatus.STARTED;
         }else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS){
             raceStatus = RaceStatus.PREP;
+            readyRace();
         }else {
             raceStatus = RaceStatus.WARNING;
         }
@@ -533,39 +545,52 @@ public class Race {
         return -1;
     }
 
-//    private boolean checkCollisions(Mark mark1, Mark mark2, double size1, double size2) {
-//
-//        double mark1X = mark1.getX();
-//        double mark1Y = mark1.getY();
-//
-//        double mark2X = mark2.getX();
-//        double mark2Y = mark2.getY();
-//
-//        double xDist = mark1X - mark2X;
-//        double yDist = mark1Y - mark2Y;
-//
-//        double distance = sqrt((xDist * xDist) + (yDist * yDist));
-//
-//        if (distance < (size1 + size2)) {
-//            return true;
-//        }
-//
-//        return false;
-//    }
-    private boolean checkCollisions(Boat boat) {
+    private boolean checkCollisions(Mark mark1, Mark mark2, double size1, double size2) {
+
+        double mark1X = mark1.getX();
+        double mark1Y = mark1.getY();
+
+        double mark2X = mark2.getX();
+        double mark2Y = mark2.getY();
+
+        double xDist = mark1X - mark2X;
+        double yDist = mark1Y - mark2Y;
+
+        double distance = sqrt((xDist * xDist) + (yDist * yDist));
+
+        if (distance < (size1 + size2)) {
+            return true;
+        }
+
+        return false;
+    }
+    private boolean checkCollision(Boat boat) {
 
         for (Boat checkBoat : boats) {
-            BoatCollision boat1Collision = collisionMap.get(boat).get(checkBoat);
-            BoatCollision boat2Collision = collisionMap.get(checkBoat).get(boat);
+            BoatPair boatPair = new BoatPair(boat, checkBoat);
+            //BoatCollision boat1Collision = collisionMap.get(boatPair);
+            //BoatCollision boat2Collision = collisionMap.get(checkBoat).get(boat);
         }
+        return false;
     }
-    private boolean initCollisions(){
+    private void initCollisions(){
+        System.out.println("INIT COLLISIONS");
+        collisionMap = new HashMap<>();
         for (Boat boat : boats){
             for (Boat checkBoat : boats){
-                collisionMap.put(<boat, checkBoat>, new BoatCollision());
+                BoatPair boatPair = new BoatPair(boat, checkBoat);
+                System.out.println(collisionMap.containsKey(boatPair));
+                //System.out.println(boatPair);
+                //System.out.println(collisionMap.containsKey(boatPair));
+                if(!collisionMap.containsKey(new BoatPair(boat, checkBoat))){
+
+                    System.out.println("new key: " + boatPair.getBoat1().getSourceId() + " + " + boatPair.getBoat2().getSourceId());
+                    collisionMap.put(boatPair, new BoatCollision());
+                }else{
+                    System.out.println("KEY EXISTS: " + boatPair.getBoat1().getSourceId() + " + " + boatPair.getBoat2().getSourceId());
+                }
             }
         }
-        for
     }
 
 }
