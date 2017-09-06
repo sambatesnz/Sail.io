@@ -109,6 +109,27 @@ public class ConnectionStore {
         }
     }
 
+    /**
+     * Removes ALL connection GIVEN that the race HAS FINISHED. This closes all sockets, and then removes them all.
+     */
+    public synchronized void purgeConnections() {
+        System.out.println("Purging Connections");
+        RaceStatus rs = race.getRace().getRaceStatus();
+            for (Socket socket : socketStreams.values()) {
+                int socketId = socket.getPort();
+                System.out.println("Removing connection to " + socket);
+                socketStreams.remove(socketId);
+                race.getRace().removeBoat(socketId);
+                try {
+                    socket.close();
+                } catch (IOException ie) {
+                    System.out.println("Error closing " + socket);
+                    ie.printStackTrace();
+                }
+            }
+        socketStreams.clear();
+    }
+
     public synchronized Socket getSocket(int id) throws Exception {
         Socket socket = socketStreams.get(id);
 

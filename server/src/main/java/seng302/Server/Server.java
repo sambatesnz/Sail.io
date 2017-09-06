@@ -18,29 +18,52 @@ public class Server {
     private ConnectionListener connectionListener;
     private Queue<byte[]> receivedPackets;
     private RaceHandler raceHandler;
+    private int port;
 
     public Server(int port) throws Exception {
         this.mockRace = new RaceManager();
-        startup(port);
+        this.port = port;
+        startup();
     }
 
     public Server(int port, IServerData race) throws Exception {
         this.mockRace = race;
-        startup(port);
+        this.port = port;
+        startup();
+    }
+
+
+    /**
+     * Resets the race when
+     * @throws Exception
+     */
+    private void resetRace() throws Exception {
+        Thread.sleep(10000);            // Once the race finishes, the
+        this.mockRace = new RaceManager();
+        System.out.println("Resetting the server's race.");
+        setServerComponents();
+        startEventLoop();
     }
 
 
     /**
      * Starts the server on a specified port
-     * @param port port
      * @throws Exception
      */
-    private void startup(int port) throws Exception {
+    private void startup() throws Exception {
+        setServerComponents();
+        startEventLoop();
+    }
+
+    /**
+     * Initialises all server components for a fresh instance of the race.
+     * @throws IOException
+     */
+    private void setServerComponents() throws IOException {
         connectionStore = new ConnectionStore(mockRace);
         receivedPackets = new LinkedBlockingQueue<>();
         connectionListener = new ConnectionListener(connectionStore, port, this);
         raceHandler = new RaceHandler(this.mockRace, connectionListener);
-        startEventLoop();
     }
 
     /**
