@@ -266,6 +266,7 @@ public class Race {
             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
 
         if(raceStatus == RaceStatus.START_TIME_NOT_SET){
+            timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 98));
             timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 99));
         }else {
             timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
