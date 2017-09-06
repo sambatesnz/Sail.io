@@ -42,7 +42,7 @@ public class RaceRegistrationMessageCreatorReceiver extends ServerSideMessageFac
         if (raceData.getRace().isPracticeRace()) return;
         if (raceRegistrationType ==  RaceRegistrationType.PARTICIPATE){
             BinaryMessage confirmationMessage;
-            if (raceData.getRace().getRaceStatus() == RaceStatus.WARNING) {
+            if (raceData.getRace().getRaceStatus() == RaceStatus.WARNING || raceData.getRace().getRaceStatus() == RaceStatus.START_TIME_NOT_SET) {
                 Boat boat = null;
                 try {
                     boat = raceData.getRace().addBoat(super.getClientID());

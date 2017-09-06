@@ -90,7 +90,7 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    if (race.getRaceStatus() == RaceStatus.WARNING) {
+                    if (race.getRaceStatus() == RaceStatus.WARNING || race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET) {
                         race.setBoats(xmlParser.getBoats());
                         boatsSet = true;
                     }

@@ -60,7 +60,6 @@ public class RaceStatusMessage {
 
             offset += 20;
         }
-
         updateRaceDetails();
         for (BoatStatusMessage boatInfo : boatDetailsList) {
             boatInfo.setBoatDetails();

@@ -265,7 +265,6 @@ public class Race {
         raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceTime) -
             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
 
-
         timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
     }
 
@@ -293,7 +292,7 @@ public class Race {
     }
 
     public boolean notGoing() {
-        return !started() && raceStatus != RaceStatus.WARNING && raceStatus != RaceStatus.PREP && raceStatus != RaceStatus.STARTED && raceStatus != RaceStatus.PRESTART;
+        return raceStatus != RaceStatus.WARNING && raceStatus != RaceStatus.PREP && raceStatus != RaceStatus.STARTED && raceStatus != RaceStatus.PRESTART;
     }
 
     /**

@@ -41,7 +41,7 @@ public class Race {
     private boolean practiceRace = false;
     private int raceID;
     private char raceType;
-    private RaceStatus raceStatus = RaceStatus.WARNING;
+    private RaceStatus raceStatus = RaceStatus.START_TIME_NOT_SET;
     private ObservableList<String> positionStrings;
     private Date startingTime;
     private SimpleStringProperty timeToStart;
@@ -415,8 +415,7 @@ public class Race {
             Calendar date = Calendar.getInstance();
             long t = date.getTimeInMillis();
             startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 3/2);
-        }
-        if (startingTime.getTime() < new Date().getTime()){
+        }else if (startingTime.getTime() < new Date().getTime()){
             raceStatus = RaceStatus.STARTED;
         }else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS){
             raceStatus = RaceStatus.PREP;

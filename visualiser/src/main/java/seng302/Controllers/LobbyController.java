@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import seng302.PacketGeneration.RaceStatus;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 import seng302.UserInput.KeyBindingUtility;
@@ -69,6 +70,12 @@ public class LobbyController {
                         }
                     }
                 );
+            }
+
+            if(race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET){
+                timeToStart.setVisible(false);
+            }else{
+                timeToStart.setVisible(true);
             }
         });
     }
