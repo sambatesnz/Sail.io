@@ -265,7 +265,11 @@ public class Race {
         raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceTime) -
             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
 
-        timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+        if(raceStatus == RaceStatus.START_TIME_NOT_SET){
+            timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 99));
+        }else {
+            timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+        }
     }
 
     /**

@@ -72,7 +72,8 @@ public class LobbyController {
                 );
             }
 
-            if(race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET){
+            // 99:99:99 means raceStatus is raceStartTimeNotSet so hide countdown
+            if(newValue.equals(String.format(" %02d:%02d:%02d", 99, 99, 99))){
                 timeToStart.setVisible(false);
             }else{
                 timeToStart.setVisible(true);
