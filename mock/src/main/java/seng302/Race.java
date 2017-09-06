@@ -107,7 +107,8 @@ public class Race {
 
     /**
      * Adds a singular boat if it can
-     * @return boat
+     * @param clientSocketSourceID SoucrceId of the Clients Socket
+     * @return boat that was added
      * @throws Exception the boat could not be created
      */
     public Boat addBoat(int clientSocketSourceID) throws Exception {
