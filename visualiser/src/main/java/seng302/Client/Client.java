@@ -33,7 +33,6 @@ public class Client {
         clientSocket = null;
         streamInput = null;
         streamOutput = null;
-        AppConfig config = new AppConfig();
         this.serverName = ipAddr;
         this.port = port;
 

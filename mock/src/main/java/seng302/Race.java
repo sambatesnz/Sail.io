@@ -19,8 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.Math.*;
-import static java.lang.System.currentTimeMillis;
-import static javafx.collections.FXCollections.observableArrayList;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
