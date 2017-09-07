@@ -2,8 +2,7 @@
 - There are two cases when the visualiser should be reset: 
     
      1: A race has finished and the server tries to begin a new race
-     
-     2: The server disconnects 
+
 
 ### A finished Race
 #####Context:
