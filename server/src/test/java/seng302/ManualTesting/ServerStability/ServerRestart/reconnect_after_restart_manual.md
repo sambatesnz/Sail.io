@@ -1,15 +1,15 @@
 #Manual Testing Document 
-This is testing that the visualiser returns to the start screen upon server disconnection. 
+This tests whether or not the server can accept new connections after it has reset itself.
 
 #####Context:
     Run the ServerRestartTest 
-    Open a visualiser
-    Connect the visualiser
-    Wait 5 seconds
-    Manually kill the server from command line or via IntelliJ
+    Open two visualisers
+    Connect both of the visualisers
+    Wait approximately 40 seconds
+    Try to reconnect both visualisers.
     
 #####Expected Results:
-    The visualiser screen should reload to the Start Screen.
+    The visualisers should be able to reconnect.
     
     
 

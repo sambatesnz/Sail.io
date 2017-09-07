@@ -1,10 +1,6 @@
 #Manual Testing Document 
-- There are two cases when the visualiser should be reset: 
-    
-     1: A race has finished and the server tries to begin a new race
+This tests whether or not the visualiser returns to the Start Screen after the race finishes.
 
-
-### A finished Race
 #####Context:
     Run the ServerRestartTest 
     Open two visualisers
