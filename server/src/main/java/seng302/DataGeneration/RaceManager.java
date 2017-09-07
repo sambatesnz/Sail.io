@@ -66,9 +66,7 @@ public class RaceManager implements IServerData {
 
     @Override
     public boolean finished() {
-//        should this return something like:
         return  race.getRaceStatus() == RaceStatus.FINISHED;
-//        return false;
     }
 
     @Override
@@ -174,5 +172,4 @@ public class RaceManager implements IServerData {
             broadcastMessageQueue.add(rsm.createMessage());
         }
     }
-
 }

@@ -9,12 +9,12 @@ import java.net.*;
 /**
  * Receives all packets FROM each Client - this includes the initial RRM, and the KeyStrokes.
  */
-public class ClientConnection extends Thread {
+public class ClientConnectoin extends Thread {
     private Server server;
     private Socket socket;
     private int id;
 
-    public ClientConnection(Server server, Socket socket, int id) {
+    public ClientConnectoin(Server server, Socket socket, int id) {
         this.server = server;
         this.socket = socket;
         this.id = id;

@@ -76,16 +76,6 @@ public class Server {
         boolean hasStarted = false;
         int numConnections = 0;
 
-//        //--- THIS IS FOR TESTING WHETHER OR NOT THE OTHER CODE WORKS - REMOVE BEFORE MERGE
-//
-//        Thread serverThread = new Thread(() -> {
-//            mockRace.getRace().setRaceStatus(RaceStatus.FINISHED);
-//        });
-//        serverThread.sleep(40000);
-//        serverThread.start();
-//
-//        //---
-
         while (!mockRace.finished()) {
             if (numConnections < connectionStore.connectionAmount()){
                 System.out.println("new connection detected, resending the XML Packets.");
@@ -104,7 +94,9 @@ public class Server {
             sendSingleMessages();
             Thread.sleep(1);
         }
+        System.out.println("race finished");
         connectionStore.purgeConnections();
+        connectionListener.removeListener();
         resetRace();
     }
 

@@ -24,7 +24,7 @@ public class ConnectionListener extends Thread {
 
     public void run() {
         System.out.println("Listening on " + listener);
-        while (true) {
+        while (!listener.isClosed()) {
             Socket socket = null;
             try {
                 socket = listener.accept();
@@ -34,9 +34,9 @@ public class ConnectionListener extends Thread {
                 }
                 System.out.println("Connection from " + socket);
                 int socketID = connectionStore.addSocket(socket);
-                new ClientConnection(server, socket, socketID);
+                new ClientConnectoin(server, socket, socketID);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("The socket is closed, as the server is restarting.");
             }
             try {
                 Thread.sleep(1);
@@ -44,6 +44,10 @@ public class ConnectionListener extends Thread {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void removeListener() throws IOException {
+        this.listener.close();
     }
 
     public void setListening(boolean listening) {
