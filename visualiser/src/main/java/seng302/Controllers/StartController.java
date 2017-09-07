@@ -55,8 +55,18 @@ public class StartController {
         clientController.startClient();
         Race race = clientController.getRace();
 
-        race.connectedToServerProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.equals(1)) {
+        race.connectedToServerProperty().addListener((observable, oldValue, isConnected) -> {
+            if (isConnected.equals(0)) { // disconnected
+                Platform.runLater(
+                        () -> {
+                            try {
+                                exitToMenu();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                );
+            } else if (isConnected.equals(1)) { // connected
                 Platform.runLater(
                     () -> {
                         try {
@@ -66,7 +76,7 @@ public class StartController {
                         }
                     }
                 );
-            } else if (newValue.equals(2)) {
+            } else if (isConnected.equals(2)) { //failed to connect
                 statusLbl.setText("Could not connect");
             }
         });
@@ -157,5 +167,24 @@ public class StartController {
         String ipInput = ipField.getText();
         String[] splitInput = ipInput.split(":");
         return (Integer.parseInt(splitInput[1]));
+    }
+
+    public void exitToMenu() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/StartingPage.fxml"));
+
+        Parent root = loader.load();
+        Scene rootScene = new Scene(root);
+
+        StartController startController = loader.getController();
+
+        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(800);
+        primaryStage.setMaximized(false);
+        primaryStage.setScene(rootScene);
+        primaryStage.setTitle("RaceView");
+        primaryStage.show();
+
+        startController.setPrimaryStage(primaryStage);
+        startController.setStartScene(rootScene);
     }
 }

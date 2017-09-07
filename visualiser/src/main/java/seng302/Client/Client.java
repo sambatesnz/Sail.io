@@ -165,6 +165,7 @@ public class Client {
 
     public void disconnect() {
         try {
+            race.setConnectedToServer(0);
             System.out.println("Socket disconnected.");
             clientSocket.close();
         } catch (IOException e) {
