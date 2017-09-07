@@ -18,7 +18,7 @@ This tests whether or not the server can accept new connections after it has res
 #####Test:
    
     - Date: 07/09/2017
-    - Current Commit of branch: 1e9bc2a
+    - Current Commit of branch: 8a0372e
     - Performed By: sha162, osr13
     - Result: **Pass**
        
