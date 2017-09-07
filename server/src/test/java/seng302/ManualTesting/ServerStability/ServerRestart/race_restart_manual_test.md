@@ -22,10 +22,16 @@
 
 #####Test:
    
-- Date: 07/09/2017
-- Current Commit of branch: 20f5f98
-- Performed By: sha162, osr13
-- Result: **Pass**
+    - Date: 07/09/2017
+    - Current Commit of branch: 20f5f98
+    - Performed By: sha162, osr13
+    - Result: **Pass**
+       
+    - Date: 07/09/2017
+    - Current Commit of branch: 63e586c
+    - Performed By: sha162, osr13
+    - Result: **Pass**
+
 
     
 
