@@ -47,7 +47,8 @@ public class Client {
      * Handles both incoming and outgoing packets
      */
     public void processStreams() {
-        while (clientSocket != null && !clientSocket.isClosed() && streamInput != null && streamOutput != null) {
+
+        while (clientSocket != null && !clientSocket.isClosed() && streamInput != null && !socketStreamClosed()) {
             try {
                 Thread.sleep(1);
                 nextMessage();
@@ -60,6 +61,25 @@ public class Client {
             Arrays.fill(dataReceived, (byte)0);
         }
         disconnect();
+    }
+
+    /**
+     * Tests whether the connection to the server has been closed
+     * Done by writing dummy data to the socket stream that may be there
+     * @return boolean whether the socket stream has been closed
+     */
+    private boolean socketStreamClosed() {
+        boolean isDisconnected = false;
+        try {
+            streamInput.mark(1);
+            if (streamInput.read() < 0){
+                isDisconnected = true;
+            }
+            streamInput.reset();
+        } catch (IOException e) {
+            isDisconnected = true;
+        }
+        return isDisconnected;
     }
 
     private void nextMessage() throws IOException {
@@ -145,6 +165,7 @@ public class Client {
 
     public void disconnect() {
         try {
+            race.setConnectedToServer(0);
             System.out.println("Socket disconnected.");
             clientSocket.close();
         } catch (IOException e) {

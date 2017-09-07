@@ -44,8 +44,7 @@ public class ConnectionStore {
      */
     public synchronized void sendToAll(byte[] bytes) {
         Queue<Socket> socketToRemove = new LinkedBlockingQueue<>();
-        for (Object value : socketStreams.values()) {
-            Socket socket = (Socket) value;
+        for (Socket socket : socketStreams.values()) {
             try {
                 boolean hasPackets = bytes.length > 0;
                 if (hasPackets) {
@@ -54,7 +53,6 @@ public class ConnectionStore {
                 }
             } catch (IOException e) {
                 socketToRemove.add(socket);
-                //removeConnection(socket);
             }
         }
         for(Socket s : socketToRemove){
@@ -106,6 +104,23 @@ public class ConnectionStore {
         } catch (IOException ie) {
             System.out.println("Error closing " + socket);
             ie.printStackTrace();
+        }
+    }
+
+    /**
+     * Removes ALL connection GIVEN that the race HAS FINISHED. This closes all sockets, and then removes them all.
+     */
+    public synchronized void purgeConnections() {
+        Queue<Socket> socketToRemove = new LinkedBlockingQueue<>();
+        System.out.println("Purging Connections");
+        for (Socket socket : socketStreams.values()) {
+            System.out.println("Removing connection to " + socket);
+            socketToRemove.add(socket);
+        }
+        socketStreams.clear();
+
+        for(Socket s : socketToRemove){
+            removeConnection(s);
         }
     }
 

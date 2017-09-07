@@ -20,7 +20,6 @@ public class RaceTest {
 
     @Test
     public void WindSpeedTest() {
-
         int lowestWindVal = FORTY_KNOTS;
         int greatestWindVal = FIVE_KNOTS;
 

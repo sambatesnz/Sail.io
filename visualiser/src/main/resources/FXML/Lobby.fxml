@@ -27,7 +27,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: WHITE;" text="Time to Race Start:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Text fx:id="lobbyDescriptionText" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: WHITE;" text="Time to Race Start:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Text fx:id="timeToStart" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: WHITE;" text="TIME PLACEHOLDER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
       <Button fx:id="forceStartBtn" mnemonicParsing="false" onAction="#forceStart" prefHeight="25.0" prefWidth="98.0" text="Force Start" GridPane.columnIndex="1" GridPane.rowIndex="3" />
    </children>

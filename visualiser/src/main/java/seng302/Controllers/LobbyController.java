@@ -13,7 +13,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import seng302.PacketGeneration.RaceStatus;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 import seng302.UserInput.KeyBindingUtility;
@@ -22,19 +21,15 @@ import java.io.IOException;
 
 public class LobbyController {
 
-    @FXML
-    private Button forceStartBtn;
+    @FXML private Button forceStartBtn;
     private Stage primaryStage;
-    @FXML
-    private TableView<Boat> contestantTable;
-    @FXML
-    private TableColumn<Boat, String> teamColumn;
-    @FXML
-    private TableColumn<Boat, String> clientColumn;
+    @FXML private TableView<Boat> contestantTable;
+    @FXML private TableColumn<Boat, String> teamColumn;
+    @FXML private TableColumn<Boat, String> clientColumn;
     private Race race;
     private String ipAddr;
-    @FXML
-    private Text timeToStart;
+    @FXML private Text timeToStart;
+    @FXML private Text lobbyDescriptionText;
     private int port;
 
     public LobbyController(Race race) {
@@ -72,10 +67,13 @@ public class LobbyController {
                 );
             }
 
-            if(race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET){
+            // 99:99:99 means raceStatus is raceStartTimeNotSet so hide countdown
+            if(newValue.equals(String.format(" %02d:%02d:%02d", 99, 99, 99))){
                 timeToStart.setVisible(false);
+                lobbyDescriptionText.textProperty().setValue("Waiting for more players to join.");
             }else{
                 timeToStart.setVisible(true);
+                lobbyDescriptionText.textProperty().setValue("Time to race start:");
             }
         });
     }

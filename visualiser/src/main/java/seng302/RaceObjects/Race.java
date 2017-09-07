@@ -41,8 +41,7 @@ public class Race {
     private long currentTime;
     private Mark viewMin;
     private Mark viewMax;
-    private SimpleIntegerProperty connectedToServer = new SimpleIntegerProperty(0);
-
+    private SimpleIntegerProperty connectedToServer;
     private boolean raceXMLReceived;
 
     // yellow, blue, pink, orange, green, purple, red, brown
@@ -71,6 +70,7 @@ public class Race {
         this.clientSourceId = 0;
         boatsObs = FXCollections.observableArrayList();
         timeToStart = new SimpleStringProperty();
+        connectedToServer = new SimpleIntegerProperty(0); // 0 is disconnected, 1 = connected, 2 = failed connection(ask Sam Bates)
     }
 
     public int isConnectedToServer() {
@@ -263,7 +263,12 @@ public class Race {
         raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceTime) -
             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
 
-        timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+        if(raceStatus == RaceStatus.START_TIME_NOT_SET){
+            timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 98));
+            timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 99));
+        }else {
+            timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+        }
     }
 
     /**
