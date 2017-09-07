@@ -450,4 +450,15 @@ public class Race {
     public BooleanProperty finishedProperty() {
         return finished;
     }
+
+    public boolean addFinishedBoat(int boatSourceId) {
+        boolean hasChanged = false;
+        Boat finishedBoat = boats.get(boatSourceId);
+        if (!finishedBoats.contains(finishedBoat)) {
+            finishedBoats.add(finishedBoat);
+            hasChanged = true;
+        }
+        return hasChanged;
+    }
+
 }
