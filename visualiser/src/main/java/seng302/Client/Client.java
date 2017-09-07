@@ -70,11 +70,12 @@ public class Client {
      */
     private boolean socketStreamClosed() {
         boolean isDisconnected = false;
-        byte[] dummyData = new byte[1];
-        dummyData[0] = 1;
         try {
-            streamOutput.write(dummyData);
-            streamOutput.flush();
+            streamInput.mark(1);
+            if (streamInput.read() < 0){
+                isDisconnected = true;
+            }
+            streamInput.reset();
         } catch (IOException e) {
             isDisconnected = true;
         }
@@ -85,7 +86,6 @@ public class Client {
 
         final int HEADER_LEN = 15;
         final int CRC_LEN = 4;
-
         if (streamInput.available() < HEADER_LEN) {
             return;
         }
