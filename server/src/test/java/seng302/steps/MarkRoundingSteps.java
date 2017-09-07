@@ -10,8 +10,8 @@ import seng302.Race;
 import seng302.RaceObjects.Boat;
 
 public class MarkRoundingSteps {
-    Race race;
-    Boat boat;
+    private Race race;
+    private Boat boat;
 
     @Given("^the race is already running$")
     public void the_race_is_already_running() throws Throwable {
