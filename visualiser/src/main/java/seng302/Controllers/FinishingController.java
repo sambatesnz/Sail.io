@@ -55,7 +55,6 @@ public class FinishingController {
                 new PropertyValueFactory<Boat, String>("boatName")
         );
 
-        race.setFinishedBoats(Arrays.asList(new Boat("steve", "steve", 2, "steve")));
         finishersTable.setItems(race.getFinishedBoats());
     }
     @FXML
