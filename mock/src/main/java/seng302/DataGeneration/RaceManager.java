@@ -5,6 +5,7 @@ import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketGeneration.RaceStatusGeneration.RaceStatusMessage;
+import seng302.PacketGeneration.RaceStatusGeneration.YachtEventMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.Race;
@@ -141,6 +142,7 @@ public class RaceManager implements IServerData {
                         (short) (boat.isSailsOut() ? 1 : 0), (short) 100, (short) 100
                 );
                 broadcastMessageQueue.add(boatLocationMessage.createMessage());
+
             }
         }
     }

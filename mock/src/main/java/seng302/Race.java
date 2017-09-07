@@ -496,7 +496,7 @@ public class Race {
         this.practiceRace = practiceRace;
     }
 
-    private int checkBoatCollisions(Boat boat) {
+    public int checkBoatCollisions(Boat boat) {
 
         double boatX = boat.getMark().getX();
         double boatY = boat.getMark().getY();
@@ -522,7 +522,7 @@ public class Race {
         return -1;
     }
 
-    private int checkMarkCollisions(Boat boat) {
+    public int checkMarkCollisions(Boat boat) {
 
         Mark boatMark = boat.getMark();
 
