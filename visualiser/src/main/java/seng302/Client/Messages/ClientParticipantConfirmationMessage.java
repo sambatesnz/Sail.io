@@ -6,7 +6,7 @@ import seng302.RaceObjects.Race;
 import java.util.Arrays;
 
 /**
- * Created by sba136 on 11/08/17.
+ * Class to parse client participation messages and update the state of the race
  */
 public class ClientParticipantConfirmationMessage extends ClientSideMessageParser{
 

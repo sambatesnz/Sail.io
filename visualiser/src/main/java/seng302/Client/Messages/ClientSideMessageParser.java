@@ -1,5 +1,4 @@
 package seng302.Client.Messages;
-
 import seng302.RaceObjects.Race;
 
 /**

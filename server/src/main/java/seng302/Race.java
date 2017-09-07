@@ -147,12 +147,12 @@ public class Race {
 
     /**
      * Sets the starting wind speed of the race. Randomly selects the wind speed from
-     * between valid race wind speeds, between 40 knots (approx. 20,600 mm/s) and 5 knots
-     * (approx. 2,600 mm/s)
+     * between valid race wind speeds, between 45 knots (approx. 23,200 mm/s) and 10 knots
+     * (approx. 5,100 mm/s)
      */
     private void setStartingWindSpeed() {
         Random random = new Random();
-        int startWindVal = random.nextInt(FORTY_KNOTS - FIVE_KNOTS) + FIVE_KNOTS;
+        int startWindVal = random.nextInt(FORTY_KNOTS - FIVE_KNOTS) + TEN_KNOTS;
         startingWindSpeed = (short) startWindVal;
     }
 
@@ -181,10 +181,10 @@ public class Race {
     public short updateWindDirection() {
         this.windHeading = (short) (windHeading + gambleWindDirection());
         if (this.windHeading > 359) {
-            // if the wind heading is greater than or equal to 360, reset it back down to 0
+            /* if the wind heading is greater than or equal to 360, reset it back down to 0 */
             this.windHeading = (short) (this.windHeading - 360);
         } else if (this.windHeading < 0) {
-            // if the wind heading is less than 0, it needs to be reset back up to 360
+            /* if the wind heading is less than 0, it needs to be reset back up to 360 */
             this.windHeading = (short) (this.windHeading + 360);
         }
         return (short) ((this.windHeading * 65536) / 360);
@@ -444,7 +444,6 @@ public class Race {
     }
 
     public void updateRaceInfo(){
-        //this.timeToStart = startingTime.getTime() - new Date().getTime();
         if (raceStatus != RaceStatus.FINISHED) {
             if (clientIDs.size() < 2) {
                 raceStatus = RaceStatus.START_TIME_NOT_SET;

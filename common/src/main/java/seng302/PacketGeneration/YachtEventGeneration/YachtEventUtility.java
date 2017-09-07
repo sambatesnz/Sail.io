@@ -5,7 +5,7 @@ import seng302.PacketGeneration.MessageEnumUtility;
 /**
  * Stores location and message
  */
-enum YachtEventUtility implements MessageEnumUtility {
+public enum YachtEventUtility implements MessageEnumUtility {
 
     VERSION_NUMBER(0, 1),
     TIME(1, 6),
