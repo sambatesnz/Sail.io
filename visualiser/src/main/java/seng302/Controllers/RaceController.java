@@ -124,6 +124,7 @@ public class RaceController {
     private int METERS_CONVERSION = 1000;
     private final int SPARKLINEHEIGHT = 239;
     private final double BOUNDARY_OPACITY = 0.5;
+    private final int COLLISION_FRAMES = 10;
     private FPSCounter fpsCounter;
     private int roundingArrowRotationClockwise = 0;
     private int roundingArrowRotationAntiClockwise = 0;
@@ -253,6 +254,18 @@ public class RaceController {
                     sparkCounter = 0;
                     //updateSparkLineChart(); //TODO undisabel sparkline chart
                 }
+
+                if (race.collisionMap.containsKey(race.getClientSourceId())) {
+                    int framesDisplayed = race.collisionMap.get(race.getClientSourceId());
+                    framesDisplayed += 1;
+                    if (framesDisplayed >= COLLISION_FRAMES) {
+                        race.collisionMap.remove(race.getClientSourceId());
+                    } else {
+                        race.collisionMap.put(race.getClientSourceId(), framesDisplayed);
+                        boats.
+                    }
+                }
+
                 if (race.isFinished()) {
                     raceListener.stop();
                 }

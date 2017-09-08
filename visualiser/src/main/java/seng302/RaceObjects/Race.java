@@ -44,12 +44,14 @@ public class Race {
     private SimpleIntegerProperty connectedToServer;
     private boolean raceXMLReceived;
 
+
     // yellow, blue, pink, orange, green, purple, red, brown
     private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300");
     private boolean receivedRaceXML;
     private boolean viewReady;
     private boolean hasRegatta;
     private int clientSourceId;
+    public Map<Integer, Integer> collisionMap;
     public ObservableList<Boat> boatsObs;
     private SimpleStringProperty timeToStart;
 
@@ -62,6 +64,7 @@ public class Race {
         raceXMLReceived = false;
         viewReady = false;
         finished = new SimpleBooleanProperty(false);
+        collisionMap = new HashMap<>();
 
 
         MarkStrings = FXCollections.observableArrayList();
@@ -459,6 +462,20 @@ public class Race {
             hasChanged = true;
         }
         return hasChanged;
+    }
+
+    public void addCollision(int boatId) {
+        if (!collisionMap.containsKey(boatId)) {
+            collisionMap.put(boatId, 0);
+        }
+    }
+
+    public void removeOldCollisions() {
+        for(int key : collisionMap.keySet()) {
+            if (collisionMap.get(key) == COLLISION_FRAMES) {
+                collisionMap.remove(key);
+            }
+        }
     }
 
 }
