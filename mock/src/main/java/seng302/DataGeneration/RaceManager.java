@@ -5,9 +5,10 @@ import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketGeneration.RaceStatusGeneration.RaceStatusMessage;
-import seng302.PacketGeneration.RaceStatusGeneration.YachtEventMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
+import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
+import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
 import seng302.Race;
 import seng302.RaceObjects.Boat;
 import seng302.XMLCreation.RaceXMLCreator;
@@ -85,6 +86,7 @@ public class RaceManager implements IServerData {
         timer.schedule(new XMLSender(), 0, 2000);
         timer.schedule(new RSMSender(), 100, 500);
         timer.schedule(new BoatPosSender(), 1000, 17);
+        timer.schedule(new CollisionDetection(), 10000, 500);
         timer.schedule(new RaceRunner(), 2000, 17);
     }
 
@@ -143,6 +145,33 @@ public class RaceManager implements IServerData {
                 );
                 broadcastMessageQueue.add(boatLocationMessage.createMessage());
 
+            }
+        }
+    }
+
+    class CollisionDetection extends TimerTask {
+        @Override
+        public void run() {
+            System.out.println("TESTING THIS ============================================");
+            if (!race.isBoatsLocked()) {
+                for (Boat boat : race.getBoats()) {
+                    if (race.checkBoatCollision(boat)) {
+                        System.out.println("BOAT WHOOPSIE - Collision with another boat");
+                        BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
+                                2, YachtIncidentEvent.BOATINBOATCOLLISION
+                        );
+                        broadcastMessageQueue.add(boatCollisionEventMessage.createMessage());
+                    }
+
+                    if (race.checkMarkCollisions(boat)) {
+                        System.out.println("MARK WHOOPSIE - Collision with another mark");
+
+                        BinaryMessage markCollisionEventMessage = new YachtEventMessage(
+                                2, YachtIncidentEvent.BOATINMARKCOLLISION
+                        );
+                        broadcastMessageQueue.add(markCollisionEventMessage.createMessage());
+                    }
+                }
             }
         }
     }

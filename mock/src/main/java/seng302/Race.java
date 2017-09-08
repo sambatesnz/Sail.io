@@ -2,6 +2,7 @@ package seng302;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.util.Pair;
 import seng302.PacketGeneration.RaceStatus;
@@ -74,8 +75,12 @@ public class Race {
 
         startingTime = new Date(t + ONE_MINUTE_IN_MILLIS * 5/4);
 
+        ObservableList<Boat> b = FXCollections.observableArrayList();
+        b.addListener((ListChangeListener<Boat>) c -> {
+            initCollisions();
+        });
+        boats = b;
 
-        boats = new ArrayList<>();
         finishedBoats = new ArrayList<>();
         positionStrings = FXCollections.observableArrayList();
         for (Boat boat : boats) {
@@ -233,7 +238,11 @@ public class Race {
         return raceStatus;
     }
 
-//    /**
+    public boolean isBoatsLocked() {
+        return boatsLocked;
+    }
+
+    //    /**
 //     * Takes the list of finished boats and creates a list of strings.
 //     *
 //     * @return positionStrings, an OberservableList of strings with in the order of finishers.
@@ -387,7 +396,7 @@ public class Race {
               //Not being actively used
                 if(checkBoatCollision(boat)) System.out.println("we're colliding kiddo.");;
 
-                if (checkMarkCollisions(boat) == 1) {
+                if (checkMarkCollisions(boat)) {
                     System.out.println("COLLIDING WITH THE MARK");
                 }
 
@@ -522,7 +531,7 @@ public class Race {
         return -1;
     }
 
-    public int checkMarkCollisions(Boat boat) {
+    public boolean checkMarkCollisions(Boat boat) {
 
         Mark boatMark = boat.getMark();
 
@@ -534,12 +543,12 @@ public class Race {
 
                 for (Mark gateMark : gateMarks) {
                     if (checkCollisions(boatMark, gateMark, boat.getSize(), MARK_SIZE)) {
-                        return 1;
+                        return true;
                     }
                 }
             }
         }
-        return -1;
+        return false;
     }
 
     private boolean checkCollisions(Mark mark1, Mark mark2, double size1, double size2) {
@@ -561,17 +570,21 @@ public class Race {
 
         return false;
     }
-    private boolean checkBoatCollision(Boat boat) {
+
+    public boolean checkBoatCollision(Boat boat) {
 
         for (Boat checkBoat : boats) {
-            BoatPair boatPair = new BoatPair(boat, checkBoat);
-            BoatCollision boat1Collision = collisionMap.get(boatPair);
-            if(boat1Collision.isColliding()) return true;
+            if (!checkBoat.equals(boat)) {
+                BoatPair boatPair = new BoatPair(boat, checkBoat);
+                BoatCollision boat1Collision = collisionMap.get(boatPair);
+                if (boat1Collision.isColliding()) return true;
+            }
         }
         return false;
     }
+
     private void initCollisions(){
-        System.out.println("INIT COLLISIONS");
+        System.out.println("INIT COLLISIONS =========================================================================");
         collisionMap = new HashMap<>();
         for (Boat boat : boats){
             for (Boat checkBoat : boats){

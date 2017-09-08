@@ -27,7 +27,7 @@ public class YachtEventMessage extends BinaryMessage {
      * @param boatSourceId source id of the boat
      * @param event event that occurred
      */
-    YachtEventMessage(int boatSourceId, YachtIncidentEvent event){
+    public YachtEventMessage(int boatSourceId, YachtIncidentEvent event){
         this.yachtEventMessage = new byte[22];
 
         this.messageVersionNumber = PacketGenerationUtils.intToOneByte(2);

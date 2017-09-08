@@ -5,7 +5,9 @@ package seng302.PacketGeneration.YachtEventGeneration;
  */
 public enum YachtIncidentEvent {
     DEFAULT(0),
-    FINISHED(11);
+    FINISHED(11),
+    BOATINBOATCOLLISION(33),
+    BOATINMARKCOLLISION(35);
 
     private int value;
 

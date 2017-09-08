@@ -33,10 +33,9 @@ public class BoatCollision {
 
         if (distance < (collider1.getSize() + collider2.getSize())) {
             isColliding = true;
-        }else{
+        } else {
             isColliding = false;
         }
-        
     }
     
     public boolean isColliding() {
