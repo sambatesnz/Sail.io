@@ -23,3 +23,10 @@
 - Current Commit of branch  9c92a3d
 - Performed By: Jono
 - Result **Pass**
+
+#####Test:
+   
+- Date  08/09/2017
+- Current Commit of branch  0ba609e
+- Performed By: Jono and Tim
+- Result **Pass**
