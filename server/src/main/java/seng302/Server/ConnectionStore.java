@@ -52,6 +52,7 @@ public class ConnectionStore {
                     stream.write(bytes);
                 }
             } catch (IOException e) {
+                System.out.println("removing connections");
                 socketToRemove.add(socket);
             }
         }
@@ -91,6 +92,7 @@ public class ConnectionStore {
     public synchronized void removeConnection(Socket socket) {
         int socketId = socket.getPort();
 
+        System.out.println("Removing connection to " + socket);
         socketStreams.remove(socketId);
         RaceStatus rs = race.getRace().getRaceStatus();
         if(rs != RaceStatus.STARTED && rs != RaceStatus.PREP && rs != RaceStatus.FINISHED){
