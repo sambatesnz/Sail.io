@@ -50,48 +50,28 @@ import static javafx.scene.input.KeyCode.Z;
  * Class that controls the race window and updates the race as it proceeds
  */
 public class RaceController {
-    @FXML
-    private BorderPane mainBorderPane;
-    @FXML
-    private AnchorPane viewAnchorPane;
-    @FXML
-    private Group group;
-    @FXML
-    private Group boundaryGroup;
-    @FXML
-    private Label clock;
-    @FXML
-    private Label localTimeZone;
-    @FXML
-    private Label localTime;
-    @FXML
-    private ListView<String> finishedListView;
-    @FXML
-    private TableView<Boat> positionTable;
-    @FXML
-    private TableColumn<Boat, String> positionCol;
-    @FXML
-    private TableColumn<Boat, String> nameCol;
-    @FXML
-    private TableColumn<Boat, String> speedCol;
-    @FXML
-    private TableColumn<Boat, String> legCol;
-    @FXML
-    private Label fpsLabel;
-    @FXML
-    private Button annotationBtn;
-    @FXML
-    private Button fpsBtn;
-    @FXML
-    private ListView<String> startersList;
-    @FXML
-    private LineChart<Number, Number> sparklinesChart;
-    @FXML
-    private SplitPane sidePanelSplit;
-    @FXML
-    private Pane finishingPane;
-    @FXML
-    private Group finishingGroup;
+
+    @FXML private BorderPane mainBorderPane;
+    @FXML private AnchorPane viewAnchorPane;
+    @FXML private Group group;
+    @FXML private Group boundaryGroup;
+    @FXML private Label clock;
+    @FXML private Label localTimeZone;
+    @FXML private Label localTime;
+    @FXML private ListView<String> finishedListView;
+    @FXML private TableView<Boat> positionTable;
+    @FXML private TableColumn<Boat, String> positionCol;
+    @FXML private TableColumn<Boat, String> nameCol;
+    @FXML private TableColumn<Boat, String> speedCol;
+    @FXML private TableColumn<Boat, String> legCol;
+    @FXML private Label fpsLabel;
+    @FXML private Button annotationBtn;
+    @FXML private Button fpsBtn;
+    @FXML private ListView<String> startersList;
+    @FXML private LineChart<Number, Number> sparklinesChart;
+    @FXML private SplitPane sidePanelSplit;
+    @FXML private Pane finishingPane;
+    @FXML private Group finishingGroup;
     @FXML private CheckBox BoatNameCheckBox;
     @FXML private CheckBox BoatSpeedCheckBox;
     @FXML private Button toggleFinishersBtn;
@@ -131,7 +111,6 @@ public class RaceController {
     private int port;
     private AnimationTimer raceListener;
     private boolean isFinishersHidden = true;
-
 
     // Sparkline variables
     @FXML    private NumberAxis xAxis;

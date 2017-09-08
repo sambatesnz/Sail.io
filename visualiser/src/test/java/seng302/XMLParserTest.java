@@ -49,7 +49,7 @@ public class XMLParserTest {
     @Test
     public void checkCourseOrderCorrect() throws IOException {
         List<Leg> courseOrder = raceParser.getCourseOrder();
-        Assert.assertTrue(courseOrder.size() == 9);
+        Assert.assertTrue(courseOrder.size() == 11);
     }
 
     @Test

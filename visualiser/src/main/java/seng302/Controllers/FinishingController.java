@@ -32,6 +32,8 @@ public class FinishingController {
     private Stage primaryStage;
 
     private Race race;
+
+
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
@@ -53,27 +55,11 @@ public class FinishingController {
                 new PropertyValueFactory<Boat, String>("boatName")
         );
 
-        race.setFinishedBoats(Arrays.asList(new Boat("steve", "steve", 2, "steve")));
         finishersTable.setItems(race.getFinishedBoats());
     }
     @FXML
     public void exitToMenu() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/StartingPage.fxml"));
-
-        Parent root = loader.load();
-        Scene rootScene = new Scene(root);
-
-        StartController startController = loader.getController();
-
-        primaryStage.setMinHeight(600);
-        primaryStage.setMinWidth(800);
-        primaryStage.setMaximized(false);
-        primaryStage.setScene(rootScene);
-        primaryStage.setTitle("RaceView");
-        primaryStage.show();
-
-        startController.setPrimaryStage(primaryStage);
-        startController.setStartScene(rootScene);
+        race.setConnectedToServer(0);
     }
 
     public void setRace(Race race) {

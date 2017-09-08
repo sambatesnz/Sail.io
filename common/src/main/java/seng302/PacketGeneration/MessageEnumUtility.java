@@ -5,8 +5,8 @@ package seng302.PacketGeneration;
  */
 public interface MessageEnumUtility {
 
-    public int getIndex();
+    int getIndex();
 
-    public int getSize();
+    int getSize();
 
 }

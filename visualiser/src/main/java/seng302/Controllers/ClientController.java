@@ -83,7 +83,8 @@ public class ClientController {
         }, MINUTE_AND_TWENTY_SECONDS);
     }
 
-    /**Starts a race and tries to establish connection to a server
+    /**
+     * Starts a race and tries to establish connection to a server
      * returns true if the client connects to the server, false otherwise.
      * @throws InterruptedException if client connection fails
      */

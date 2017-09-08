@@ -49,6 +49,10 @@ public class Boat {
     private int lastMarkIndex = 0;
     private int roundingStage = 0;
 
+    private boolean finished;
+    private boolean connected;
+    private boolean added;
+
     /**
      * Boat constructor
      * @param name the name of the boat
@@ -65,6 +69,8 @@ public class Boat {
         this.mark = new Mark();
         this.raceTime = Integer.toUnsignedLong(0);
         this.headingChanged = false;
+        this.finished = false;
+        this.connected = true;
         this.size = 18;
     }
 
@@ -75,6 +81,7 @@ public class Boat {
     public Boat(Integer sourceID, String boatName) {
         this.sourceId = sourceID;
         this.boatName = boatName;
+        this.finished = false;
     }
 
     /**
@@ -564,5 +571,29 @@ public class Boat {
     public void setInCollision(boolean inCollision) {
         isInCollision = inCollision;
     }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    public void disconnect() { this.connected = false; }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public boolean isAdded() {
+        return added;
+    }
+
+    public void setAdded(boolean added) {
+        this.added = added;
+    }
+
+
 }
 

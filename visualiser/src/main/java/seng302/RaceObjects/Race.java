@@ -24,8 +24,6 @@ public class Race {
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
     private Map<Integer, Mark> marks;
-    // Changing list of boats to hashmap. where key is boat SourceID, as retrieved from the xml message
-//    private List<Boat> boats;
     private ObservableMap<Integer, Boat> boats;
     private ObservableList<Boat> finishedBoats;
     private List<Mark> boundaries;
@@ -43,8 +41,7 @@ public class Race {
     private long currentTime;
     private Mark viewMin;
     private Mark viewMax;
-    private SimpleIntegerProperty connectedToServer = new SimpleIntegerProperty(0);
-
+    private SimpleIntegerProperty connectedToServer;
     private boolean raceXMLReceived;
 
     // yellow, blue, pink, orange, green, purple, red, brown
@@ -73,6 +70,7 @@ public class Race {
         this.clientSourceId = 0;
         boatsObs = FXCollections.observableArrayList();
         timeToStart = new SimpleStringProperty();
+        connectedToServer = new SimpleIntegerProperty(0); // 0 is disconnected, 1 = connected, 2 = failed connection(ask Sam Bates)
     }
 
     public int isConnectedToServer() {
@@ -265,8 +263,12 @@ public class Race {
         raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceTime) -
             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
 
-
-        timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+        if(raceStatus == RaceStatus.START_TIME_NOT_SET){
+            timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 98));
+            timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 99));
+        }else {
+            timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+        }
     }
 
     /**
@@ -293,7 +295,7 @@ public class Race {
     }
 
     public boolean notGoing() {
-        return !started() && raceStatus != RaceStatus.WARNING && raceStatus != RaceStatus.PREP && raceStatus != RaceStatus.STARTED && raceStatus != RaceStatus.PRESTART;
+        return raceStatus != RaceStatus.WARNING && raceStatus != RaceStatus.PREP && raceStatus != RaceStatus.STARTED && raceStatus != RaceStatus.PRESTART;
     }
 
     /**
@@ -366,7 +368,7 @@ public class Race {
     }
 
     public void setBoundaries(List<CourseLimit> courseLimits) {
-        boundaries = new ArrayList<>();
+        boundaries = Collections.synchronizedList(new ArrayList<>());
         for (CourseLimit cl: courseLimits) {
             boundaries.add(new Mark(cl.getLat(), cl.getLon()));
         }
@@ -448,4 +450,15 @@ public class Race {
     public BooleanProperty finishedProperty() {
         return finished;
     }
+
+    public boolean addFinishedBoat(int boatSourceId) {
+        boolean hasChanged = false;
+        Boat finishedBoat = boats.get(boatSourceId);
+        if (!finishedBoats.contains(finishedBoat)) {
+            finishedBoats.add(finishedBoat);
+            hasChanged = true;
+        }
+        return hasChanged;
+    }
+
 }

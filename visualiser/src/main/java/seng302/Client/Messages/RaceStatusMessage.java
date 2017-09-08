@@ -60,7 +60,6 @@ public class RaceStatusMessage {
 
             offset += 20;
         }
-
         updateRaceDetails();
         for (BoatStatusMessage boatInfo : boatDetailsList) {
             boatInfo.setBoatDetails();
@@ -73,6 +72,7 @@ public class RaceStatusMessage {
      * - Wind Speed
      * - Expected Start Time
      * - Race Status
+     * - Current Time
      */
     public void updateRaceDetails() {
         race.setWindHeading(windDirection);
