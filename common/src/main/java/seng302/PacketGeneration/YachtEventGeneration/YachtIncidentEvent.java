@@ -10,7 +10,9 @@ import java.util.Map;
  */
 public enum YachtIncidentEvent {
     DEFAULT(0),
-    FINISHED(11);
+    FINISHED(11),
+    BOATINBOATCOLLISION(33),
+    BOATINMARKCOLLISION(35);
 
     private int value;
     private static Map<Integer, YachtIncidentEvent> enumMap = Collections.unmodifiableMap(initMap());

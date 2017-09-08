@@ -429,26 +429,26 @@ public class Race {
         double movementMultiplier = 1;
 
         for (Boat boat : boats) {
-            if (!finishedBoats.contains(boat)) {
-                //boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
-              //Not being actively used
-                if(checkBoatCollision(boat)) System.out.println("we're colliding kiddo.");;
+            //boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
+            //Not being actively used
+            if (checkBoatCollision(boat)) System.out.println("we're colliding kiddo.");
+            ;
 
-                if (checkMarkCollisions(boat)) {
-                    System.out.println("COLLIDING WITH THE MARK");
-                }
+            if (checkMarkCollisions(boat)) {
+                System.out.println("COLLIDING WITH THE MARK");
+            }
 
-                if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
-                    PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
-                }
+            if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
+                PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
+            }
 
-                //Increments the the distance by the speed
-                    //Increments the the distance by the speed
-                    double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
-                    double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
+            //Increments the the distance by the speed
+            //Increments the the distance by the speed
+            double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
+            double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
 
-            boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
-            boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
+            boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
+            boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
 
             if (raceStatus == RaceStatus.STARTED) {
                 if (!boat.isFinished()) {
