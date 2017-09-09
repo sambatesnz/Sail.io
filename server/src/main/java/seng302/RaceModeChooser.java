@@ -1,7 +1,7 @@
 package seng302;
 
 import seng302.DataGeneration.IServerData;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import seng302.DataGeneration.RaceManager;
 
 /**
  * Determines what implementation of IServerData is wanter
@@ -20,9 +20,19 @@ public class RaceModeChooser {
         mode = cliParser.getRaceMode();
     }
 
-    public IServerData getRaceMode() throws Exception {
-        throw new Exception("not implemented yet");
+    /**
+     * Instantiates the race based on the cli params.
+     * Mode will always be set, defaults to Race mode.
+     * @return The new race
+     */
+    public IServerData createRace() {
+        IServerData race = new RaceManager();
+        //unused as these modes haven't been implemented yet
+/*        if (mode == RaceMode.PRACTICE) {
+            race = new RaceManager();
+        } else if (mode == RaceMode.AGAR) {
+            race = new RaceManager();
+        } */
+        return race;
     }
-
-
 }
