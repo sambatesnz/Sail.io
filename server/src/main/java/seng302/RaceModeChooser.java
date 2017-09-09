@@ -28,6 +28,7 @@ public class RaceModeChooser {
     public IServerData createRace() {
         IServerData race = new RaceManager();
         //unused as these modes haven't been implemented yet
+        System.out.println("Server started in " + mode.getRaceMode() + " mode!");
 /*        if (mode == RaceMode.PRACTICE) {
             race = new RaceManager();
         } else if (mode == RaceMode.AGAR) {

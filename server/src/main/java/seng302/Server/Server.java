@@ -4,6 +4,7 @@ import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.RaceManager;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.RaceHandler;
+import seng302.RaceModeChooser;
 
 import java.io.*;
 import java.net.*;
@@ -27,6 +28,26 @@ public class Server {
         startup();
     }
 
+    /**
+     * Constructor for the main application
+     * @param port port number
+     * @param args array of arguments you want to instantiate the server with
+     * @throws Exception
+     */
+    public Server(int port, String[] args) throws Exception {
+        RaceModeChooser chooser = new RaceModeChooser(args);
+        this.mockRace = chooser.createRace();
+        this.port = port;
+        startup();
+    }
+
+    /**
+     * Constructor used with tests
+     * This shouldn't be used in future (above constructor can be used)
+     * @param port port number
+     * @param race Implementation of race
+     * @throws Exception
+     */
     public Server(int port, IServerData race) throws Exception {
         this.mockRace = race;
         this.port = port;

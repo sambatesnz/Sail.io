@@ -36,9 +36,16 @@ public class CommandLineParserTest {
     }
 
     @Test
-    public void raceModeFormatting() throws Exception {
+    public void raceModeWithEmptySpace() throws Exception {
         expectedMode = RaceMode.RACE;
-        setArg("mode=race    ");
+        setArg("-mode=race    ");
+        assertEquals(expectedMode, getRaceMode());
+    }
+
+    @Test
+    public void raceModeWithCapitals() throws Exception {
+        expectedMode = RaceMode.AGAR;
+        setArg("-mode=Agar");
         assertEquals(expectedMode, getRaceMode());
     }
 
