@@ -44,6 +44,7 @@ public class Race {
     private SimpleIntegerProperty connectedToServer;
     private boolean raceXMLReceived;
 
+    private final int COLLISION_FRAMES = 50;
 
     // yellow, blue, pink, orange, green, purple, red, brown
     private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300");
@@ -52,6 +53,7 @@ public class Race {
     private boolean hasRegatta;
     private int clientSourceId;
     public Map<Integer, Integer> collisionMap;
+    private int collisionCount = 0;
     public ObservableList<Boat> boatsObs;
     private SimpleStringProperty timeToStart;
 
@@ -341,6 +343,10 @@ public class Race {
         }
     }
 
+    public int getCollisionCount() {
+        return collisionCount;
+    }
+
     public List<Leg> getCourseOrder() {
         return courseOrder;
     }
@@ -464,18 +470,21 @@ public class Race {
         return hasChanged;
     }
 
-    public void addCollision(int boatId) {
-        if (!collisionMap.containsKey(boatId)) {
-            collisionMap.put(boatId, 0);
+    /**
+     * If the set of frames for the control circle to be red after a collision is 0, when called, this function will set
+     * the number of frames to the preset collision frame number.
+     */
+    public void addCollision() {
+        if (collisionCount == 0) {
+            collisionCount = COLLISION_FRAMES;
         }
     }
 
-    public void removeOldCollisions() {
-        for(int key : collisionMap.keySet()) {
-            if (collisionMap.get(key) == COLLISION_FRAMES) {
-                collisionMap.remove(key);
-            }
-        }
+    /**
+     * Reduces the collision frame count by one.
+     */
+    public void reduceCollisionCount() {
+        collisionCount -= 1;
     }
 
 }

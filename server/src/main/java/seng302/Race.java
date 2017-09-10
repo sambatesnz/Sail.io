@@ -431,12 +431,12 @@ public class Race {
         for (Boat boat : boats) {
             //boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
             //Not being actively used
-            if (checkBoatCollision(boat)) System.out.println("we're colliding kiddo.");
-            ;
+//            if (checkBoatCollision(boat)) System.out.println("we're colliding kiddo.");
 
-            if (checkMarkCollisions(boat)) {
-                System.out.println("COLLIDING WITH THE MARK");
-            }
+
+//            if (checkMarkCollisions(boat)) {
+//                System.out.println("COLLIDING WITH THE MARK");
+//            }
 
             if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
                 PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);

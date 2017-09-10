@@ -1,5 +1,6 @@
 package seng302.DataGeneration;
 
+import com.sun.xml.internal.bind.v2.runtime.output.SAXOutput;
 import seng302.BoatManager;
 import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
@@ -156,25 +157,24 @@ public class RaceManager implements IServerData {
     class CollisionDetection extends TimerTask {
         @Override
         public void run() {
-            System.out.println("TESTING THIS ============================================");
-            if (!race.isBoatsLocked()) {
-                for (Boat boat : race.getBoats()) {
-                    if (race.checkBoatCollision(boat)) {
-                        System.out.println("BOAT WHOOPSIE - Collision with another boat");
-                        BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
-                                2, YachtIncidentEvent.BOATINBOATCOLLISION
-                        );
-                        broadcastMessageQueue.add(boatCollisionEventMessage.createMessage());
-                    }
+            System.out.println("CHECK COLLISION");
+            for (Boat boat : race.getBoats()) {
+                System.out.println(boat.getSourceId() + " : " + race.checkBoatCollision(boat));
+                if (race.checkBoatCollision(boat)) {
+                    System.out.println("BOAT WHOOPSIE - Collision with another boat");
+                    BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
+                            boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
+                    );
+                    broadcastMessageQueue.add(boatCollisionEventMessage.createMessage());
+                }
 
-                    if (race.checkMarkCollisions(boat)) {
-                        System.out.println("MARK WHOOPSIE - Collision with another mark");
+                if (race.checkMarkCollisions(boat)) {
+                    System.out.println("MARK WHOOPSIE - Collision with a mark");
 
-                        BinaryMessage markCollisionEventMessage = new YachtEventMessage(
-                                2, YachtIncidentEvent.BOATINMARKCOLLISION
-                        );
-                        broadcastMessageQueue.add(markCollisionEventMessage.createMessage());
-                    }
+                    BinaryMessage markCollisionEventMessage = new YachtEventMessage(
+                            boat.getSourceId(), YachtIncidentEvent.MARKCOLLISION
+                    );
+                    broadcastMessageQueue.add(markCollisionEventMessage.createMessage());
                 }
             }
         }

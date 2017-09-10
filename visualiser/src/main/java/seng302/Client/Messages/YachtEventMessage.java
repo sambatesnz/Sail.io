@@ -24,14 +24,14 @@ public class YachtEventMessage extends ClientSideMessageParser {
     public void updateRace(Race race) {
         if (eventId == YachtIncidentEvent.FINISHED) {
             race.addFinishedBoat(destinationSourceId);
-        } else if (eventId == YachtIncidentEvent.BOATINBOATCOLLISION) {
-            // there has been a boat collision, do something!!
-            race.addCollision(destinationSourceId);
-
-        } else if (eventId == YachtIncidentEvent.BOATINMARKCOLLISION) {
-            // there has been a mark collision, do something!!
-            race.addCollision(destinationSourceId);
-
+        } else if (eventId == YachtIncidentEvent.BOATCOLLISION) {
+            if (destinationSourceId == race.getClientSourceId()) {
+                race.addCollision();
+            }
+        } else if (eventId == YachtIncidentEvent.MARKCOLLISION) {
+            if (destinationSourceId == race.getClientSourceId()) {
+                race.addCollision();
+            }
         }
     }
 

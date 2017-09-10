@@ -58,6 +58,7 @@ public class Message {
      * @throws UnsupportedEncodingException when the message is not correct.
      */
     public void parseMessage() throws UnsupportedEncodingException {
+
         switch (messageType) {
             case HEART_BEAT:
                 break;
@@ -74,7 +75,6 @@ public class Message {
             case RACE_START_STATUS:
                 break;
             case YACHT_EVENT:
-                System.out.println("Got a yacht event code, boat finished I guess");
                 messageParser = new YachtEventMessage(body);
                 messageParser.updateRace(race);
                 break;
