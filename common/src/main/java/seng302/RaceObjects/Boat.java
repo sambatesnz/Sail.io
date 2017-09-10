@@ -561,6 +561,9 @@ public class Boat {
         this.finished = finished;
     }
 
+    /**
+     * Puts a boat into a disconnected state
+     */
     public void disconnect() {
         this.connected = false;
         this.sailsOut = false;
