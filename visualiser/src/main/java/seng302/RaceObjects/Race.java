@@ -52,7 +52,6 @@ public class Race {
     private boolean viewReady;
     private boolean hasRegatta;
     private int clientSourceId;
-    public Map<Integer, Integer> collisionMap;
     private int collisionCount = 0;
     public ObservableList<Boat> boatsObs;
     private SimpleStringProperty timeToStart;
@@ -66,9 +65,6 @@ public class Race {
         raceXMLReceived = false;
         viewReady = false;
         finished = new SimpleBooleanProperty(false);
-        collisionMap = new HashMap<>();
-
-
         MarkStrings = FXCollections.observableArrayList();
         this.receivedRaceXML = false;
         hasRegatta = false;

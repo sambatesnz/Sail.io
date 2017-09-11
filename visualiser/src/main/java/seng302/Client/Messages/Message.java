@@ -58,7 +58,6 @@ public class Message {
      * @throws UnsupportedEncodingException when the message is not correct.
      */
     public void parseMessage() throws UnsupportedEncodingException {
-
         switch (messageType) {
             case HEART_BEAT:
                 break;

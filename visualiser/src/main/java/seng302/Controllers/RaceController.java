@@ -242,7 +242,7 @@ public class RaceController {
 
 
                 viewUpdateCount++;
-
+                // @Stefan @Sam
                 if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0) {
                     positionTable.refresh();
                     positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
@@ -253,18 +253,6 @@ public class RaceController {
                     sparkCounter = 0;
                     //updateSparkLineChart(); //TODO undisabel sparkline chart
                 }
-
-//                if (race.collisionMap.containsKey(race.getClientSourceId())) {
-//                    int framesDisplayed = race.collisionMap.get(race.getClientSourceId());
-//                    framesDisplayed += 1;
-//                    if (framesDisplayed >= COLLISION_FRAMES) {
-//                        race.collisionMap.remove(race.getClientSourceId());
-//                    } else {
-//                        race.collisionMap.put(race.getClientSourceId(), framesDisplayed);
-////                        boats.
-//                    }
-//                }
-
                 if (race.getCollisionCount() > 0) {
                     race.reduceCollisionCount();
                     // need to find a way to highlight only the users specific boat.
@@ -277,7 +265,6 @@ public class RaceController {
                         }
                     }
                 }
-
                 if (race.isFinished()) {
                     raceListener.stop();
                 }

@@ -29,6 +29,7 @@ public class YachtEventMessage extends ClientSideMessageParser {
                 race.addCollision();
             }
         } else if (eventId == YachtIncidentEvent.MARKCOLLISION) {
+            // This covers both Mark collisions and collisions with the course boundary.
             if (destinationSourceId == race.getClientSourceId()) {
                 race.addCollision();
             }

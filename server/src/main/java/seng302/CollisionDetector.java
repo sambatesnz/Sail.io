@@ -16,32 +16,6 @@ public class CollisionDetector {
 
     private static double MARK_SIZE = 5;
 
-    public int checkBoatCollisions(Boat boat, List<Boat> boats) {
-
-        double boatX = boat.getMark().getX();
-        double boatY = boat.getMark().getY();
-
-        for (Boat collisionBoat : boats) {
-
-            if (boat != collisionBoat) {
-
-                double collisionX = collisionBoat.getMark().getX();
-                double collisionY = collisionBoat.getMark().getY();
-
-                double xDist = boatX - collisionX;
-                double yDist = boatY - collisionY;
-
-                double distance = sqrt((xDist * xDist) + (yDist * yDist));
-
-                if (distance < (boat.getSize() + collisionBoat.getSize())) {
-                    return 1;
-                }
-            }
-        }
-
-        return -1;
-    }
-
     public boolean checkMarkCollisions(Boat boat, List<CompoundMark> compoundMarks) {
 
         Mark boatMark = boat.getMark();
@@ -114,5 +88,4 @@ public class CollisionDetector {
         }
         return withinBoundaries;
     }
-
 }

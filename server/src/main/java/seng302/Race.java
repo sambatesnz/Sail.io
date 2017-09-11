@@ -17,14 +17,12 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.Math.*;
-import static seng302.Coordinate.getRelativeX;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
  * This displays a text-based play by play commentary of the race as it happens
  */
 public class Race {
-    private boolean boatsLocked = false;
     private Map<BoatPair, BoatCollision> collisionMap;
     private int numFinishers = 0;
     private List<Pair<CompoundMark, Rounding>> courseRoundingInfo;
@@ -52,7 +50,6 @@ public class Race {
     private static final int DIRECTION_CHANGE_PROB = 25;
     private final long ONE_MINUTE_IN_MILLIS = 60000;
     private static int MAX_NUMBER_OF_BOATS = 20;
-
 
     private BoatGenerator boatGenerator;
     private BoatManager boatManager;
@@ -104,16 +101,6 @@ public class Race {
         Calendar date = Calendar.getInstance();
         long currentTime = date.getTimeInMillis();
         return new Date(currentTime + ONE_MINUTE_IN_MILLIS * 3 / 2);
-    }
-
-    /**
-     * When called, the race is set as ready and the boats are locked.
-     */
-    public void readyRace(){
-        if(boatsLocked) return;
-
-        boatsLocked = true;
-        initCollisions();
     }
 
     /**
@@ -279,28 +266,6 @@ public class Race {
         return raceStatus;
     }
 
-    public boolean isBoatsLocked() {
-        return boatsLocked;
-    }
-
-    //    /**
-//     * Takes the list of finished boats and creates a list of strings.
-//     *
-//     * @return positionStrings, an OberservableList of strings with in the order of finishers.
-//     */
-//    public ObservableList<String> getPositionStrings() {
-//        if (!positionStrings.isEmpty()) {
-//            positionStrings.clear();
-//        }
-//        positionStrings.add("Race Results");
-//        int i = 1;
-//        for (Boat boat : finishedBoats) {
-//            positionStrings.add(i + ": " + boat.getName());
-//            i++;
-//        }
-//        return positionStrings;
-//    }
-
     public BoatManager getBoatManager() {
         return boatManager;
     }
@@ -348,20 +313,6 @@ public class Race {
         return null;
     }
 
-    /**
-     * Creates an ArrayList of boats competing in the current race
-     * @return The ArrayList of boats
-     */
-    private ArrayList<Boat> getContestants() {
-        ArrayList<Boat> contestants = new ArrayList<>();
-//        contestants.add(new Boat("ORACLE TEAM USA", "USA", 101, "United States"));
-//        contestants.add(new Boat("Artemis Racing", "SWE", 102, "Sweden"));
-        contestants.add(new Boat("Emirates Team New Zealand", "NZL", 103, "New Zealand"));
-//        contestants.add(new Boat("SoftBank Team Japan", "JPN", 104, "Japan"));
-//        contestants.add(new Boat("Groupama Team France", "FRA", 105, "France"));
-//        contestants.add(new Boat("Land Rover BAR", "GBR", 106, "United Kingdom"));
-        return contestants;
-    }
 
     /**
      * Reads the course.xml file to get the attributes of things on the course
@@ -436,19 +387,9 @@ public class Race {
         double movementMultiplier = 1;
 
         for (Boat boat : boats) {
-            //boat.setCurrentLegDistance(boat.getCurrentLegDistance() + boat.getSpeed() / 1000 / (1000/17) * distanceMultiplier);
-            //Not being actively used
-//            if (checkBoatCollision(boat)) System.out.println("we're colliding kiddo.");
-
-
-//            if (checkMarkCollisions(boat)) {
-//                System.out.println("COLLIDING WITH THE MARK");
-//            }
-
             if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
                 PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
             }
-
             //Increments the the distance by the speed
             //Increments the the distance by the speed
             double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
@@ -505,10 +446,8 @@ public class Race {
         return collisionMap;
     }
 
-    public void setCollisionMap(Map<BoatPair, BoatCollision> collisionMap) {
-        this.collisionMap = collisionMap;
-    }
 
+    // @Matt
     public void updateRaceInfo(){
         if (raceStatus != RaceStatus.FINISHED) {
             if (clientIDs.size() < 2) {
@@ -518,7 +457,6 @@ public class Race {
                 raceStatus = RaceStatus.STARTED;
             } else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS) {
                 raceStatus = RaceStatus.PREP;
-                readyRace();
             } else {
                 raceStatus = RaceStatus.WARNING;
             }
@@ -534,18 +472,12 @@ public class Race {
     }
 
 
-
     private void initCollisions(){
         collisionMap = new HashMap<>();
         for (Boat boat : boats){
             for (Boat checkBoat : boats){
                 BoatPair boatPair = new BoatPair(boat, checkBoat);
-                System.out.println(collisionMap.containsKey(boatPair));
-                //System.out.println(boatPair);
-                //System.out.println(collisionMap.containsKey(boatPair));
                 if(!collisionMap.containsKey(new BoatPair(boat, checkBoat))){
-
-                    System.out.println("new key: " + boatPair.getBoat1().getSourceId() + " + " + boatPair.getBoat2().getSourceId());
                     collisionMap.put(boatPair, new BoatCollision(boat, checkBoat));
                 }else{
                     System.out.println("KEY EXISTS: " + boatPair.getBoat1().getSourceId() + " + " + boatPair.getBoat2().getSourceId());

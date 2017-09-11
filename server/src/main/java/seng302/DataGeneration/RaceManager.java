@@ -149,7 +149,6 @@ public class RaceManager implements IServerData {
                         (short) (boat.isSailsOut() ? 1 : 0), (short) 100, (short) 100
                 );
                 broadcastMessageQueue.add(boatLocationMessage.createMessage());
-
             }
         }
     }
@@ -157,11 +156,8 @@ public class RaceManager implements IServerData {
     class CollisionDetection extends TimerTask {
         @Override
         public void run() {
-            System.out.println("CHECK COLLISION");
+            CollisionDetector detector = new CollisionDetector();
             for (Boat boat : race.getBoats()) {
-
-                CollisionDetector detector = new CollisionDetector();
-
                 if (detector.checkBoatCollision(boat, race)) {
                     BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
                             boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
@@ -175,13 +171,6 @@ public class RaceManager implements IServerData {
                     );
                     broadcastMessageQueue.add(markCollisionEventMessage.createMessage());
                 }
-
-//                if (!detector.checkWithinBoundary(boat, race.getBoundaries())) {
-//                    BinaryMessage markCollisionEventMessage = new YachtEventMessage(
-//                            boat.getSourceId(), YachtIncidentEvent.MARKCOLLISION
-//                    );
-//                    broadcastMessageQueue.add(markCollisionEventMessage.createMessage());
-//                }
             }
         }
     }
