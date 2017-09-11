@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class BoatTurningSteps {
+public class BoatActionSteps {
     Race race;
     Delegator delegator = new Delegator(race);
     int messageCommand;
@@ -24,7 +24,7 @@ public class BoatTurningSteps {
         RaceManager mockData = new RaceManager(); //Default race
         race = mockData.getRace();
         delegator = new Delegator(race);
-        Boat boat= race.addBoat(0);
+        Boat boat = race.addBoat(0);
         boatSourceId = boat.getSourceId();
     }
 
@@ -57,5 +57,15 @@ public class BoatTurningSteps {
     public void the_boats_final_heading_is_altered_to_degrees(int finalHeading) throws Throwable {
         TimeUnit.SECONDS.sleep(5); //Need to wait for tack/gybe to finish its cycle
         assertEquals(finalHeading, (int)race.getBoatByID(boatSourceId).getHeading(), 1); //Margin of error within +- ~10 degress
+    }
+
+    @Given("^the boats sail status is \"([^\"]*)\"$")
+    public void the_boats_sail_status_is(String sailStatusBefore) throws Throwable {
+        race.getBoatByID(boatSourceId).setSailsOut(Boolean.parseBoolean(sailStatusBefore));
+    }
+
+    @Then("^the boats sail status is altered to \"([^\"]*)\"$")
+    public void the_boats_sail_status_is_altered_to(String sailStatusAfter) throws Throwable {
+        assertEquals(Boolean.parseBoolean(sailStatusAfter), race.getBoatByID(boatSourceId).isSailsOut());
     }
 }

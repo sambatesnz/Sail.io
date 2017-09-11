@@ -580,7 +580,13 @@ public class Boat {
         this.finished = finished;
     }
 
-    public void disconnect() { this.connected = false; }
+    /**
+     * Puts a boat into a disconnected state
+     */
+    public void disconnect() {
+        this.connected = false;
+        this.sailsOut = false;
+    }
 
     public boolean isConnected() {
         return connected;

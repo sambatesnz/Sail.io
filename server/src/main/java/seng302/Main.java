@@ -12,6 +12,7 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        RaceModeChooser chooser = new RaceModeChooser(args);
         IServerData mockData = new RaceManager(); //Default race
         new Server(4941, mockData);
     }
