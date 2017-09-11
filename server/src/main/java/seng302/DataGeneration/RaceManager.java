@@ -1,6 +1,5 @@
 package seng302.DataGeneration;
 
-import com.sun.xml.internal.bind.v2.runtime.output.SAXOutput;
 import seng302.BoatManager;
 import seng302.CollisionDetector;
 import seng302.DataGenerator;
