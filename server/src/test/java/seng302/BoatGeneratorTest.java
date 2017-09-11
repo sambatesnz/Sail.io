@@ -1,5 +1,6 @@
 package seng302;
 
+import org.junit.Before;
 import org.junit.Test;
 import seng302.RaceObjects.Boat;
 
@@ -9,9 +10,15 @@ import static org.junit.Assert.*;
 
 public class BoatGeneratorTest {
 
+    private BoatGenerator boatGenerator;
+
+    @Before
+    public void setup(){
+        boatGenerator = new BoatGenerator();
+    }
+
     @Test
     public void generateBoat() throws Exception {
-        BoatGenerator boatGenerator = new BoatGenerator();
         int expectedSourceId = boatGenerator.getLowestSourceId(); //Lowest source id
         for (int i = 0; i < 20; i++) {
             Boat b = boatGenerator.generateBoat();
@@ -22,8 +29,6 @@ public class BoatGeneratorTest {
 
     @Test
     public void addRemoveBoats() throws Exception {
-        BoatGenerator boatGenerator = new BoatGenerator();
-
         boatGenerator.generateBoat();
         Boat secondBoat = boatGenerator.generateBoat();
         String expectedName = secondBoat.getName();
@@ -33,18 +38,19 @@ public class BoatGeneratorTest {
     }
 
     @Test
-    public void addMaxBoats() {
-        BoatGenerator boatGenerator = new BoatGenerator();
+    public void addAndRemoveMaxAmountOfBoats() {
+        //This test adds and removes boats to see if they are being tracked properly
         ArrayList<Boat> boats = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            try {
-                boats.add(boatGenerator.generateBoat());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        addBoats(10, boats);
+        removeBoats(5, boats);
+        assertEquals(5, boats.size()); //There should now be five boats
+        addBoats(15, boats);
+        assertEquals(20, boats.size());
 
-        for (int i = 0; i < 5; i++) {
+    }
+
+    private void removeBoats(int amount, ArrayList<Boat> boats) {
+        for (int i = 0; i < amount; i++) {
             try {
                 boatGenerator.makeAvailable(boats.get(i));
                 boats.remove(boats.get(i));
@@ -52,19 +58,30 @@ public class BoatGeneratorTest {
                 e.printStackTrace();
             }
         }
+    }
 
-        assertEquals(5, boats.size());
-
-        for (int i = 0; i < 8; i++) {
+    private void addBoats(int amount, ArrayList<Boat> boats) {
+        for (int i = 0; i < amount; i++) {
             try {
                 boats.add(boatGenerator.generateBoat());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
 
-        assertEquals(13, boats.size());
-
+    @Test
+    public void addTooManyBoats()  {
+        boolean expected = true;
+        boolean exceptionThrown = false;
+        for (int i = 0; i < 21; i++) {
+            try {
+                boatGenerator.generateBoat();
+            } catch (Exception e) {
+                exceptionThrown = true;
+            }
+        }
+        assertEquals(expected, exceptionThrown);
     }
 
 }
