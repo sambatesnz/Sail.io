@@ -1,15 +1,14 @@
 package seng302;
 
+import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.Mark;
+
 import java.util.*;
 
 /**
  * Class containing static boat information
  */
-public final class BoatInfo {
-
-    private BoatInfo(){
-    }
-
+final class BoatInfo {
     private static List<String> boatNames = new ArrayList<>(Arrays.asList("HMS Endeavour", "The Black Pearl", "Santa Maria", "Napoleon",
             "La Pinta","HMAV Bounty","Mayflower", "Golden Hind", "Cutty Sark", "Mary Celeste", "Queen Anne's Revenge",
             "CSS Alabama", "SS Great Britain","Boat 14",
@@ -20,12 +19,32 @@ public final class BoatInfo {
             "Boat 19",
             "Boat 20"));
 
-    public static List<String> getBoatNames(){
-        return boatNames;
+    private BoatInfo(){}
+
+    /**
+     * Creates a stack of boats
+     * @return stack of boats
+     */
+    static Stack<Boat> createBoats(int lowestSourceId, int amount) {
+        int sourceId = lowestSourceId + amount-1;
+        Map<String, List<String>> dataMap = getBoatMap();
+        Stack<Boat> boats = new Stack();
+        int numberOfBoats = boatNames.size();
+        for (int i = amount-1; i>-1 ; i--) { //So we put nice boat names on top
+            String boatName = boatNames.get(i);
+            List<String> boatData = dataMap.get(boatName);
+            Boat boat = new Boat(boatName, boatData.get(1), sourceId, boatData.get(0));
+            boat.setHeading(180);
+            Mark mark = new Mark(57.671335, 11.8271330 + numberOfBoats/1000.0);
+            boat.setMark(mark);
+            boats.add(boat);
+            sourceId--;
+        }
+        return boats;
     }
 
 
-    public static Map<String, List<String>> getBoatMap(){
+    private static Map<String, List<String>> getBoatMap(){
         Map<String, List<String>> dataMap = new HashMap<>();
         dataMap.put("HMS Endeavour", new ArrayList<>(Arrays.asList("Great Britain", "END")));
         dataMap.put("The Black Pearl", new ArrayList<>(Arrays.asList("Origin Unknown", "TBP")));

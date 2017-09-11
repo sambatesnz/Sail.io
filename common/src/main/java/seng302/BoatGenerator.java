@@ -12,6 +12,7 @@ public class BoatGenerator {
 
     private static int LOWEST_SOURCE_ID = 101;
     private static int HIGHEST_SOURCE_ID = 120;
+    private static int MAX_AMOUNT_OF_BOATS =20;
     private int sourceId;
     private int numberOfBoats = 0;
     private HashSet addedBoats;
@@ -20,30 +21,22 @@ public class BoatGenerator {
     private HashSet<Boat> usedBoats;
 
 
+    /**
+     * Constructor for the boat generator
+     */
     public BoatGenerator() {
         this.sourceId = LOWEST_SOURCE_ID;
         addedBoats = new HashSet();
-        availableBoats = generateAllBoats();
+        availableBoats = BoatInfo.createBoats(LOWEST_SOURCE_ID, MAX_AMOUNT_OF_BOATS);
         usedBoats = new HashSet();
     }
 
-    private Stack<Boat> generateAllBoats(){
-        Map<String, List<String>> dataMap = BoatInfo.getBoatMap();
-        Stack<Boat> boats = new Stack<>();
-        int sourceId = HIGHEST_SOURCE_ID;
-        for (int i = 19; i>-1 ; i--) { //So we put nice boat names on top
-            String boatName = BoatInfo.getBoatNames().get(i);
-            List<String> boatData = dataMap.get(boatName);
-            Boat boat = new Boat(boatName, boatData.get(1), sourceId, boatData.get(0));
-            boat.setHeading(180);
-            Mark mark = new Mark(57.671335, 11.8271330 + numberOfBoats/1000.0);
-            boat.setMark(mark);
-            boats.add(boat);
-            sourceId--;
-        }
-        return boats;
-    }
 
+    /**
+     * Tries to generate a boat
+     * @return generated boat
+     * @throws Exception if it cannot generate a boat
+     */
     public Boat generateBoat() throws Exception {
         Boat boat;
         try {
