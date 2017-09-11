@@ -76,7 +76,7 @@ public class StartController {
                 port = raceMode.getPort();
                 break;
             } case PRACTICE: {
-                ip = "http://132.181.16.12";
+                ip = "http://localhost";
                 port = raceMode.getPort();
                 break;
             } case RACE: {
