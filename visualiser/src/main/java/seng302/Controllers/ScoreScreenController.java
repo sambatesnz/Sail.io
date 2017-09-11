@@ -1,25 +1,19 @@
 package seng302.Controllers;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.fxml.FXML;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.Race;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by sba136 on 28/08/17.
  */
-public class FinishingController {
+public class ScoreScreenController {
     @FXML
     private TableView<Boat> finishersTable;
     @FXML

@@ -54,7 +54,7 @@ public class Race {
 
     private BoatGenerator boatGenerator;
     private BoatManager boatManager;
-    private long firstFinishTime;
+    private long finishTime;
 
 
     /**
@@ -72,7 +72,7 @@ public class Race {
         instantiateWindHeading();
 
         startingTime = getNewStartTime();
-        firstFinishTime = 0;
+        finishTime = 0;
 
         boats = new ArrayList<>();
         clientIDs = new HashMap<>();
@@ -398,32 +398,42 @@ public class Race {
                     boatManager.addFinishedBoat(boat);
                     boat.setAdded(true);
                     if (!raceFinishing) {
-                        setFirstFinishTime();
+                        setFinishTime(ONE_MINUTE_IN_MILLIS);
                     }
                 }
             }
 
-            if ((isFinishTimerExpired() || areAllContestantsFinished()) && raceStatus != RaceStatus.FINISHED) {
-                raceStatus = RaceStatus.FINISHED;
-                System.out.println("Race is completely finished!");
-            }
 
             boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
             boat.getMark().setY(newY);
             boat.setHeadingChangedToFalse();
         }
+
+        //System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS
+        if(areAllContestantsFinished()){
+                setFinishTime(ONE_MINUTE_IN_MILLIS/6);
+        }
+        if (isFinishTimerExpired() && raceStatus != RaceStatus.FINISHED) {
+            raceStatus = RaceStatus.FINISHED;
+            System.out.println("Race is completely finished!");
+        }
+
         windHeadingChanged = false;
         windSpeedChanged = false;
 
     }
 
-    private void setFirstFinishTime() {
-        firstFinishTime = System.currentTimeMillis();
-        raceFinishing = true;
+    private void setFinishTime(long msAfterCurrent) {
+        if (raceFinishing) {
+            finishTime = ((System.currentTimeMillis() + msAfterCurrent) < finishTime) ? (System.currentTimeMillis() + msAfterCurrent) : finishTime;
+        } else {
+            finishTime = (System.currentTimeMillis() + msAfterCurrent);
+            raceFinishing = true;
+        }
     }
 
     private boolean isFinishTimerExpired(){
-        return (firstFinishTime > 0) && (System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS);
+        return (finishTime > 0) && (System.currentTimeMillis() > finishTime);
     }
 
     private boolean areAllContestantsFinished() {

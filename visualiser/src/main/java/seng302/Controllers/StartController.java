@@ -22,6 +22,7 @@ public class StartController {
     @FXML private Label statusLbl;
     private Stage primaryStage;
     private Scene rootScene;
+    private Race race;
 
     public StartController() {
 //        this.primaryStage = mainStage;
@@ -53,7 +54,7 @@ public class StartController {
         );
         ClientController clientController = new ClientController(getIp(), getPort());
         clientController.startClient();
-        Race race = clientController.getRace();
+        race = clientController.getRace();
 
         race.connectedToServerProperty().addListener((observable, oldValue, isConnected) -> {
             if (isConnected.equals(0)) { // disconnected
@@ -81,6 +82,16 @@ public class StartController {
                         () -> {
                             try {
                                 statusLbl.setText("Could not connect");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                );
+            } else if (isConnected.equals(3)) { //failed to connect
+                Platform.runLater(
+                        () -> {
+                            try {
+                                showScoreScreen();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -194,5 +205,25 @@ public class StartController {
 
         startController.setPrimaryStage(primaryStage);
         startController.setStartScene(rootScene);
+
+    }
+    public void showScoreScreen() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/ScoreScreen.fxml"));
+
+        Parent root = loader.load();
+        Scene rootScene = new Scene(root);
+
+        ScoreScreenController scoreScreenController = loader.getController();
+        scoreScreenController.setRace(race);
+        scoreScreenController.initialiseTable();
+
+        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(800);
+        primaryStage.setMaximized(false);
+        primaryStage.setScene(rootScene);
+        primaryStage.setTitle("RaceView");
+        primaryStage.show();
+
+        scoreScreenController.setPrimaryStage(primaryStage);
     }
 }
