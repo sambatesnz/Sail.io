@@ -18,8 +18,11 @@ public class BoatGenerator {
             "CSS Alabama", "SS Great Britain"));
     private Map<String, List<String>> dataMap = new HashMap<>();
 
+    private HashSet addedBoats;
+
     public BoatGenerator() {
         this.sourceId = LOWEST_SOURCE_ID;
+        addedBoats = new HashSet();
         dataMap.put("HMS Endeavour", new ArrayList<>(Arrays.asList("Great Britain", "END")));
         dataMap.put("The Black Pearl", new ArrayList<>(Arrays.asList("Origin Unknown", "TBP")));
         dataMap.put("Santa Maria", new ArrayList<>(Arrays.asList("Spain", "SAN")));
@@ -35,7 +38,7 @@ public class BoatGenerator {
         dataMap.put("SS Great Britain", new ArrayList<>(Arrays.asList("Great Britain", "SGB")));
     }
 
-    public Boat generateBoat(){
+    public Boat generateBoat() throws Exception {
         String boatName = boatNames.get(numberOfBoats % boatNames.size());
         List<String> boatData = dataMap.get(boatName);
         Boat boat = new Boat(boatName, boatData.get(1), sourceId, boatData.get(0));
@@ -43,12 +46,37 @@ public class BoatGenerator {
 
         Mark mark = new Mark(57.671335, 11.8271330 + numberOfBoats/1000.0);
         boat.setMark(mark);
-        sourceId++;
-        numberOfBoats++;
+        if (boatExists(boat)){
+           throw new Exception("cannot add boat as it already exists");
+        } else {
+            addedBoats.add(boat);
+            sourceId++;
+            numberOfBoats++;
+        }
         return boat;
+    }
+
+    private boolean boatExists(Boat boat) {
+        boolean exists = false;
+
+        Iterator<Boat> iterator = addedBoats.iterator();
+
+        while (iterator.hasNext()) {
+            Boat b = iterator.next();
+            if (b.getSourceId() == boat.getSourceId() || b.getBoatName().equals(boat.getBoatName())) {
+                exists = true;
+            }
+        }
+        return exists;
     }
 
     public int getLowestSourceId(){
         return LOWEST_SOURCE_ID;
+    }
+
+    public boolean makeAvailable(Boat boat) {
+        sourceId--;
+        numberOfBoats--;
+        return addedBoats.remove(boat);
     }
 }
