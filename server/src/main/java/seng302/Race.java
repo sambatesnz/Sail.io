@@ -124,7 +124,14 @@ public class Race {
     public void removeBoat(int clientSocketSourceID) {
         try {
             int sourceId = clientIDs.get(clientSocketSourceID);
-            boats.removeIf(boat -> boat.getSourceId() == sourceId);
+            Boat boat = null;
+            for (Boat currentBoat: boats){
+                if (currentBoat.getSourceId() == sourceId) {
+                    boat = currentBoat;
+                }
+            }
+            boatGenerator.makeAvailable(boat);
+            boats.removeIf(currentBoat -> currentBoat.getSourceId() == sourceId);
             clientIDs.remove(clientSocketSourceID);
         }catch (NullPointerException nullPoint){
             System.out.println("Remove called on boat that has already been removed");

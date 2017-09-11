@@ -5,14 +5,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import seng302.RaceMode;
 import seng302.RaceObjects.Race;
 import seng302.UserInput.KeyBindingUtility;
 import seng302.UserInput.PracticeMessage;
 
+import javax.script.Bindings;
 import java.io.IOException;
 
 public class StartController {
@@ -20,8 +21,15 @@ public class StartController {
     @FXML private Button connectBtn;
     @FXML private TextField ipField;
     @FXML private Label statusLbl;
+    @FXML private Text ipLabel;
+    @FXML private RadioButton RaceModeRadioButton;
+    @FXML private RadioButton AgarModeRadioButton;
+    @FXML private RadioButton PracticeModeRadioButton;
+
+
     private Stage primaryStage;
     private Scene rootScene;
+    private ToggleGroup modeGroup;
 
     public StartController() {
 //        this.primaryStage = mainStage;
@@ -37,6 +45,15 @@ public class StartController {
     public void initialize(){
         ipField.setText("localhost:4941");
         statusLbl.setText("");
+
+        modeGroup = new ToggleGroup();
+
+        modeGroup.getToggles().add(RaceModeRadioButton);
+        modeGroup.getToggles().add(AgarModeRadioButton);
+        modeGroup.getToggles().add(PracticeModeRadioButton);
+
+        ipField.visibleProperty().bind(RaceModeRadioButton.selectedProperty());
+        ipLabel.visibleProperty().bind(RaceModeRadioButton.selectedProperty());
     }
 
 
@@ -48,10 +65,40 @@ public class StartController {
      */
     @FXML
     public void connect() throws IOException, InterruptedException {
+        RaceMode raceMode = getRaceMode();
+
+        String ip = null;
+        int port = -1;
+
+        switch (raceMode){
+            case AGAR: {
+                ip = "http://132.181.16.12";
+                port = raceMode.getPort();
+                break;
+            } case PRACTICE: {
+                ip = "http://localhost";
+                port = raceMode.getPort();
+                break;
+            } case RACE: {
+                ip = getIp();
+                port = getPort();
+                break;
+            }
+        }
+
+        System.out.println(ip);
+        System.out.println(getPort());
+
+        if (ip == null || port == -1) {
+            ip = "127.0.0.1";
+            port = RaceMode.RACE.getPort();
+        }
+
         Platform.runLater(
             () -> statusLbl.setText("connecting...")
         );
-        ClientController clientController = new ClientController(getIp(), getPort());
+
+        ClientController clientController = new ClientController(ip, port);
         clientController.startClient();
         Race race = clientController.getRace();
 
@@ -145,17 +192,17 @@ public class StartController {
 
     }
 
-    /**
-     * Called when the user clicks the practice race start button.
-     */
-    @FXML
-    private void practiceClick() throws IOException {
-        try {
-            connectPractice();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+//    /**
+//     * Called when the user clicks the practice race start button.
+//     */
+//    @FXML
+//    private void practiceClick() throws IOException {
+//        try {
+//            connectPractice();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -194,5 +241,11 @@ public class StartController {
 
         startController.setPrimaryStage(primaryStage);
         startController.setStartScene(rootScene);
+    }
+
+    public RaceMode getRaceMode() {
+        RadioButton a = (RadioButton) modeGroup.getSelectedToggle();
+        String mode = a.getText().toLowerCase();
+        return RaceMode.getRaceMode(mode);
     }
 }

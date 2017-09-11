@@ -43,21 +43,23 @@ public class ConnectionStore {
      * @param bytes array of bytes you wish to send
      */
     public synchronized void sendToAll(byte[] bytes) {
-        Queue<Socket> socketToRemove = new LinkedBlockingQueue<>();
-        for (Socket socket : socketStreams.values()) {
-            try {
-                boolean hasPackets = bytes.length > 0;
-                if (hasPackets) {
-                    OutputStream stream = socket.getOutputStream();
-                    stream.write(bytes);
+        synchronized (socketStreams) {
+            Queue<Socket> socketToRemove = new LinkedBlockingQueue<>();
+            for (Socket socket : socketStreams.values()) {
+                try {
+                    boolean hasPackets = bytes.length > 0;
+                    if (hasPackets) {
+                        OutputStream stream = socket.getOutputStream();
+                        stream.write(bytes);
+                    }
+                } catch (IOException e) {
+                    System.out.println("removing connections");
+                    socketToRemove.add(socket);
                 }
-            } catch (IOException e) {
-                System.out.println("removing connections");
-                socketToRemove.add(socket);
             }
-        }
-        for(Socket s : socketToRemove){
-            removeConnection(s);
+            for(Socket s : socketToRemove){
+                removeConnection(s);
+            }
         }
     }
 
@@ -68,19 +70,21 @@ public class ConnectionStore {
      * @throws IOException
      */
     public synchronized void sendToOne(byte[] message) throws IOException {
-        int clientID = ServerMessageGenerationUtils.unwrapHeader(message);
-        byte[] messageToSend = ServerMessageGenerationUtils.unwrapBody(message);
+        synchronized (socketStreams) {
+            int clientID = ServerMessageGenerationUtils.unwrapHeader(message);
+            byte[] messageToSend = ServerMessageGenerationUtils.unwrapBody(message);
 
-        System.out.println(clientID);
-        Socket clientSocket = (Socket) socketStreams.get(clientID);
-        OutputStream stream = clientSocket.getOutputStream();
-        boolean hasPackets = messageToSend.length > 0;
-        if (hasPackets) {
-            try {
-                stream.write(messageToSend);
-            } catch (SocketException e) {
-                e.printStackTrace();
-                removeConnection(clientSocket);
+            System.out.println(clientID);
+            Socket clientSocket = (Socket) socketStreams.get(clientID);
+            OutputStream stream = clientSocket.getOutputStream();
+            boolean hasPackets = messageToSend.length > 0;
+            if (hasPackets) {
+                try {
+                    stream.write(messageToSend);
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                    removeConnection(clientSocket);
+                }
             }
         }
     }
@@ -90,22 +94,24 @@ public class ConnectionStore {
      * @param socket connection you wish to remove
      */
     public synchronized void removeConnection(Socket socket) {
-        int socketId = socket.getPort();
+        synchronized (socketStreams){
+            int socketId = socket.getPort();
 
-        System.out.println("Removing connection to " + socket);
-        socketStreams.remove(socketId);
-        RaceStatus rs = race.getRace().getRaceStatus();
-        if(rs != RaceStatus.STARTED && rs != RaceStatus.PREP && rs != RaceStatus.FINISHED){
-            race.getRace().removeBoat(socketId);
-        } else {
-            race.getRace().setBoatAsDisconnected(socketId);
-        }
+            System.out.println("Removing connection to " + socket);
+            socketStreams.remove(socketId);
+            RaceStatus rs = race.getRace().getRaceStatus();
+            if(rs != RaceStatus.STARTED && rs != RaceStatus.PREP && rs != RaceStatus.FINISHED){
+                race.getRace().removeBoat(socketId);
+            } else {
+                race.getRace().setBoatAsDisconnected(socketId);
+            }
 
-        try {
-            socket.close();
-        } catch (IOException ie) {
-            System.out.println("Error closing " + socket);
-            ie.printStackTrace();
+            try {
+                socket.close();
+            } catch (IOException ie) {
+                System.out.println("Error closing " + socket);
+                ie.printStackTrace();
+            }
         }
     }
 
@@ -113,27 +119,32 @@ public class ConnectionStore {
      * Removes ALL connection GIVEN that the race HAS FINISHED. This closes all sockets, and then removes them all.
      */
     public synchronized void purgeConnections() {
-        Queue<Socket> socketToRemove = new LinkedBlockingQueue<>();
-        System.out.println("Purging Connections");
-        for (Socket socket : socketStreams.values()) {
-            System.out.println("Removing connection to " + socket);
-            socketToRemove.add(socket);
-        }
-        socketStreams.clear();
+        synchronized (socketStreams) {
+            Queue<Socket> socketToRemove = new LinkedBlockingQueue<>();
+            System.out.println("Purging Connections");
+            for (Socket socket : socketStreams.values()) {
+                System.out.println("Removing connection to " + socket);
+                socketToRemove.add(socket);
+            }
+            socketStreams.clear();
 
-        for(Socket s : socketToRemove){
-            removeConnection(s);
+            for(Socket s : socketToRemove){
+                removeConnection(s);
+            }
         }
     }
 
     public synchronized Socket getSocket(int id) throws Exception {
-        Socket socket = socketStreams.get(id);
+        synchronized (socketStreams) {
+            Socket socket = socketStreams.get(id);
 
-        if (socket == null){
-            throw new NullPointerException("Couldn't find socket with id " + id);
+            if (socket == null){
+                throw new NullPointerException("Couldn't find socket with id " + id);
+            }
+
+            return socket;
         }
 
-        return socket;
     }
 
 
