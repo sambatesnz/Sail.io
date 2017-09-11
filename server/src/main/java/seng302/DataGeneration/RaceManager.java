@@ -2,6 +2,7 @@ package seng302.DataGeneration;
 
 import com.sun.xml.internal.bind.v2.runtime.output.SAXOutput;
 import seng302.BoatManager;
+import seng302.CollisionDetector;
 import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
@@ -159,23 +160,29 @@ public class RaceManager implements IServerData {
         public void run() {
             System.out.println("CHECK COLLISION");
             for (Boat boat : race.getBoats()) {
-                System.out.println(boat.getSourceId() + " : " + race.checkBoatCollision(boat));
-                if (race.checkBoatCollision(boat)) {
-                    System.out.println("BOAT WHOOPSIE - Collision with another boat");
+
+                CollisionDetector detector = new CollisionDetector();
+
+                if (detector.checkBoatCollision(boat, race)) {
                     BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
                             boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
                     );
                     broadcastMessageQueue.add(boatCollisionEventMessage.createMessage());
                 }
 
-                if (race.checkMarkCollisions(boat)) {
-                    System.out.println("MARK WHOOPSIE - Collision with a mark");
-
+                if (detector.checkMarkCollisions(boat, race.getCompoundMarks()) || !detector.checkWithinBoundary(boat, race.getBoundaries())) {
                     BinaryMessage markCollisionEventMessage = new YachtEventMessage(
                             boat.getSourceId(), YachtIncidentEvent.MARKCOLLISION
                     );
                     broadcastMessageQueue.add(markCollisionEventMessage.createMessage());
                 }
+
+//                if (!detector.checkWithinBoundary(boat, race.getBoundaries())) {
+//                    BinaryMessage markCollisionEventMessage = new YachtEventMessage(
+//                            boat.getSourceId(), YachtIncidentEvent.MARKCOLLISION
+//                    );
+//                    broadcastMessageQueue.add(markCollisionEventMessage.createMessage());
+//                }
             }
         }
     }

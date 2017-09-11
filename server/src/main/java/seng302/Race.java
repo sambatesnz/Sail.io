@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.Math.*;
+import static seng302.Coordinate.getRelativeX;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
@@ -51,7 +52,6 @@ public class Race {
     private static final int DIRECTION_CHANGE_PROB = 25;
     private final long ONE_MINUTE_IN_MILLIS = 60000;
     private static int MAX_NUMBER_OF_BOATS = 20;
-    private static double MARK_SIZE = 5;
 
 
     private BoatGenerator boatGenerator;
@@ -494,6 +494,14 @@ public class Race {
         return true;
     }
 
+    public Map<BoatPair, BoatCollision> getCollisionMap() {
+        return collisionMap;
+    }
+
+    public void setCollisionMap(Map<BoatPair, BoatCollision> collisionMap) {
+        this.collisionMap = collisionMap;
+    }
+
     public void updateRaceInfo(){
         if (raceStatus != RaceStatus.FINISHED) {
             if (clientIDs.size() < 2) {
@@ -518,86 +526,9 @@ public class Race {
         this.practiceRace = practiceRace;
     }
 
-    public int checkBoatCollisions(Boat boat) {
 
-        double boatX = boat.getMark().getX();
-        double boatY = boat.getMark().getY();
-
-        for (Boat collisionBoat : boats) {
-
-            if (boat != collisionBoat) {
-
-                double collisionX = collisionBoat.getMark().getX();
-                double collisionY = collisionBoat.getMark().getY();
-
-                double xDist = boatX - collisionX;
-                double yDist = boatY - collisionY;
-
-                double distance = sqrt((xDist * xDist) + (yDist * yDist));
-
-                if (distance < (boat.getSize() + collisionBoat.getSize())) {
-                    return 1;
-                }
-            }
-        }
-
-        return -1;
-    }
-
-    public boolean checkMarkCollisions(Boat boat) {
-
-        Mark boatMark = boat.getMark();
-
-        for (CompoundMark mark : compoundMarks) {
-
-            if (mark.getType().equals("Gate")) {
-
-                ArrayList<Mark> gateMarks = mark.getMarks();
-
-                for (Mark gateMark : gateMarks) {
-                    if (checkCollisions(boatMark, gateMark, boat.getSize(), MARK_SIZE)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean checkCollisions(Mark mark1, Mark mark2, double size1, double size2) {
-
-        double mark1X = mark1.getX();
-        double mark1Y = mark1.getY();
-
-        double mark2X = mark2.getX();
-        double mark2Y = mark2.getY();
-
-        double xDist = mark1X - mark2X;
-        double yDist = mark1Y - mark2Y;
-
-        double distance = sqrt((xDist * xDist) + (yDist * yDist));
-
-        if (distance < (size1 + size2)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean checkBoatCollision(Boat boat) {
-
-        for (Boat checkBoat : boats) {
-            if (!checkBoat.equals(boat)) {
-                BoatPair boatPair = new BoatPair(boat, checkBoat);
-                BoatCollision boat1Collision = collisionMap.get(boatPair);
-                if (boat1Collision.isColliding()) return true;
-            }
-        }
-        return false;
-    }
 
     private void initCollisions(){
-        System.out.println("INIT COLLISIONS =========================================================================");
         collisionMap = new HashMap<>();
         for (Boat boat : boats){
             for (Boat checkBoat : boats){
