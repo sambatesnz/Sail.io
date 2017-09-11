@@ -40,3 +40,4 @@
       <RadioButton fx:id="PracticeModeRadioButton" layoutX="427.0" layoutY="283.0" mnemonicParsing="false" text="Practice" />
    </children>
 </AnchorPane>
+

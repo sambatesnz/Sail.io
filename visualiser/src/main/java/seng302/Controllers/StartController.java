@@ -124,7 +124,15 @@ public class StartController {
                     }
                 );
             } else if (isConnected.equals(2)) { //failed to connect
-                statusLbl.setText("Could not connect");
+                Platform.runLater(
+                        () -> {
+                            try {
+                                statusLbl.setText("Could not connect");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                );
             }
         });
     }
