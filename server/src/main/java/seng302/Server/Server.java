@@ -4,6 +4,7 @@ import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.RaceManager;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.RaceHandler;
+import seng302.RaceMode;
 import seng302.RaceModeChooser;
 
 import java.io.*;
@@ -22,6 +23,8 @@ public class Server {
     private RaceHandler raceHandler;
     private int port;
 
+    private RaceMode raceMode;
+
     public Server(int port) throws Exception {
         this.mockRace = new RaceManager();
         this.port = port;
@@ -36,6 +39,7 @@ public class Server {
      */
     public Server(int port, String[] args) throws Exception {
         RaceModeChooser chooser = new RaceModeChooser(args);
+        raceMode = chooser.getMode();
         this.mockRace = chooser.createRace();
         this.port = port;
         startup();
@@ -64,18 +68,23 @@ public class Server {
         Thread.sleep(10000);            // Once the race finishes, pause.
         this.mockRace = new RaceManager();
         System.out.println("Resetting the server's race.");
-        setServerComponents();
-        startEventLoop();
+        startup();
     }
-
 
     /**
      * Starts the server on a specified port
      * @throws Exception
      */
     private void startup() throws Exception {
-        setServerComponents();
-        startEventLoop();
+        new Thread(() -> {
+            try {
+                setServerComponents();
+                startEventLoop();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+
     }
 
     /**
@@ -149,5 +158,9 @@ public class Server {
 
     public int connectionSize() {
         return connectionStore.connectionAmount();
+    }
+
+    public RaceMode getRaceMode() {
+        return raceMode;
     }
 }
