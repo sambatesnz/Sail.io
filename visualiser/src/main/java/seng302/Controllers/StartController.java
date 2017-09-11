@@ -5,14 +5,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import seng302.RaceObjects.Race;
 import seng302.UserInput.KeyBindingUtility;
 import seng302.UserInput.PracticeMessage;
 
+import javax.script.Bindings;
 import java.io.IOException;
 
 public class StartController {
@@ -20,8 +20,15 @@ public class StartController {
     @FXML private Button connectBtn;
     @FXML private TextField ipField;
     @FXML private Label statusLbl;
+    @FXML private Text ipLabel;
+    @FXML private RadioButton RaceModeRadioButton;
+    @FXML private RadioButton AgarModeRadioButton;
+    @FXML private RadioButton PracticeModeRadioButton;
+
+
     private Stage primaryStage;
     private Scene rootScene;
+    private ToggleGroup modeGroup;
 
     public StartController() {
 //        this.primaryStage = mainStage;
@@ -37,6 +44,15 @@ public class StartController {
     public void initialize(){
         ipField.setText("localhost:4941");
         statusLbl.setText("");
+
+        modeGroup = new ToggleGroup();
+
+        modeGroup.getToggles().add(RaceModeRadioButton);
+        modeGroup.getToggles().add(AgarModeRadioButton);
+        modeGroup.getToggles().add(PracticeModeRadioButton);
+
+        ipField.visibleProperty().bind(RaceModeRadioButton.selectedProperty());
+        ipLabel.visibleProperty().bind(RaceModeRadioButton.selectedProperty());
     }
 
 
