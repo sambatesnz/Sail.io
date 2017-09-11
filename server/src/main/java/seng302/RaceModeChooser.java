@@ -37,6 +37,10 @@ public class RaceModeChooser {
         return race;
     }
 
+    /**
+     * Gets the race mode
+     * @return RaceMode
+     */
     public RaceMode getMode() {
         return mode;
     }

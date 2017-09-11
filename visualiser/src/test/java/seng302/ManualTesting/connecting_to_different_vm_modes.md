@@ -24,6 +24,11 @@
     - Current Commit of branch  ba3d74a
     - Performed By: Stefan, Ollie
     - Result   **Pass**
+    
+    - Date  11/09/2017
+    - Current Commit of branch  5e57791
+    - Performed By: Stefan, Ollie, Tim
+    - Result   **Pass**
 
     
 
