@@ -64,7 +64,7 @@ public class Race {
         parseCourseXML("Race.xml");
         parseRaceXML("Race.xml");
         // setWindHeading(190);
-
+        startingWindSpeed = (short) (FORTY_KNOTS * 2) ;
         setStartingWindSpeed();
         boatGenerator = new BoatGenerator();
         boatManager = new BoatManager();
@@ -74,17 +74,9 @@ public class Race {
         startingTime = getNewStartTime();
         firstFinishTime = 0;
 
-
         boats = new ArrayList<>();
         clientIDs = new HashMap<>();
         positionStrings = FXCollections.observableArrayList();
-        for (Boat boat : boats) {
-            int speed = (new Random().nextInt(5000) + 100);
-            boat.setSpeed(speed);
-            boat.setHeading(0);
-            boat.getMark().setLongitude(getCompoundMarks().get(0).getLongitude());
-            boat.getMark().setLatitude(getCompoundMarks().get(0).getLatitude());
-        }
     }
 
     /**
@@ -94,7 +86,7 @@ public class Race {
     private Date getNewStartTime() {
         Calendar date = Calendar.getInstance();
         long currentTime = date.getTimeInMillis();
-        return new Date(currentTime + ONE_MINUTE_IN_MILLIS * 3 / 2);
+        return new Date(currentTime + ONE_MINUTE_IN_MILLIS * 6 / 5);
     }
 
     /**
@@ -229,8 +221,8 @@ public class Race {
      */
     public short retrieveWindSpeed() {
         Random random = new Random();
-        int low = startingWindSpeed - 2600;
-        int high = startingWindSpeed + 2600;
+        int low = startingWindSpeed - 500;
+        int high = startingWindSpeed + 500;
         int windVal = random.nextInt(high - low) + low;
         this.windSpeed = windVal;
         windSpeedChanged = true;
