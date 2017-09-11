@@ -291,7 +291,7 @@ public class RaceController {
                 boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
                 // Temporary hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(i).getSourceId() == race. getClientSourceId()) {
+                if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
                     updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
                 }
 
@@ -457,73 +457,75 @@ public class RaceController {
 
     private void updateRoundingArrows() {
         int playerBoat = race.getClientSourceId();
-        if (race.getBoatsMap().get(playerBoat).getTargetMarkIndex() >= race.getCourseOrder().size()) {
-            roundingArrow1.setVisible(false);
-            roundingArrowMirrored1.setVisible(false);
-            roundingArrow2.setVisible(false);
-            roundingArrowMirrored2.setVisible(false);
-        } else {
-            int cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getCompoundMarkId();
-            for (int i = 0; i < race.getCompoundMarks().size(); i++) {
-                CompoundMark cm = race.getCompoundMarks().get(i);
-                if (cmId == race.getCompoundMarks().get(i).getId()) {
-                    Rounding markRounding = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getRounding();
-                    int rotationIncrement;
-                    Group currentRoundingArrow1;
-                    Group currentRoundingArrow2 = roundingArrow2;
-                    if (markRounding == Rounding.STARBOARD) {
-                        roundingArrow1.setVisible(false);
-                        roundingArrowMirrored1.setVisible(true);
-                        roundingArrow2.setVisible(false);
-                        roundingArrowMirrored2.setVisible(false);
-                        rotationIncrement = 3;
-                        currentRoundingArrow1 = roundingArrowMirrored1;
+        if (playerBoat != 0) {
+            if (race.getBoatsMap().get(playerBoat).getTargetMarkIndex() >= race.getCourseOrder().size()) {
+                roundingArrow1.setVisible(false);
+                roundingArrowMirrored1.setVisible(false);
+                roundingArrow2.setVisible(false);
+                roundingArrowMirrored2.setVisible(false);
+            } else {
+                int cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getCompoundMarkId();
+                for (int i = 0; i < race.getCompoundMarks().size(); i++) {
+                    CompoundMark cm = race.getCompoundMarks().get(i);
+                    if (cmId == race.getCompoundMarks().get(i).getId()) {
+                        Rounding markRounding = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getRounding();
+                        int rotationIncrement;
+                        Group currentRoundingArrow1;
+                        Group currentRoundingArrow2 = roundingArrow2;
+                        if (markRounding == Rounding.STARBOARD) {
+                            roundingArrow1.setVisible(false);
+                            roundingArrowMirrored1.setVisible(true);
+                            roundingArrow2.setVisible(false);
+                            roundingArrowMirrored2.setVisible(false);
+                            rotationIncrement = 3;
+                            currentRoundingArrow1 = roundingArrowMirrored1;
 
-                    } else if (markRounding == Rounding.STARBOARD_PORT) {
-                        roundingArrow1.setVisible(false);
-                        roundingArrowMirrored1.setVisible(true);
-                        roundingArrow2.setVisible(true);
-                        roundingArrowMirrored2.setVisible(false);
-                        rotationIncrement = 3;
-                        currentRoundingArrow1 = roundingArrowMirrored1;
-                        currentRoundingArrow2 = roundingArrow2;
+                        } else if (markRounding == Rounding.STARBOARD_PORT) {
+                            roundingArrow1.setVisible(false);
+                            roundingArrowMirrored1.setVisible(true);
+                            roundingArrow2.setVisible(true);
+                            roundingArrowMirrored2.setVisible(false);
+                            rotationIncrement = 3;
+                            currentRoundingArrow1 = roundingArrowMirrored1;
+                            currentRoundingArrow2 = roundingArrow2;
 
-                    } else if (markRounding == Rounding.PORT) {
-                        roundingArrow1.setVisible(true);
-                        roundingArrowMirrored1.setVisible(false);
-                        roundingArrow2.setVisible(false);
-                        roundingArrowMirrored2.setVisible(false);
-                        rotationIncrement = -3;
-                        currentRoundingArrow1 = roundingArrow1;
+                        } else if (markRounding == Rounding.PORT) {
+                            roundingArrow1.setVisible(true);
+                            roundingArrowMirrored1.setVisible(false);
+                            roundingArrow2.setVisible(false);
+                            roundingArrowMirrored2.setVisible(false);
+                            rotationIncrement = -3;
+                            currentRoundingArrow1 = roundingArrow1;
 
-                    } else {
-                        roundingArrow1.setVisible(true);
-                        roundingArrowMirrored1.setVisible(false);
-                        roundingArrow2.setVisible(false);
-                        roundingArrowMirrored2.setVisible(true);
-                        rotationIncrement = -3;
-                        currentRoundingArrow1 = roundingArrow1;
-                        currentRoundingArrow2 = roundingArrowMirrored2;
-                    }
+                        } else {
+                            roundingArrow1.setVisible(true);
+                            roundingArrowMirrored1.setVisible(false);
+                            roundingArrow2.setVisible(false);
+                            roundingArrowMirrored2.setVisible(true);
+                            rotationIncrement = -3;
+                            currentRoundingArrow1 = roundingArrow1;
+                            currentRoundingArrow2 = roundingArrowMirrored2;
+                        }
 
-                    roundingArrowRotationClockwise += rotationIncrement;
-                    roundingArrowRotationAntiClockwise -= rotationIncrement;
+                        roundingArrowRotationClockwise += rotationIncrement;
+                        roundingArrowRotationAntiClockwise -= rotationIncrement;
 
-                    currentRoundingArrow1.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(0).getX()));
-                    currentRoundingArrow1.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(0).getY()));
-                    currentRoundingArrow1.setRotate(roundingArrowRotationClockwise);
-                    updateNodeScale(currentRoundingArrow1);
-                    if (cm.getMarks().size() > 1) {
-                        double x1 = cm.getMarks().get(0).getX();
-                        double y1 = cm.getMarks().get(0).getY();
-                        double x2 = cm.getMarks().get(1).getX();
-                        double y2 = cm.getMarks().get(1).getY();
-                        double angle = Math.toDegrees(atan2(y2 - y1, x2 - x1)) * 2;
+                        currentRoundingArrow1.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(0).getX()));
+                        currentRoundingArrow1.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(0).getY()));
+                        currentRoundingArrow1.setRotate(roundingArrowRotationClockwise);
+                        updateNodeScale(currentRoundingArrow1);
+                        if (cm.getMarks().size() > 1) {
+                            double x1 = cm.getMarks().get(0).getX();
+                            double y1 = cm.getMarks().get(0).getY();
+                            double x2 = cm.getMarks().get(1).getX();
+                            double y2 = cm.getMarks().get(1).getY();
+                            double angle = Math.toDegrees(atan2(y2 - y1, x2 - x1)) * 2;
 
-                        currentRoundingArrow2.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(1).getX()));
-                        currentRoundingArrow2.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(1).getY()));
-                        currentRoundingArrow2.setRotate(roundingArrowRotationAntiClockwise - angle);
-                        updateNodeScale(currentRoundingArrow2);
+                            currentRoundingArrow2.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(1).getX()));
+                            currentRoundingArrow2.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(1).getY()));
+                            currentRoundingArrow2.setRotate(roundingArrowRotationAntiClockwise - angle);
+                            updateNodeScale(currentRoundingArrow2);
+                        }
                     }
                 }
             }

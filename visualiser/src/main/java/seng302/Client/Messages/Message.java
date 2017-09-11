@@ -74,7 +74,6 @@ public class Message {
             case RACE_START_STATUS:
                 break;
             case YACHT_EVENT:
-                System.out.println("Got a yacht event code, boat finished I guess");
                 messageParser = new YachtEventMessage(body);
                 messageParser.updateRace(race);
                 break;
@@ -96,7 +95,7 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    if (race.getRaceStatus() == RaceStatus.WARNING || race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET) {
+                    if (race.getRaceStatus() == RaceStatus.WARNING || race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET || race.getClientSourceId() == 0) {
                         race.setBoats(xmlParser.getBoats());
                         boatsSet = true;
                     }

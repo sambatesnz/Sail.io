@@ -36,8 +36,6 @@ public class ClientParticipantConfirmationMessage extends ClientSideMessageParse
 
     @Override
     public void updateRace(Race race) {
-        if (status.equals(ConfirmationStatus.PLAYING)) {
-            race.setClientSourceId(sourceId);
-        }
+        race.setClientSourceId(sourceId);
     }
 }

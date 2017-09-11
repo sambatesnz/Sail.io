@@ -55,7 +55,7 @@ public class LobbyController {
         timeToStart.textProperty().bind(race.timeToStartProperty());
 
         timeToStart.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.equals(String.format(" %02d:%02d:%02d", 0, 1, 0))) {
+            if (newValue.equals(String.format(" %02d:%02d:%02d", 0, 1, 0)) || (race.getClientSourceId() == 0 && race.isRaceReady())) {
                 Platform.runLater(
                     () -> {
                         try {

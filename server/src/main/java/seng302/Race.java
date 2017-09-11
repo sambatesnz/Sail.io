@@ -119,9 +119,13 @@ public class Race {
      * @param clientSocketSourceID
      */
     public void setBoatAsDisconnected(int clientSocketSourceID) {
-        int sourceId = clientIDs.get(clientSocketSourceID);
-        Boat boat = getBoatByID(sourceId);
-        boat.disconnect();
+        try {
+            int sourceId = clientIDs.get(clientSocketSourceID);
+            Boat boat = getBoatByID(sourceId);
+            boat.disconnect();
+        }catch (NullPointerException nullPoint){
+            System.out.println("Spectator Disconnected");
+        }
     }
 
     /**
