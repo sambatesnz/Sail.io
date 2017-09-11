@@ -35,7 +35,7 @@ final class BoatInfo {
             List<String> boatData = dataMap.get(boatName);
             Boat boat = new Boat(boatName, boatData.get(1), sourceId, boatData.get(0));
             boat.setHeading(180);
-            Mark mark = new Mark(57.671335, 11.8271330 + numberOfBoats/1000.0);
+            Mark mark = new Mark(57.671335, 11.8271330 + i/1000.0);
             boat.setMark(mark);
             boats.add(boat);
             sourceId--;
