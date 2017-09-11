@@ -241,7 +241,7 @@ public class RaceController {
                         updateBoatPaths();
                     }
                 } catch (Exception e) {
-                    System.out.println(e);
+                    System.err.println(e);
                 }
                 updateBoundary();
 
@@ -268,11 +268,11 @@ public class RaceController {
 
 
 
-    public void startRaceListener() {
+    private void startRaceListener() {
         raceListener.start();
     }
 
-    public void stopRaceListener() {
+    private void stopRaceListener() {
         raceListener.stop();
     }
 
@@ -461,7 +461,7 @@ public class RaceController {
     }
 
     private void updateNextMarkArrow(CompoundMark cm) {
-        double nearDistance = 110000;
+        double nearDistance = 100000;
         double arrowTranslate = 15/(1+Coordinate.getZoom());
         int playerBoat = race.getClientSourceId();
         double arrowX = Coordinate.getRelativeX(race.getBoatsMap().get(playerBoat).getX()) + arrowTranslate;
@@ -684,7 +684,7 @@ public class RaceController {
         return offset;
     }
 
-    protected void resetZoom() {
+    private void resetZoom() {
         boatToFollow = centerOfScreen;
         Coordinate.setZoom(0);
     }
@@ -859,7 +859,7 @@ public class RaceController {
      * Resets the view back to its original state.
      * If the boat map is null, it has no effect.
      */
-    public void resetViewButtonPressed() {
+    private void resetViewButtonPressed() {
         if (followingBoat) {
             zoomLevel = Coordinate.getZoom();
             resetZoom();
