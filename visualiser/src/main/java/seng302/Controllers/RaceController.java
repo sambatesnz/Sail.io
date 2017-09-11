@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 import static java.lang.Math.*;
 import static javafx.scene.input.KeyCode.Z;
@@ -467,9 +468,14 @@ public class RaceController {
         double arrowY = Coordinate.getRelativeY(race.getBoatsMap().get(playerBoat).getY()) + arrowTranslate;
         double markX = Coordinate.getRelativeX(cm.getX());
         double markY = Coordinate.getRelativeY(cm.getY());
-        double dist = (markX - arrowX)*(markX - arrowX) + (markY - arrowY)*(markY - arrowY);
+        boolean markIsFar = cm.getMarks().stream().allMatch(mark -> {
+            double markX1 = Coordinate.getRelativeX(cm.getX());
+            double markY1 = Coordinate.getRelativeY(cm.getY());
+            double dist = (markX1 - arrowX)*(markX1 - arrowX) + (markY1 - arrowY)*(markY1 - arrowY);
+            return dist > nearDistance;
+        });
 
-        if (followingBoat && dist > nearDistance) {
+        if (followingBoat && markIsFar) {
             double angleToNextMark = toDegrees(atan2(markY - arrowY, markX - arrowX));
             nextMarkArrow.setTranslateX(arrowX);
             nextMarkArrow.setTranslateY(arrowY);
