@@ -1,9 +1,7 @@
 package seng302.PacketGeneration.ParticipantConfirmationGeneration;
 
-import seng302.DataGeneration.IServerData;
-
 /**
- * Enum for storing size and indexs of elements in ParticipantConfirmationMessage body
+ * Enum for storing size and indexes of elements in ParticipantConfirmationMessage body
  */
 public enum ParticipantConfirmationMessageUtility {
     SOURCE_ID(0, 4),
