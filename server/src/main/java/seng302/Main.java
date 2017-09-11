@@ -7,6 +7,6 @@ import seng302.Server.Server;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        new Server(4941, args);
+        new Server(args);
     }
 }   

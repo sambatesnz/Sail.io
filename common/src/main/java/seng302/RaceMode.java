@@ -4,15 +4,19 @@ package seng302;
  * Stores the possible types of race modes
  */
 public enum RaceMode {
-    RACE("race"),
-    AGAR("agar"),
-    PRACTICE("practice");
+    RACE("race", 4941),
+    AGAR("agar", 4942),
+    PRACTICE("practice", 4943);
 
     private String value;
+    private int port;
 
-    RaceMode(String value){
+    RaceMode(String value, int port){
         this.value = value;
+        this.port = port;
     }
+
+    public int getPort() {return this.port;}
 
     public String getRaceMode(){
         return this.value;

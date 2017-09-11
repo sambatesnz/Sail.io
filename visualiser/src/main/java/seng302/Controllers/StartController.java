@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import seng302.RaceMode;
 import seng302.RaceObjects.Race;
 import seng302.UserInput.KeyBindingUtility;
 import seng302.UserInput.PracticeMessage;
@@ -64,10 +65,40 @@ public class StartController {
      */
     @FXML
     public void connect() throws IOException, InterruptedException {
+        RaceMode raceMode = getRaceMode();
+
+        String ip = null;
+        int port = -1;
+
+        switch (raceMode){
+            case AGAR: {
+                ip = "http://132.181.16.12";
+                port = raceMode.getPort();
+                break;
+            } case PRACTICE: {
+                ip = "http://132.181.16.12";
+                port = raceMode.getPort();
+                break;
+            } case RACE: {
+                ip = getIp();
+                port = getPort();
+                break;
+            }
+        }
+
+        System.out.println(ip);
+        System.out.println(getPort());
+
+        if (ip == null || port == -1) {
+            ip = "127.0.0.1";
+            port = RaceMode.RACE.getPort();
+        }
+
         Platform.runLater(
             () -> statusLbl.setText("connecting...")
         );
-        ClientController clientController = new ClientController(getIp(), getPort());
+
+        ClientController clientController = new ClientController(ip, port);
         clientController.startClient();
         Race race = clientController.getRace();
 
@@ -153,17 +184,17 @@ public class StartController {
 
     }
 
-    /**
-     * Called when the user clicks the practice race start button.
-     */
-    @FXML
-    private void practiceClick() throws IOException {
-        try {
-            connectPractice();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+//    /**
+//     * Called when the user clicks the practice race start button.
+//     */
+//    @FXML
+//    private void practiceClick() throws IOException {
+//        try {
+//            connectPractice();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -202,5 +233,11 @@ public class StartController {
 
         startController.setPrimaryStage(primaryStage);
         startController.setStartScene(rootScene);
+    }
+
+    public RaceMode getRaceMode() {
+        RadioButton a = (RadioButton) modeGroup.getSelectedToggle();
+        String mode = a.getText().toLowerCase();
+        return RaceMode.getRaceMode(mode);
     }
 }

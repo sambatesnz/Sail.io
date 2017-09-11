@@ -32,6 +32,19 @@ public class Server {
     }
 
     /**
+     * Constructor for the main application without ports
+     * @param args array of arguments you want to instantiate the server with
+     * @throws Exception
+     */
+    public Server(String[] args) throws Exception {
+        RaceModeChooser chooser = new RaceModeChooser(args);
+        raceMode = chooser.getMode();
+        this.mockRace = chooser.createRace();
+        this.port = raceMode.getPort();
+        startup();
+    }
+
+    /**
      * Constructor for the main application
      * @param port port number
      * @param args array of arguments you want to instantiate the server with
