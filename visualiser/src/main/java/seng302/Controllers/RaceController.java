@@ -11,8 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -32,7 +30,6 @@ import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.Mark;
 import seng302.Rounding;
-import seng302.UserInput.KeyBindingUtility;
 import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
 import seng302.Visualiser.WindArrow;
@@ -133,7 +130,7 @@ public class RaceController {
     private boolean boatLocationDataInitialised = false;
     private boolean viewInitialised = false;
     private Stage primaryStage;
-
+    private boolean clientFinished = false;
 
 
     public RaceController(Race race){
@@ -161,6 +158,8 @@ public class RaceController {
 //        roundingArrow1.setScaleX(-1););
         initialisePositionsTable();
         enableScrolling();
+        toggleFinishersBtn.setVisible(false);
+        toggleFinishersBtn.setText("Hide Finishers");
         finishingPane.setVisible(false);
         race.finishedProperty().addListener((observable, oldValue, raceFinished) -> {
             if (raceFinished) {
@@ -170,6 +169,7 @@ public class RaceController {
         loadFinishers();
         initialiseRaceListener();
         startRaceListener();
+        initFinisherObserver();
     }
 
     private void initialiseZoomFollowing() {
@@ -966,6 +966,33 @@ public class RaceController {
     public void raceFinished() throws IOException {
         finishingPane.setVisible(true);
     }
+
+    private void initFinisherObserver(){
+        race.getFinishedBoats().addListener(new ListChangeListener<Boat>() {
+            @Override
+            public void onChanged(Change<? extends Boat> c) {
+                for (Boat boat : race.getFinishedBoats()) {
+                    if (boat.getSourceId() == race.getClientSourceId()){
+                        if(!clientFinished) {
+                            finishingPane.setVisible(true);
+                            toggleFinishersBtn.setVisible(true);
+                            isFinishersHidden = false;
+                            clientFinished = true;
+                        }
+
+
+                    }
+                }
+            }
+
+        });
+// .addListener((observable, oldValue, raceFinished) -> {
+//            if (raceFinished) {
+//                stopRaceListener();
+//            }
+//        });
+    }
+
     @FXML
     public void toggleFinishers(){
         if (isFinishersHidden) {
