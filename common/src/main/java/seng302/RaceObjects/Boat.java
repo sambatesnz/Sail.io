@@ -4,6 +4,8 @@ import javafx.scene.paint.Color;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.floorMod;
@@ -35,7 +37,6 @@ public class Boat {
     private boolean headingChanged;
     private boolean sailsOut = false;
 
-    private boolean isFinished = false;
     private boolean upwindMemory = false;
     private boolean downwindMemory = false;
     private boolean plusMemory = false;
@@ -47,7 +48,11 @@ public class Boat {
     private int lastMarkIndex = 0;
     private int roundingStage = 0;
 
+
     private boolean finished;
+    private long finishTime;
+    private int placement;
+
     private boolean connected;
     private boolean added;
 
@@ -582,5 +587,30 @@ public class Boat {
     }
 
 
+    public void setPlacement(int placement) {
+        this.placement = placement;
+    }
+
+    public int getPlacement() {
+        return placement;
+    }
+
+    public long getFinishTime() {
+        return finishTime;
+    }
+
+    public String getFinishTimeString() {
+        long time = finishTime;
+        int raceHours = (int) TimeUnit.MILLISECONDS.toHours(time);
+        int raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(time) -
+                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(time)));
+        int raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(time) -
+                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
+        return String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds);
+    }
+
+    public void setFinishTime(long finishTime) {
+        this.finishTime = finishTime;
+    }
 }
 

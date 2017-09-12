@@ -457,7 +457,8 @@ public class Race {
         if (!finishedBoats.contains(finishedBoat)) {
             finishedBoats.add(finishedBoat);
             finishedBoat.setFinished(true);
-            finishedBoat.setFinishTime(new Date(Calendar.getInstance().getTimeInMillis()));
+            System.out.println(expectedStartTime);
+            finishedBoat.setFinishTime(getCurrentTime() - getExpectedStartTime());
             finishedBoat.setPlacement(finishedBoats.size());
             hasChanged = true;
         }

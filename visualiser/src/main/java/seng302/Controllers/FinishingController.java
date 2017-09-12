@@ -52,7 +52,7 @@ public class FinishingController {
         );
 
         finishTimeColumn.setCellValueFactory(
-                new PropertyValueFactory<Boat, String>("finishTime")
+                new PropertyValueFactory<Boat, String>("finishTimeString")
         );
 
         finishersTable.setItems(race.getFinishedBoats());

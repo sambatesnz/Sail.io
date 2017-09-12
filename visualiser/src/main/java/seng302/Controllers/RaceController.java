@@ -236,7 +236,7 @@ public class RaceController {
                         updateBoatPaths();
                     }
                 } catch (Exception e) {
-                    System.out.println(e);
+                    e.printStackTrace();
                 }
                 updateBoundary();
 
