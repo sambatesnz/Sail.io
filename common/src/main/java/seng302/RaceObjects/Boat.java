@@ -36,10 +36,12 @@ public class Boat {
     private boolean knowsBoatLocation;
     private boolean headingChanged;
     private boolean sailsOut = false;
+    private double size;
 
     private boolean upwindMemory = false;
     private boolean downwindMemory = false;
     private boolean plusMemory = false;
+    private boolean isInCollision = false;
 
     private Thread turningThread;
     private Boolean stopTurnThread = false;
@@ -74,6 +76,7 @@ public class Boat {
         this.headingChanged = false;
         this.finished = false;
         this.connected = true;
+        this.size = 18;
     }
 
     /**
@@ -513,6 +516,14 @@ public class Boat {
         this.timeToFinish = timeToFinish;
     }
 
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
+    }
+
     public boolean isKnowsBoatLocation() {
         return knowsBoatLocation;
     }
@@ -556,6 +567,14 @@ public class Boat {
 
     public void updateRoundingStage() {
         roundingStage++;
+    }
+
+    public boolean isInCollision() {
+        return isInCollision;
+    }
+
+    public void setInCollision(boolean inCollision) {
+        isInCollision = inCollision;
     }
 
     public boolean isFinished() {

@@ -242,8 +242,8 @@ public class RaceController {
 
 
                 viewUpdateCount++;
-
-                if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0){
+                // @Stefan @Sam
+                if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0) {
                     positionTable.refresh();
                     positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
                     positionTable.setPrefHeight(Coordinate.getWindowHeightY());
@@ -252,6 +252,18 @@ public class RaceController {
                 if (sparkCounter > 100 && race.started()) {
                     sparkCounter = 0;
                     //updateSparkLineChart(); //TODO undisabel sparkline chart
+                }
+                if (race.getCollisionCount() > 0) {
+                    race.reduceCollisionCount();
+                    // need to find a way to highlight only the users specific boat.
+                    for (BoatSprite boatSprite : boats) {
+                        if (boatSprite.getBoat().getSourceId() == race.getClientSourceId()) {
+                            boatSprite.collisionHighlight();
+                            if (race.getCollisionCount() == 0) {
+                                boatSprite.removeCollisionHighlight();
+                            }
+                        }
+                    }
                 }
                 if (race.isFinished()) {
                     raceListener.stop();

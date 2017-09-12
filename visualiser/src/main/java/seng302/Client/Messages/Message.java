@@ -74,7 +74,6 @@ public class Message {
             case RACE_START_STATUS:
                 break;
             case YACHT_EVENT:
-                System.out.println("Got a yacht event code, boat finished I guess");
                 messageParser = new YachtEventMessage(body);
                 messageParser.updateRace(race);
                 break;

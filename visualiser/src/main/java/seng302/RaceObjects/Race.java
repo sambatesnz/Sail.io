@@ -45,12 +45,15 @@ public class Race {
     private SimpleIntegerProperty viewScreen;
     private boolean raceXMLReceived;
 
+    private final int COLLISION_FRAMES = 50;
+
     // yellow, blue, pink, orange, green, purple, red, brown
     private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300");
     private boolean receivedRaceXML;
     private boolean viewReady;
     private boolean hasRegatta;
     private int clientSourceId;
+    private int collisionCount = 0;
     public ObservableList<Boat> boatsObs;
     private SimpleStringProperty timeToStart;
 
@@ -63,8 +66,6 @@ public class Race {
         raceXMLReceived = false;
         viewReady = false;
         finished = new SimpleBooleanProperty(false);
-
-
         MarkStrings = FXCollections.observableArrayList();
         this.receivedRaceXML = false;
         hasRegatta = false;
@@ -340,6 +341,10 @@ public class Race {
         }
     }
 
+    public int getCollisionCount() {
+        return collisionCount;
+    }
+
     public List<Leg> getCourseOrder() {
         return courseOrder;
     }
@@ -478,4 +483,21 @@ public class Race {
     public void setViewScreen(int viewScreen) {
         this.viewScreen.set(viewScreen);
     }
+    /**
+     * If the set of frames for the control circle to be red after a collision is 0, when called, this function will set
+     * the number of frames to the preset collision frame number.
+     */
+    public void addCollision() {
+        if (collisionCount == 0) {
+            collisionCount = COLLISION_FRAMES;
+        }
+    }
+
+    /**
+     * Reduces the collision frame count by one.
+     */
+    public void reduceCollisionCount() {
+        collisionCount -= 1;
+    }
+
 }

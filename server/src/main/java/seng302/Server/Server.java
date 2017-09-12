@@ -4,6 +4,8 @@ import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.RaceManager;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.RaceHandler;
+import seng302.RaceMode;
+import seng302.RaceModeChooser;
 
 import java.io.*;
 import java.net.*;
@@ -21,12 +23,48 @@ public class Server {
     private RaceHandler raceHandler;
     private int port;
 
+    private RaceMode raceMode;
+
     public Server(int port) throws Exception {
         this.mockRace = new RaceManager();
         this.port = port;
         startup();
     }
 
+    /**
+     * Constructor for the main application without ports
+     * @param args array of arguments you want to instantiate the server with
+     * @throws Exception
+     */
+    public Server(String[] args) throws Exception {
+        RaceModeChooser chooser = new RaceModeChooser(args);
+        raceMode = chooser.getMode();
+        this.mockRace = chooser.createRace();
+        this.port = raceMode.getPort();
+        startup();
+    }
+
+    /**
+     * Constructor for the main application
+     * @param port port number
+     * @param args array of arguments you want to instantiate the server with
+     * @throws Exception
+     */
+    public Server(int port, String[] args) throws Exception {
+        RaceModeChooser chooser = new RaceModeChooser(args);
+        raceMode = chooser.getMode();
+        this.mockRace = chooser.createRace();
+        this.port = port;
+        startup();
+    }
+
+    /**
+     * Constructor used with tests
+     * This shouldn't be used in future (above constructor can be used)
+     * @param port port number
+     * @param race Implementation of race
+     * @throws Exception
+     */
     public Server(int port, IServerData race) throws Exception {
         this.mockRace = race;
         this.port = port;
@@ -43,18 +81,23 @@ public class Server {
         Thread.sleep(10000);            // Once the race finishes, pause.
         this.mockRace = new RaceManager();
         System.out.println("Resetting the server's race.");
-        setServerComponents();
-        startEventLoop();
+        startup();
     }
-
 
     /**
      * Starts the server on a specified port
      * @throws Exception
      */
     private void startup() throws Exception {
-        setServerComponents();
-        startEventLoop();
+        new Thread(() -> {
+            try {
+                setServerComponents();
+                startEventLoop();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+
     }
 
     /**
@@ -128,5 +171,9 @@ public class Server {
 
     public int connectionSize() {
         return connectionStore.connectionAmount();
+    }
+
+    public RaceMode getRaceMode() {
+        return raceMode;
     }
 }

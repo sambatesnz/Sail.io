@@ -112,9 +112,6 @@ public class Client {
         byte[] body = new byte[messageLength + CRC_LEN];
         streamInput.read(body);
 
-
-
-        //TODO: pass message in to the thing
         byte[] message = new byte[messageLength + CRC_LEN + HEADER_LEN];
         System.arraycopy(head, 0, message, 0, HEADER_LEN);
         System.arraycopy(body, 0, message, HEADER_LEN, messageLength);

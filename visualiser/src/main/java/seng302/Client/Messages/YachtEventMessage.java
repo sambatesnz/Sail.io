@@ -24,6 +24,15 @@ public class YachtEventMessage extends ClientSideMessageParser {
     public void updateRace(Race race) {
         if (eventId == YachtIncidentEvent.FINISHED) {
             race.addFinishedBoat(destinationSourceId);
+        } else if (eventId == YachtIncidentEvent.BOATCOLLISION) {
+            if (destinationSourceId == race.getClientSourceId()) {
+                race.addCollision();
+            }
+        } else if (eventId == YachtIncidentEvent.MARKCOLLISION) {
+            // This covers both Mark collisions and collisions with the course boundary.
+            if (destinationSourceId == race.getClientSourceId()) {
+                race.addCollision();
+            }
         }
     }
 

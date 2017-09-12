@@ -28,13 +28,16 @@
          </font>
       </Text>
       <Text layoutX="4.0" layoutY="593.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: WHITE;" text="Developed by Full Mast" />
-      <Text layoutX="297.0" layoutY="328.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: WHITE;" text="IP:" />
+      <Text layoutX="297.0" layoutY="328.0" strokeType="OUTSIDE" fx:id="ipLabel" strokeWidth="0.0" style="-fx-fill: WHITE;" text="IP:" />
       <Label fx:id="statusLbl" alignment="CENTER" layoutX="309.0" layoutY="379.0" prefHeight="15.0" prefWidth="171.0" />
       <Text layoutX="469.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: WHITE;" text="LTS" wrappingWidth="44.22724437713623">
          <font>
             <Font name="Century Gothic" size="24.0" />
          </font>
       </Text>
+      <RadioButton fx:id="RaceModeRadioButton" layoutX="285.0" layoutY="283.0" mnemonicParsing="false" selected="true" text="Race" />
+      <RadioButton fx:id="AgarModeRadioButton" layoutX="359.0" layoutY="283.0" mnemonicParsing="false" text="Agar" />
+      <RadioButton fx:id="PracticeModeRadioButton" layoutX="427.0" layoutY="283.0" mnemonicParsing="false" text="Practice" />
       <Button fx:id="practiceBtn" layoutX="329.0" layoutY="403.0" mnemonicParsing="false" onAction="#practiceClick" text="Practice Pre-Start" />
    </children>
 </AnchorPane>
