@@ -3,8 +3,6 @@ package seng302.RaceObjects;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
-import java.util.function.Consumer;
-import java.util.stream.Collector;
 
 /**
  * Represents a mark, gate, starting line, or finishing line in a yacht race

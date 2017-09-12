@@ -412,7 +412,6 @@ public class RaceController {
                     paths.add(path);
                     absolutePaths.add(new ArrayList<>());
 
-
                     lastHeadings.add(race.getBoats().get(i).getHeading());
                 } else {
                     knowAllLocations = false;
