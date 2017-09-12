@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.Race;
+import seng302.RaceObjects.ViewScreenType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public class FinishingController {
     @FXML
     public void exitToMenu() throws IOException {
         race.setConnectedToServer(0);
+        race.setViewScreen(ViewScreenType.MENU.getViewScreenType());
     }
 
     public void setRace(Race race) {

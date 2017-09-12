@@ -7,6 +7,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.Race;
+import seng302.RaceObjects.ViewScreenType;
 
 import java.io.IOException;
 
@@ -46,7 +47,7 @@ public class ScoreScreenController {
         );
 
         finishTimeColumn.setCellValueFactory(
-                new PropertyValueFactory<Boat, String>("finishTime")
+                new PropertyValueFactory<Boat, String>("finishTimeString")
         );
 
         finishersTable.setItems(race.getFinishedBoats());
@@ -54,6 +55,7 @@ public class ScoreScreenController {
     @FXML
     public void exitToMenu() throws IOException {
         race.setConnectedToServer(0);
+        race.setViewScreen(ViewScreenType.MENU.getViewScreenType());
     }
 
     public void setRace(Race race) {

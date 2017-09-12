@@ -35,7 +35,6 @@
             <Font name="Century Gothic" size="24.0" />
          </font>
       </Text>
-      <Button fx:id="practiceBtn" layoutX="329.0" layoutY="382.0" mnemonicParsing="false" onAction="#practiceClick" text="Practice Pre-Start" />
+      <Button fx:id="practiceBtn" layoutX="329.0" layoutY="403.0" mnemonicParsing="false" onAction="#practiceClick" text="Practice Pre-Start" />
    </children>
 </AnchorPane>
-

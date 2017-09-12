@@ -5,6 +5,7 @@ import seng302.Client.Messages.RaceRegistrationMessage;
 import seng302.Client.Messages.RaceRegistrationType;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.RaceObjects.Race;
+import seng302.RaceObjects.ViewScreenType;
 import seng302.UserInput.KeyBindingUtility;
 import seng302.UserInput.PracticeMessage;
 
@@ -156,8 +157,10 @@ public class Client {
             streamOutput.write(rrm.createMessage());
             streamOutput.flush();
         }
-        catch (IOException e) {
+        catch (IOException e) { // Could not connect
             race.setConnectedToServer(2);
+            race.setViewScreen(ViewScreenType.MENU_ERROR.getViewScreenType());
+            System.out.println("returning with error");
             e.printStackTrace();
         }
 
@@ -166,6 +169,11 @@ public class Client {
     public void disconnect() {
         try {
             race.setConnectedToServer(0);
+            if (race.getFinishedBoats().size() > 0) {
+                race.setViewScreen(ViewScreenType.SCORE_SCREEN.getViewScreenType());
+            } else {
+                race.setViewScreen(ViewScreenType.MENU_SERVER_CLOSED.getViewScreenType());
+            }
             System.out.println("Socket disconnected.");
             clientSocket.close();
         } catch (IOException e) {

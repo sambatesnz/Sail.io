@@ -42,6 +42,7 @@ public class Race {
     private Mark viewMin;
     private Mark viewMax;
     private SimpleIntegerProperty connectedToServer;
+    private SimpleIntegerProperty viewScreen;
     private boolean raceXMLReceived;
 
     // yellow, blue, pink, orange, green, purple, red, brown
@@ -71,6 +72,7 @@ public class Race {
         boatsObs = FXCollections.observableArrayList();
         timeToStart = new SimpleStringProperty();
         connectedToServer = new SimpleIntegerProperty(0); // 0 is disconnected, 1 = connected, 2 = failed connection(ask Sam Bates)
+        viewScreen = new SimpleIntegerProperty(0);
     }
 
     public int isConnectedToServer() {
@@ -465,4 +467,15 @@ public class Race {
         return hasChanged;
     }
 
+    public int getViewScreen() {
+        return viewScreen.get();
+    }
+
+    public SimpleIntegerProperty viewScreenProperty() {
+        return viewScreen;
+    }
+
+    public void setViewScreen(int viewScreen) {
+        this.viewScreen.set(viewScreen);
+    }
 }

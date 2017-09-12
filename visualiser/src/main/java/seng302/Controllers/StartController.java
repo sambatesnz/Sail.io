@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import seng302.RaceObjects.Race;
+import seng302.RaceObjects.ViewScreenType;
 import seng302.UserInput.KeyBindingUtility;
 import seng302.UserInput.PracticeMessage;
 
@@ -56,38 +57,64 @@ public class StartController {
         clientController.startClient();
         race = clientController.getRace();
 
-        race.connectedToServerProperty().addListener((observable, oldValue, isConnected) -> {
-            if (isConnected.equals(0)) { // disconnected
+        race.connectedToServerProperty().addListener((Observable, OldValue, isConnected) -> {
+            if (isConnected.equals(1)) { // connected
                 Platform.runLater(
                         () -> {
                             try {
-                                exitToMenu();
+                                newConnection(race);
+                            } catch (InterruptedException | IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                );
+            }
+        });
+
+        race.viewScreenProperty().addListener((observable, oldValue, view) -> {
+            if (view.equals(ViewScreenType.MENU.getViewScreenType())) { // disconnected
+                Platform.runLater(
+                        () -> {
+                            try {
+                                exitToMenu("");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
                 );
-            } else if (isConnected.equals(1)) { // connected
-                Platform.runLater(
-                    () -> {
-                        try {
-                            newConnection(race);
-                        } catch (InterruptedException | IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                );
-            } else if (isConnected.equals(2)) { //failed to connect
+//            } else if (view.equals(ViewScreenType.GAME.getViewScreenType())) { // connected
+//                Platform.runLater(
+//                    () -> {
+//                        try {
+//                            newConnection(race);
+//                        } catch (InterruptedException | IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                );
+            } else if (view.equals(ViewScreenType.MENU_ERROR.getViewScreenType())) {
                 Platform.runLater(
                         () -> {
                             try {
-                                statusLbl.setText("Could not connect");
+                             exitToMenu("Could not connect");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
                 );
-            } else if (isConnected.equals(3)) { //failed to connect
+
+            } else if (view.equals(ViewScreenType.MENU_SERVER_CLOSED.getViewScreenType())) {
+                Platform.runLater(
+                        () -> {
+                            try {
+                                exitToMenu("Server Closed");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                );
+
+            }else if (view.equals(ViewScreenType.SCORE_SCREEN.getViewScreenType())) {
                 Platform.runLater(
                         () -> {
                             try {
@@ -168,6 +195,10 @@ public class StartController {
         }
     }
 
+    public void setStatus(String message){
+        statusLbl.setText(message);
+    }
+
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
@@ -188,14 +219,14 @@ public class StartController {
         return (Integer.parseInt(splitInput[1]));
     }
 
-    public void exitToMenu() throws IOException {
+    public void exitToMenu(String message) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/StartingPage.fxml"));
 
         Parent root = loader.load();
         Scene rootScene = new Scene(root);
 
         StartController startController = loader.getController();
-
+        startController.setStatus(message);
         primaryStage.setMinHeight(600);
         primaryStage.setMinWidth(800);
         primaryStage.setMaximized(false);
@@ -219,6 +250,8 @@ public class StartController {
 
         primaryStage.setMinHeight(600);
         primaryStage.setMinWidth(800);
+        primaryStage.setHeight(600);
+        primaryStage.setWidth(800);
         primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
         primaryStage.setTitle("RaceView");
