@@ -23,6 +23,11 @@ public final class BoatPair {
     public Boat getBoat1() { return boat1; }
     public Boat getBoat2() { return boat2; }
 
+    /**
+     * Checks if the objects are  equal.
+     * @param obj the object to be compared against
+     * @return
+     */
     @Override public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
@@ -31,5 +36,9 @@ public final class BoatPair {
         return (Objects.equals(id1, other.id1) && Objects.equals(id2, other.id2)) || (Objects.equals(id1, other.id2) && Objects.equals(id2, other.id1));
     }
 
+    /**
+     * Gets the hashcode for the object
+     * @return the hashcode
+     */
     @Override public int hashCode() { return Objects.hash(id1, id2); }
 }

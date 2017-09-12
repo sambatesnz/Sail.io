@@ -447,7 +447,9 @@ public class Race {
     }
 
 
-    // @Matt
+    /**
+     * Checks the race status, and updates the race information accordingly
+     */
     public void updateRaceInfo(){
         if (raceStatus != RaceStatus.FINISHED) {
             if (clientIDs.size() < 2) {

@@ -13,7 +13,10 @@ public class BoatCollision {
         this.collider2 = collider2;
         this.isColliding = false;
     }
-    
+
+    /**
+     * Updates the collision data for the boat collision, checking if a collision is occuring
+     */
     public void updateCollision(){
         if (collider1.getSourceId() == collider2.getSourceId()){
             isColliding = false;
@@ -37,7 +40,11 @@ public class BoatCollision {
             isColliding = false;
         }
     }
-    
+
+    /**
+     * Checks if the boat is colliding
+     * @return
+     */
     public boolean isColliding() {
         updateCollision();
         return isColliding;
