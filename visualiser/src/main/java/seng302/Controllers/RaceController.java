@@ -461,19 +461,34 @@ public class RaceController {
     private void updateNextMarkArrow(CompoundMark cm) {
         double arrowTranslate = 15/(1+Coordinate.getZoom());
         int playerBoat = race.getClientSourceId();
-        double arrowX = Coordinate.getRelativeX(race.getBoatsMap().get(playerBoat).getX()) + arrowTranslate;
-        double arrowY = Coordinate.getRelativeY(race.getBoatsMap().get(playerBoat).getY()) + arrowTranslate;
+        double playerX = Coordinate.getRelativeX(race.getBoatsMap().get(playerBoat).getX());
+        double playerY = Coordinate.getRelativeY(race.getBoatsMap().get(playerBoat).getY());
+        double arrowX = playerX + arrowTranslate;
+        double arrowY = playerY + arrowTranslate;
         double markX = Coordinate.getRelativeX(cm.getX());
         double markY = Coordinate.getRelativeY(cm.getY());
         boolean markIsFar = cm.getMarks().stream().allMatch(mark -> {
+
             double markX1 = Coordinate.getRelativeX(mark.getX());
             double markY1 = Coordinate.getRelativeY(mark.getY());
             double distX = abs(markX1 - arrowX);
             double distY = abs(markY1 - arrowY);
-            double nearDistanceX = Coordinate.getWindowWidthX()/2 + 150;
-            double nearDistanceY = Coordinate.getWindowHeightY()/2 + 150;
+
+            double offsetX = 100;
+            double offsetY = 100;
+            if (markX1 > playerX) {
+                offsetX *= -1;
+            }
+            if (markY1 > playerY) {
+                offsetY *= -1;
+            }
+
+            double nearDistanceX = Coordinate.getWindowWidthX()/2 + offsetX;
+            double nearDistanceY = Coordinate.getWindowHeightY()/2 + offsetY;
+
             return distX > nearDistanceX || distY > nearDistanceY;
         });
+
 
         if (followingBoat && markIsFar) {
             double angleToNextMark = toDegrees(atan2(markY - arrowY, markX - arrowX));
@@ -1027,7 +1042,7 @@ public class RaceController {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         AnchorPane anchorPane = fxmlLoader.load(getClass().getClassLoader().getResource("FXML/FinishingPage.fxml").openStream());
-        FinishingController finishingController = (FinishingController) fxmlLoader.getController();
+        FinishingController finishingController = fxmlLoader.getController();
         finishingController.setPrimaryStage(primaryStage);
         finishingController.setRace(race);
         finishingController.initialiseTable();
