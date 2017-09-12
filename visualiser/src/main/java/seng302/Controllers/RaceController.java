@@ -6,9 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -16,20 +19,24 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
+import javafx.stage.Stage;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.Mark;
 import seng302.Rounding;
 import seng302.Visualiser.Arrow;
+import seng302.UserInput.KeyBindingUtility;
 import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,45 +50,31 @@ import static javafx.scene.input.KeyCode.Z;
  * Class that controls the race window and updates the race as it proceeds
  */
 public class RaceController {
-    @FXML
-    private BorderPane mainBorderPane;
-    @FXML
-    private AnchorPane viewAnchorPane;
-    @FXML
-    private Group group;
-    @FXML
-    private Group boundaryGroup;
-    @FXML
-    private Label clock;
-    @FXML
-    private Label localTimeZone;
-    @FXML
-    private Label localTime;
-    @FXML
-    private ListView<String> finishedListView;
-    @FXML
-    private TableView<Boat> positionTable;
-    @FXML
-    private TableColumn<Boat, String> positionCol;
-    @FXML
-    private TableColumn<Boat, String> nameCol;
-    @FXML
-    private TableColumn<Boat, String> speedCol;
-    @FXML
-    private Label fpsLabel;
-    @FXML
-    private Button annotationBtn;
-    @FXML
-    private Button fpsBtn;
-    @FXML
-    private ListView<String> startersList;
-    @FXML
-    private LineChart<Number, Number> sparklinesChart;
-    @FXML
-    private SplitPane sidePanelSplit;
 
+    @FXML private BorderPane mainBorderPane;
+    @FXML private AnchorPane viewAnchorPane;
+    @FXML private Group group;
+    @FXML private Group boundaryGroup;
+    @FXML private Label clock;
+    @FXML private Label localTimeZone;
+    @FXML private Label localTime;
+    @FXML private ListView<String> finishedListView;
+    @FXML private TableView<Boat> positionTable;
+    @FXML private TableColumn<Boat, String> positionCol;
+    @FXML private TableColumn<Boat, String> nameCol;
+    @FXML private TableColumn<Boat, String> speedCol;
+    @FXML private TableColumn<Boat, String> legCol;
+    @FXML private Label fpsLabel;
+    @FXML private Button annotationBtn;
+    @FXML private Button fpsBtn;
+    @FXML private ListView<String> startersList;
+    @FXML private LineChart<Number, Number> sparklinesChart;
+    @FXML private SplitPane sidePanelSplit;
+    @FXML private Pane finishingPane;
+    @FXML private Group finishingGroup;
     @FXML private CheckBox BoatNameCheckBox;
     @FXML private CheckBox BoatSpeedCheckBox;
+    @FXML private Button toggleFinishersBtn;
 
     private Race race;
 
@@ -118,7 +111,7 @@ public class RaceController {
     private String ipAddr;
     private int port;
     private AnimationTimer raceListener;
-
+    private boolean isFinishersHidden = true;
 
     // Sparkline variables
     @FXML    private NumberAxis xAxis;
@@ -140,6 +133,8 @@ public class RaceController {
     private boolean boatMetaDataInitialised = false;
     private boolean boatLocationDataInitialised = false;
     private boolean viewInitialised = false;
+    private Stage primaryStage;
+
 
 
     public RaceController(Race race){
@@ -150,7 +145,7 @@ public class RaceController {
      * initializes the race display.
      */
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
@@ -170,13 +165,13 @@ public class RaceController {
 //        roundingArrow1.setScaleX(-1););
         initialisePositionsTable();
         enableScrolling();
-
+        finishingPane.setVisible(false);
         race.finishedProperty().addListener((observable, oldValue, raceFinished) -> {
             if (raceFinished) {
                 stopRaceListener();
             }
         });
-
+        loadFinishers();
         initialiseRaceListener();
         startRaceListener();
     }
@@ -211,7 +206,11 @@ public class RaceController {
 //            String pos = String.valueOf(p.getValue().getPosition());
 //            return new ReadOnlyObjectWrapper<>(pos);
 //        });
-        positionCol.setVisible(false);
+//        positionCol.setVisible(false);
+
+
+        legCol.setCellValueFactory(new PropertyValueFactory<>("currentLegIndex"));
+        legCol.setSortType(TableColumn.SortType.ASCENDING);
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         speedCol.setCellValueFactory(p -> {
             String speed = String.valueOf(p.getValue().getSpeedInKnots());
@@ -704,6 +703,12 @@ public class RaceController {
             viewAnchorPane.setMinWidth(Coordinate.getWindowWidthX());
             viewAnchorPane.setMaxWidth(Coordinate.getWindowWidthX());
 
+            finishingGroup.setLayoutX(Coordinate.getWindowWidthX()/2 - 300) ;
+            finishingGroup.setLayoutY(Coordinate.getWindowHeightY()/2 - 200);
+
+            finishingPane.setLayoutX(Coordinate.getWindowWidthX()/2 - 300);
+            finishingPane.setLayoutY(Coordinate.getWindowHeightY()/2 - 200);
+
             fpsLabel.setLayoutX(Coordinate.getWindowWidthX() - 90);
             fpsLabel.setLayoutY(60);
             clock.setLayoutY(20);
@@ -712,6 +717,8 @@ public class RaceController {
             fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 75);
             annotationBtn.setLayoutX(14);
             annotationBtn.setLayoutY(Coordinate.getWindowHeightY() - 50);
+            toggleFinishersBtn.setLayoutX(14);
+            toggleFinishersBtn.setLayoutY(Coordinate.getWindowHeightY() - 100);
             BoatNameCheckBox.setLayoutX(14);
             BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 150);
             BoatSpeedCheckBox.setLayoutX(14);
@@ -995,4 +1002,42 @@ public class RaceController {
         this.ipAddr = ip;
         this.port = port;
     }
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+    /**
+     * This gets called once the visualiser receives information that the players boat has finished the race.
+     */
+    public void raceFinished() throws IOException {
+        finishingPane.setVisible(true);
+    }
+    @FXML
+    public void toggleFinishers(){
+        if (isFinishersHidden) {
+            finishingPane.setVisible(true);
+            toggleFinishersBtn.setText("Hide Finishers");
+            isFinishersHidden = false;
+        } else {
+            finishingPane.setVisible(false);
+            toggleFinishersBtn.setText("Show Finishers");
+            isFinishersHidden = true;
+        }
+    }
+
+    public void loadFinishers() throws IOException {
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        AnchorPane anchorPane = fxmlLoader.load(getClass().getClassLoader().getResource("FXML/FinishingPage.fxml").openStream());
+        FinishingController finishingController = (FinishingController) fxmlLoader.getController();
+        finishingController.setPrimaryStage(primaryStage);
+        finishingController.setRace(race);
+        finishingController.initialiseTable();
+        finishingPane.getChildren().setAll(anchorPane);
+    }
+
+    public void setFinishPaneController() {
+//        finishingPane.get.getChildren().get(1
+    }
+
+
 }

@@ -35,6 +35,7 @@ public class Boat {
     private boolean headingChanged;
     private boolean sailsOut = false;
 
+    private boolean isFinished = false;
     private boolean upwindMemory = false;
     private boolean downwindMemory = false;
     private boolean plusMemory = false;
@@ -45,6 +46,10 @@ public class Boat {
     private int targetMarkIndex = 0;
     private int lastMarkIndex = 0;
     private int roundingStage = 0;
+
+    private boolean finished;
+    private boolean connected;
+    private boolean added;
 
     /**
      * Boat constructor
@@ -62,6 +67,8 @@ public class Boat {
         this.mark = new Mark();
         this.raceTime = Integer.toUnsignedLong(0);
         this.headingChanged = false;
+        this.finished = false;
+        this.connected = true;
     }
 
     /**
@@ -71,6 +78,7 @@ public class Boat {
     public Boat(Integer sourceID, String boatName) {
         this.sourceId = sourceID;
         this.boatName = boatName;
+        this.finished = false;
     }
 
     /**
@@ -544,5 +552,35 @@ public class Boat {
     public void updateRoundingStage() {
         roundingStage++;
     }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    /**
+     * Puts a boat into a disconnected state
+     */
+    public void disconnect() {
+        this.connected = false;
+        this.sailsOut = false;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public boolean isAdded() {
+        return added;
+    }
+
+    public void setAdded(boolean added) {
+        this.added = added;
+    }
+
+
 }
 

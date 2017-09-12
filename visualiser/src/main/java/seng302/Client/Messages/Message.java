@@ -25,6 +25,7 @@ public class Message {
     private static boolean boatsSet = false;
     private static boolean regattaSet = false;
     private static boolean raceSet = false;
+    ClientSideMessageParser messageParser;
 
 
     public static void resetData() {
@@ -72,11 +73,16 @@ public class Message {
                 break;
             case RACE_START_STATUS:
                 break;
+            case YACHT_EVENT:
+                System.out.println("Got a yacht event code, boat finished I guess");
+                messageParser = new YachtEventMessage(body);
+                messageParser.updateRace(race);
+                break;
             case BOAT_LOCATION:
                 new LocationMessage(body, race);
                 break;
             case PARTICIPANT_CONFIRMATION:
-                ClientSideMessageParser messageParser = new ClientParticipantConfirmationMessage(body);
+                messageParser = new ClientParticipantConfirmationMessage(body);
                 messageParser.updateRace(race);
         }
     }
@@ -90,7 +96,7 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    if (race.getRaceStatus() == RaceStatus.WARNING) {
+                    if (race.getRaceStatus() == RaceStatus.WARNING || race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET) {
                         race.setBoats(xmlParser.getBoats());
                         boatsSet = true;
                     }
