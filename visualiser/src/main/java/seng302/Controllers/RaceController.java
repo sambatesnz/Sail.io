@@ -461,7 +461,6 @@ public class RaceController {
     }
 
     private void updateNextMarkArrow(CompoundMark cm) {
-        double nearDistance = 100000;
         double arrowTranslate = 15/(1+Coordinate.getZoom());
         int playerBoat = race.getClientSourceId();
         double arrowX = Coordinate.getRelativeX(race.getBoatsMap().get(playerBoat).getX()) + arrowTranslate;
@@ -469,10 +468,13 @@ public class RaceController {
         double markX = Coordinate.getRelativeX(cm.getX());
         double markY = Coordinate.getRelativeY(cm.getY());
         boolean markIsFar = cm.getMarks().stream().allMatch(mark -> {
-            double markX1 = Coordinate.getRelativeX(cm.getX());
-            double markY1 = Coordinate.getRelativeY(cm.getY());
-            double dist = (markX1 - arrowX)*(markX1 - arrowX) + (markY1 - arrowY)*(markY1 - arrowY);
-            return dist > nearDistance;
+            double markX1 = Coordinate.getRelativeX(mark.getX());
+            double markY1 = Coordinate.getRelativeY(mark.getY());
+            double distX = abs(markX1 - arrowX);
+            double distY = abs(markY1 - arrowY);
+            double nearDistanceX = Coordinate.getWindowWidthX()/2 + 150;
+            double nearDistanceY = Coordinate.getWindowHeightY()/2 + 150;
+            return distX > nearDistanceX || distY > nearDistanceY;
         });
 
         if (followingBoat && markIsFar) {
