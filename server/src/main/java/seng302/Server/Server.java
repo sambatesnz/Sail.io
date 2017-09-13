@@ -22,6 +22,7 @@ public class Server {
     private Queue<byte[]> receivedPackets;
     private RaceHandler raceHandler;
     private int port;
+    private RaceModeChooser raceModeChooser;
 
     private RaceMode raceMode;
 
@@ -37,9 +38,9 @@ public class Server {
      * @throws Exception
      */
     public Server(String[] args) throws Exception {
-        RaceModeChooser chooser = new RaceModeChooser(args);
-        raceMode = chooser.getMode();
-        this.mockRace = chooser.createRace();
+        raceModeChooser = new RaceModeChooser(args);
+        raceMode = raceModeChooser.getMode();
+        this.mockRace = raceModeChooser.createRace();
         this.port = raceMode.getPort();
         startup();
     }
@@ -79,7 +80,7 @@ public class Server {
     private void resetRace() throws Exception {
         System.out.println("GIVING USERS 10s TO LOOK AT RESULTS.");
         Thread.sleep(10000);            // Once the race finishes, pause.
-        this.mockRace = new RaceManager();
+        this.mockRace = raceModeChooser.createRace();
         System.out.println("Resetting the server's race.");
         startup();
     }

@@ -296,7 +296,6 @@ public class Race {
     }
 
     public boolean notGoing() {
-        System.out.println(raceStatus);
         return raceStatus != RaceStatus.WARNING && raceStatus != RaceStatus.PREP && raceStatus != RaceStatus.STARTED && raceStatus != RaceStatus.PRESTART;
     }
 

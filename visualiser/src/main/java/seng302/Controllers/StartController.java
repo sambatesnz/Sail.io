@@ -74,7 +74,7 @@ public class StartController {
                 connectLobby(ip, port);
                 break;
             } case PRACTICE: {
-                String ip = "http://localhost";
+                String ip = "http://127.0.0.1";
                 int port = raceMode.getPort();
                 connectPractice(ip, port);
                 break;
@@ -84,7 +84,7 @@ public class StartController {
                 connectLobby(ip, port);
                 break;
             } default: {
-                String ip = "127.0.0.1";
+                String ip = "http://127.0.0.1";
                 int port = RaceMode.RACE.getPort();
                 connectLobby(ip, port);
             }
@@ -135,8 +135,48 @@ public class StartController {
         });
     }
 
-    private void connectPractice(String ip, int port) {
+    private void connectPractice(String ip, int port) throws InterruptedException {
+        Platform.runLater(
+                () -> statusLbl.setText("connecting...")
+        );
 
+        PracticeClientController clientController = new PracticeClientController(ip, port, primaryStage, rootScene);
+        clientController.startClient();
+        Race race = clientController.getRace();
+
+        race.connectedToServerProperty().addListener((observable, oldValue, isConnected) -> {
+            if (isConnected.equals(0)) { // disconnectedRace
+                Platform.runLater(
+                        () -> {
+                            try {
+                                exitToMenu();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                );
+            } else if (isConnected.equals(1)) { // connected
+                Platform.runLater(
+                        () -> {
+                            try {
+                                practiceView(race);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                );
+            } else if (isConnected.equals(2)) { //failed to connect
+                Platform.runLater(
+                        () -> {
+                            try {
+                                statusLbl.setText("Could not connect");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                );
+            }
+        });
     }
 
     private void practiceView(Race race) throws IOException {

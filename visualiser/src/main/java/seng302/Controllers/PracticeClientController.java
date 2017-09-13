@@ -22,7 +22,6 @@ public class PracticeClientController {
     private String ipAddr;
     private int port;
     private Client client;
-    private boolean practiceRace = false;
     private Stage primaryStage;
     private Scene startScene;
 
@@ -41,7 +40,6 @@ public class PracticeClientController {
     public PracticeClientController(String ip, int port, Stage primaryStage, Scene startScene) {
         this.ipAddr = ip;
         this.port = port;
-        this.practiceRace = true;
         this.primaryStage = primaryStage;
         this.startScene = startScene;
     }
@@ -59,28 +57,6 @@ public class PracticeClientController {
                 }
             }
         }, 1000);
-
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    client.sendPracticeMessage(new PracticeMessage(PracticeMessageMeaning.END, race.getBoats().get(0).getSourceId()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Platform.runLater(
-                        () -> {
-                            Coordinate.setTrackingBoat(false);
-                            race.finishRace();
-                            race.setRaceReady(false);
-                            Message.resetData();
-                            client.disconnect();
-                            primaryStage.setScene(startScene);
-                            Coordinate.setZoom(0);
-                        }
-                );
-            }
-        }, MINUTE_AND_TWENTY_SECONDS);
     }
 
     /**

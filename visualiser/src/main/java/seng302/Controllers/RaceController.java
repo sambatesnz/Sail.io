@@ -240,7 +240,7 @@ public class RaceController {
                         updateBoatPaths();
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
                 updateBoundary();
 
@@ -1013,12 +1013,10 @@ public class RaceController {
                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
 
         if (race.notGoing()) {
-            System.out.println("race not going");
             raceHours = 0;
             raceMinutes = 0;
             raceSeconds = 0;
         }
-        System.out.println(raceSeconds);
         clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
     }
 

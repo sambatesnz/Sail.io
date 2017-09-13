@@ -29,7 +29,7 @@ public class Race {
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
     private List<Boat> boats;
-    private Map<Integer, Integer> clientIDs;
+    Map<Integer, Integer> clientIDs;
     private List<CourseLimit> boundaries;
     private short windHeading;
     private short startingWindSpeed;
@@ -39,16 +39,16 @@ public class Race {
     private boolean practiceRace = false;
     private int raceID;
     private char raceType;
-    private RaceStatus raceStatus = RaceStatus.START_TIME_NOT_SET;
+    RaceStatus raceStatus = RaceStatus.START_TIME_NOT_SET;
     private ObservableList<String> positionStrings;
-    private Date startingTime;
+    Date startingTime;
     private SimpleStringProperty timeToStart;
     private boolean raceFinishing = false;
     private static final int TEN_KNOTS = 5145;
     private static final int FORTY_KNOTS = 20577;
     private static final int FIVE_KNOTS = 2573;
     private static final int DIRECTION_CHANGE_PROB = 25;
-    private final long ONE_MINUTE_IN_MILLIS = 60000;
+    final long ONE_MINUTE_IN_MILLIS = 60000;
     private static int MAX_NUMBER_OF_BOATS = 20;
 
     private BoatGenerator boatGenerator;
@@ -81,8 +81,6 @@ public class Race {
 
         clientIDs = new HashMap<>();
 
-//        boats = new ArrayList<>();
-//        finishedBoats = new ArrayList<>();
         positionStrings = FXCollections.observableArrayList();
         for (Boat boat : boats) {
             int speed = (new Random().nextInt(5000) + 100);
@@ -97,7 +95,7 @@ public class Race {
      * Creates a new start time based on the current time
      * @return a new time to start the race
      */
-    private Date getNewStartTime() {
+    Date getNewStartTime() {
         Calendar date = Calendar.getInstance();
         long currentTime = date.getTimeInMillis();
         return new Date(currentTime + ONE_MINUTE_IN_MILLIS * 3 / 2);
@@ -120,7 +118,7 @@ public class Race {
             boatGenerator.makeAvailable(boat);
             boats.removeIf(currentBoat -> currentBoat.getSourceId() == sourceId);
             clientIDs.remove(clientSocketSourceID);
-        }catch (NullPointerException nullPoint){
+        } catch (NullPointerException nullPoint){
             System.out.println("Remove called on boat that has already been removed");
             nullPoint.printStackTrace();
         }
