@@ -25,12 +25,16 @@
     - Current Commit of branch: 7b9ba18e09d8a0500f9b88a1bff0e37c21daf364
     - Performed By: Sam Bates
     - Result: **Pass**
+    
+    - Date: 13/09/2017
+    - Current Commit of branch: ddd627e
+    - Performed By: Sam Bates | Stefan Hall
+    - Result: **Pass**
 
 ##### Race finished by server closing
 #####Context:
     The server is closed while a race is still running
     
-     
     - Start a server and connect 2 boats
     - Close the server
      
@@ -51,4 +55,9 @@
     - Date: 13/09/2017
     - Current Commit of branch: 7b9ba18e09d8a0500f9b88a1bff0e37c21daf364
     - Performed By: Sam Bates
+    - Result: **Pass**
+    
+    - Date: 13/09/2017
+    - Current Commit of branch: ddd627e
+    - Performed By: Sam Bates | Stefan Hall
     - Result: **Pass**
