@@ -1,5 +1,19 @@
 #Manual Testing Document 
 
+##### Run Practice races multiple times
+#####Context:
+    Connect to practice race. Finish race or restart server. Connect again. 
+
+#####Expected Results:
+    Race view should be playable.
+    
+#####Test:
+- Date: 13/09/2017
+- Current Commit of branch: a57d36c
+- Performed By: Abel Svoboda, Stefan Hall
+- Result: **Pass**
+
+% Deprecated below
 ##### Lone PreStart Practice
 #####Context:
     The user now has the ability to practice the race prestart and race start. As this is a practice race, the user does
