@@ -23,7 +23,7 @@ public class YachtEventMessage extends ClientSideMessageParser {
     @Override
     public void updateRace(Race race) {
         if (eventId == YachtIncidentEvent.FINISHED) {
-            race.addFinishedBoat(destinationSourceId);
+            race.addBoatToScoreBoard(destinationSourceId, true);
         } else if (eventId == YachtIncidentEvent.BOATCOLLISION) {
             if (destinationSourceId == race.getClientSourceId()) {
                 race.addCollision();

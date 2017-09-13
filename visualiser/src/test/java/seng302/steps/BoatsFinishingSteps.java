@@ -49,7 +49,7 @@ public class BoatsFinishingSteps {
             seng302.Client.Messages.YachtEventMessage yachtEventMessage = new seng302.Client.Messages.YachtEventMessage(message.getBody());
             yachtEventMessage.updateRace(race);
         }
-        assertEquals(initialFinishedBoats, race.getFinishedBoats().size());
+        assertEquals(initialFinishedBoats, race.getBoatsForScoreBoard().size());
     }
 
     @When("^(\\d+) more boats finish the race after the initial (\\d+) boats$")
@@ -63,6 +63,6 @@ public class BoatsFinishingSteps {
 
     @Then("^there will be (\\d+) boats listed as having finished$")
     public void there_will_be_boats_listed_as_having_finished(int totalFinishedBoats) throws Throwable {
-        assertEquals(totalFinishedBoats, race.getFinishedBoats().size());
+        assertEquals(totalFinishedBoats, race.getBoatsForScoreBoard().size());
     }
 }

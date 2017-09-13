@@ -38,6 +38,6 @@
       <RadioButton fx:id="RaceModeRadioButton" layoutX="285.0" layoutY="283.0" mnemonicParsing="false" selected="true" text="Race" />
       <RadioButton fx:id="AgarModeRadioButton" layoutX="359.0" layoutY="283.0" mnemonicParsing="false" text="Agar" />
       <RadioButton fx:id="PracticeModeRadioButton" layoutX="427.0" layoutY="283.0" mnemonicParsing="false" text="Practice" />
+      <!--<Button fx:id="practiceBtn" layoutX="329.0" layoutY="403.0" mnemonicParsing="false" onAction="#practiceClick" text="Practice Pre-Start" />-->
    </children>
 </AnchorPane>
-
