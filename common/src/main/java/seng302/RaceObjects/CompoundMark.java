@@ -47,22 +47,23 @@ public class CompoundMark {
      * @return the landmarks x coordinate
      */
     public double getX() {
-        return this.marks.get(0).getX();
+        return marks.stream().mapToDouble(Mark::getX).sum() / marks.size();
     }
 
-    public double getXByIndex(int i) {
-        return this.marks.get(i).getX();
-    }
-
-    public double getYByIndex(int i) {
-        return this.marks.get(i).getY();
-    }
     /**
      * Get the landmarks y coordinate
      * @return the landmarks y coordinate
      */
     public double getY() {
-        return this.marks.get(0).getY();
+        return marks.stream().mapToDouble(Mark::getY).sum() / marks.size();
+    }
+
+    public double getXByIndex(int i) {
+        return this.marks.get(i).getX();
+    }
+    
+    public double getYByIndex(int i) {
+        return this.marks.get(i).getY();
     }
 
     /**

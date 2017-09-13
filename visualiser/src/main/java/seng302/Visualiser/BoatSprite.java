@@ -120,5 +120,21 @@ public class BoatSprite {
             sail.getPoints().set(i + 1, i/45d);
         }
     }
+
+    /**
+     * Sets the control circle fill colour to be red and opaque
+     */
+    public void collisionHighlight() {
+        controlCircle.setFill(Color.INDIANRED);
+        controlCircle.setOpacity(0.5);
+    }
+
+    /**
+     * Removes the control circle fill colour, making it transparent
+     */
+    public void removeCollisionHighlight() {
+        controlCircle.setOpacity(1.0);
+        controlCircle.setFill(Color.TRANSPARENT);
+    }
 }
 

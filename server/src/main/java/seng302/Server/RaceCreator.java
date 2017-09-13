@@ -39,7 +39,7 @@ public class RaceCreator {
         String basePath = new File("").getAbsolutePath();
         InputStream fileInputStream = null;
         if (relativeFilePath.length()<1){
-            fileInputStream = Main.class.getClassLoader().getResourceAsStream( "course.xml" );
+            fileInputStream = Main.class.getClassLoader().getResourceAsStream( "course5.xml" );
         }
         else{
             fileInputStream = Main.class.getClassLoader().getResourceAsStream(relativeFilePath);

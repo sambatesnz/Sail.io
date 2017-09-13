@@ -2,15 +2,13 @@ package seng302;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.util.Pair;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketParsing.XMLParser;
 import seng302.Polars.PolarUtils;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.CompoundMark;
-import seng302.RaceObjects.CourseLimit;
-import seng302.RaceObjects.Leg;
+import seng302.RaceObjects.*;
 import seng302.Server.RaceCreator;
 
 import java.io.IOException;
@@ -25,6 +23,7 @@ import static java.lang.Math.*;
  * This displays a text-based play by play commentary of the race as it happens
  */
 public class Race {
+    private Map<BoatPair, BoatCollision> collisionMap;
     private int numFinishers = 0;
     private List<Pair<CompoundMark, Rounding>> courseRoundingInfo;
     private List<CompoundMark> compoundMarks;
@@ -54,17 +53,17 @@ public class Race {
 
     private BoatGenerator boatGenerator;
     private BoatManager boatManager;
-    private long firstFinishTime;
+    private long finishTime;
 
 
     /**
      * Constructor for the race class.
      */
     public Race() {
-        parseCourseXML("Race.xml");
-        parseRaceXML("Race.xml");
+        parseCourseXML("Race2.xml");
+        parseRaceXML("Race2.xml");
         // setWindHeading(190);
-
+        startingWindSpeed = (short) (FORTY_KNOTS * 2) ;
         setStartingWindSpeed();
         boatGenerator = new BoatGenerator();
         boatManager = new BoatManager();
@@ -72,19 +71,16 @@ public class Race {
         instantiateWindHeading();
 
         startingTime = getNewStartTime();
-        firstFinishTime = 0;
+        finishTime = 0;
 
+        ObservableList<Boat> b = FXCollections.observableArrayList();
+        b.addListener((ListChangeListener<Boat>) c -> {
+            initCollisions();
+        });
+        boats = b;
 
-        boats = new ArrayList<>();
         clientIDs = new HashMap<>();
         positionStrings = FXCollections.observableArrayList();
-        for (Boat boat : boats) {
-            int speed = (new Random().nextInt(5000) + 100);
-            boat.setSpeed(speed);
-            boat.setHeading(0);
-            boat.getMark().setLongitude(getCompoundMarks().get(0).getLongitude());
-            boat.getMark().setLatitude(getCompoundMarks().get(0).getLatitude());
-        }
     }
 
     /**
@@ -94,7 +90,7 @@ public class Race {
     private Date getNewStartTime() {
         Calendar date = Calendar.getInstance();
         long currentTime = date.getTimeInMillis();
-        return new Date(currentTime + ONE_MINUTE_IN_MILLIS * 3 / 2);
+        return new Date(currentTime + ONE_MINUTE_IN_MILLIS * 6 / 5);
     }
 
     /**
@@ -105,7 +101,14 @@ public class Race {
     public void removeBoat(int clientSocketSourceID) {
         try {
             int sourceId = clientIDs.get(clientSocketSourceID);
-            boats.removeIf(boat -> boat.getSourceId() == sourceId);
+            Boat boat = null;
+            for (Boat currentBoat: boats){
+                if (currentBoat.getSourceId() == sourceId) {
+                    boat = currentBoat;
+                }
+            }
+            boatGenerator.makeAvailable(boat);
+            boats.removeIf(currentBoat -> currentBoat.getSourceId() == sourceId);
             clientIDs.remove(clientSocketSourceID);
         }catch (NullPointerException nullPoint){
             System.out.println("Remove called on boat that has already been removed");
@@ -233,8 +236,8 @@ public class Race {
      */
     public short retrieveWindSpeed() {
         Random random = new Random();
-        int low = startingWindSpeed - 2600;
-        int high = startingWindSpeed + 2600;
+        int low = startingWindSpeed - 500;
+        int high = startingWindSpeed + 500;
         int windVal = random.nextInt(high - low) + low;
         this.windSpeed = windVal;
         windSpeedChanged = true;
@@ -304,20 +307,6 @@ public class Race {
         return null;
     }
 
-    /**
-     * Creates an ArrayList of boats competing in the current race
-     * @return The ArrayList of boats
-     */
-    private ArrayList<Boat> getContestants() {
-        ArrayList<Boat> contestants = new ArrayList<>();
-//        contestants.add(new Boat("ORACLE TEAM USA", "USA", 101, "United States"));
-//        contestants.add(new Boat("Artemis Racing", "SWE", 102, "Sweden"));
-        contestants.add(new Boat("Emirates Team New Zealand", "NZL", 103, "New Zealand"));
-//        contestants.add(new Boat("SoftBank Team Japan", "JPN", 104, "Japan"));
-//        contestants.add(new Boat("Groupama Team France", "FRA", 105, "France"));
-//        contestants.add(new Boat("Land Rover BAR", "GBR", 106, "United Kingdom"));
-        return contestants;
-    }
 
     /**
      * Reads the course.xml file to get the attributes of things on the course
@@ -397,11 +386,11 @@ public class Race {
             }
             //Increments the the distance by the speed
             //Increments the the distance by the speed
-            double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
-            double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
+            double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
+            double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
 
-            boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0/1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
-            boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0/1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
+            boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
+            boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
 
             if (raceStatus == RaceStatus.STARTED) {
                 if (!boat.isFinished()) {
@@ -410,32 +399,42 @@ public class Race {
                     boatManager.addFinishedBoat(boat);
                     boat.setAdded(true);
                     if (!raceFinishing) {
-                        setFirstFinishTime();
+                        setFinishTime(ONE_MINUTE_IN_MILLIS);
                     }
                 }
             }
 
-            if ((isFinishTimerExpired() || areAllContestantsFinished()) && raceStatus != RaceStatus.FINISHED) {
-                raceStatus = RaceStatus.FINISHED;
-                System.out.println("Race is completely finished!");
-            }
 
             boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
             boat.getMark().setY(newY);
             boat.setHeadingChangedToFalse();
         }
+
+        //System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS
+        if(areAllContestantsFinished()){
+                setFinishTime(ONE_MINUTE_IN_MILLIS/6);
+        }
+        if (isFinishTimerExpired() && raceStatus != RaceStatus.FINISHED) {
+            raceStatus = RaceStatus.FINISHED;
+            System.out.println("Race is completely finished!");
+        }
+
         windHeadingChanged = false;
         windSpeedChanged = false;
 
     }
 
-    private void setFirstFinishTime() {
-        firstFinishTime = System.currentTimeMillis();
-        raceFinishing = true;
+    private void setFinishTime(long msAfterCurrent) {
+        if (raceFinishing) {
+            finishTime = ((System.currentTimeMillis() + msAfterCurrent) < finishTime) ? (System.currentTimeMillis() + msAfterCurrent) : finishTime;
+        } else {
+            finishTime = (System.currentTimeMillis() + msAfterCurrent);
+            raceFinishing = true;
+        }
     }
 
     private boolean isFinishTimerExpired(){
-        return (firstFinishTime > 0) && (System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS);
+        return (finishTime > 0) && (System.currentTimeMillis() > finishTime);
     }
 
     private boolean areAllContestantsFinished() {
@@ -447,6 +446,14 @@ public class Race {
         return true;
     }
 
+    public Map<BoatPair, BoatCollision> getCollisionMap() {
+        return collisionMap;
+    }
+
+
+    /**
+     * Checks the race status, and updates the race information accordingly
+     */
     public void updateRaceInfo(){
         if (raceStatus != RaceStatus.FINISHED) {
             if (clientIDs.size() < 2) {
@@ -468,6 +475,21 @@ public class Race {
 
     public void setPracticeRace(boolean practiceRace) {
         this.practiceRace = practiceRace;
+    }
+
+
+    private void initCollisions(){
+        collisionMap = new HashMap<>();
+        for (Boat boat : boats){
+            for (Boat checkBoat : boats){
+                BoatPair boatPair = new BoatPair(boat, checkBoat);
+                if(!collisionMap.containsKey(new BoatPair(boat, checkBoat))){
+                    collisionMap.put(boatPair, new BoatCollision(boat, checkBoat));
+                }else{
+                    System.out.println("KEY EXISTS: " + boatPair.getBoat1().getSourceId() + " + " + boatPair.getBoat2().getSourceId());
+                }
+            }
+        }
     }
 
 }
