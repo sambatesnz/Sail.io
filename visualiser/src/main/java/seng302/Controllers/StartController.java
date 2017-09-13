@@ -187,7 +187,7 @@ public class StartController {
                 Platform.runLater(
                         () -> {
                             try {
-                                exitToMenu();
+                                exitToMenu("Race finishing");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
