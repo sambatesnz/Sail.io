@@ -78,8 +78,8 @@ public class Server {
      * @throws Exception
      */
     private void resetRace() throws Exception {
-        System.out.println("GIVING USERS 10s TO LOOK AT RESULTS.");
-        Thread.sleep(10000);            // Once the race finishes, pause.
+//        System.out.println("GIVING USERS 10s TO LOOK AT RESULTS.");
+//        Thread.sleep(10000);            // Once the race finishes, pause.
         this.mockRace = raceModeChooser.createRace();
         System.out.println("Resetting the server's race.");
         startup();

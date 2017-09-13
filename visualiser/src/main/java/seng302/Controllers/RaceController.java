@@ -229,7 +229,11 @@ public class RaceController {
                 fpsCounter.update(currentNanoTime);
                 setViewParameters();
 
-                updateViewLayout();
+                try {
+                    updateViewLayout();
+                } catch (Exception e) {
+//                    e.printStackTrace(); removed for production environment
+                }
 
                 initialiseBoatMetaData();
                 initialiseBoatLocation();
@@ -379,7 +383,7 @@ public class RaceController {
                     }
                 }
             } catch (IndexOutOfBoundsException e) {
-                System.err.print(e);
+//                System.err.print(e);
             }
         }
     }

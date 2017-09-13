@@ -65,6 +65,7 @@ public class PracticeClientController {
      * @throws InterruptedException if client connection fails
      */
     public void startClient() throws InterruptedException {
+        System.out.println("makinga practice race... ");
         race = new Race();
         Thread serverThread = new Thread(() -> {
             client = new Client(race, ipAddr, port);
