@@ -582,18 +582,20 @@ public class RaceController {
 
     private void updateMarkArrows() {
         int playerBoat = race.getClientSourceId();
-        if (race.getBoatsMap().get(playerBoat).getTargetMarkIndex() >= race.getCourseOrder().size()) {
-            roundingArrow1.setVisible(false);
-            roundingArrowMirrored1.setVisible(false);
-            roundingArrow2.setVisible(false);
-            roundingArrowMirrored2.setVisible(false);
-        } else {
-            int cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getCompoundMarkId();
-            for (int i = 0; i < race.getCompoundMarks().size(); i++) {
-                CompoundMark cm = race.getCompoundMarks().get(i);
-                if (cmId == cm.getId()) {
-                    updateNextMarkArrow(cm);
-                    updateRoundingArrows(cm);
+        if (playerBoat != 0) {
+            if (race.getBoatsMap().get(playerBoat).getTargetMarkIndex() >= race.getCourseOrder().size()) {
+                roundingArrow1.setVisible(false);
+                roundingArrowMirrored1.setVisible(false);
+                roundingArrow2.setVisible(false);
+                roundingArrowMirrored2.setVisible(false);
+            } else {
+                int cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getCompoundMarkId();
+                for (int i = 0; i < race.getCompoundMarks().size(); i++) {
+                    CompoundMark cm = race.getCompoundMarks().get(i);
+                    if (cmId == cm.getId()) {
+                        updateNextMarkArrow(cm);
+                        updateRoundingArrows(cm);
+                    }
                 }
             }
         }
