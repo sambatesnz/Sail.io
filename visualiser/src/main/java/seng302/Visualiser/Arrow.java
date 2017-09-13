@@ -4,20 +4,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
 /**
- * WindArrow Polyline
+ * Arrow Polyline
  */
-public class WindArrow extends Polyline{
+public class Arrow extends Polyline{
 
     private int defaultScale = 2;
     private Color defaultColor = Color.RED;
 
-    public WindArrow(double... points) {
+    public Arrow(double... points) {
         super(points);
         addPoints();
         setScale();
         addPoints();
         setColor();
-        setLayout();
     }
 
     public void updateScaling(double windSpeed){
@@ -30,11 +29,6 @@ public class WindArrow extends Polyline{
         double scaleY = scaleX * SCALING_VECTOR_Y;
         setScaleX(scaleX);
         setScaleY(scaleY);
-    }
-
-    private void setLayout() {
-        setLayoutX(50);
-        setLayoutY(50);
     }
 
     private void setColor(){
