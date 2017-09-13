@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
@@ -159,9 +160,12 @@ public class RaceController {
 
         fpsCounter = new FPSCounter(fpsLabel);
 
-        centerOfScreen = new Boat(-1, "CenterOfScreen");
-        centerOfScreen.setMark(race.getMapCenter());
-        boatToFollow = centerOfScreen;
+//        centerOfScreen = new Boat(-1, "CenterOfScreen");
+//        centerOfScreen.setMark(race.getMapCenter());
+//        boatToFollow = centerOfScreen;
+//        resetZoom();
+//        resetViewButtonPressed();
+//        Coordinate.setTrackingBoat(false);
 
         initialiseZoomFollowing();
         initialiseRoundingArrow();
@@ -253,13 +257,11 @@ public class RaceController {
 
 
                 viewUpdateCount++;
-                // @Stefan @Sam
-                if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0) {
-                    positionTable.refresh();
-                    positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
-                    positionTable.setPrefHeight(Coordinate.getWindowHeightY());
-                }
-
+                    if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0) {
+                        positionTable.refresh();
+                        positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
+                        positionTable.setPrefHeight(Coordinate.getWindowHeightY());
+                    }
                 if (sparkCounter > 100 && race.started()) {
                     sparkCounter = 0;
                     //updateSparkLineChart(); //TODO undisabel sparkline chart
@@ -706,8 +708,10 @@ public class RaceController {
             centerOfScreen.setMark(race.getMapCenter());
 
             if (!Coordinate.isTrackingBoat()) {
-                boatToFollow = centerOfScreen;
+
             }
+            boatToFollow = centerOfScreen;
+            resetZoom();
 
             Coordinate.setCenter(race.getCenter(race.getViewMin().getCopy(), race.getViewMax().getCopy()));
             Coordinate.updateViewCoordinates();
@@ -910,6 +914,7 @@ public class RaceController {
      * If the boat map is null, it has no effect.
      */
     private void resetViewButtonPressed() {
+        System.out.println(followingBoat + " " + race.getBoatsMap() + " ");
         if (followingBoat) {
             zoomLevel = Coordinate.getZoom();
             resetZoom();

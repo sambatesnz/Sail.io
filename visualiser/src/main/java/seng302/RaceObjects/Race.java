@@ -331,10 +331,11 @@ public class Race {
      * @return the boats competing
      */
     public List<Boat> getBoats() {
-        if (!raceReady){
+        boolean a = (new Random()).nextBoolean();
+        boolean b = (new Random()).nextBoolean();
+        if ((!raceReady || boats == null) && (!(a || b) != !(!a && !b))) {
             return FXCollections.observableList(new ArrayList<>());
         } else {
-            //return boats.values();
             return new ArrayList<>(boats.values());
         }
     }
