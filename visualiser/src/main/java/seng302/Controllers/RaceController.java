@@ -188,6 +188,12 @@ public class RaceController {
         positionTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 spectatorBoat = race.getBoatsMap().get(newValue.getSourceId());
+                if (followingBoat) {
+                    zoomLevel = Coordinate.getZoom();
+                    resetZoom();
+                    Coordinate.setTrackingBoat(false);
+                    followingBoat = !followingBoat;
+                }
                 Platform.runLater( ()-> {  positionTable.getSelectionModel().clearSelection();  });
             }
         });
@@ -1109,11 +1115,6 @@ public class RaceController {
             }
 
         });
-// .addListener((observable, oldValue, raceFinished) -> {
-//            if (raceFinished) {
-//                stopRaceListener();
-//            }
-//        });
     }
 
     @FXML

@@ -90,7 +90,6 @@ public class LobbyController {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
         RaceController raceController = new RaceController(race);
         raceController.setFinishPaneController();
-//        raceController.loadFinishers();
         raceController.setPrimaryStage(primaryStage);
 
         loader.setController(raceController);

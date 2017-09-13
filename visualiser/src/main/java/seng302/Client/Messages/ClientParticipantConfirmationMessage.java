@@ -14,6 +14,10 @@ public class ClientParticipantConfirmationMessage extends ClientSideMessageParse
     private byte[] message;
     private ConfirmationStatus status;
 
+    /**
+     * Creates a client participant confirmation message
+     * @param body the body of the message
+     */
     public ClientParticipantConfirmationMessage(byte[] body) {
         super(body);
         this.message = body;
