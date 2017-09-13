@@ -68,10 +68,10 @@ public class LobbyController {
             }
 
             // 99:99:99 means raceStatus is raceStartTimeNotSet so hide countdown
-            if(newValue.equals(String.format(" %02d:%02d:%02d", 99, 99, 99))){
+            if (newValue.equals(String.format(" %02d:%02d:%02d", 99, 99, 99))) {
                 timeToStart.setVisible(false);
                 lobbyDescriptionText.textProperty().setValue("Waiting for more players to join.");
-            }else{
+            } else {
                 timeToStart.setVisible(true);
                 lobbyDescriptionText.textProperty().setValue("Time to race start:");
             }

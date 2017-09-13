@@ -355,27 +355,31 @@ public class RaceController {
         int pathPoints = 250;
         int skipAmount = 15;
         for (int i = 0; i < boats.size(); i++){
-            if(race.getBoats().get(i).isKnowsBoatLocation()) {
-                if (viewUpdateCount % skipAmount == 0) {
-                    if (absolutePaths.get(i).size() > pathPoints) {
-                        paths.get(i).getElements().remove(1);
-                        absolutePaths.get(i).remove(0);
+            try {
+                if (race.getBoats().get(i).isKnowsBoatLocation()) {
+                    if (viewUpdateCount % skipAmount == 0) {
+                        if (absolutePaths.get(i).size() > pathPoints) {
+                            paths.get(i).getElements().remove(1);
+                            absolutePaths.get(i).remove(0);
+                        }
+                        absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+                        paths.get(i).getElements().add(new LineTo());
                     }
-                    absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-                    paths.get(i).getElements().add(new LineTo());
-                }
-                lastHeadings.set(i, race.getBoats().get(i).getHeading());
+                    lastHeadings.set(i, race.getBoats().get(i).getHeading());
 
-                ((MoveTo) paths.get(i).getElements().get(0))
-                        .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
-                ((MoveTo) paths.get(i).getElements().get(0))
-                        .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
-                for (int j = 1; j < paths.get(i).getElements().size(); j++) {
-                    ((LineTo) paths.get(i).getElements().get(j))
-                            .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
-                    ((LineTo) paths.get(i).getElements().get(j))
-                            .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
+                    ((MoveTo) paths.get(i).getElements().get(0))
+                            .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
+                    ((MoveTo) paths.get(i).getElements().get(0))
+                            .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
+                    for (int j = 1; j < paths.get(i).getElements().size(); j++) {
+                        ((LineTo) paths.get(i).getElements().get(j))
+                                .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
+                        ((LineTo) paths.get(i).getElements().get(j))
+                                .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
+                    }
                 }
+            } catch (IndexOutOfBoundsException e) {
+                System.err.print(e);
             }
         }
     }
@@ -1009,10 +1013,12 @@ public class RaceController {
                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
 
         if (race.notGoing()) {
+            System.out.println("race not going");
             raceHours = 0;
             raceMinutes = 0;
             raceSeconds = 0;
         }
+        System.out.println(raceSeconds);
         clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
     }
 

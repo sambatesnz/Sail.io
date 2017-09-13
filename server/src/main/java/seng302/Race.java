@@ -450,8 +450,9 @@ public class Race {
     /**
      * Checks the race status, and updates the race information accordingly
      */
-    public void updateRaceInfo(){
+    public void updateRaceInfo() {
         if (raceStatus != RaceStatus.FINISHED) {
+
             if (clientIDs.size() < 2) {
                 raceStatus = RaceStatus.START_TIME_NOT_SET;
                 startingTime = getNewStartTime();
