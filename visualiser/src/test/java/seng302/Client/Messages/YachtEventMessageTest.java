@@ -46,14 +46,14 @@ public class YachtEventMessageTest {
 
         yachtEventMessage.updateRace(race);
         int actualAmountOfBoats = 1; //At this point we have only set one boat to finished
-        assertEquals(actualAmountOfBoats, race.getFinishedBoats().size());
+        assertEquals(actualAmountOfBoats, race.getBoatsForScoreBoard().size());
 
         message = new YachtEventMessage(boat2.getSourceId(), YachtIncidentEvent.FINISHED);
         yachtEventMessage = new seng302.Client.Messages.YachtEventMessage(message.getBody());
         yachtEventMessage.updateRace(race);
 
         actualAmountOfBoats = 2; //At this point we have set two boats to finished
-        assertEquals(actualAmountOfBoats, race.getFinishedBoats().size());
+        assertEquals(actualAmountOfBoats, race.getBoatsForScoreBoard().size());
 
     }
 

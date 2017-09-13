@@ -25,7 +25,7 @@ public class Race {
     private List<CompoundMark> gates;
     private Map<Integer, Mark> marks;
     private ObservableMap<Integer, Boat> boats;
-    private ObservableList<Boat> finishedBoats;
+    private ObservableList<Boat> boatsForScoreBoard;
     private List<Mark> boundaries;
     private List<Leg> courseOrder;
     private double windHeading;
@@ -62,7 +62,7 @@ public class Race {
      * Constructor for the race class.
      */
     public Race() {
-        finishedBoats = FXCollections.observableArrayList();
+        boatsForScoreBoard = FXCollections.observableArrayList();
         raceXMLReceived = false;
         viewReady = false;
         finished = new SimpleBooleanProperty(false);
@@ -167,10 +167,10 @@ public class Race {
 
     /**
      * Setter for finishedBoat, mainly to allow for testing.
-     * @param finishedBoats set the finished list of boats
+     * @param boatsForScoreBoard set the finished list of boats
      */
-    public void setFinishedBoats(List<Boat> finishedBoats) {
-        this.finishedBoats = FXCollections.observableArrayList(finishedBoats);
+    public void setBoatsForScoreBoard(List<Boat> boatsForScoreBoard) {
+        this.boatsForScoreBoard = FXCollections.observableArrayList(boatsForScoreBoard);
     }
 
 
@@ -193,7 +193,7 @@ public class Race {
      * Getter for finished boat list.
      * @return finished boat list.
      */
-    public ObservableList<Boat> getFinishedBoats() { return finishedBoats; }
+    public ObservableList<Boat> getBoatsForScoreBoard() { return boatsForScoreBoard; }
 
     public double getWindHeading() {
         return windHeading;
@@ -209,7 +209,7 @@ public class Race {
         }
         MarkStrings.add("Race Results");
         int i = 1;
-        for (Boat boat : finishedBoats) {
+        for (Boat boat : boatsForScoreBoard) {
             MarkStrings.add(i + ": " + boat.getName());
             i++;
         }
@@ -458,15 +458,22 @@ public class Race {
         return finished;
     }
 
-    public boolean addFinishedBoat(int boatSourceId) {
+
+    /**
+     * Adds a boat and to the scoreboard list and sets its status
+     * @param boatSourceId source id of the boat
+     * @param finished whether the boat has finished
+     * @return whether collection changed
+     */
+    public boolean addBoatToScoreBoard(int boatSourceId, boolean finished) {
         boolean hasChanged = false;
         Boat finishedBoat = boats.get(boatSourceId);
-        if (!finishedBoats.contains(finishedBoat)) {
-            finishedBoats.add(finishedBoat);
-            finishedBoat.setFinished(true);
+        if (!boatsForScoreBoard.contains(finishedBoat)) {
+            if(finished) finishedBoat.setFinished(true);
+            boatsForScoreBoard.add(finishedBoat);
             System.out.println(expectedStartTime);
             finishedBoat.setFinishTime(getCurrentTime() - getExpectedStartTime());
-            finishedBoat.setPlacement(finishedBoats.size());
+            finishedBoat.setPlacement(boatsForScoreBoard.size());
             hasChanged = true;
         }
         return hasChanged;

@@ -50,7 +50,7 @@ public class ScoreScreenController {
                 new PropertyValueFactory<Boat, String>("finishTimeString")
         );
 
-        finishersTable.setItems(race.getFinishedBoats());
+        finishersTable.setItems(race.getBoatsForScoreBoard());
     }
     @FXML
     public void exitToMenu() throws IOException {

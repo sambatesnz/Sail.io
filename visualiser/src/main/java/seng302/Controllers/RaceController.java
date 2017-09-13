@@ -980,10 +980,10 @@ public class RaceController {
     }
 
     private void initFinisherObserver(){
-        race.getFinishedBoats().addListener(new ListChangeListener<Boat>() {
+        race.getBoatsForScoreBoard().addListener(new ListChangeListener<Boat>() {
             @Override
             public void onChanged(Change<? extends Boat> c) {
-                for (Boat boat : race.getFinishedBoats()) {
+                for (Boat boat : race.getBoatsForScoreBoard()) {
                     if (boat.getSourceId() == race.getClientSourceId()){
                         if(!clientFinished) {
                             finishingPane.setVisible(true);

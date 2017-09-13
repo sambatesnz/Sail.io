@@ -619,6 +619,7 @@ public class Boat {
     }
 
     public String getFinishTimeString() {
+        if(!finished) return "DNF";
         long time = finishTime;
         int raceHours = (int) TimeUnit.MILLISECONDS.toHours(time);
         int raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(time) -

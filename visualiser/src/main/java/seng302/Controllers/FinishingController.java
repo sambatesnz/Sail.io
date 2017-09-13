@@ -1,8 +1,5 @@
 package seng302.Controllers;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -13,9 +10,6 @@ import seng302.RaceObjects.Race;
 import seng302.RaceObjects.ViewScreenType;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by sba136 on 28/08/17.
@@ -56,7 +50,7 @@ public class FinishingController {
                 new PropertyValueFactory<Boat, String>("finishTimeString")
         );
 
-        finishersTable.setItems(race.getFinishedBoats());
+        finishersTable.setItems(race.getBoatsForScoreBoard());
     }
     @FXML
     public void exitToMenu() throws IOException {
