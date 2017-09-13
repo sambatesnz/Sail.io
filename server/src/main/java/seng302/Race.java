@@ -487,8 +487,6 @@ public class Race {
                 BoatPair boatPair = new BoatPair(boat, checkBoat);
                 if(!collisionMap.containsKey(new BoatPair(boat, checkBoat))){
                     collisionMap.put(boatPair, new BoatCollision(boat, checkBoat));
-                }else{
-                    System.out.println("KEY EXISTS: " + boatPair.getBoat1().getSourceId() + " + " + boatPair.getBoat2().getSourceId());
                 }
             }
         }
