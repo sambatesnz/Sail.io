@@ -159,10 +159,13 @@ public class RaceController {
 
         fpsCounter = new FPSCounter(fpsLabel);
 
+        centerOfScreen = new Boat(-1, "CenterOfScreen");
+        centerOfScreen.setMark(race.getMapCenter());
+        boatToFollow = centerOfScreen;
+
         initialiseZoomFollowing();
         initialiseRoundingArrow();
         initialiseNextMarkArrow();
-//        roundingArrow1.setScaleX(-1););
         initialisePositionsTable();
         enableScrolling();
         finishingPane.setVisible(false);
@@ -725,11 +728,15 @@ public class RaceController {
     }
 
     private void updateViewLayout(){
-        if(race.isViewReady() && viewInitialised){
-            Coordinate.updateBorder();
-            Coordinate.setOffset(calculateOffset());
-            Coordinate.updateViewCoordinates();
+        try {
+            if(race.isViewReady() && viewInitialised){
+                Coordinate.updateBorder();
+                Coordinate.setOffset(calculateOffset());
+                Coordinate.updateViewCoordinates();
+            }
+        } catch (Exception e) {
         }
+
 
         if(Coordinate.getWindowHeightY() != windowHeight || Coordinate.getWindowWidthX() != windowWidth) {
             viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
