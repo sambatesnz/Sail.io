@@ -55,8 +55,10 @@
         <Limit SeqID="6" Lat="57.6641400" Lon="11.8385840" />
         <Limit SeqID="7" Lat="57.6629430" Lon="11.8332030" />
         <Limit SeqID="8" Lat="57.6629480" Lon="11.8249660" />
-        <Limit SeqID="9" Lat="57.6739450" Lon="11.8250920" />
-        <Limit SeqID="10" Lat="57.6739450" Lon="11.8321340" />
+        <Limit SeqID="9" Lat="57.6709450" Lon="11.8250920" />
+        <Limit SeqID="10" Lat="57.6732450" Lon="11.8250920" />
+        <Limit SeqID="11" Lat="57.6732450" Lon="11.8321340" />
+        <Limit SeqID="12" Lat="57.6709450" Lon="11.8321340" />
     </CourseLimit>
 </Race>
 

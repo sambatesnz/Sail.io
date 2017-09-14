@@ -35,7 +35,8 @@ final class BoatInfo {
             List<String> boatData = dataMap.get(boatName);
             Boat boat = new Boat(boatName, boatData.get(1), sourceId, boatData.get(0));
             boat.setHeading(180);
-            Mark mark = new Mark(57.671335, 11.8271330 + i/1000.0);
+            Mark mark = new Mark(getRandomDouble(57.6732450, 57.6709450),
+                    getRandomDouble(11.8321340, 11.8250920));
             boat.setMark(mark);
             boats.add(boat);
             sourceId--;
@@ -67,5 +68,10 @@ final class BoatInfo {
         dataMap.put("Boat 19", new ArrayList<>(Arrays.asList("Boat 19 Land", "B19")));
         dataMap.put("Boat 20", new ArrayList<>(Arrays.asList("Boat 20 Land", "B20")));
         return dataMap;
+    }
+
+    private static double getRandomDouble(double max, double min) {
+        Random random = new Random();
+        return min + (max - min) * random.nextDouble();
     }
 }
