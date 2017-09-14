@@ -60,8 +60,8 @@ public class Race {
      * Constructor for the race class.
      */
     public Race() {
-        parseCourseXML("Race.xml");
-        parseRaceXML("Race.xml");
+        parseCourseXML("Race2.xml");
+        parseRaceXML("Race2.xml");
         // setWindHeading(190);
         startingWindSpeed = (short) (FORTY_KNOTS * 2) ;
         setStartingWindSpeed();

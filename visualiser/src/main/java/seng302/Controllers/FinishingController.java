@@ -1,5 +1,6 @@
 package seng302.Controllers;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -23,6 +24,8 @@ public class FinishingController {
     private TableColumn<Boat, String> positionColumn;
     @FXML
     private TableColumn<Boat, String> finishTimeColumn;
+    @FXML
+    private Button exitToMenuBtn;
 
     private Stage primaryStage;
 
@@ -35,7 +38,7 @@ public class FinishingController {
     }
     @FXML
     public void initialize(){
-
+        exitToMenuBtn.setVisible(false);
     }
     public void initialiseTable(){
         positionColumn.setCellValueFactory(
@@ -56,6 +59,7 @@ public class FinishingController {
     public void exitToMenu() throws IOException {
         race.setConnectedToServer(0);
         race.setViewScreen(ViewScreenType.MENU.getViewScreenType());
+        System.out.println("oo");
     }
 
     public void setRace(Race race) {
