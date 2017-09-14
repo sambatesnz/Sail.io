@@ -4,7 +4,9 @@ import seng302.Client.Messages.Message;
 import seng302.Client.Messages.RaceRegistrationMessage;
 import seng302.Client.Messages.RaceRegistrationType;
 import seng302.PacketGeneration.BinaryMessage;
+import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.Race;
+import seng302.RaceObjects.ViewScreenType;
 import seng302.UserInput.KeyBindingUtility;
 import seng302.UserInput.PracticeMessage;
 
@@ -47,7 +49,8 @@ public class Client {
      * Handles both incoming and outgoing packets
      */
     public void processStreams() {
-        while (clientSocket != null && !clientSocket.isClosed() && streamInput != null && streamOutput != null) {
+
+        while (clientSocket != null && !clientSocket.isClosed() && streamInput != null && !socketStreamClosed()) {
             try {
                 Thread.sleep(1);
                 nextMessage();
@@ -60,6 +63,25 @@ public class Client {
             Arrays.fill(dataReceived, (byte)0);
         }
         disconnect();
+    }
+
+    /**
+     * Tests whether the connection to the server has been closed
+     * Done by writing dummy data to the socket stream that may be there
+     * @return boolean whether the socket stream has been closed
+     */
+    private boolean socketStreamClosed() {
+        boolean isDisconnected = false;
+        try {
+            streamInput.mark(1);
+            if (streamInput.read() < 0){
+                isDisconnected = true;
+            }
+            streamInput.reset();
+        } catch (IOException e) {
+            isDisconnected = true;
+        }
+        return isDisconnected;
     }
 
     private void nextMessage() throws IOException {
@@ -91,9 +113,6 @@ public class Client {
         byte[] body = new byte[messageLength + CRC_LEN];
         streamInput.read(body);
 
-
-
-        //TODO: pass message in to the thing
         byte[] message = new byte[messageLength + CRC_LEN + HEADER_LEN];
         System.arraycopy(head, 0, message, 0, HEADER_LEN);
         System.arraycopy(body, 0, message, HEADER_LEN, messageLength);
@@ -136,8 +155,10 @@ public class Client {
             streamOutput.write(rrm.createMessage());
             streamOutput.flush();
         }
-        catch (IOException e) {
+        catch (IOException e) { // Could not connect
             race.setConnectedToServer(2);
+            race.setViewScreen(ViewScreenType.MENU_ERROR.getViewScreenType());
+            System.out.println("returning with error");
             e.printStackTrace();
         }
 
@@ -145,6 +166,15 @@ public class Client {
 
     public void disconnect() {
         try {
+            race.setConnectedToServer(0);
+            if (race.getBoatsForScoreBoard().size() > 0) {
+                for (Boat boat: race.getBoats()){
+                    race.addBoatToScoreBoard(boat.getSourceId(), false);
+                }
+                race.setViewScreen(ViewScreenType.SCORE_SCREEN.getViewScreenType());
+            } else {
+                race.setViewScreen(ViewScreenType.MENU_SERVER_CLOSED.getViewScreenType());
+            }
             System.out.println("Socket disconnected.");
             clientSocket.close();
         } catch (IOException e) {

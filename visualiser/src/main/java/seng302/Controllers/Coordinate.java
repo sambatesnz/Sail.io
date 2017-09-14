@@ -7,7 +7,7 @@ import seng302.RaceObjects.Mark;
  * Contains methods that get relative Marks so that items are scaled when the window is resized.
  * Created by Matt Simpson on 20/03/2017.
  */
-public final class  Coordinate {
+public final class Coordinate {
 
     //Window resolution
     private static double windowWidthX;
@@ -58,7 +58,7 @@ public final class  Coordinate {
 
         if ((windowWidthX / raceWidthX) > windowHeightY / raceHeightY ) {
             derivedBorderWidthX = (windowWidthX - windowHeightY / raceHeightY * raceWidthX) / 2;
-        }else if((windowWidthX / raceWidthX) < windowHeightY / raceHeightY ) {
+        } else if((windowWidthX / raceWidthX) < windowHeightY / raceHeightY ) {
             derivedBorderHeightY = (windowHeightY - windowWidthX / raceWidthX * raceHeightY) / 2;
         }
     }

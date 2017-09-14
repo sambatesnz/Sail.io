@@ -24,10 +24,8 @@ public class Race {
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
     private Map<Integer, Mark> marks;
-    // Changing list of boats to hashmap. where key is boat SourceID, as retrieved from the xml message
-//    private List<Boat> boats;
     private ObservableMap<Integer, Boat> boats;
-    private List<Boat> finishedBoats;
+    private ObservableList<Boat> boatsForScoreBoard;
     private List<Mark> boundaries;
     private List<Leg> courseOrder;
     private double windHeading;
@@ -43,9 +41,11 @@ public class Race {
     private long currentTime;
     private Mark viewMin;
     private Mark viewMax;
-    private SimpleIntegerProperty connectedToServer = new SimpleIntegerProperty(0);
-
+    private SimpleIntegerProperty connectedToServer;
+    private SimpleIntegerProperty viewScreen;
     private boolean raceXMLReceived;
+
+    private final int COLLISION_FRAMES = 50;
 
     // yellow, blue, pink, orange, green, purple, red, brown
     private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300");
@@ -53,6 +53,7 @@ public class Race {
     private boolean viewReady;
     private boolean hasRegatta;
     private int clientSourceId;
+    private int collisionCount = 0;
     public ObservableList<Boat> boatsObs;
     private SimpleStringProperty timeToStart;
 
@@ -61,18 +62,18 @@ public class Race {
      * Constructor for the race class.
      */
     public Race() {
-        finishedBoats = new ArrayList<>();
+        boatsForScoreBoard = FXCollections.observableArrayList();
         raceXMLReceived = false;
         viewReady = false;
         finished = new SimpleBooleanProperty(false);
-
-
         MarkStrings = FXCollections.observableArrayList();
         this.receivedRaceXML = false;
         hasRegatta = false;
-        this.clientSourceId = 0;
+        this.clientSourceId = -1;
         boatsObs = FXCollections.observableArrayList();
         timeToStart = new SimpleStringProperty();
+        connectedToServer = new SimpleIntegerProperty(0); // 0 is disconnected, 1 = connected, 2 = failed connection(ask Sam Bates)
+        viewScreen = new SimpleIntegerProperty(0);
     }
 
     public int isConnectedToServer() {
@@ -166,11 +167,12 @@ public class Race {
 
     /**
      * Setter for finishedBoat, mainly to allow for testing.
-     * @param finishedBoats set the finished list of boats
+     * @param boatsForScoreBoard set the finished list of boats
      */
-    public void setFinishedBoats(List<Boat> finishedBoats) {
-        this.finishedBoats = finishedBoats;
+    public void setBoatsForScoreBoard(List<Boat> boatsForScoreBoard) {
+        this.boatsForScoreBoard = FXCollections.observableArrayList(boatsForScoreBoard);
     }
+
 
 
     /**
@@ -191,7 +193,7 @@ public class Race {
      * Getter for finished boat list.
      * @return finished boat list.
      */
-    public List<Boat> getFinishedBoats() { return finishedBoats; }
+    public ObservableList<Boat> getBoatsForScoreBoard() { return boatsForScoreBoard; }
 
     public double getWindHeading() {
         return windHeading;
@@ -207,7 +209,7 @@ public class Race {
         }
         MarkStrings.add("Race Results");
         int i = 1;
-        for (Boat boat : finishedBoats) {
+        for (Boat boat : boatsForScoreBoard) {
             MarkStrings.add(i + ": " + boat.getName());
             i++;
         }
@@ -264,8 +266,12 @@ public class Race {
         raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceTime) -
             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
 
-
-        timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+        if(raceStatus == RaceStatus.START_TIME_NOT_SET){
+            timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 98));
+            timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 99));
+        }else {
+            timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+        }
     }
 
     /**
@@ -292,7 +298,7 @@ public class Race {
     }
 
     public boolean notGoing() {
-        return !started() && raceStatus != RaceStatus.WARNING && raceStatus != RaceStatus.PREP && raceStatus != RaceStatus.STARTED && raceStatus != RaceStatus.PRESTART;
+        return raceStatus != RaceStatus.WARNING && raceStatus != RaceStatus.PREP && raceStatus != RaceStatus.STARTED && raceStatus != RaceStatus.PRESTART;
     }
 
     /**
@@ -327,12 +333,15 @@ public class Race {
      * @return the boats competing
      */
     public List<Boat> getBoats() {
-        if (!raceReady){
+        if (!raceReady || boats.values().size() == 0){
             return FXCollections.observableList(new ArrayList<>());
         } else {
-            //return boats.values();
             return new ArrayList<>(boats.values());
         }
+    }
+
+    public int getCollisionCount() {
+        return collisionCount;
     }
 
     public List<Leg> getCourseOrder() {
@@ -365,7 +374,7 @@ public class Race {
     }
 
     public void setBoundaries(List<CourseLimit> courseLimits) {
-        boundaries = new ArrayList<>();
+        boundaries = Collections.synchronizedList(new ArrayList<>());
         for (CourseLimit cl: courseLimits) {
             boundaries.add(new Mark(cl.getLat(), cl.getLon()));
         }
@@ -447,4 +456,54 @@ public class Race {
     public BooleanProperty finishedProperty() {
         return finished;
     }
+
+
+    /**
+     * Adds a boat and to the scoreboard list and sets its status
+     * @param boatSourceId source id of the boat
+     * @param finished whether the boat has finished
+     * @return whether collection changed
+     */
+    public boolean addBoatToScoreBoard(int boatSourceId, boolean finished) {
+        boolean hasChanged = false;
+        Boat finishedBoat = boats.get(boatSourceId);
+        if (!boatsForScoreBoard.contains(finishedBoat)) {
+            if(finished) finishedBoat.setFinished(true);
+            boatsForScoreBoard.add(finishedBoat);
+            System.out.println(expectedStartTime);
+            finishedBoat.setFinishTime(getCurrentTime() - getExpectedStartTime());
+            finishedBoat.setPlacement(boatsForScoreBoard.size());
+            hasChanged = true;
+        }
+        return hasChanged;
+    }
+
+    public int getViewScreen() {
+        return viewScreen.get();
+    }
+
+    public SimpleIntegerProperty viewScreenProperty() {
+        return viewScreen;
+    }
+
+    public void setViewScreen(int viewScreen) {
+        this.viewScreen.set(viewScreen);
+    }
+    /**
+     * If the set of frames for the control circle to be red after a collision is 0, when called, this function will set
+     * the number of frames to the preset collision frame number.
+     */
+    public void addCollision() {
+        if (collisionCount == 0) {
+            collisionCount = COLLISION_FRAMES;
+        }
+    }
+
+    /**
+     * Reduces the collision frame count by one.
+     */
+    public void reduceCollisionCount() {
+        collisionCount -= 1;
+    }
+
 }

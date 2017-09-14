@@ -1,12 +1,14 @@
 package seng302.Controllers;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -17,72 +19,61 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
+import javafx.stage.Stage;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.Mark;
 import seng302.Rounding;
+import seng302.Visualiser.Arrow;
 import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
-import seng302.Visualiser.WindArrow;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import static java.lang.Math.atan2;
+import static java.lang.Math.*;
 import static javafx.scene.input.KeyCode.Z;
 
 /**
  * Class that controls the race window and updates the race as it proceeds
  */
 public class RaceController {
-    @FXML
-    private BorderPane mainBorderPane;
-    @FXML
-    private AnchorPane viewAnchorPane;
-    @FXML
-    private Group group;
-    @FXML
-    private Group boundaryGroup;
-    @FXML
-    private Label clock;
 
-    @FXML
-    private Label localTimeZone;
-    @FXML
-    private Label localTime;
-    @FXML
-    private ListView<String> finishedListView;
-    @FXML
-    private TableView<Boat> positionTable;
-    @FXML
-    private TableColumn<Boat, String> positionCol;
-    @FXML
-    private TableColumn<Boat, String> nameCol;
-    @FXML
-    private TableColumn<Boat, String> speedCol;
-    @FXML
-    private Label fpsLabel;
-    @FXML
-    private Button annotationBtn;
-    @FXML
-    private Button fpsBtn;
-    @FXML
-    private ListView<String> startersList;
-    @FXML
-    private LineChart<Number, Number> sparklinesChart;
-    @FXML
-    private SplitPane sidePanelSplit;
-
+    @FXML private BorderPane mainBorderPane;
+    @FXML private AnchorPane viewAnchorPane;
+    @FXML private Group group;
+    @FXML private Group boundaryGroup;
+    @FXML private Label clock;
+    @FXML private Label localTimeZone;
+    @FXML private Label localTime;
+    @FXML private ListView<String> finishedListView;
+    @FXML private TableView<Boat> positionTable;
+    @FXML private TableColumn<Boat, String> positionCol;
+    @FXML private TableColumn<Boat, String> nameCol;
+    @FXML private TableColumn<Boat, String> speedCol;
+    @FXML private TableColumn<Boat, String> legCol;
+    @FXML private Label fpsLabel;
+    @FXML private Button annotationBtn;
+    @FXML private Button fpsBtn;
+    @FXML private ListView<String> startersList;
+    @FXML private LineChart<Number, Number> sparklinesChart;
+    @FXML private SplitPane sidePanelSplit;
+    @FXML private Pane finishingPane;
+    @FXML private Group finishingGroup;
     @FXML private CheckBox BoatNameCheckBox;
     @FXML private CheckBox BoatSpeedCheckBox;
+    @FXML private Button toggleFinishersBtn;
 
     private Race race;
 
@@ -92,7 +83,8 @@ public class RaceController {
     private List<List<Point2D>> absolutePaths = new ArrayList<>();
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
-    private WindArrow windArrow = new WindArrow();
+    private Arrow nextMarkArrow;
+    private Arrow windArrow = new Arrow();
     private Group roundingArrow1 = new Group();
     private Group roundingArrow2 = new Group();
     private Group roundingArrowMirrored1 = new Group();
@@ -103,6 +95,7 @@ public class RaceController {
     private boolean showFPS = true;
     private List<Path> paths = new ArrayList<>();
     private Boat boatToFollow;
+    private Boat spectatorBoat;
     private Boat centerOfScreen;
     private double zoomLevel = 0;
     private boolean followingBoat = false;
@@ -118,7 +111,7 @@ public class RaceController {
     private String ipAddr;
     private int port;
     private AnimationTimer raceListener;
-
+    private boolean isFinishersHidden = true;
 
     // Sparkline variables
     @FXML    private NumberAxis xAxis;
@@ -140,6 +133,8 @@ public class RaceController {
     private boolean boatMetaDataInitialised = false;
     private boolean boatLocationDataInitialised = false;
     private boolean viewInitialised = false;
+    private Stage primaryStage;
+    private boolean clientFinished = false;
 
 
     public RaceController(Race race){
@@ -150,10 +145,12 @@ public class RaceController {
      * initializes the race display.
      */
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
+        windArrow.setTranslateX(50);
+        windArrow.setTranslateY(50);
         group.getChildren().add(windArrow);
 
         clock.setFont(new Font("Arial", 30));
@@ -164,22 +161,44 @@ public class RaceController {
 
         initialiseZoomFollowing();
         initialiseRoundingArrow();
-//        roundingArrow1.setScaleX(-1););
+        initialiseNextMarkArrow();
         initialisePositionsTable();
         enableScrolling();
-
+        toggleFinishersBtn.setVisible(false);
+        toggleFinishersBtn.setText("Hide Finishers");
+        finishingPane.setVisible(false);
         race.finishedProperty().addListener((observable, oldValue, raceFinished) -> {
             if (raceFinished) {
                 stopRaceListener();
             }
         });
-
+        loadFinishers();
         initialiseRaceListener();
+        initFinisherObserver();
+        if (race.getClientSourceId() == 0){
+            initialiseSpectatorZoom();
+        }
+
         startRaceListener();
     }
 
+    private void initialiseSpectatorZoom() {
+        positionTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                spectatorBoat = race.getBoatsMap().get(newValue.getSourceId());
+                if (followingBoat) {
+                    zoomLevel = Coordinate.getZoom();
+                    resetZoom();
+                    Coordinate.setTrackingBoat(false);
+                    followingBoat = !followingBoat;
+                }
+                Platform.runLater( ()-> {  positionTable.getSelectionModel().clearSelection();  });
+            }
+        });
+    }
+
     private void initialiseZoomFollowing() {
-        viewAnchorPane.setOnKeyPressed(event -> {
+        mainBorderPane.setOnKeyPressed(event -> {
             if (event.getCode().equals(Z)) {
                 resetViewButtonPressed();
             }
@@ -187,7 +206,7 @@ public class RaceController {
     }
 
     private void enableScrolling() {
-        viewAnchorPane.setOnScroll(event -> {
+        mainBorderPane.setOnScroll(event -> {
             if (Coordinate.isTrackingBoat()) {
                 if (event.getDeltaY() < 0) {
                     Coordinate.decreaseZoom();
@@ -208,7 +227,11 @@ public class RaceController {
 //            String pos = String.valueOf(p.getValue().getPosition());
 //            return new ReadOnlyObjectWrapper<>(pos);
 //        });
-        positionCol.setVisible(false);
+//        positionCol.setVisible(false);
+
+
+        legCol.setCellValueFactory(new PropertyValueFactory<>("currentLegIndex"));
+        legCol.setSortType(TableColumn.SortType.ASCENDING);
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         speedCol.setCellValueFactory(p -> {
             String speed = String.valueOf(p.getValue().getSpeedInKnots());
@@ -227,7 +250,11 @@ public class RaceController {
                 fpsCounter.update(currentNanoTime);
                 setViewParameters();
 
-                updateViewLayout();
+                try {
+                    updateViewLayout();
+                } catch (Exception e) {
+//                    e.printStackTrace(); //removed for production environment
+                }
 
                 initialiseBoatMetaData();
                 initialiseBoatLocation();
@@ -238,22 +265,32 @@ public class RaceController {
                         updateBoatPaths();
                     }
                 } catch (Exception e) {
-                    System.out.println(e);
+//                    e.printStackTrace();
                 }
                 updateBoundary();
 
 
                 viewUpdateCount++;
-
-                if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0){
-                    positionTable.refresh();
-                    positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
-                    positionTable.setPrefHeight(Coordinate.getWindowHeightY());
-                }
-
+                    if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0) {
+                        positionTable.refresh();
+                        positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
+                        positionTable.setPrefHeight(Coordinate.getWindowHeightY());
+                    }
                 if (sparkCounter > 100 && race.started()) {
                     sparkCounter = 0;
                     //updateSparkLineChart(); //TODO undisabel sparkline chart
+                }
+                if (race.getCollisionCount() > 0) {
+                    race.reduceCollisionCount();
+                    // need to find a way to highlight only the users specific boat.
+                    for (BoatSprite boatSprite : boats) {
+                        if (boatSprite.getBoat().getSourceId() == race.getClientSourceId()) {
+                            boatSprite.collisionHighlight();
+                            if (race.getCollisionCount() == 0) {
+                                boatSprite.removeCollisionHighlight();
+                            }
+                        }
+                    }
                 }
                 if (race.isFinished()) {
                     raceListener.stop();
@@ -265,11 +302,11 @@ public class RaceController {
 
 
 
-    public void startRaceListener() {
+    private void startRaceListener() {
         raceListener.start();
     }
 
-    public void stopRaceListener() {
+    private void stopRaceListener() {
         raceListener.stop();
     }
 
@@ -293,7 +330,7 @@ public class RaceController {
                 boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
                 // Temporary hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(i).getSourceId() == race. getClientSourceId()) {
+                if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
                     updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
                 }
 
@@ -304,7 +341,7 @@ public class RaceController {
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * (1 / (1 + Coordinate.getZoom() * 0.9)))
                         * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
-                        * (1 / (1 + Coordinate.getZoom() * 0.9))) * Math.cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                        * (1 / (1 + Coordinate.getZoom() * 0.9))) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
 
                 //Boat annotations (name and speed)
                 boats.get(i).getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
@@ -341,27 +378,31 @@ public class RaceController {
         int pathPoints = 250;
         int skipAmount = 15;
         for (int i = 0; i < boats.size(); i++){
-            if(race.getBoats().get(i).isKnowsBoatLocation()) {
-                if (viewUpdateCount % skipAmount == 0) {
-                    if (absolutePaths.get(i).size() > pathPoints) {
-                        paths.get(i).getElements().remove(1);
-                        absolutePaths.get(i).remove(0);
+            try {
+                if (race.getBoats().get(i).isKnowsBoatLocation()) {
+                    if (viewUpdateCount % skipAmount == 0) {
+                        if (absolutePaths.get(i).size() > pathPoints) {
+                            paths.get(i).getElements().remove(1);
+                            absolutePaths.get(i).remove(0);
+                        }
+                        absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
+                        paths.get(i).getElements().add(new LineTo());
                     }
-                    absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-                    paths.get(i).getElements().add(new LineTo());
-                }
-                lastHeadings.set(i, race.getBoats().get(i).getHeading());
+                    lastHeadings.set(i, race.getBoats().get(i).getHeading());
 
-                ((MoveTo) paths.get(i).getElements().get(0))
-                        .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
-                ((MoveTo) paths.get(i).getElements().get(0))
-                        .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
-                for (int j = 1; j < paths.get(i).getElements().size(); j++) {
-                    ((LineTo) paths.get(i).getElements().get(j))
-                            .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
-                    ((LineTo) paths.get(i).getElements().get(j))
-                            .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
+                    ((MoveTo) paths.get(i).getElements().get(0))
+                            .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
+                    ((MoveTo) paths.get(i).getElements().get(0))
+                            .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
+                    for (int j = 1; j < paths.get(i).getElements().size(); j++) {
+                        ((LineTo) paths.get(i).getElements().get(j))
+                                .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
+                        ((LineTo) paths.get(i).getElements().get(j))
+                                .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
+                    }
                 }
+            } catch (IndexOutOfBoundsException e) {
+//                e.printStackTrace();
             }
         }
     }
@@ -410,7 +451,6 @@ public class RaceController {
                     paths.add(path);
                     absolutePaths.add(new ArrayList<>());
 
-
                     lastHeadings.add(race.getBoats().get(i).getHeading());
                 } else {
                     knowAllLocations = false;
@@ -430,7 +470,7 @@ public class RaceController {
         if (race.isRaceXMLReceived()){
             updateGates();
             updateMarks();
-            updateRoundingArrows();
+            updateMarkArrows();
         }
     }
 
@@ -457,75 +497,133 @@ public class RaceController {
         }
     }
 
-    private void updateRoundingArrows() {
+    private void updateNextMarkArrow(CompoundMark cm) {
+        double arrowTranslate = 15/(1+Coordinate.getZoom());
         int playerBoat = race.getClientSourceId();
-        if (race.getBoatsMap().get(playerBoat).getTargetMarkIndex() >= race.getCourseOrder().size()) {
-            roundingArrow1.setVisible(false);
-            roundingArrowMirrored1.setVisible(false);
-            roundingArrow2.setVisible(false);
-            roundingArrowMirrored2.setVisible(false);
+        if (playerBoat == 0) {
+            nextMarkArrow.setVisible(false);
         } else {
-            int cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getCompoundMarkId();
-            for (int i = 0; i < race.getCompoundMarks().size(); i++) {
-                CompoundMark cm = race.getCompoundMarks().get(i);
-                if (cmId == race.getCompoundMarks().get(i).getId()) {
-                    Rounding markRounding = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getRounding();
-                    int rotationIncrement;
-                    Group currentRoundingArrow1;
-                    Group currentRoundingArrow2 = roundingArrow2;
-                    if (markRounding == Rounding.STARBOARD) {
-                        roundingArrow1.setVisible(false);
-                        roundingArrowMirrored1.setVisible(true);
-                        roundingArrow2.setVisible(false);
-                        roundingArrowMirrored2.setVisible(false);
-                        rotationIncrement = 3;
-                        currentRoundingArrow1 = roundingArrowMirrored1;
+            double playerX = Coordinate.getRelativeX(race.getBoatsMap().get(playerBoat).getX());
+            double playerY = Coordinate.getRelativeY(race.getBoatsMap().get(playerBoat).getY());
+            double arrowX = playerX + arrowTranslate;
+            double arrowY = playerY + arrowTranslate;
+            double markX = Coordinate.getRelativeX(cm.getX());
+            double markY = Coordinate.getRelativeY(cm.getY());
+            boolean markIsFar = cm.getMarks().stream().allMatch(mark -> {
 
-                    } else if (markRounding == Rounding.STARBOARD_PORT) {
-                        roundingArrow1.setVisible(false);
-                        roundingArrowMirrored1.setVisible(true);
-                        roundingArrow2.setVisible(true);
-                        roundingArrowMirrored2.setVisible(false);
-                        rotationIncrement = 3;
-                        currentRoundingArrow1 = roundingArrowMirrored1;
-                        currentRoundingArrow2 = roundingArrow2;
+                double markX1 = Coordinate.getRelativeX(mark.getX());
+                double markY1 = Coordinate.getRelativeY(mark.getY());
+                double distX = abs(markX1 - arrowX);
+                double distY = abs(markY1 - arrowY);
 
-                    } else if (markRounding == Rounding.PORT) {
-                        roundingArrow1.setVisible(true);
-                        roundingArrowMirrored1.setVisible(false);
-                        roundingArrow2.setVisible(false);
-                        roundingArrowMirrored2.setVisible(false);
-                        rotationIncrement = -3;
-                        currentRoundingArrow1 = roundingArrow1;
+                double offsetX = 100;
+                double offsetY = 100;
+                if (markX1 > playerX) {
+                    offsetX *= -1;
+                }
+                if (markY1 > playerY) {
+                    offsetY *= -1;
+                }
 
-                    } else {
-                        roundingArrow1.setVisible(true);
-                        roundingArrowMirrored1.setVisible(false);
-                        roundingArrow2.setVisible(false);
-                        roundingArrowMirrored2.setVisible(true);
-                        rotationIncrement = -3;
-                        currentRoundingArrow1 = roundingArrow1;
-                        currentRoundingArrow2 = roundingArrowMirrored2;
-                    }
+                double nearDistanceX = Coordinate.getWindowWidthX() / 2 + offsetX;
+                double nearDistanceY = Coordinate.getWindowHeightY() / 2 + offsetY;
 
-                    roundingArrowRotationClockwise += rotationIncrement;
-                    roundingArrowRotationAntiClockwise -= rotationIncrement;
+                return distX > nearDistanceX || distY > nearDistanceY;
+            });
 
-                    currentRoundingArrow1.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(0).getX()));
-                    currentRoundingArrow1.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(0).getY()));
-                    currentRoundingArrow1.setRotate(roundingArrowRotationClockwise);
-                    updateNodeScale(currentRoundingArrow1);
-                    if (cm.getMarks().size() > 1) {
-                        double x1 = cm.getMarks().get(0).getX();
-                        double y1 = cm.getMarks().get(0).getY();
-                        double x2 = cm.getMarks().get(1).getX();
-                        double y2 = cm.getMarks().get(1).getY();
-                        double angle = Math.toDegrees(atan2(y2 - y1, x2 - x1)) * 2;
 
-                        currentRoundingArrow2.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(1).getX()));
-                        currentRoundingArrow2.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(1).getY()));
-                        currentRoundingArrow2.setRotate(roundingArrowRotationAntiClockwise - angle);
-                        updateNodeScale(currentRoundingArrow2);
+            if (followingBoat && markIsFar) {
+                double angleToNextMark = toDegrees(atan2(markY - arrowY, markX - arrowX));
+                nextMarkArrow.setTranslateX(arrowX);
+                nextMarkArrow.setTranslateY(arrowY);
+                nextMarkArrow.setRotate(angleToNextMark + 90);
+                nextMarkArrow.setVisible(true);
+                updateNodeScale(nextMarkArrow);
+            } else {
+                nextMarkArrow.setVisible(false);
+            }
+        }
+    }
+
+    private void updateRoundingArrows(CompoundMark cm) {
+        int playerBoat = race.getClientSourceId();
+        if (playerBoat != 0) {
+            Rounding markRounding = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getRounding();
+            int rotationIncrement;
+            Group currentRoundingArrow1;
+            Group currentRoundingArrow2 = roundingArrow2;
+            if (markRounding == Rounding.STARBOARD) {
+                roundingArrow1.setVisible(false);
+                roundingArrowMirrored1.setVisible(true);
+                roundingArrow2.setVisible(false);
+                roundingArrowMirrored2.setVisible(false);
+                rotationIncrement = 3;
+                currentRoundingArrow1 = roundingArrowMirrored1;
+
+            } else if (markRounding == Rounding.STARBOARD_PORT) {
+                roundingArrow1.setVisible(false);
+                roundingArrowMirrored1.setVisible(true);
+                roundingArrow2.setVisible(true);
+                roundingArrowMirrored2.setVisible(false);
+                rotationIncrement = 3;
+                currentRoundingArrow1 = roundingArrowMirrored1;
+                currentRoundingArrow2 = roundingArrow2;
+
+            } else if (markRounding == Rounding.PORT) {
+                roundingArrow1.setVisible(true);
+                roundingArrowMirrored1.setVisible(false);
+                roundingArrow2.setVisible(false);
+                roundingArrowMirrored2.setVisible(false);
+                rotationIncrement = -3;
+                currentRoundingArrow1 = roundingArrow1;
+
+            } else {
+                roundingArrow1.setVisible(true);
+                roundingArrowMirrored1.setVisible(false);
+                roundingArrow2.setVisible(false);
+                roundingArrowMirrored2.setVisible(true);
+                rotationIncrement = -3;
+                currentRoundingArrow1 = roundingArrow1;
+                currentRoundingArrow2 = roundingArrowMirrored2;
+            }
+
+            roundingArrowRotationClockwise += rotationIncrement;
+            roundingArrowRotationAntiClockwise -= rotationIncrement;
+
+            currentRoundingArrow1.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(0).getX()));
+            currentRoundingArrow1.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(0).getY()));
+            currentRoundingArrow1.setRotate(roundingArrowRotationClockwise);
+            updateNodeScale(currentRoundingArrow1);
+            if (cm.getMarks().size() > 1) {
+                double x1 = cm.getMarks().get(0).getX();
+                double y1 = cm.getMarks().get(0).getY();
+                double x2 = cm.getMarks().get(1).getX();
+                double y2 = cm.getMarks().get(1).getY();
+                double angle = Math.toDegrees(atan2(y2 - y1, x2 - x1)) * 2;
+
+                currentRoundingArrow2.setLayoutX(Coordinate.getRelativeX(cm.getMarks().get(1).getX()));
+                currentRoundingArrow2.setLayoutY(Coordinate.getRelativeY(cm.getMarks().get(1).getY()));
+                currentRoundingArrow2.setRotate(roundingArrowRotationAntiClockwise - angle);
+                updateNodeScale(currentRoundingArrow2);
+            }
+        }
+    }
+
+    private void updateMarkArrows() {
+        int playerBoat = race.getClientSourceId();
+        if (playerBoat != 0) {
+            if (race.getBoatsMap().get(playerBoat).getTargetMarkIndex() >= race.getCourseOrder().size()) {
+                roundingArrow1.setVisible(false);
+                roundingArrowMirrored1.setVisible(false);
+                roundingArrow2.setVisible(false);
+                roundingArrowMirrored2.setVisible(false);
+            } else {
+                int cmId = race.getCourseOrder().get(race.getBoatsMap().get(playerBoat).getTargetMarkIndex()).getCompoundMarkId();
+                for (int i = 0; i < race.getCompoundMarks().size(); i++) {
+                    CompoundMark cm = race.getCompoundMarks().get(i);
+                    if (cmId == cm.getId()) {
+                        updateNextMarkArrow(cm);
+                        updateRoundingArrows(cm);
                     }
                 }
             }
@@ -537,6 +635,13 @@ public class RaceController {
         roundingArrow2 = createRoundingArrow();
         roundingArrowMirrored1 = createMirroredRoundingArrow();
         roundingArrowMirrored2 = createMirroredRoundingArrow();
+
+        if (race.getClientSourceId() == 0){
+            roundingArrow1.setVisible(false);
+            roundingArrowMirrored1.setVisible(false);
+            roundingArrow2.setVisible(false);
+            roundingArrowMirrored2.setVisible(false);
+        }
 
         group.getChildren().addAll(roundingArrow1, roundingArrow2, roundingArrowMirrored1, roundingArrowMirrored2);
     }
@@ -588,6 +693,14 @@ public class RaceController {
         roundingArrow.getChildren().addAll(arrowMirrored, arcMirrored, rotationBase);
 
         return roundingArrow;
+    }
+
+    private void initialiseNextMarkArrow() {
+        if (race.getClientSourceId() != 0) {
+            nextMarkArrow = new Arrow();
+            nextMarkArrow.setFill(Color.GREEN);
+            group.getChildren().add(nextMarkArrow);
+        }
     }
 
     private void updateGates() {
@@ -642,23 +755,33 @@ public class RaceController {
         return offset;
     }
 
-    protected void resetZoom() {
+    private void resetZoom() {
         boatToFollow = centerOfScreen;
         Coordinate.setZoom(0);
     }
 
     private void updateViewLayout(){
-        if(race.isViewReady() && viewInitialised){
-            Coordinate.updateBorder();
-            Coordinate.setOffset(calculateOffset());
-            Coordinate.updateViewCoordinates();
+        try {
+            if(race.isViewReady() && viewInitialised){
+                Coordinate.updateBorder();
+                Coordinate.setOffset(calculateOffset());
+                Coordinate.updateViewCoordinates();
+            }
+        } catch (Exception e) {
         }
+
 
         if(Coordinate.getWindowHeightY() != windowHeight || Coordinate.getWindowWidthX() != windowWidth) {
             viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
             viewAnchorPane.setMaxHeight(Coordinate.getWindowHeightY());
             viewAnchorPane.setMinWidth(Coordinate.getWindowWidthX());
             viewAnchorPane.setMaxWidth(Coordinate.getWindowWidthX());
+
+            finishingGroup.setLayoutX(Coordinate.getWindowWidthX()/2 - 300) ;
+            finishingGroup.setLayoutY(Coordinate.getWindowHeightY()/2 - 200);
+
+            finishingPane.setLayoutX(Coordinate.getWindowWidthX()/2 - 300);
+            finishingPane.setLayoutY(Coordinate.getWindowHeightY()/2 - 200);
 
             fpsLabel.setLayoutX(Coordinate.getWindowWidthX() - 90);
             fpsLabel.setLayoutY(60);
@@ -668,6 +791,8 @@ public class RaceController {
             fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 75);
             annotationBtn.setLayoutX(14);
             annotationBtn.setLayoutY(Coordinate.getWindowHeightY() - 50);
+            toggleFinishersBtn.setLayoutX(14);
+            toggleFinishersBtn.setLayoutY(Coordinate.getWindowHeightY() - 100);
             BoatNameCheckBox.setLayoutX(14);
             BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 150);
             BoatSpeedCheckBox.setLayoutX(14);
@@ -817,20 +942,26 @@ public class RaceController {
      * Resets the view back to its original state.
      * If the boat map is null, it has no effect.
      */
-    public void resetViewButtonPressed() {
+    private void resetViewButtonPressed() {
         if (followingBoat) {
             zoomLevel = Coordinate.getZoom();
             resetZoom();
             Coordinate.setTrackingBoat(false);
         } else {
-            if (race.getBoatsMap() == null) {
+            int playerBoat = race.getClientSourceId();
+            if (race.getBoatsMap() == null || (spectatorBoat == null && playerBoat == 0)) {
                 return;
             }
-            boatToFollow = race.getBoatsMap().get(race.getClientSourceId());
+            if (playerBoat == 0){
+                boatToFollow = spectatorBoat;
+            } else {
+                boatToFollow = race.getBoatsMap().get(playerBoat);
+            }
             Coordinate.setZoom(zoomLevel);
             Coordinate.setTrackingBoat(true);
         }
         followingBoat = !followingBoat;
+
     }
 
     /**
@@ -907,10 +1038,14 @@ public class RaceController {
      * clears and re-draws boundary to avoid problem when course bounds change
      */
     private void updateBoundary(){
-        if(race.isViewReady()){
-            boundary = getBoundary(race);
-            boundaryGroup.getChildren().clear();
-            boundaryGroup.getChildren().add(boundary);
+        try {
+            if(race.isViewReady()){
+                boundary = getBoundary(race);
+                boundaryGroup.getChildren().clear();
+                boundaryGroup.getChildren().add(boundary);
+            }
+        } catch (Exception e) {
+
         }
     }
 
@@ -951,4 +1086,64 @@ public class RaceController {
         this.ipAddr = ip;
         this.port = port;
     }
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+    /**
+     * This gets called once the visualiser receives information that the players boat has finished the race.
+     */
+    public void raceFinished() throws IOException {
+        finishingPane.setVisible(true);
+    }
+
+    private void initFinisherObserver(){
+        race.getBoatsForScoreBoard().addListener(new ListChangeListener<Boat>() {
+            @Override
+            public void onChanged(Change<? extends Boat> c) {
+                for (Boat boat : race.getBoatsForScoreBoard()) {
+                    if (boat.getSourceId() == race.getClientSourceId()){
+                        if(!clientFinished) {
+                            finishingPane.setVisible(true);
+                            toggleFinishersBtn.setVisible(true);
+                            isFinishersHidden = false;
+                            clientFinished = true;
+                        }
+
+
+                    }
+                }
+            }
+
+        });
+    }
+
+    @FXML
+    public void toggleFinishers(){
+        if (isFinishersHidden) {
+            finishingPane.setVisible(true);
+            toggleFinishersBtn.setText("Hide Finishers");
+            isFinishersHidden = false;
+        } else {
+            finishingPane.setVisible(false);
+            toggleFinishersBtn.setText("Show Finishers");
+            isFinishersHidden = true;
+        }
+    }
+
+    public void loadFinishers() throws IOException {
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        AnchorPane anchorPane = fxmlLoader.load(getClass().getClassLoader().getResource("FXML/FinishingPage.fxml").openStream());
+        FinishingController finishingController = fxmlLoader.getController();
+        finishingController.setPrimaryStage(primaryStage);
+        finishingController.setRace(race);
+        finishingController.initialiseTable();
+        finishingPane.getChildren().setAll(anchorPane);
+    }
+
+    public void setFinishPaneController() {
+//        finishingPane.get.getChildren().get(1
+    }
+
+
 }

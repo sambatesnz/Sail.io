@@ -4,6 +4,8 @@ import javafx.scene.paint.Color;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.floorMod;
@@ -34,10 +36,12 @@ public class Boat {
     private boolean knowsBoatLocation;
     private boolean headingChanged;
     private boolean sailsOut = false;
+    private double size;
 
     private boolean upwindMemory = false;
     private boolean downwindMemory = false;
     private boolean plusMemory = false;
+    private boolean isInCollision = false;
 
     private Thread turningThread;
     private Boolean stopTurnThread = false;
@@ -45,6 +49,14 @@ public class Boat {
     private int targetMarkIndex = 0;
     private int lastMarkIndex = 0;
     private int roundingStage = 0;
+
+
+    private boolean finished;
+    private long finishTime;
+    private int placement;
+
+    private boolean connected;
+    private boolean added;
 
     /**
      * Boat constructor
@@ -62,6 +74,9 @@ public class Boat {
         this.mark = new Mark();
         this.raceTime = Integer.toUnsignedLong(0);
         this.headingChanged = false;
+        this.finished = false;
+        this.connected = true;
+        this.size = 18;
     }
 
     /**
@@ -71,6 +86,7 @@ public class Boat {
     public Boat(Integer sourceID, String boatName) {
         this.sourceId = sourceID;
         this.boatName = boatName;
+        this.finished = false;
     }
 
     /**
@@ -500,6 +516,14 @@ public class Boat {
         this.timeToFinish = timeToFinish;
     }
 
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
+    }
+
     public boolean isKnowsBoatLocation() {
         return knowsBoatLocation;
     }
@@ -543,6 +567,70 @@ public class Boat {
 
     public void updateRoundingStage() {
         roundingStage++;
+    }
+
+    public boolean isInCollision() {
+        return isInCollision;
+    }
+
+    public void setInCollision(boolean inCollision) {
+        isInCollision = inCollision;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    /**
+     * Puts a boat into a disconnected state
+     */
+    public void disconnect() {
+        this.connected = false;
+        this.sailsOut = false;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public boolean isAdded() {
+        return added;
+    }
+
+    public void setAdded(boolean added) {
+        this.added = added;
+    }
+
+
+    public void setPlacement(int placement) {
+        this.placement = placement;
+    }
+
+    public int getPlacement() {
+        return placement;
+    }
+
+    public long getFinishTime() {
+        return finishTime;
+    }
+
+    public String getFinishTimeString() {
+        if(!finished) return "DNF";
+        long time = finishTime;
+        int raceHours = (int) TimeUnit.MILLISECONDS.toHours(time);
+        int raceMinutes = (int) (TimeUnit.MILLISECONDS.toMinutes(time) -
+                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(time)));
+        int raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(time) -
+                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
+        return String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds);
+    }
+
+    public void setFinishTime(long finishTime) {
+        this.finishTime = finishTime;
     }
 }
 
