@@ -7,4 +7,3 @@ generate_artifacts:
   stage: deploy
   script:
     - mvn -B clean site package
-
