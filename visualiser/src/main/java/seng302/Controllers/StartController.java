@@ -53,6 +53,7 @@ public class StartController {
         modeGroup.getToggles().add(RaceModeRadioButton);
         modeGroup.getToggles().add(AgarModeRadioButton);
         modeGroup.getToggles().add(PracticeModeRadioButton);
+        AgarModeRadioButton.setVisible(false); //For production
 
         ipField.visibleProperty().bind(RaceModeRadioButton.selectedProperty());
         ipLabel.visibleProperty().bind(RaceModeRadioButton.selectedProperty());

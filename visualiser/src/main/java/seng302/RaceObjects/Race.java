@@ -333,7 +333,7 @@ public class Race {
      * @return the boats competing
      */
     public List<Boat> getBoats() {
-        if (!raceReady){
+        if (!raceReady || boats.values().size() == 0){
             return FXCollections.observableList(new ArrayList<>());
         } else {
             return new ArrayList<>(boats.values());

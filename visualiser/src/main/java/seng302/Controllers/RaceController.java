@@ -1038,10 +1038,14 @@ public class RaceController {
      * clears and re-draws boundary to avoid problem when course bounds change
      */
     private void updateBoundary(){
-        if(race.isViewReady()){
-            boundary = getBoundary(race);
-            boundaryGroup.getChildren().clear();
-            boundaryGroup.getChildren().add(boundary);
+        try {
+            if(race.isViewReady()){
+                boundary = getBoundary(race);
+                boundaryGroup.getChildren().clear();
+                boundaryGroup.getChildren().add(boundary);
+            }
+        } catch (Exception e) {
+
         }
     }
 
