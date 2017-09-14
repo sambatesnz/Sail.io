@@ -27,6 +27,7 @@ public class LobbyController {
     @FXML private TableColumn<Boat, String> teamColumn;
     @FXML private TableColumn<Boat, String> clientColumn;
     private Race race;
+    private boolean raceStarted;
     private String ipAddr;
     @FXML private Text timeToStart;
     @FXML private Text lobbyDescriptionText;
@@ -34,6 +35,7 @@ public class LobbyController {
 
     public LobbyController(Race race) {
         this.race = race;
+        this.raceStarted = false;
     }
 
     public void initialiseTable(){
@@ -55,11 +57,12 @@ public class LobbyController {
         timeToStart.textProperty().bind(race.timeToStartProperty());
 
         timeToStart.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.equals(String.format(" %02d:%02d:%02d", 0, 1, 0))) {
+            if (newValue.equals(String.format(" %02d:%02d:%02d", 0, 1, 0)) || (race.getClientSourceId() == 0 && race.isRaceReady() && !raceStarted)) {
                 Platform.runLater(
                     () -> {
                         try {
                             forceStart();
+                            raceStarted = true;
                         } catch (Exception ignored) {
                             ignored.printStackTrace();
                         }
@@ -87,7 +90,6 @@ public class LobbyController {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
         RaceController raceController = new RaceController(race);
         raceController.setFinishPaneController();
-//        raceController.loadFinishers();
         raceController.setPrimaryStage(primaryStage);
 
         loader.setController(raceController);

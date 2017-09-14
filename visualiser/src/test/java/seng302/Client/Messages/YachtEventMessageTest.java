@@ -31,35 +31,29 @@ public class YachtEventMessageTest {
     public void YachtEventMessageUpdate() throws Exception {
         Race race = new Race();
         BoatGenerator generator = new BoatGenerator();
-        Boat boat = generator.generateBoat();
-        Boat secondBoat = generator.generateBoat();
+        Boat boat1 = generator.generateBoat();
+        Boat boat2 = generator.generateBoat();
         Map<Integer, Boat> boatsList = new HashMap<>();
-        boatsList.put(boat.getSourceId(), boat);
-        boatsList.put(secondBoat.getSourceId(), secondBoat);
-
-        race.setParticipants(new ArrayList<>(Arrays.asList(boat.getSourceId())));
+        boatsList.put(boat1.getSourceId(), boat1);
+        boatsList.put(boat2.getSourceId(), boat2);
+        race.setParticipants(new ArrayList<>(Arrays.asList(boat1.getSourceId(), boat2.getSourceId())));
         race.setBoats(boatsList);
 
+        // THE ABOVE SHOULD BE DONE BEFORE THE RACE
 
-        BinaryMessage message = new YachtEventMessage(boat.getSourceId(), YachtIncidentEvent.FINISHED);
+        BinaryMessage message = new YachtEventMessage(boat1.getSourceId(), YachtIncidentEvent.FINISHED);
         seng302.Client.Messages.YachtEventMessage yachtEventMessage = new seng302.Client.Messages.YachtEventMessage(message.getBody());
-
-
-        int NO_BOATS_IN_THE_RACE = 0;
-        assertEquals(NO_BOATS_IN_THE_RACE, race.getFinishedBoats().size());
-
 
         yachtEventMessage.updateRace(race);
         int actualAmountOfBoats = 1; //At this point we have only set one boat to finished
-        assertEquals(actualAmountOfBoats, race.getFinishedBoats().size());
+        assertEquals(actualAmountOfBoats, race.getBoatsForScoreBoard().size());
 
-        message = new YachtEventMessage(secondBoat.getSourceId(), YachtIncidentEvent.FINISHED);
+        message = new YachtEventMessage(boat2.getSourceId(), YachtIncidentEvent.FINISHED);
         yachtEventMessage = new seng302.Client.Messages.YachtEventMessage(message.getBody());
         yachtEventMessage.updateRace(race);
 
-
         actualAmountOfBoats = 2; //At this point we have set two boats to finished
-        assertEquals(actualAmountOfBoats, race.getFinishedBoats().size());
+        assertEquals(actualAmountOfBoats, race.getBoatsForScoreBoard().size());
 
     }
 

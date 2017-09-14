@@ -53,7 +53,7 @@ public class Race {
 
     private BoatGenerator boatGenerator;
     private BoatManager boatManager;
-    private long firstFinishTime;
+    private long finishTime;
 
 
     /**
@@ -63,7 +63,7 @@ public class Race {
         parseCourseXML("Race.xml");
         parseRaceXML("Race.xml");
         // setWindHeading(190);
-
+        startingWindSpeed = (short) (FORTY_KNOTS * 2) ;
         setStartingWindSpeed();
         boatGenerator = new BoatGenerator();
         boatManager = new BoatManager();
@@ -71,7 +71,7 @@ public class Race {
         instantiateWindHeading();
 
         startingTime = getNewStartTime();
-        firstFinishTime = 0;
+        finishTime = 0;
 
         ObservableList<Boat> b = FXCollections.observableArrayList();
         b.addListener((ListChangeListener<Boat>) c -> {
@@ -82,13 +82,6 @@ public class Race {
         clientIDs = new HashMap<>();
 
         positionStrings = FXCollections.observableArrayList();
-        for (Boat boat : boats) {
-            int speed = (new Random().nextInt(5000) + 100);
-            boat.setSpeed(speed);
-            boat.setHeading(0);
-            boat.getMark().setLongitude(getCompoundMarks().get(0).getLongitude());
-            boat.getMark().setLatitude(getCompoundMarks().get(0).getLatitude());
-        }
     }
 
     /**
@@ -98,7 +91,7 @@ public class Race {
     Date getNewStartTime() {
         Calendar date = Calendar.getInstance();
         long currentTime = date.getTimeInMillis();
-        return new Date(currentTime + ONE_MINUTE_IN_MILLIS * 3 / 2);
+        return new Date(currentTime + ONE_MINUTE_IN_MILLIS * 6 / 5);
     }
 
     /**
@@ -130,9 +123,13 @@ public class Race {
      * @param clientSocketSourceID
      */
     public void setBoatAsDisconnected(int clientSocketSourceID) {
-        int sourceId = clientIDs.get(clientSocketSourceID);
-        Boat boat = getBoatByID(sourceId);
-        boat.disconnect();
+        try {
+            int sourceId = clientIDs.get(clientSocketSourceID);
+            Boat boat = getBoatByID(sourceId);
+            boat.disconnect();
+        }catch (NullPointerException nullPoint){
+            System.out.println("Spectator Disconnected");
+        }
     }
 
     /**
@@ -240,8 +237,8 @@ public class Race {
      */
     public short retrieveWindSpeed() {
         Random random = new Random();
-        int low = startingWindSpeed - 2600;
-        int high = startingWindSpeed + 2600;
+        int low = startingWindSpeed - 500;
+        int high = startingWindSpeed + 500;
         int windVal = random.nextInt(high - low) + low;
         this.windSpeed = windVal;
         windSpeedChanged = true;
@@ -403,32 +400,42 @@ public class Race {
                     boatManager.addFinishedBoat(boat);
                     boat.setAdded(true);
                     if (!raceFinishing) {
-                        setFirstFinishTime();
+                        setFinishTime(ONE_MINUTE_IN_MILLIS);
                     }
                 }
             }
 
-            if ((isFinishTimerExpired() || areAllContestantsFinished()) && raceStatus != RaceStatus.FINISHED) {
-                raceStatus = RaceStatus.FINISHED;
-                System.out.println("Race is completely finished!");
-            }
 
             boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
             boat.getMark().setY(newY);
             boat.setHeadingChangedToFalse();
         }
+
+        //System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS
+        if(areAllContestantsFinished()){
+                setFinishTime(ONE_MINUTE_IN_MILLIS/6);
+        }
+        if (isFinishTimerExpired() && raceStatus != RaceStatus.FINISHED) {
+            raceStatus = RaceStatus.FINISHED;
+            System.out.println("Race is completely finished!");
+        }
+
         windHeadingChanged = false;
         windSpeedChanged = false;
 
     }
 
-    private void setFirstFinishTime() {
-        firstFinishTime = System.currentTimeMillis();
-        raceFinishing = true;
+    private void setFinishTime(long msAfterCurrent) {
+        if (raceFinishing) {
+            finishTime = ((System.currentTimeMillis() + msAfterCurrent) < finishTime) ? (System.currentTimeMillis() + msAfterCurrent) : finishTime;
+        } else {
+            finishTime = (System.currentTimeMillis() + msAfterCurrent);
+            raceFinishing = true;
+        }
     }
 
     private boolean isFinishTimerExpired(){
-        return (firstFinishTime > 0) && (System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS);
+        return (finishTime > 0) && (System.currentTimeMillis() > finishTime);
     }
 
     private boolean areAllContestantsFinished() {
@@ -480,8 +487,6 @@ public class Race {
                 BoatPair boatPair = new BoatPair(boat, checkBoat);
                 if(!collisionMap.containsKey(new BoatPair(boat, checkBoat))){
                     collisionMap.put(boatPair, new BoatCollision(boat, checkBoat));
-                }else{
-                    System.out.println("KEY EXISTS: " + boatPair.getBoat1().getSourceId() + " + " + boatPair.getBoat2().getSourceId());
                 }
             }
         }

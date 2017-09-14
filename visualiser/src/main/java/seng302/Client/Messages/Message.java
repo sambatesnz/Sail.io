@@ -95,8 +95,14 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
-                    if (race.getRaceStatus() == RaceStatus.WARNING || race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET) {
-                        race.setBoats(xmlParser.getBoats());
+                    if (race.getRaceStatus() == RaceStatus.WARNING || race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET || (race.getClientSourceId() == 0)) {
+                        if (race.getClientSourceId() != 0) {
+                            race.setBoats(xmlParser.getBoats());
+                        } else if (race.getBoatsMap() == null){
+                            race.setBoats(xmlParser.getBoats());
+                        } else if (race.getBoatsMap().size() != xmlParser.getBoats().size()){
+                            race.setBoats(xmlParser.getBoats());
+                        }
                         boatsSet = true;
                     }
                     break;

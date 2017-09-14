@@ -20,11 +20,9 @@ public class ClientController {
 
     /**
      * Starts a race and tries to establish connection to a server
-     * returns true if the client connects to the server, false otherwise.
      * @throws InterruptedException if client connection fails
      */
     public void startClient() throws InterruptedException {
-        System.out.println("making a new race......");
         race = new Race();
         Thread serverThread = new Thread(() -> {
             client = new Client(race, ipAddr, port);
