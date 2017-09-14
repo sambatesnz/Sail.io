@@ -47,7 +47,6 @@ public class LobbyController {
                 new PropertyValueFactory<Boat, String>("country")
         );
 
-
         contestantTable.setItems(race.boatsObs);
         forceStartBtn.setVisible(false);  //Temporarily removed Force Start button for demonstration
     }

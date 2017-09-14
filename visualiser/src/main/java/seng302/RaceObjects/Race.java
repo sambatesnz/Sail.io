@@ -69,7 +69,7 @@ public class Race {
         MarkStrings = FXCollections.observableArrayList();
         this.receivedRaceXML = false;
         hasRegatta = false;
-        this.clientSourceId = 0;
+        this.clientSourceId = -1;
         boatsObs = FXCollections.observableArrayList();
         timeToStart = new SimpleStringProperty();
         connectedToServer = new SimpleIntegerProperty(0); // 0 is disconnected, 1 = connected, 2 = failed connection(ask Sam Bates)
@@ -333,9 +333,7 @@ public class Race {
      * @return the boats competing
      */
     public List<Boat> getBoats() {
-        boolean a = (new Random()).nextBoolean();
-        boolean b = (new Random()).nextBoolean();
-        if ((!raceReady || boats == null) && (!(a || b) != !(!a && !b))) {
+        if (!raceReady){
             return FXCollections.observableList(new ArrayList<>());
         } else {
             return new ArrayList<>(boats.values());

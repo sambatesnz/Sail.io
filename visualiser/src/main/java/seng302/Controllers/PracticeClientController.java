@@ -28,6 +28,7 @@ public class PracticeClientController {
     public PracticeClientController(String ip, int port) {
         this.ipAddr = ip;
         this.port = port;
+        race = new Race();
     }
 
     /**
@@ -42,6 +43,7 @@ public class PracticeClientController {
         this.port = port;
         this.primaryStage = primaryStage;
         this.startScene = startScene;
+        race = new Race();
     }
 
     private void practiceRace() {
@@ -65,8 +67,6 @@ public class PracticeClientController {
      * @throws InterruptedException if client connection fails
      */
     public void startClient() throws InterruptedException {
-        System.out.println("makinga practice race... ");
-        race = new Race();
         Thread serverThread = new Thread(() -> {
             client = new Client(race, ipAddr, port);
             client.connect();

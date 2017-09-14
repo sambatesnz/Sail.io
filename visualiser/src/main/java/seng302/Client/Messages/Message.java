@@ -96,7 +96,7 @@ public class Message {
                     break;
                 case BOAT:
                     if (race.getRaceStatus() == RaceStatus.WARNING || race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET || (race.getClientSourceId() == 0)) {
-                        if (race.getClientSourceId() != 0) {
+                        if (race.getClientSourceId() != 0) { //Spectating
                             race.setBoats(xmlParser.getBoats());
                         } else if (race.getBoatsMap() == null){
                             race.setBoats(xmlParser.getBoats());

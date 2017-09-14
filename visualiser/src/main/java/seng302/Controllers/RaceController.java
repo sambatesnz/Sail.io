@@ -159,13 +159,6 @@ public class RaceController {
 
         fpsCounter = new FPSCounter(fpsLabel);
 
-//        centerOfScreen = new Boat(-1, "CenterOfScreen");
-//        centerOfScreen.setMark(race.getMapCenter());
-//        boatToFollow = centerOfScreen;
-//        resetZoom();
-//        resetViewButtonPressed();
-//        Coordinate.setTrackingBoat(false);
-
         initialiseZoomFollowing();
         initialiseRoundingArrow();
         initialiseNextMarkArrow();
@@ -181,11 +174,12 @@ public class RaceController {
         });
         loadFinishers();
         initialiseRaceListener();
-        startRaceListener();
         initFinisherObserver();
         if (race.getClientSourceId() == 0){
             initialiseSpectatorZoom();
         }
+
+        startRaceListener();
     }
 
     private void initialiseSpectatorZoom() {
@@ -259,7 +253,7 @@ public class RaceController {
                 try {
                     updateViewLayout();
                 } catch (Exception e) {
-//                    e.printStackTrace(); removed for production environment
+//                    e.printStackTrace(); //removed for production environment
                 }
 
                 initialiseBoatMetaData();
@@ -408,7 +402,7 @@ public class RaceController {
                     }
                 }
             } catch (IndexOutOfBoundsException e) {
-//                System.err.print(e);
+//                e.printStackTrace();
             }
         }
     }
@@ -506,7 +500,7 @@ public class RaceController {
     private void updateNextMarkArrow(CompoundMark cm) {
         double arrowTranslate = 15/(1+Coordinate.getZoom());
         int playerBoat = race.getClientSourceId();
-        if (playerBoat != 0) {
+        if (playerBoat == 0) {
             nextMarkArrow.setVisible(false);
         } else {
             double playerX = Coordinate.getRelativeX(race.getBoatsMap().get(playerBoat).getX());
@@ -745,10 +739,8 @@ public class RaceController {
             centerOfScreen.setMark(race.getMapCenter());
 
             if (!Coordinate.isTrackingBoat()) {
-
+                boatToFollow = centerOfScreen;
             }
-            boatToFollow = centerOfScreen;
-            resetZoom();
 
             Coordinate.setCenter(race.getCenter(race.getViewMin().getCopy(), race.getViewMax().getCopy()));
             Coordinate.updateViewCoordinates();

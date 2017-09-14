@@ -180,7 +180,7 @@ public class StartController {
 
         PracticeClientController clientController = new PracticeClientController(ip, port, primaryStage, rootScene);
         clientController.startClient();
-        Race race = clientController.getRace();
+        race = clientController.getRace();
 
         race.connectedToServerProperty().addListener((observable, oldValue, isConnected) -> {
             if (isConnected.equals(0)) { // disconnectedRace
@@ -197,8 +197,17 @@ public class StartController {
                 Platform.runLater(
                         () -> {
                             try {
+                                int i =0;
+                                while (!race.isRaceReady()){
+                                    Thread.sleep(2);
+                                    //TODO This is a bad blocking call
+                                    i +=1;
+                                }
+                                System.out.println("Ran a loop " + i + " times!");
                                 practiceView(race);
                             } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                         }

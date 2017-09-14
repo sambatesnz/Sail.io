@@ -31,13 +31,6 @@ public final class Coordinate {
 
     private Coordinate(){}
 
-//    public static void reset() {
-//        viewMin = viewMax = defaultCourseMin = defaultCourseMax = center = null;
-//        trackingBoat = false;
-//        offset = new Mark(0, 0);
-////        derivedBorderWidthX = derivedBorderHeightY = zoom = windowHeightY = windowWidthX = 0;
-//    }
-
     /**
      * Set the coordinates of the minimum postion on the map to be displayed
      * @param min A minimum coordinate to be viewed
