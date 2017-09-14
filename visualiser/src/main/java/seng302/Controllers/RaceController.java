@@ -914,7 +914,6 @@ public class RaceController {
      * If the boat map is null, it has no effect.
      */
     private void resetViewButtonPressed() {
-        System.out.println(followingBoat + " " + race.getBoatsMap() + " ");
         if (followingBoat) {
             zoomLevel = Coordinate.getZoom();
             resetZoom();
