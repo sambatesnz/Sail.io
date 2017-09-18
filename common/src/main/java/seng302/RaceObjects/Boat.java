@@ -14,7 +14,7 @@ import static java.lang.Math.round;
 /**
  * Represent a boat competing in yacht race
  */
-public class Boat {
+public class Boat implements BoatInterface{
     private static final int HEADING_INCREMENT = 3;
 
     private Mark mark;
