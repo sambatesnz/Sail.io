@@ -89,10 +89,10 @@ public class RaceManager implements IServerData {
     public void beginGeneratingData() {
         timer.schedule(new XMLSender(), 0, 2000);
         timer.schedule(new RSMSender(), 100, 500);
-        timer.schedule(new BoatPosSender(), 1000, 17);
-        timer.schedule(new CollisionDetection(), 10000, 500);
-        timer.schedule(new RaceRunner(), 2000, 17);
-        timer.schedule(new raceEventHandler(), 2000, 17);
+        timer.schedule(new BoatPosSender(), 100, 17);
+        timer.schedule(new CollisionDetection(), 1000, 500);
+        timer.schedule(new RaceRunner(), 200, 17);
+        timer.schedule(new raceEventHandler(), 200, 17);
     }
 
     @Override
