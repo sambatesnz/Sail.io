@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import seng302.Client.Client;
+import seng302.Main;
 import seng302.RaceMode;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.ViewScreenType;
@@ -32,6 +34,7 @@ public class StartController {
     private Scene rootScene;
     private Race race;
     private ToggleGroup modeGroup;
+    private ClientController clientController;
 
     public StartController() {
 //        this.primaryStage = mainStage;
@@ -99,7 +102,7 @@ public class StartController {
                 () -> statusLbl.setText("connecting...")
         );
 
-        ClientController clientController = new ClientController(ip, port);
+        clientController = new ClientController(ip, port);
         clientController.startClient();
         race = clientController.getRace();
 
@@ -240,20 +243,19 @@ public class StartController {
     }
 
     private void newConnection(Race race) throws InterruptedException, IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/Lobby.fxml"));
 
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/Lobby.fxml"));
+        LobbyController lobbyController = new LobbyController(race);
+        lobbyController.setPrimaryStage(primaryStage);
+        loader.setController(lobbyController);
+        Parent root = loader.load();
 
-            LobbyController lobbyController = new LobbyController(race);
-            lobbyController.setPrimaryStage(primaryStage);
-            loader.setController(lobbyController);
-            Parent root = loader.load();
+        Scene rootScene = new Scene(root);
+        primaryStage.setScene(rootScene);
+        KeyBindingUtility.setKeyBindings(rootScene, race);
 
-            Scene rootScene = new Scene(root);
-            primaryStage.setScene(rootScene);
-            KeyBindingUtility.setKeyBindings(rootScene, race);
-
-            lobbyController.initialiseTable();
-            lobbyController.initialiseTime();
+        lobbyController.initialiseTable();
+        lobbyController.initialiseTime();
     }
 
     public void setStatus(String message){
@@ -281,6 +283,7 @@ public class StartController {
     }
 
     public void exitToMenu(String message) throws IOException {
+        clientController = null;
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/StartingPage.fxml"));
 
         Parent root = loader.load();
