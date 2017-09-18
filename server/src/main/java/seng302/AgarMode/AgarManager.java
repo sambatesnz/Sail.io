@@ -156,8 +156,18 @@ public class AgarManager implements IServerData{
         @Override
         public void run() {
             CollisionDetector detector = new CollisionDetector();
+
+            //TODO FLESH THIS OUT
+            for (BoatPair boatPair: detector.getCurrentCollisions(race)) {
+                Boat winner = boatPair.getWinner();
+                Boat loser = boatPair.getLoser();
+                //TODO CREATE COLLISION MESSAGE
+                //TODO SEND COLLISION MESSAGE
+            }
+
             for (Boat boat : race.getBoats()) {
                 if (detector.checkBoatCollision(boat, race)) {
+                    System.out.println("Collision detected.....");
                     BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
                             boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
                     );
