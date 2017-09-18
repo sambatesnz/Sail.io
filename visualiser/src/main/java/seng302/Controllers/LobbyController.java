@@ -97,6 +97,7 @@ public class LobbyController {
                 raceController = new RaceController(race);
                 break;
             case AGAR:
+                raceController = new AgarRaceController(race);
                 break;
         }
 

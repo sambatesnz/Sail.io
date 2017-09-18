@@ -3,6 +3,7 @@ package seng302.AgarMode;
 import seng302.*;
 import seng302.DataGeneration.BoatXMLCreator;
 import seng302.DataGeneration.IServerData;
+import seng302.DataGeneration.RaceManager;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatus;
@@ -88,10 +89,10 @@ public class AgarManager implements IServerData{
     public void beginGeneratingData() {
         timer.schedule(new AgarManager.XMLSender(), 0, 2000);
         timer.schedule(new AgarManager.RSMSender(), 100, 500);
-        timer.schedule(new AgarManager.BoatPosSender(), 1000, 17);
-        timer.schedule(new AgarManager.CollisionDetection(), 10000, 500);
-        timer.schedule(new AgarManager.RaceRunner(), 2000, 17);
-        timer.schedule(new AgarManager.raceEventHandler(), 2000, 17);
+        timer.schedule(new AgarManager.BoatPosSender(), 100, 17);
+        timer.schedule(new AgarManager.CollisionDetection(), 1000, 500);
+        timer.schedule(new AgarManager.RaceRunner(), 200, 17);
+        timer.schedule(new AgarManager.raceEventHandler(), 200, 17);
     }
 
     @Override
@@ -161,6 +162,10 @@ public class AgarManager implements IServerData{
             for (BoatPair boatPair: detector.getCurrentCollisions(race)) {
                 Boat winner = boatPair.getWinner();
                 Boat loser = boatPair.getLoser();
+                //SEND AGAR MESSAGE
+                // Number of lives
+                // Size of the boat
+                //
                 //TODO CREATE COLLISION MESSAGE
                 //TODO SEND COLLISION MESSAGE
             }
