@@ -1,5 +1,6 @@
 package seng302;
 
+import seng302.AgarMode.AgarManager;
 import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.PractiseRaceManager;
 import seng302.DataGeneration.RaceManager;
@@ -33,9 +34,9 @@ public class RaceModeChooser {
         if (mode == RaceMode.PRACTICE) {
             race = new PractiseRaceManager();
         }
-//        else if (mode == RaceMode.AGAR) {
-//            race = new RaceManager();
-//        } */
+        else if (mode == RaceMode.AGAR) {
+            race = new AgarManager();
+        }
         return race;
     }
 

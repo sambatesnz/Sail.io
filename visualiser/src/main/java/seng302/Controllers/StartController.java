@@ -53,7 +53,7 @@ public class StartController {
         modeGroup.getToggles().add(RaceModeRadioButton);
         modeGroup.getToggles().add(AgarModeRadioButton);
         modeGroup.getToggles().add(PracticeModeRadioButton);
-        AgarModeRadioButton.setVisible(false); //For production
+        AgarModeRadioButton.setVisible(true);
 
         ipField.visibleProperty().bind(RaceModeRadioButton.selectedProperty());
         ipLabel.visibleProperty().bind(RaceModeRadioButton.selectedProperty());
@@ -72,7 +72,8 @@ public class StartController {
 
         switch (raceMode){
             case AGAR: {
-                String ip = "http://132.181.16.12";
+//                String ip = "http://132.181.16.12"; //Turn me on for production
+                String ip = "http://127.0.01";
                 int port = raceMode.getPort();
                 connectLobby(ip, port);
                 break;

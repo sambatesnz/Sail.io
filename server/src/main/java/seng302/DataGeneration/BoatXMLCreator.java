@@ -12,7 +12,7 @@ public class BoatXMLCreator implements XMLCreator {
 
     private Document xml;
 
-    BoatXMLCreator(List<Boat> boats) {
+    public BoatXMLCreator(List<Boat> boats) {
         this.xml = createDocument(boats);
     }
 
