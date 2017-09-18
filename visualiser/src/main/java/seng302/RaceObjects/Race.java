@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.paint.Color;
 import seng302.PacketGeneration.RaceStatus;
+import seng302.RaceMode;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -56,6 +57,7 @@ public class Race {
     private int collisionCount = 0;
     public ObservableList<Boat> boatsObs;
     private SimpleStringProperty timeToStart;
+    private RaceMode raceMode;
 
 
     /**
@@ -506,4 +508,11 @@ public class Race {
         collisionCount -= 1;
     }
 
+    public void setRaceMode(RaceMode raceMode) {
+        this.raceMode = raceMode;
+    }
+
+    public RaceMode getRaceMode() {
+        return raceMode;
+    }
 }

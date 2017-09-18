@@ -87,17 +87,28 @@ public class LobbyController {
     @FXML
     public void forceStart() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
-        RaceController raceController = new RaceController(race);
-        raceController.setFinishPaneController();
-        raceController.setPrimaryStage(primaryStage);
 
-        loader.setController(raceController);
+        IRaceController raceController = null;
+        switch (race.getRaceMode()) {
+            case RACE:
+                raceController = new RaceController(race);
+                break;
+            case PRACTICE:
+                raceController = new RaceController(race);
+                break;
+            case AGAR:
+                break;
+        }
 
-        Parent root = loader.load();
+        if (raceController != null) {
+            raceController.setPrimaryStage(primaryStage);
+            loader.setController(raceController);
+            Parent root = loader.load();
+            Scene rootScene = new Scene(root);
+            primaryStage.setScene(rootScene);
+            KeyBindingUtility.setKeyBindings(rootScene, race);
+        }
 
-        Scene rootScene = new Scene(root);
-        primaryStage.setScene(rootScene);
 
-        KeyBindingUtility.setKeyBindings(rootScene, race);
     }
 }

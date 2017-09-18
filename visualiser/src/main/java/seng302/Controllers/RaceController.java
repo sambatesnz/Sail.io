@@ -48,7 +48,7 @@ import static javafx.scene.input.KeyCode.Z;
 /**
  * Class that controls the race window and updates the race as it proceeds
  */
-public class RaceController {
+public class RaceController implements IRaceController {
 
     @FXML private BorderPane mainBorderPane;
     @FXML private AnchorPane viewAnchorPane;
@@ -269,17 +269,12 @@ public class RaceController {
                 }
                 updateBoundary();
 
-
                 viewUpdateCount++;
                     if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0) {
                         positionTable.refresh();
                         positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
                         positionTable.setPrefHeight(Coordinate.getWindowHeightY());
                     }
-                if (sparkCounter > 100 && race.started()) {
-                    sparkCounter = 0;
-                    //updateSparkLineChart(); //TODO undisabel sparkline chart
-                }
                 if (race.getCollisionCount() > 0) {
                     race.reduceCollisionCount();
                     // need to find a way to highlight only the users specific boat.
@@ -1139,10 +1134,6 @@ public class RaceController {
         finishingController.setRace(race);
         finishingController.initialiseTable();
         finishingPane.getChildren().setAll(anchorPane);
-    }
-
-    public void setFinishPaneController() {
-//        finishingPane.get.getChildren().get(1
     }
 
 

@@ -8,15 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import seng302.Client.Client;
-import seng302.Main;
 import seng302.RaceMode;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.ViewScreenType;
 import seng302.UserInput.KeyBindingUtility;
-import seng302.UserInput.PracticeMessage;
 
-import javax.script.Bindings;
 import java.io.IOException;
 
 public class StartController {
@@ -77,7 +73,7 @@ public class StartController {
             case AGAR: {
                 String ip = "http://132.181.16.12";
                 int port = raceMode.getPort();
-                connectLobby(ip, port);
+                connectLobby(ip, port, raceMode);
                 break;
             } case PRACTICE: {
                 String ip = "http://127.0.0.1";
@@ -87,17 +83,17 @@ public class StartController {
             } case RACE: {
                 String ip = getIp();
                 int port = getPort();
-                connectLobby(ip, port);
+                connectLobby(ip, port, raceMode);
                 break;
             } default: {
                 String ip = "http://127.0.0.1";
                 int port = RaceMode.RACE.getPort();
-                connectLobby(ip, port);
+                connectLobby(ip, port, raceMode);
             }
         }
     }
 
-    private void connectLobby(String ip, int port) throws InterruptedException {
+    private void connectLobby(String ip, int port, RaceMode raceMode) throws InterruptedException {
         Platform.runLater(
                 () -> statusLbl.setText("connecting...")
         );
@@ -105,6 +101,8 @@ public class StartController {
         clientController = new ClientController(ip, port);
         clientController.startClient();
         race = clientController.getRace();
+
+        race.setRaceMode(raceMode);
 
         race.connectedToServerProperty().addListener((Observable, OldValue, isConnected) -> {
             if (isConnected.equals(1)) { // connected
