@@ -26,15 +26,13 @@ public class ClientConnectoin extends Thread {
             DataInputStream din = new DataInputStream(socket.getInputStream());
             while (true) {
                 final int HEADER_LEN = 15;
-//                if (din.available() > HEADER_LEN) {
-                    byte[] data = new byte[4000];
-                    din.read(data);
-                    boolean validPacket = validatePacket(data);
-                    if (validPacket) {
-                        byte[] wrappedMessage = ServerMessageGenerationUtils.wrap(data, id);
-                        server.addPacketToQueue(wrappedMessage);
-                    }
-//                }
+                byte[] data = new byte[4000];
+                din.read(data);
+                boolean validPacket = validatePacket(data);
+                if (validPacket) {
+                    byte[] wrappedMessage = ServerMessageGenerationUtils.wrap(data, id);
+                    server.addPacketToQueue(wrappedMessage);
+                }
             }
         } catch (IOException e) {
             server.removeConnection(socket);
