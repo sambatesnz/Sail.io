@@ -60,11 +60,7 @@ public class CollisionDetector {
 
         double distance = sqrt((xDist * xDist) + (yDist * yDist));
 
-        if (distance < (size1 + size2)) {
-            return true;
-        }
-
-        return false;
+        return distance < (size1 + size2);
     }
 
     /**
@@ -114,5 +110,9 @@ public class CollisionDetector {
             }
         }
         return withinBoundaries;
+    }
+
+    public Iterable<? extends BoatPair> getCurrentCollisions(Race race) {
+        return new ArrayList<>();
     }
 }

@@ -10,6 +10,8 @@ public final class BoatPair {
     private final Boat boat2;
     private final int id1;
     private final int id2;
+    private Boat winner;
+    private Boat loser;
 
     public BoatPair(Boat boat1, Boat boat2) {
         this.boat1 = Objects.requireNonNull(boat1);
@@ -17,7 +19,18 @@ public final class BoatPair {
         this.id1 = (boat1.getSourceId() < boat2.getSourceId()) ? boat1.getSourceId() : boat2.getSourceId();
         this.id2 = (boat1.getSourceId() > boat2.getSourceId()) ? boat1.getSourceId() : boat2.getSourceId();
 
+        //Up to implementer to decided who a winner and loser is
+        //Atm its just first boat parsed in
+        this.winner = boat1;
+        this.loser = boat2;
+    }
 
+    public Boat getWinner() {
+        return winner;
+    }
+
+    public Boat getLoser() {
+        return loser;
     }
 
     public Boat getBoat1() { return boat1; }
