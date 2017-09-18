@@ -8,12 +8,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import seng302.RaceMode;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.ViewScreenType;
 import seng302.UserInput.KeyBindingUtility;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 
 public class StartController {
 
@@ -282,25 +285,27 @@ public class StartController {
     }
 
     public void exitToMenu(String message) throws IOException {
-        clientController = null;
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/StartingPage.fxml"));
-
-        Parent root = loader.load();
-        Scene rootScene = new Scene(root);
-
-        StartController startController = loader.getController();
-        startController.setStatus(message);
-        primaryStage.setMinHeight(600);
-        primaryStage.setMinWidth(800);
-        primaryStage.setMaximized(false);
-        primaryStage.setScene(rootScene);
-        primaryStage.setTitle("RaceView");
-        primaryStage.show();
-
-        startController.setPrimaryStage(primaryStage);
-        startController.setStartScene(rootScene);
-
+        restart();
     }
+
+    public void restart() {
+        StringBuilder cmd = new StringBuilder();
+        cmd.append(System.getProperty("java.home")).append(File.separator).append("bin").append(File.separator).append("java ");
+        for (String jvmArg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+            cmd.append(jvmArg + " ");
+        }
+        cmd.append("-cp ").append(ManagementFactory.getRuntimeMXBean().getClassPath()).append(" ");
+        cmd.append(Window.class.getName()).append(" ");
+
+        try {
+            Runtime.getRuntime().exec(cmd.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
+    }
+
+
     public void showScoreScreen() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/ScoreScreen.fxml"));
 
