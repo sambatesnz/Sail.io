@@ -1,8 +1,7 @@
 package seng302.Server;
 
 import seng302.DataGeneration.IServerData;
-import seng302.DataGeneration.RaceManager;
-import seng302.PacketGeneration.RaceStatus;
+import seng302.Modes.RaceManager;
 import seng302.RaceHandler;
 import seng302.RaceMode;
 import seng302.RaceModeChooser;

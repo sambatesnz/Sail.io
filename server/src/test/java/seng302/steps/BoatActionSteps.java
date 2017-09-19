@@ -3,7 +3,7 @@ package seng302.steps;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import seng302.DataGeneration.RaceManager;
+import seng302.Modes.RaceManager;
 import seng302.Modes.Race;
 import seng302.RaceObjects.Boat;
 import seng302.Server.Delegator;

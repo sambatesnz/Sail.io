@@ -8,4 +8,5 @@ public class AgarRace extends Race {
     AgarRace() {
         super();
     }
+
 }

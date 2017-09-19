@@ -1,6 +1,8 @@
-package seng302.DataGeneration;
+package seng302.Modes;
 
 import seng302.BoatManager;
+import seng302.DataGeneration.BoatXMLCreator;
+import seng302.DataGeneration.IServerData;
 import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
@@ -10,7 +12,6 @@ import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
-import seng302.Modes.Race;
 import seng302.RaceObjects.Boat;
 import seng302.XMLCreation.RaceXMLCreator;
 import seng302.XMLCreation.XMLCreator;
@@ -109,6 +110,7 @@ public class RaceManager implements IServerData {
      * adds a message to the broadcast queue
      * @param message the message you want to add
      */
+    @Override
     public void addMessage(byte[] message) {
         broadcastMessageQueue.add(message);
     }

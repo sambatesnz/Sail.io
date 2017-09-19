@@ -15,6 +15,8 @@ public interface IServerData {
 
     void addSingleMessage(byte[] message);
 
+    void addMessage(byte[] message);
+
     boolean finished();
 
     boolean broadcastReady();

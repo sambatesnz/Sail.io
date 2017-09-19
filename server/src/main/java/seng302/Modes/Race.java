@@ -6,7 +6,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.util.Pair;
 import seng302.*;
-import seng302.DataGeneration.RaceManager;
+import seng302.DataGeneration.IServerData;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
@@ -484,24 +484,8 @@ public class Race {
         this.practiceRace = practiceRace;
     }
 
-    public void checkCollisions(RaceManager raceManager){
-        for (Boat boat : getBoats()) {
-            if (collisionDetector.checkBoatCollision(boat)) {
-                BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
-                        boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
-                );
-                raceManager.addMessage(boatCollisionEventMessage.createMessage());
-            }
 
-            if (collisionDetector.checkMarkCollisions(boat, getCompoundMarks()) || !collisionDetector.checkWithinBoundary(boat, getBoundaries())) {
-                BinaryMessage markCollisionEventMessage = new YachtEventMessage(
-                        boat.getSourceId(), YachtIncidentEvent.MARKCOLLISION
-                );
-                raceManager.addMessage(markCollisionEventMessage.createMessage());
-            }
-        }
-    }
-    public void checkCollisions(PracticeRaceManager raceManager){
+    public void checkCollisions(IServerData raceManager){
         for (Boat boat : getBoats()) {
             if (collisionDetector.checkBoatCollision(boat)) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(

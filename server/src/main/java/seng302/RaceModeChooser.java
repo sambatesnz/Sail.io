@@ -3,7 +3,7 @@ package seng302;
 import seng302.Modes.AgarManager;
 import seng302.DataGeneration.IServerData;
 import seng302.Modes.PracticeRaceManager;
-import seng302.DataGeneration.RaceManager;
+import seng302.Modes.RaceManager;
 
 /**
  * Determines what implementation of IServerData is wanter

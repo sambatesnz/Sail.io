@@ -1,11 +1,6 @@
 package seng302.Modes;
 
-import seng302.DataGeneration.RaceManager;
-import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.RaceStatus;
-import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
-import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
-import seng302.RaceObjects.Boat;
 
 import java.util.*;
 

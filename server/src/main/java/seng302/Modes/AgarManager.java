@@ -45,6 +45,14 @@ public class AgarManager implements IServerData{
         return race;
     }
 
+    /**
+     * adds a message to the broadcast queue
+     * @param message the message you want to add
+     */
+    @Override
+    public void addMessage(byte[] message) {
+        broadcastMessageQueue.add(message);
+    }
 
     @Override
     public byte[] getDataForAll() {

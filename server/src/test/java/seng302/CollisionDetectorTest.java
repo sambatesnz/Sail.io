@@ -18,8 +18,8 @@ import static junit.framework.TestCase.assertEquals;
  * Created by msi52 on 11/09/17.
  */
 public class CollisionDetectorTest {
-
-    private CollisionDetector detector = new CollisionDetector(new Race());
+    private Race race = new Race();
+    private CollisionDetector detector = new CollisionDetector(race);
 
     @Test
     public void testBoatCollisions() {
@@ -29,9 +29,6 @@ public class CollisionDetectorTest {
         Mark other = new Mark(25.256412, 36.325522);
 
         ArrayList<Mark> marks = new ArrayList<>(Arrays.asList(checkMark, other));
-
-        Race race = new Race();
-
         try {
             race.addBoat(101);
             race.addBoat(102);

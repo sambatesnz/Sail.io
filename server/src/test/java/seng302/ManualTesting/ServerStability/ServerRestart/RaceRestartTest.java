@@ -64,6 +64,11 @@ public class RaceRestartTest implements IServerData {
     }
 
     @Override
+    public void addMessage(byte[] message) {
+
+    }
+
+    @Override
     public boolean finished() {
         return  race.getRaceStatus() == RaceStatus.FINISHED;
     }
