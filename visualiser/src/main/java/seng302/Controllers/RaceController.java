@@ -351,6 +351,7 @@ public class RaceController implements IRaceController {
                     boats.get(i).sailOut();
                     sail.getTransforms().clear();
                     if (headingDif < 180 ) {
+
                         sail.getTransforms().add(new Rotate(race.getWindHeading() + 30, 0, 0));
                     }
                     else {
