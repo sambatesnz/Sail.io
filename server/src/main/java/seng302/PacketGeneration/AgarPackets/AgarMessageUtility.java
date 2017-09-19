@@ -8,8 +8,8 @@ import seng302.PacketGeneration.MessageEnumUtility;
 public enum AgarMessageUtility implements MessageEnumUtility{
 
     BOAT_SOURCE_ID(0, 4),
-    LIVES(4, 8),
-    BOAT_SIZE(8, 12);
+    LIVES(4, 4),
+    BOAT_SIZE(8, 4);
 
     private int index;
     private int size;

@@ -28,8 +28,8 @@ public class AgarMessage extends BinaryMessage {
     public byte[] getBody() {
         int FIRST_INDEX = 0;
         System.arraycopy(boatSourceId, FIRST_INDEX, agarMessage, AgarMessageUtility.BOAT_SOURCE_ID.getIndex(), AgarMessageUtility.BOAT_SOURCE_ID.getSize());
-        System.arraycopy(boatSourceId, FIRST_INDEX, agarMessage, AgarMessageUtility.LIVES.getIndex(), AgarMessageUtility.LIVES.getSize());
-        System.arraycopy(boatSourceId, FIRST_INDEX, agarMessage, AgarMessageUtility.BOAT_SIZE.getIndex(), AgarMessageUtility.BOAT_SIZE.getSize());
+        System.arraycopy(lives, FIRST_INDEX, agarMessage, AgarMessageUtility.LIVES.getIndex(), AgarMessageUtility.LIVES.getSize());
+        System.arraycopy(boatSize, FIRST_INDEX, agarMessage, AgarMessageUtility.BOAT_SIZE.getIndex(), AgarMessageUtility.BOAT_SIZE.getSize());
         return agarMessage;
     }
 
