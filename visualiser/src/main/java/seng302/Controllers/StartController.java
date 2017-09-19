@@ -75,7 +75,7 @@ public class StartController {
         switch (raceMode){
             case AGAR: {
 //                String ip = "http://132.181.16.12"; //Turn me on for production
-                String ip = "http://127.0.01";
+                String ip = "http://127.0.0.1";
                 int port = raceMode.getPort();
                 connectLobby(ip, port, raceMode);
                 break;
@@ -285,26 +285,24 @@ public class StartController {
     }
 
     public void exitToMenu(String message) throws IOException {
-        restart();
+        clientController = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/StartingPage.fxml"));
+
+        Parent root = loader.load();
+        Scene rootScene = new Scene(root);
+
+        StartController startController = loader.getController();
+        startController.setStatus(message);
+        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(800);
+        primaryStage.setMaximized(false);
+        primaryStage.setScene(rootScene);
+        primaryStage.setTitle("RaceView");
+        primaryStage.show();
+
+        startController.setPrimaryStage(primaryStage);
+        startController.setStartScene(rootScene);
     }
-
-    public void restart() {
-        StringBuilder cmd = new StringBuilder();
-        cmd.append(System.getProperty("java.home")).append(File.separator).append("bin").append(File.separator).append("java ");
-        for (String jvmArg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
-            cmd.append(jvmArg + " ");
-        }
-        cmd.append("-cp ").append(ManagementFactory.getRuntimeMXBean().getClassPath()).append(" ");
-        cmd.append(Window.class.getName()).append(" ");
-
-        try {
-            Runtime.getRuntime().exec(cmd.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.exit(0);
-    }
-
 
     public void showScoreScreen() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/ScoreScreen.fxml"));

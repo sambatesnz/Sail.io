@@ -88,9 +88,9 @@ public class Client {
 
         final int HEADER_LEN = 15;
         final int CRC_LEN = 4;
-        if (streamInput.available() < HEADER_LEN) {
-            return;
-        }
+//        if (streamInput.available() < HEADER_LEN) {
+//            return;
+//        }
         byte[] head = new byte[HEADER_LEN];
         streamInput.mark(HEADER_LEN + 1);
         streamInput.read(head);
@@ -106,10 +106,10 @@ public class Client {
         byte[] lenBytes = new byte[4];
         System.arraycopy(head, 13, lenBytes, 0, 2);
         int messageLength = ByteBuffer.wrap(lenBytes).order(ByteOrder.LITTLE_ENDIAN).getInt();
-        if(streamInput.available() < messageLength + CRC_LEN){
-            streamInput.reset();
-            return;
-        }
+//        if(streamInput.available() < messageLength + CRC_LEN){
+//            streamInput.reset();
+//            return;
+//        }
         byte[] body = new byte[messageLength + CRC_LEN];
         streamInput.read(body);
 
@@ -167,6 +167,8 @@ public class Client {
     public void disconnect() {
         try {
             race.setConnectedToServer(0);
+            race.finishRace();
+            Thread.sleep(40);
             if (race.getBoatsForScoreBoard().size() > 0) {
                 for (Boat boat: race.getBoats()){
                     race.addBoatToScoreBoard(boat.getSourceId(), false);
@@ -177,7 +179,7 @@ public class Client {
             }
             System.out.println("Socket disconnected.");
             clientSocket.close();
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }

@@ -89,6 +89,7 @@ public class RaceController implements IRaceController {
     private Group roundingArrow2 = new Group();
     private Group roundingArrowMirrored1 = new Group();
     private Group roundingArrowMirrored2 = new Group();
+    private boolean raceFinishTimerStarted = false;
 
     private boolean showName = true;
     private boolean showSpeed = true;
@@ -118,7 +119,6 @@ public class RaceController implements IRaceController {
     @FXML    private NumberAxis yAxis;
     private ObservableList<XYChart.Series<Number, Number>> seriesList;
     private Integer secondCounter = 1;
-    private Integer sparkCounter = 0;
     private List<Boat> sortedBoats;
     private List<Boat> otherSortedBoats;
     private int EARTH_RADIUS = 6371;
@@ -241,6 +241,7 @@ public class RaceController implements IRaceController {
 
     private void initialiseRaceListener() {
         raceListener = new AnimationTimer() {
+
             @Override
             public void handle(long currentNanoTime) {
                 rotateWindArrow();
@@ -288,20 +289,19 @@ public class RaceController implements IRaceController {
                     }
                 }
                 if (race.isFinished()) {
+                    System.out.println("Stopping raceListener");
                     raceListener.stop();
                 }
-                sparkCounter++;
             }
         };
     }
-
-
 
     private void startRaceListener() {
         raceListener.start();
     }
 
     private void stopRaceListener() {
+        System.out.println("Stop RaceListener method called");
         raceListener.stop();
     }
 
@@ -1103,12 +1103,16 @@ public class RaceController implements IRaceController {
                             isFinishersHidden = false;
                             clientFinished = true;
                         }
-
-
                     }
                 }
+//                if (race.getBoatsMap().size() == race.getBoatsForScoreBoard().size()){
+//                    race.finishRace();
+//                }
+//                else if (!raceFinishTimerStarted && race.getBoatsForScoreBoard().size() > 0){
+//                    race.finishRace();
+//                    raceFinishTimerStarted = true;
+//                }
             }
-
         });
     }
 
