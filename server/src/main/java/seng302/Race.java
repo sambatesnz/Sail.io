@@ -91,7 +91,7 @@ public class Race {
     Date getNewStartTime() {
         Calendar date = Calendar.getInstance();
         long currentTime = date.getTimeInMillis();
-        return new Date(currentTime + ONE_MINUTE_IN_MILLIS * 3 / 2);
+        return new Date(currentTime + ONE_MINUTE_IN_MILLIS * 2 / 3);
     }
 
     /**
@@ -463,7 +463,7 @@ public class Race {
                 startingTime = getNewStartTime();
             } else if (startingTime.getTime() < new Date().getTime()) {
                 raceStatus = RaceStatus.STARTED;
-            } else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS) {
+            } else if (startingTime.getTime() < new Date().getTime() + 10000) {
                 raceStatus = RaceStatus.PREP;
             } else {
                 raceStatus = RaceStatus.WARNING;
