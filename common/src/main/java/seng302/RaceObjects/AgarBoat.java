@@ -21,7 +21,7 @@ public class AgarBoat extends BoatDecorator{
     }
 
     public void loseLife() {
-        lives = lives - 1;
+        lives -= 1;
     }
 
     public int getLives() {

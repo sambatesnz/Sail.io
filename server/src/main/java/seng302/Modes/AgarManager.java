@@ -3,6 +3,7 @@ package seng302.Modes;
 import seng302.*;
 import seng302.DataGeneration.BoatXMLCreator;
 import seng302.DataGeneration.IServerData;
+import seng302.PacketGeneration.AgarPackets.AgarMessage;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatus;
@@ -32,6 +33,7 @@ public class AgarManager implements IServerData{
     private Queue<byte[]> singularMessageQueue;
     private Timer timer = new Timer();
     private BoatManager boatManager;
+    private AgarManager parent = this;
 
     public AgarManager(){
         this.race = new AgarRace();
@@ -97,7 +99,6 @@ public class AgarManager implements IServerData{
         timer.schedule(new AgarManager.XMLSender(), 0, 2000);
         timer.schedule(new AgarManager.RSMSender(), 100, 500);
         timer.schedule(new AgarManager.BoatPosSender(), 100, 17);
-        timer.schedule(new AgarManager.CollisionDetection(), 1000, 500);
         timer.schedule(new AgarManager.RaceRunner(), 200, 17);
         timer.schedule(new AgarManager.raceEventHandler(), 200, 17);
     }
@@ -155,16 +156,14 @@ public class AgarManager implements IServerData{
                         (short) 100, (short) 100, (short) 100,
                         (short) (boat.isSailsOut() ? 1 : 0), (short) 100, (short) 100
                 );
+                BinaryMessage agarMessage = new AgarMessage(boat.getSourceId(), 3, 1); //TODO: don't hardcode
                 broadcastMessageQueue.add(boatLocationMessage.createMessage());
+                System.out.println("we got to the making message");
+                broadcastMessageQueue.add(agarMessage.createMessage());
             }
         }
     }
 
-    class CollisionDetection extends TimerTask {
-        @Override
-        public void run() {
-        }
-    }
 
     class raceEventHandler extends TimerTask {
         @Override
@@ -186,6 +185,7 @@ public class AgarManager implements IServerData{
         public void run() {
             if(race.getRaceStatus() != RaceStatus.WARNING && race.getRaceStatus() != RaceStatus.START_TIME_NOT_SET) {
                 race.updateBoats();
+                race.checkCollisions(parent);
             }
             race.updateRaceInfo();
         }
