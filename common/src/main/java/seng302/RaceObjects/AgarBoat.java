@@ -5,6 +5,7 @@ package seng302.RaceObjects;
  */
 public class AgarBoat extends BoatDecorator{
 
+    private boolean eliminated = false;
     private int lives;
     private int size;
 
@@ -22,10 +23,21 @@ public class AgarBoat extends BoatDecorator{
 
     public void loseLife() {
         lives = lives - 1;
+        if (lives < 1) {
+            setEliminated();
+        }
     }
 
     public int getLives() {
         return lives;
+    }
+
+    private void setEliminated() {
+        eliminated = true;
+    }
+
+    private boolean isEliminated() {
+        return eliminated;
     }
 
 
