@@ -1,13 +1,12 @@
 package seng302.steps;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.RaceManager;
-import seng302.Race;
+import seng302.Modes.Race;
 import seng302.RaceObjects.Boat;
 
 public class MarkRoundingSteps {

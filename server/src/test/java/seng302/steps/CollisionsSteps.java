@@ -5,14 +5,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import seng302.BoatGenerator;
-import seng302.DataGeneration.RaceManager;
-import seng302.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.BoatCollision;
-import seng302.Server.Delegator;
-import seng302.UserInputController.BoatAction;
-
-import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertEquals;
 

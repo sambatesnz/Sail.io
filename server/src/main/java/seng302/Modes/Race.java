@@ -1,11 +1,16 @@
-package seng302;
+package seng302.Modes;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.util.Pair;
+import seng302.*;
+import seng302.DataGeneration.RaceManager;
+import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.RaceStatus;
+import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
+import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
 import seng302.PacketParsing.XMLParser;
 import seng302.Polars.PolarUtils;
 import seng302.RaceObjects.*;
@@ -54,7 +59,7 @@ public class Race {
     private BoatGenerator boatGenerator;
     private BoatManager boatManager;
     private long finishTime;
-
+    CollisionDetector collisionDetector;
 
     /**
      * Constructor for the race class.
@@ -80,7 +85,7 @@ public class Race {
         boats = b;
 
         clientIDs = new HashMap<>();
-
+        collisionDetector = new CollisionDetector(this);
         positionStrings = FXCollections.observableArrayList();
     }
 
@@ -479,6 +484,40 @@ public class Race {
         this.practiceRace = practiceRace;
     }
 
+    public void checkCollisions(RaceManager raceManager){
+        for (Boat boat : getBoats()) {
+            if (collisionDetector.checkBoatCollision(boat)) {
+                BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
+                        boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
+                );
+                raceManager.addMessage(boatCollisionEventMessage.createMessage());
+            }
+
+            if (collisionDetector.checkMarkCollisions(boat, getCompoundMarks()) || !collisionDetector.checkWithinBoundary(boat, getBoundaries())) {
+                BinaryMessage markCollisionEventMessage = new YachtEventMessage(
+                        boat.getSourceId(), YachtIncidentEvent.MARKCOLLISION
+                );
+                raceManager.addMessage(markCollisionEventMessage.createMessage());
+            }
+        }
+    }
+    public void checkCollisions(PracticeRaceManager raceManager){
+        for (Boat boat : getBoats()) {
+            if (collisionDetector.checkBoatCollision(boat)) {
+                BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
+                        boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
+                );
+                raceManager.addMessage(boatCollisionEventMessage.createMessage());
+            }
+
+            if (collisionDetector.checkMarkCollisions(boat, getCompoundMarks()) || !collisionDetector.checkWithinBoundary(boat, getBoundaries())) {
+                BinaryMessage markCollisionEventMessage = new YachtEventMessage(
+                        boat.getSourceId(), YachtIncidentEvent.MARKCOLLISION
+                );
+                raceManager.addMessage(markCollisionEventMessage.createMessage());
+            }
+        }
+    }
 
     private void initCollisions(){
         collisionMap = new HashMap<>();

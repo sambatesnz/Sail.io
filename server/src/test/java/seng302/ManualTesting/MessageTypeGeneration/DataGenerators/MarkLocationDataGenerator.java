@@ -7,7 +7,7 @@ import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.Position;
-import seng302.Race;
+import seng302.Modes.Race;
 
 import java.util.NoSuchElementException;
 import java.util.Queue;

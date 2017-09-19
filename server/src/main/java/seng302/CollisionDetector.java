@@ -1,6 +1,5 @@
 package seng302;
 
-import seng302.BoatPair;
 import seng302.RaceObjects.*;
 
 import java.util.ArrayList;
@@ -15,7 +14,11 @@ import static java.lang.Math.sqrt;
 public class CollisionDetector {
 
     private static double MARK_SIZE = 5;
+    private seng302.Modes.Race race;
 
+    public CollisionDetector(seng302.Modes.Race race){
+        this.race = race;
+    }
     /**
      * When called, checks if the given boat is in the same location, and hence colliding with any of the marks in the
      * given list
@@ -66,10 +69,9 @@ public class CollisionDetector {
     /**
      * Check the collision of a boat
      * @param boat the boat being checked
-     * @param race the race
      * @return true if colliding, false otherwise
      */
-    public boolean checkBoatCollision(Boat boat, Race race) {
+    public boolean checkBoatCollision(Boat boat) {
 
         Map<BoatPair, BoatCollision> collisionMap = race.getCollisionMap();
 
@@ -112,7 +114,7 @@ public class CollisionDetector {
         return withinBoundaries;
     }
 
-    public Iterable<? extends BoatPair> getCurrentCollisions(Race race) {
+    public Iterable<? extends BoatPair> getCurrentCollisions(seng302.Modes.Race race) {
         return new ArrayList<>();
     }
 }

@@ -1,28 +1,20 @@
-package seng302;
+package seng302.Modes;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
-import javafx.util.Pair;
+import seng302.DataGeneration.RaceManager;
+import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.RaceStatus;
-import seng302.PacketParsing.XMLParser;
-import seng302.Polars.PolarUtils;
-import seng302.RaceObjects.*;
-import seng302.Server.RaceCreator;
+import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
+import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
+import seng302.RaceObjects.Boat;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static java.lang.Math.*;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
  * This displays a text-based play by play commentary of the race as it happens
  */
 public class PracticeRace extends Race {
+
 
     public PracticeRace() {
         super();
@@ -40,13 +32,14 @@ public class PracticeRace extends Race {
                 startingTime = getNewStartTime();
             } else if (startingTime.getTime() < new Date().getTime()) {
                 raceStatus = RaceStatus.STARTED;
-            } else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS) {
+            } else if (startingTime.getTime() < new Date().getTime() + super.ONE_MINUTE_IN_MILLIS) {
                 raceStatus = RaceStatus.PREP;
             } else {
                 raceStatus = RaceStatus.WARNING;
             }
         }
     }
+
 
     @Override
     public void removeBoat(int clientSocketSourceID) {

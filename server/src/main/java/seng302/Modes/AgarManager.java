@@ -1,8 +1,8 @@
-package seng302.DataGeneration;
+package seng302.Modes;
 
 import seng302.*;
 import seng302.DataGeneration.BoatXMLCreator;
-import seng302.DataGeneration.RaceManager;
+import seng302.DataGeneration.IServerData;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatus;
@@ -24,10 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.lang.System.currentTimeMillis;
 
-/**
- * Practising mode manager.
- */
-public class PractiseRaceManager implements IServerData {
+public class AgarManager implements IServerData{
 
     private Race race;
     private BinaryMessage rsm;
@@ -36,8 +33,8 @@ public class PractiseRaceManager implements IServerData {
     private Timer timer = new Timer();
     private BoatManager boatManager;
 
-    public PractiseRaceManager(){
-        this.race = new PracticeRace();
+    public AgarManager(){
+        this.race = new AgarRace();
         boatManager = race.getBoatManager();
         broadcastMessageQueue = new LinkedBlockingQueue<>();
         singularMessageQueue = new LinkedBlockingQueue<>();
@@ -89,12 +86,12 @@ public class PractiseRaceManager implements IServerData {
 
     @Override
     public void beginGeneratingData() {
-        timer.schedule(new PractiseRaceManager.XMLSender(), 0, 2000);
-        timer.schedule(new PractiseRaceManager.RSMSender(), 100, 500);
-        timer.schedule(new PractiseRaceManager.BoatPosSender(), 1000, 17);
-        timer.schedule(new PractiseRaceManager.CollisionDetection(), 10000, 500);
-        timer.schedule(new PractiseRaceManager.RaceRunner(), 2000, 17);
-        timer.schedule(new PractiseRaceManager.raceEventHandler(), 2000, 17);
+        timer.schedule(new AgarManager.XMLSender(), 0, 2000);
+        timer.schedule(new AgarManager.RSMSender(), 100, 500);
+        timer.schedule(new AgarManager.BoatPosSender(), 100, 17);
+        timer.schedule(new AgarManager.CollisionDetection(), 1000, 500);
+        timer.schedule(new AgarManager.RaceRunner(), 200, 17);
+        timer.schedule(new AgarManager.raceEventHandler(), 200, 17);
     }
 
     @Override
@@ -158,22 +155,6 @@ public class PractiseRaceManager implements IServerData {
     class CollisionDetection extends TimerTask {
         @Override
         public void run() {
-            CollisionDetector detector = new CollisionDetector();
-            for (Boat boat : race.getBoats()) {
-                if (detector.checkBoatCollision(boat, race)) {
-                    BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
-                            boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
-                    );
-                    broadcastMessageQueue.add(boatCollisionEventMessage.createMessage());
-                }
-
-                if (detector.checkMarkCollisions(boat, race.getCompoundMarks()) || !detector.checkWithinBoundary(boat, race.getBoundaries())) {
-                    BinaryMessage markCollisionEventMessage = new YachtEventMessage(
-                            boat.getSourceId(), YachtIncidentEvent.MARKCOLLISION
-                    );
-                    broadcastMessageQueue.add(markCollisionEventMessage.createMessage());
-                }
-            }
         }
     }
 
@@ -196,7 +177,6 @@ public class PractiseRaceManager implements IServerData {
         @Override
         public void run() {
             if(race.getRaceStatus() != RaceStatus.WARNING && race.getRaceStatus() != RaceStatus.START_TIME_NOT_SET) {
-                race.updateBoats();
                 race.updateBoats();
             }
             race.updateRaceInfo();

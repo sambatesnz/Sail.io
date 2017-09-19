@@ -1,9 +1,9 @@
-package seng302.AgarMode;
+package seng302.Modes;
 
 /**
  * Extension of base race
  */
-public class AgarRace extends seng302.Race {
+public class AgarRace extends Race {
 
     AgarRace() {
         super();

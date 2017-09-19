@@ -333,10 +333,10 @@ public class RaceController implements IRaceController {
                 boats.get(i).getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
                 updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.WAKE));
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setRotate(race.getBoats().get(i).getHeading());
-                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * (1 / (1 + Coordinate.getZoom() * 0.9)))
+                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * (1 / (1 + Coordinate.getZoom())))
                         * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
-                        * (1 / (1 + Coordinate.getZoom() * 0.9))) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                        * (1 / (1 + Coordinate.getZoom()))) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
 
                 //Boat annotations (name and speed)
                 boats.get(i).getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
@@ -363,7 +363,7 @@ public class RaceController implements IRaceController {
 
                 }
                 double sailLength = 720d / 45d;
-                sail.setLayoutY((1/(1 + Coordinate.getZoom() * 0.9)) * (sailLength)/2 - SAIL_OFFSET);
+                sail.setLayoutY((1/(1 + Coordinate.getZoom())) * (sailLength)/2 - SAIL_OFFSET);
             }
         }
     }
@@ -1073,8 +1073,8 @@ public class RaceController implements IRaceController {
      * @param nodeToScale node to scale based on current level of zoom
      */
     private void updateNodeScale(Node nodeToScale) {
-        nodeToScale.setScaleX(1/(1+Coordinate.getZoom()*0.9));
-        nodeToScale.setScaleY(1/(1+Coordinate.getZoom()*0.9));
+        nodeToScale.setScaleX(1/(1+Coordinate.getZoom()));
+        nodeToScale.setScaleY(1/(1+Coordinate.getZoom()));
     }
 
     public void setAddr(String ip, int port) {

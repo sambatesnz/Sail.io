@@ -1,7 +1,6 @@
 package seng302.DataGeneration;
 
 import seng302.BoatManager;
-import seng302.CollisionDetector;
 import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
@@ -11,7 +10,7 @@ import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
-import seng302.Race;
+import seng302.Modes.Race;
 import seng302.RaceObjects.Boat;
 import seng302.XMLCreation.RaceXMLCreator;
 import seng302.XMLCreation.XMLCreator;
@@ -32,6 +31,7 @@ public class RaceManager implements IServerData {
     private Queue<byte[]> singularMessageQueue;
     private Timer timer = new Timer();
     private BoatManager boatManager;
+    private RaceManager parent = this;
 
 
     public RaceManager(){
@@ -90,7 +90,6 @@ public class RaceManager implements IServerData {
         timer.schedule(new XMLSender(), 0, 2000);
         timer.schedule(new RSMSender(), 100, 500);
         timer.schedule(new BoatPosSender(), 100, 17);
-        timer.schedule(new CollisionDetection(), 1000, 500);
         timer.schedule(new RaceRunner(), 200, 17);
         timer.schedule(new raceEventHandler(), 200, 17);
     }
@@ -104,6 +103,14 @@ public class RaceManager implements IServerData {
     @Override
     public void addXMLPackets() throws IOException {
         generateXML();
+    }
+
+    /**
+     * adds a message to the broadcast queue
+     * @param message the message you want to add
+     */
+    public void addMessage(byte[] message) {
+        broadcastMessageQueue.add(message);
     }
 
     class XMLSender extends TimerTask {
@@ -153,27 +160,6 @@ public class RaceManager implements IServerData {
         }
     }
 
-    class CollisionDetection extends TimerTask {
-        @Override
-        public void run() {
-            CollisionDetector detector = new CollisionDetector();
-            for (Boat boat : race.getBoats()) {
-                if (detector.checkBoatCollision(boat, race)) {
-                    BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
-                            boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
-                    );
-                    broadcastMessageQueue.add(boatCollisionEventMessage.createMessage());
-                }
-
-                if (detector.checkMarkCollisions(boat, race.getCompoundMarks()) || !detector.checkWithinBoundary(boat, race.getBoundaries())) {
-                    BinaryMessage markCollisionEventMessage = new YachtEventMessage(
-                            boat.getSourceId(), YachtIncidentEvent.MARKCOLLISION
-                    );
-                    broadcastMessageQueue.add(markCollisionEventMessage.createMessage());
-                }
-            }
-        }
-    }
 
     class raceEventHandler extends TimerTask {
         @Override
@@ -195,7 +181,7 @@ public class RaceManager implements IServerData {
         public void run() {
             if(race.getRaceStatus() != RaceStatus.WARNING && race.getRaceStatus() != RaceStatus.START_TIME_NOT_SET) {
                 race.updateBoats();
-                race.updateBoats();
+                race.checkCollisions(parent);
             }
             race.updateRaceInfo();
         }
