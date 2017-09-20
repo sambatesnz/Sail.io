@@ -1,5 +1,8 @@
 package seng302.Controllers;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,13 +20,15 @@ import java.io.IOException;
 
 public class StartController {
 
-    @FXML private Button connectBtn;
-    @FXML private TextField ipField;
+    @FXML private JFXButton connectBtn;
+    @FXML private JFXTextField ipField;
+    @FXML private JFXTextField portField;
     @FXML private Label statusLbl;
-    @FXML private Text ipLabel;
-    @FXML private RadioButton RaceModeRadioButton;
-    @FXML private RadioButton AgarModeRadioButton;
-    @FXML private RadioButton PracticeModeRadioButton;
+    @FXML private Text fullMastText;
+    @FXML private JFXRadioButton RaceModeRadioButton;
+    @FXML private JFXRadioButton AgarModeRadioButton;
+    @FXML private JFXRadioButton PracticeModeRadioButton;
+    @FXML private JFXRadioButton CustomModeRadioButton;
 
 
     private Stage primaryStage;
@@ -44,18 +49,19 @@ public class StartController {
 
     @FXML
     public void initialize(){
-        ipField.setText("localhost:4941");
         statusLbl.setText("");
+
+        fullMastText.setFocusTraversable(true);
 
         modeGroup = new ToggleGroup();
 
         modeGroup.getToggles().add(RaceModeRadioButton);
         modeGroup.getToggles().add(AgarModeRadioButton);
         modeGroup.getToggles().add(PracticeModeRadioButton);
-        AgarModeRadioButton.setVisible(true);
+        modeGroup.getToggles().add(CustomModeRadioButton);
 
-        ipField.visibleProperty().bind(RaceModeRadioButton.selectedProperty());
-        ipLabel.visibleProperty().bind(RaceModeRadioButton.selectedProperty());
+        ipField.visibleProperty().bind(CustomModeRadioButton.selectedProperty());
+        portField.visibleProperty().bind(CustomModeRadioButton.selectedProperty());
     }
 
 
@@ -82,6 +88,11 @@ public class StartController {
                 connectPractice(ip, port);
                 break;
             } case RACE: {
+                String ip = getIp();
+                int port = raceMode.getPort();
+                connectLobby(ip, port, raceMode);
+                break;
+            }case CUSTOM: {
                 String ip = getIp();
                 int port = getPort();
                 connectLobby(ip, port, raceMode);
@@ -271,14 +282,19 @@ public class StartController {
 
     private String getIp() {
         String ipInput = ipField.getText();
-        String[] splitInput = ipInput.split(":");
-        return  ("http://" + splitInput[0]);
+        return  ("http://" + ipInput);
     }
 
     private int getPort() {
-        String ipInput = ipField.getText();
-        String[] splitInput = ipInput.split(":");
-        return (Integer.parseInt(splitInput[1]));
+        String portInput = portField.getText();
+        int port;
+        try {
+            port = Integer.parseInt(portInput);
+        } catch (NumberFormatException badInput) {
+            // using default port
+            port = 4941;
+        }
+        return port;
     }
 
     public void exitToMenu(String message) throws IOException {
