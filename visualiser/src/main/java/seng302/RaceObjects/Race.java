@@ -54,6 +54,7 @@ public class Race {
     private boolean viewReady;
     private boolean hasRegatta;
     private int clientSourceId;
+    private Boat clientBoat;
     private int collisionCount = 0;
     public ObservableList<Boat> boatsObs;
     private SimpleStringProperty timeToStart;
@@ -139,6 +140,13 @@ public class Race {
     public void setViewMinMax(Mark min, Mark max){
         viewMin = min;
         viewMax = max;
+    }
+
+    public Boat getClientBoat() {
+        if (clientBoat == null) {
+            clientBoat = boats.get(clientSourceId);
+        }
+        return clientBoat;
     }
 
     public Mark getViewMin(){
