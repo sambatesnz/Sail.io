@@ -39,9 +39,9 @@ public class CollisionDetectorTest {
                 boat.setMark(marks.get(i % 2));
             }
 
-            assertEquals(true, detector.checkBoatCollision(race.getBoats().get(0)));
-            assertEquals(false, detector.checkBoatCollision(race.getBoats().get(1)));
-            assertEquals(true, detector.checkBoatCollision(race.getBoats().get(2)));
+            assertEquals(true, null != detector.checkBoatCollision(race.getBoats().get(0)));
+            assertEquals(false, null != detector.checkBoatCollision(race.getBoats().get(1)));
+            assertEquals(true, null != detector.checkBoatCollision(race.getBoats().get(2)));
 
         } catch (Exception e) {
             System.out.println("Whoops");

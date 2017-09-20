@@ -97,6 +97,7 @@ public class LobbyController {
                 raceController = new RaceController(race);
                 break;
             case AGAR:
+                System.out.println("JUST MADE AN AGAIR CONTROLERLAER");
                 raceController = new AgarRaceController(race);
                 break;
         }
