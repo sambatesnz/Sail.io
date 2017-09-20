@@ -486,11 +486,14 @@ public class Race {
 
 
     public void checkCollisions(IServerData raceManager){
+
         for (Boat boat : getBoats()) {
             if (collisionDetector.checkBoatCollision(boat)) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
                         boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
                 );
+             /*   boat.loseLife();
+                boat.setAgarSize();*/
                 raceManager.addMessage(boatCollisionEventMessage.createMessage());
             }
 

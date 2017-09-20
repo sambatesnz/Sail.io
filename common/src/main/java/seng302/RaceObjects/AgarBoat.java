@@ -3,17 +3,17 @@ package seng302.RaceObjects;
 /**
  * Boat to use for Agar mode, which has lives, size, and a base speed.
  */
-public class AgarBoat extends BoatDecorator{
+public class AgarBoat extends BoatDecorator {
 
     private boolean eliminated = false;
     private int lives;
-    private int size;
+    private int agarSize;
 
     public AgarBoat(Boat boat) {
         super(boat);
 
         lives = 3;
-        size = 1;
+        agarSize = 1;
     }
 
     public void setSpeed(int speed) {
@@ -23,9 +23,18 @@ public class AgarBoat extends BoatDecorator{
 
     public void loseLife() {
         lives = lives - 1;
+        resetAgarSize();
         if (lives < 1) {
             setEliminated();
         }
+    }
+
+    private void resetAgarSize() {
+        agarSize = 1;
+    }
+
+    public int getAgarSize() {
+        return agarSize;
     }
 
     public int getLives() {
@@ -36,7 +45,7 @@ public class AgarBoat extends BoatDecorator{
         eliminated = true;
     }
 
-    private boolean isEliminated() {
+    public boolean isEliminated() {
         return eliminated;
     }
 

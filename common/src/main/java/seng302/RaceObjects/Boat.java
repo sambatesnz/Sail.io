@@ -4,7 +4,6 @@ import javafx.scene.paint.Color;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.abs;
@@ -408,6 +407,29 @@ public class Boat implements BoatInterface{
      */
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    @Override
+    public void loseLife() {
+        //Noops
+    }
+
+    @Override
+    public int getLives() {
+        //Noops
+        return 0;
+    }
+
+    @Override
+    public boolean isEliminated() {
+        //Noops
+        return false;
+    }
+
+    @Override
+    public int getAgarSize() {
+        //Noops
+        return 0;
     }
 
     /**
