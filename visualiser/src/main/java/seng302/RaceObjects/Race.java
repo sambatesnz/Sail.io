@@ -48,8 +48,8 @@ public class Race {
 
     private final int COLLISION_FRAMES = 50;
 
-    // yellow, blue, pink, orange, green, purple, red, brown
-    private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300");
+    // yellow, blue, pink, orange, green, purple, red, brown, another orange, lime,
+    private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300", "#FF5733", "#A6FF00", "#2A00FF", "#DC00FF","#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300", "#FF5733", "#A6FF00", "#2A00FF", "#DC00FF");
     private boolean receivedRaceXML;
     private boolean viewReady;
     private boolean hasRegatta;
