@@ -13,8 +13,8 @@ import java.util.Set;
  */
 public class BoatManager {
 
-    private Set<Boat> finishedBoats;
-    private List<Boat> boatsToSend;
+    private Set<BoatInterface> finishedBoats;
+    private List<BoatInterface> boatsToSend;
 
     public BoatManager(){
         this.finishedBoats = new HashSet<>();
@@ -38,7 +38,7 @@ public class BoatManager {
         return boatsToSend.size() > 0;
     }
 
-    public Boat getFinishedBoat() {
+    public BoatInterface getFinishedBoat() {
         return boatsToSend.remove(0);
     }
 }

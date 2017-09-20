@@ -9,7 +9,7 @@ import java.util.Map;
 import static java.lang.Math.sqrt;
 
 /**
- * Created by msi52 on 11/09/17.
+ * Detects collisions between two boats, boats and marks, and boats and the boundary
  */
 public class CollisionDetector {
 
@@ -75,7 +75,7 @@ public class CollisionDetector {
 
         Map<BoatPair, BoatCollision> collisionMap = race.getCollisionMap();
 
-        for (Boat checkBoat : race.getBoats()) {
+        for (BoatInterface checkBoat : race.getBoats()) {
             if (!checkBoat.equals(boat)) {
                 BoatPair boatPair = new BoatPair(boat, checkBoat);
                 BoatCollision boat1Collision = collisionMap.get(boatPair);

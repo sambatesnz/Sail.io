@@ -169,7 +169,7 @@ public class AgarManager implements IServerData{
         @Override
         public void run() {
             if (boatManager.hasABoatFinished()) {
-                Boat boat = boatManager.getFinishedBoat();
+                BoatInterface boat = boatManager.getFinishedBoat();
                 BinaryMessage yachtEventMessage = new YachtEventMessage(
                         boat.getSourceId(),
                         YachtIncidentEvent.FINISHED

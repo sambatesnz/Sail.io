@@ -167,5 +167,135 @@ public class BoatDecorator implements BoatInterface{
         return null;
     }
 
+    @Override
+    public int getTargetMarkIndex() {
+        return 0;
+    }
+
+    @Override
+    public void setMark(Mark mapCenter) {
+
+    }
+
+    @Override
+    public int getCurrentLegIndex() {
+        return 0;
+    }
+
+    @Override
+    public void setPosition(int position) {
+
+    }
+
+    @Override
+    public int getPosition() {
+        return 0;
+    }
+
+    @Override
+    public void setStatus(int status) {
+
+    }
+
+    @Override
+    public void setCurrentLegIndex(int legNumber) {
+
+    }
+
+    @Override
+    public void passMark() {
+
+    }
+
+    @Override
+    public void setTimeToNextMark(long estTimeToNextMark) {
+
+    }
+
+    @Override
+    public void setTimeToFinish(long estTimeToFinish) {
+
+    }
+
+    @Override
+    public void setLives(int boatLives) {
+
+    }
+
+    @Override
+    public void setAgarSize(int boatSize) {
+
+    }
+
+    @Override
+    public void setHeading(double heading) {
+
+    }
+
+    @Override
+    public void setKnowsBoatLocation(boolean b) {
+
+    }
+
+    @Override
+    public void setSailsOut(boolean sailOut) {
+
+    }
+
+    @Override
+    public long getTimeToNextMark() {
+        return 0;
+    }
+
+    @Override
+    public long getTimeToFinish() {
+        return 0;
+    }
+
+    @Override
+    public int getLastMarkIndex() {
+        return 0;
+    }
+
+    @Override
+    public void resetRoundingStage() {
+
+    }
+
+    @Override
+    public int getRoundingStage() {
+        return 0;
+    }
+
+    @Override
+    public void updateRoundingStage() {
+
+    }
+
+    @Override
+    public String getBoatName() {
+        return null;
+    }
+
+    @Override
+    public String getCountry() {
+        return null;
+    }
+
+    @Override
+    public void tackOrGybe(int windHeading) {
+
+    }
+
+    @Override
+    public void updateHeading(int windHeading, boolean upwind) {
+
+    }
+
+    @Override
+    public void setHeadingToVMG(int windHeading) {
+
+    }
+
 
 }

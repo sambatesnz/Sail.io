@@ -840,7 +840,7 @@ public class RaceController implements IRaceController {
      */
     private void checkPositions() {
 
-        List<Boat> boats = race.getBoats();
+        List<BoatInterface> boats = race.getBoats();
         boats.sort((o1, o2) -> o1.getCurrentLegIndex()>o2.getCurrentLegIndex()?-1:o1.getCurrentLegIndex()<=o2.getCurrentLegIndex()?1: 0);
         for (int i = 0; i < boats.size(); i++) {
             int position = i + 1; //offset by 1 because noone can be in 0th position
@@ -883,7 +883,7 @@ public class RaceController implements IRaceController {
         sparklinesChart.setCreateSymbols(false);
 
         List<XYChart.Series<Number, Number>> series = new ArrayList<>();
-        for (Boat boat :race.getBoats()) {
+        for (BoatInterface boat :race.getBoats()) {
             XYChart.Series<Number, Number> newSeries = new XYChart.Series<>();
             newSeries.getData().add(new XYChart.Data<>(0,0));
             newSeries.setName(boat.getName());
@@ -1090,10 +1090,10 @@ public class RaceController implements IRaceController {
     }
 
     private void initFinisherObserver(){
-        race.getBoatsForScoreBoard().addListener(new ListChangeListener<Boat>() {
+        race.getBoatsForScoreBoard().addListener(new ListChangeListener<BoatInterface>() {
             @Override
-            public void onChanged(Change<? extends Boat> c) {
-                for (Boat boat : race.getBoatsForScoreBoard()) {
+            public void onChanged(Change<? extends BoatInterface> c) {
+                for (BoatInterface boat : race.getBoatsForScoreBoard()) {
                     if (boat.getSourceId() == race.getClientSourceId()){
                         if(!clientFinished) {
                             finishingPane.setVisible(true);

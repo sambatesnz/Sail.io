@@ -68,4 +68,56 @@ public interface BoatInterface {
     String getShortName();
 
     Color getColour();
+
+    int getTargetMarkIndex();
+
+    void setMark(Mark mapCenter);
+
+    int getCurrentLegIndex();
+
+    void setPosition(int position);
+
+    int getPosition();
+
+    void setStatus(int status);
+
+    void setCurrentLegIndex(int legNumber);
+
+    void passMark();
+
+    void setTimeToNextMark(long estTimeToNextMark);
+
+    void setTimeToFinish(long estTimeToFinish);
+
+    void setLives(int boatLives);
+
+    void setAgarSize(int boatSize);
+
+    void setHeading(double heading);
+
+    void setKnowsBoatLocation(boolean b);
+
+    void setSailsOut(boolean sailOut);
+
+    long getTimeToNextMark();
+
+    long getTimeToFinish();
+
+    int getLastMarkIndex();
+
+    void resetRoundingStage();
+
+    int getRoundingStage();
+
+    void updateRoundingStage();
+
+    String getBoatName();
+
+    String getCountry();
+
+    void tackOrGybe(int windHeading);
+
+    void updateHeading(int windHeading, boolean upwind);
+
+    void setHeadingToVMG(int windHeading);
 }

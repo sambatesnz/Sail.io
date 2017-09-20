@@ -6,6 +6,7 @@ import cucumber.api.java.en.When;
 import seng302.Modes.RaceManager;
 import seng302.Modes.Race;
 import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.BoatInterface;
 import seng302.Server.Delegator;
 import seng302.UserInputController.BoatAction;
 
@@ -24,7 +25,7 @@ public class BoatActionSteps {
         RaceManager mockData = new RaceManager(); //Default race
         race = mockData.getRace();
         delegator = new Delegator(race);
-        Boat boat = race.addBoat(0);
+        BoatInterface boat = race.addBoat(0);
         boatSourceId = boat.getSourceId();
     }
 

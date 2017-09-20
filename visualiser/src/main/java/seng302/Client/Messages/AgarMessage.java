@@ -2,6 +2,7 @@ package seng302.Client.Messages;
 
 import seng302.PacketParsing.PacketParserUtils;
 import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.BoatInterface;
 import seng302.RaceObjects.Race;
 
 import java.util.Map;
@@ -17,7 +18,7 @@ public class AgarMessage {
     private int boatSize;
     private int boatSourceId;
     private Race race;
-    private Map<Integer, Boat> boatDict;
+    private Map<Integer, BoatInterface> boatDict;
 
     /**
      * Constructor
@@ -41,7 +42,7 @@ public class AgarMessage {
     private void setAgarBoatStats() {
         System.out.println("receiveed pecket");
         if (boatDict != null && boatDict.containsKey(boatSourceId)) {
-            Boat boat = boatDict.get(boatSourceId);
+            BoatInterface boat = boatDict.get(boatSourceId);
             boat.setLives(boatLives);
             boat.setAgarSize(boatSize);
 

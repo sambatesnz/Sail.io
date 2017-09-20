@@ -13,6 +13,7 @@ import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
 import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.BoatInterface;
 import seng302.XMLCreation.RaceXMLCreator;
 import seng302.XMLCreation.XMLCreator;
 
@@ -146,7 +147,7 @@ public class RaceManager implements IServerData {
     class BoatPosSender extends TimerTask {
         @Override
         public void run() {
-            for (Boat boat : race.getBoats()) {
+            for (BoatInterface boat : race.getBoats()) {
                 BinaryMessage boatLocationMessage = new BoatLocationMessage(
                         1, System.currentTimeMillis(), boat.getSourceId(),
                         1, 1,
@@ -167,7 +168,7 @@ public class RaceManager implements IServerData {
         @Override
         public void run() {
             if (boatManager.hasABoatFinished()) {
-                Boat boat = boatManager.getFinishedBoat();
+                BoatInterface boat = boatManager.getFinishedBoat();
                 BinaryMessage yachtEventMessage = new YachtEventMessage(
                         boat.getSourceId(),
                         YachtIncidentEvent.FINISHED

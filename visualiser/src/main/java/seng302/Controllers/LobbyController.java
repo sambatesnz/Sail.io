@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import seng302.RaceObjects.BoatInterface;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 import seng302.UserInput.KeyBindingUtility;
@@ -23,9 +24,9 @@ public class LobbyController {
 
     @FXML private Button forceStartBtn;
     private Stage primaryStage;
-    @FXML private TableView<Boat> contestantTable;
-    @FXML private TableColumn<Boat, String> teamColumn;
-    @FXML private TableColumn<Boat, String> clientColumn;
+    @FXML private TableView<BoatInterface> contestantTable;
+    @FXML private TableColumn<BoatInterface, String> teamColumn;
+    @FXML private TableColumn<BoatInterface, String> clientColumn;
     private Race race;
     private boolean raceStarted;
     private String ipAddr;
@@ -40,11 +41,11 @@ public class LobbyController {
 
     public void initialiseTable(){
         teamColumn.setCellValueFactory(
-                new PropertyValueFactory<Boat, String>("boatName")
+                new PropertyValueFactory<BoatInterface, String>("boatName")
         );
 
         clientColumn.setCellValueFactory(
-                new PropertyValueFactory<Boat, String>("country")
+                new PropertyValueFactory<BoatInterface, String>("country")
         );
 
         contestantTable.setItems(race.boatsObs);

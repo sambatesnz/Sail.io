@@ -6,12 +6,12 @@ import seng302.RaceObjects.BoatInterface;
 import java.util.Objects;
 
 public final class BoatPair {
-    private final Boat boat1;
-    private final Boat boat2;
+    private final BoatInterface boat1;
+    private final BoatInterface boat2;
     private final int id1;
     private final int id2;
-    private Boat winner;
-    private Boat loser;
+    private BoatInterface winner;
+    private BoatInterface loser;
 
     public BoatPair(BoatInterface boat1, BoatInterface boat2) {
         this.boat1 = Objects.requireNonNull(boat1);
@@ -25,21 +25,21 @@ public final class BoatPair {
         this.loser = boat2;
     }
 
-    public Boat getWinner() {
+    public BoatInterface getWinner() {
         return winner;
     }
 
-    public Boat getLoser() {
+    public BoatInterface getLoser() {
         return loser;
     }
 
-    public Boat getBoat1() { return boat1; }
-    public Boat getBoat2() { return boat2; }
+    public BoatInterface getBoat1() { return boat1; }
+    public BoatInterface getBoat2() { return boat2; }
 
     /**
-     * Checks if the objects are  equal.
+     * Checks if the objects are equal.
      * @param obj the object to be compared against
-     * @return
+     * @return True if the objects are equal, otherwise false
      */
     @Override public boolean equals(Object obj) {
         if (this == obj) return true;

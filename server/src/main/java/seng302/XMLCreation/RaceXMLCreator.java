@@ -5,10 +5,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import seng302.Modes.Race;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.CompoundMark;
-import seng302.RaceObjects.CourseLimit;
-import seng302.RaceObjects.Mark;
+import seng302.RaceObjects.*;
 import seng302.Rounding;
 
 import java.io.IOException;
@@ -59,7 +56,7 @@ public class RaceXMLCreator implements XMLCreator {
         Element participants = root.addElement("Participants");
 
 
-        for (Boat b : race.getBoats()) {
+        for (BoatInterface b : race.getBoats()) {
             participants.addElement("Yacht")
                     .addAttribute("SourceID", String.valueOf(b.getSourceId()));
         }

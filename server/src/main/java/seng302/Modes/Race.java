@@ -125,7 +125,7 @@ public class Race {
     /**
      * Sets the connected flag on a boat to false, where the given boat is the one identified by
      * the source id of the client in the map of boats to clients.
-     * @param clientSocketSourceID
+     * @param clientSocketSourceID The source ID of the client
      */
     public void setBoatAsDisconnected(int clientSocketSourceID) {
         try {
@@ -145,7 +145,7 @@ public class Race {
      */
     public BoatInterface addBoat(int clientSocketSourceID) throws Exception {
         if (boats.size() < MAX_NUMBER_OF_BOATS){
-            Boat boat = boatGenerator.generateBoat();
+            BoatInterface boat = boatGenerator.generateBoat();
             clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
             return boat;

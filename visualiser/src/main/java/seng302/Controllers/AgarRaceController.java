@@ -26,10 +26,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.CompoundMark;
-import seng302.RaceObjects.Mark;
-import seng302.RaceObjects.Race;
+import seng302.RaceObjects.*;
 import seng302.Rounding;
 import seng302.Visualiser.Arrow;
 import seng302.Visualiser.BoatSprite;
@@ -58,11 +55,11 @@ public class AgarRaceController implements IRaceController {
     @FXML private Label localTimeZone;
     @FXML private Label localTime;
     @FXML private ListView<String> finishedListView;
-    @FXML private TableView<Boat> positionTable;
-    @FXML private TableColumn<Boat, String> positionCol;
-    @FXML private TableColumn<Boat, String> nameCol;
-    @FXML private TableColumn<Boat, String> speedCol;
-    @FXML private TableColumn<Boat, String> legCol;
+    @FXML private TableView<BoatInterface> positionTable;
+    @FXML private TableColumn<BoatInterface, String> positionCol;
+    @FXML private TableColumn<BoatInterface, String> nameCol;
+    @FXML private TableColumn<BoatInterface, String> speedCol;
+    @FXML private TableColumn<BoatInterface, String> legCol;
     @FXML private Label fpsLabel;
     @FXML private Button annotationBtn;
     @FXML private Button fpsBtn;
@@ -94,9 +91,9 @@ public class AgarRaceController implements IRaceController {
     private boolean showSpeed = true;
     private boolean showFPS = true;
     private List<Path> paths = new ArrayList<>();
-    private Boat boatToFollow;
-    private Boat spectatorBoat;
-    private Boat centerOfScreen;
+    private BoatInterface boatToFollow;
+    private BoatInterface spectatorBoat;
+    private BoatInterface centerOfScreen;
     private double zoomLevel = 0;
     private boolean followingBoat = false;
     private int raceHours = 0;
@@ -119,8 +116,8 @@ public class AgarRaceController implements IRaceController {
     private ObservableList<XYChart.Series<Number, Number>> seriesList;
     private Integer secondCounter = 1;
     private Integer sparkCounter = 0;
-    private List<Boat> sortedBoats;
-    private List<Boat> otherSortedBoats;
+    private List<BoatInterface> sortedBoats;
+    private List<BoatInterface> otherSortedBoats;
     private int EARTH_RADIUS = 6371;
     private int METERS_CONVERSION = 1000;
     private final int SPARKLINEHEIGHT = 239;
@@ -843,7 +840,7 @@ public class AgarRaceController implements IRaceController {
      */
     private void checkPositions() {
 
-        List<Boat> boats = race.getBoats();
+        List<BoatInterface> boats = race.getBoats();
         boats.sort((o1, o2) -> o1.getCurrentLegIndex()>o2.getCurrentLegIndex()?-1:o1.getCurrentLegIndex()<=o2.getCurrentLegIndex()?1: 0);
         for (int i = 0; i < boats.size(); i++) {
             int position = i + 1; //offset by 1 because noone can be in 0th position
@@ -886,7 +883,7 @@ public class AgarRaceController implements IRaceController {
         sparklinesChart.setCreateSymbols(false);
 
         List<XYChart.Series<Number, Number>> series = new ArrayList<>();
-        for (Boat boat :race.getBoats()) {
+        for (BoatInterface boat :race.getBoats()) {
             XYChart.Series<Number, Number> newSeries = new XYChart.Series<>();
             newSeries.getData().add(new XYChart.Data<>(0,0));
             newSeries.setName(boat.getName());
@@ -1104,10 +1101,10 @@ public class AgarRaceController implements IRaceController {
     }
 
     private void initFinisherObserver(){
-        race.getBoatsForScoreBoard().addListener(new ListChangeListener<Boat>() {
+        race.getBoatsForScoreBoard().addListener(new ListChangeListener<BoatInterface>() {
             @Override
-            public void onChanged(Change<? extends Boat> c) {
-                for (Boat boat : race.getBoatsForScoreBoard()) {
+            public void onChanged(Change<? extends BoatInterface> c) {
+                for (BoatInterface boat : race.getBoatsForScoreBoard()) {
                     if (boat.getSourceId() == race.getClientSourceId()){
                         if(!clientFinished) {
                             finishingPane.setVisible(true);

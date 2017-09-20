@@ -20,7 +20,7 @@ public class AgarRace extends Race {
 
     @Override
     public void checkCollisions(IServerData raceManager){
-        for (Boat boat : getBoats()) {
+        for (BoatInterface boat : getBoats()) {
             if (collisionDetector.checkBoatCollision(boat)) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
                         boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
