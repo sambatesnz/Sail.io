@@ -8,15 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import seng302.RaceMode;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.ViewScreenType;
 import seng302.UserInput.KeyBindingUtility;
 
-import java.io.File;
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
 
 public class StartController {
 

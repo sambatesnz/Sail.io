@@ -5,14 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import seng302.Controllers.Coordinate;
 import seng302.Controllers.StartController;
 import seng302.UserInput.KeyBindingUtility;
 
-import java.io.File;
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
 
 /**
  * Runs the javafx program
@@ -26,8 +23,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("RaceView.fxml"));
-//            RaceViewController raceViewController = new RaceViewController(primaryStage);
 
 
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/StartingPage.fxml"));

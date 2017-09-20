@@ -89,7 +89,6 @@ public class RaceController implements IRaceController {
     private Group roundingArrow2 = new Group();
     private Group roundingArrowMirrored1 = new Group();
     private Group roundingArrowMirrored2 = new Group();
-    private boolean raceFinishTimerStarted = false;
 
     private boolean showName = true;
     private boolean showSpeed = true;

@@ -104,8 +104,6 @@ public class LobbyController {
 
         if (raceController != null) {
             raceController.setPrimaryStage(primaryStage);
-//            primaryStage.setWidth(1200);
-//            primaryStage.setHeight(800);
             loader.setController(raceController);
             Parent root = loader.load();
             Scene rootScene = new Scene(root);
