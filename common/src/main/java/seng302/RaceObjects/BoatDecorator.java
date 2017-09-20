@@ -16,5 +16,24 @@ public class BoatDecorator implements BoatInterface{
         this.boat.setSpeed(speed);
     }
 
+    @Override
+    public void loseLife() {
+    }
+
+    @Override
+    public int getLives() {
+        return 0;
+    }
+
+    @Override
+    public boolean isEliminated() {
+        return false;
+    }
+
+    @Override
+    public int getAgarSize() {
+        return 0;
+    }
+
 
 }

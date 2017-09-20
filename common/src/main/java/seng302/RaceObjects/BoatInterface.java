@@ -7,4 +7,11 @@ public interface BoatInterface {
 
     void setSpeed(int speed);
 
+    void loseLife();
+
+    int getLives();
+
+    boolean isEliminated();
+
+    int getAgarSize();
 }
