@@ -80,9 +80,13 @@ public class Message {
             case BOAT_LOCATION:
                 new LocationMessage(body, race);
                 break;
+            case AGAR:
+                new AgarMessage(body, race);
+                break;
             case PARTICIPANT_CONFIRMATION:
                 messageParser = new ClientParticipantConfirmationMessage(body);
                 messageParser.updateRace(race);
+                break;
         }
     }
 

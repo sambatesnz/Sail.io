@@ -1,9 +1,9 @@
 package seng302;
 
-import seng302.AgarMode.AgarManager;
+import seng302.Modes.AgarManager;
 import seng302.DataGeneration.IServerData;
-import seng302.DataGeneration.PractiseRaceManager;
-import seng302.DataGeneration.RaceManager;
+import seng302.Modes.PracticeRaceManager;
+import seng302.Modes.RaceManager;
 
 /**
  * Determines what implementation of IServerData is wanter
@@ -32,7 +32,7 @@ public class RaceModeChooser {
         //unused as these modes haven't been implemented yet
         System.out.println("Server started in " + mode.getRaceMode() + " mode!");
         if (mode == RaceMode.PRACTICE) {
-            race = new PractiseRaceManager();
+            race = new PracticeRaceManager();
         }
         else if (mode == RaceMode.AGAR) {
             race = new AgarManager();

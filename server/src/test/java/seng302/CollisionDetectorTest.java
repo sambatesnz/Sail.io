@@ -2,6 +2,7 @@ package seng302;
 
 import javafx.scene.paint.Color;
 import org.junit.Test;
+import seng302.Modes.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.CourseLimit;
@@ -17,8 +18,8 @@ import static junit.framework.TestCase.assertEquals;
  * Created by msi52 on 11/09/17.
  */
 public class CollisionDetectorTest {
-
-    private CollisionDetector detector = new CollisionDetector();
+    private Race race = new Race();
+    private CollisionDetector detector = new CollisionDetector(race);
 
     @Test
     public void testBoatCollisions() {
@@ -28,9 +29,6 @@ public class CollisionDetectorTest {
         Mark other = new Mark(25.256412, 36.325522);
 
         ArrayList<Mark> marks = new ArrayList<>(Arrays.asList(checkMark, other));
-
-        Race race = new Race();
-
         try {
             race.addBoat(101);
             race.addBoat(102);
@@ -41,9 +39,9 @@ public class CollisionDetectorTest {
                 boat.setMark(marks.get(i % 2));
             }
 
-            assertEquals(true, detector.checkBoatCollision(race.getBoats().get(0), race));
-            assertEquals(false, detector.checkBoatCollision(race.getBoats().get(1), race));
-            assertEquals(true, detector.checkBoatCollision(race.getBoats().get(2), race));
+            assertEquals(true, detector.checkBoatCollision(race.getBoats().get(0)));
+            assertEquals(false, detector.checkBoatCollision(race.getBoats().get(1)));
+            assertEquals(true, detector.checkBoatCollision(race.getBoats().get(2)));
 
         } catch (Exception e) {
             System.out.println("Whoops");

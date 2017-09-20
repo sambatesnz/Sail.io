@@ -1,6 +1,6 @@
 package seng302.Server;
 
-import seng302.Race;
+import seng302.Modes.Race;
 import seng302.RaceObjects.Boat;
 import seng302.UserInputController.BoatAction;
 

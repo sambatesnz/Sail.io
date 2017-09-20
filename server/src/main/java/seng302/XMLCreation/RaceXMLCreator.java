@@ -4,7 +4,7 @@ import javafx.util.Pair;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import seng302.Race;
+import seng302.Modes.Race;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.CourseLimit;

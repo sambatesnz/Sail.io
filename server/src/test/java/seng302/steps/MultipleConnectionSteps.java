@@ -5,7 +5,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import seng302.ClientConnections.Client;
 import seng302.DataGeneration.IServerData;
-import seng302.DataGeneration.RaceManager;
+import seng302.Modes.RaceManager;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.RaceObjects.Boat;
 import seng302.Server.Server;
