@@ -122,4 +122,8 @@ public interface BoatInterface {
     void setHeadingToVMG(int windHeading);
 
     double getCollisionFactor();
+
+    long getLastAgarSizeDecreaseTime();
+
+    void setLastAgarSizeDecreaseTime(long time);
 }

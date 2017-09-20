@@ -8,6 +8,7 @@ public class AgarBoat extends BoatDecorator {
     private boolean eliminated = false;
     private int lives;
     private int agarSize;
+    private long lastAgarSizeDecreaseTime;
 
     public AgarBoat(BoatInterface boat) {
         super(boat);
@@ -57,5 +58,11 @@ public class AgarBoat extends BoatDecorator {
         return getAgarSize() * getSpeed();
     }
 
+    public long getLastAgarSizeDecreaseTime() {
+        return lastAgarSizeDecreaseTime;
+    }
 
+    public void setLastAgarSizeDecreaseTime(long time) {
+        this.lastAgarSizeDecreaseTime = time;
+    }
 }
