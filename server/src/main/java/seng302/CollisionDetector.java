@@ -10,7 +10,7 @@ import java.util.Map;
 import static java.lang.Math.sqrt;
 
 /**
- * Created by msi52 on 11/09/17.
+ * Detects collisions between two boats, boats and marks, and boats and the boundary
  */
 public class CollisionDetector {
 
@@ -27,7 +27,7 @@ public class CollisionDetector {
      * @param compoundMarks the marks to check against
      * @return true if the boat is colliding with one of the marks, otherwise, false.
      */
-    public boolean checkMarkCollisions(Boat boat, List<CompoundMark> compoundMarks) {
+    public boolean checkMarkCollisions(BoatInterface boat, List<CompoundMark> compoundMarks) {
 
         Mark boatMark = boat.getMark();
 
@@ -72,11 +72,11 @@ public class CollisionDetector {
      * @param boat the boat being checked
      * @return the BoatCollision if the boat is colliding, null otherwise
      */
-    public BoatCollision checkBoatCollision(Boat boat) {
+    public boolean checkBoatCollision(BoatInterface boat) {
 
         Map<BoatPair, BoatCollision> collisionMap = race.getCollisionMap();
 
-        for (Boat checkBoat : race.getBoats()) {
+        for (BoatInterface checkBoat : race.getBoats()) {
             if (!checkBoat.equals(boat)) {
                 BoatPair boatPair = new BoatPair(boat, checkBoat);
                 BoatCollision boat1Collision = collisionMap.get(boatPair);
@@ -92,7 +92,7 @@ public class CollisionDetector {
      * @param boundaries the boundaries to be checked
      * @return true or false depending on if it is in the course boundaries or not
      */
-    public boolean checkWithinBoundary(Boat boat, List<CourseLimit> boundaries) {
+    public boolean checkWithinBoundary(BoatInterface boat, List<CourseLimit> boundaries) {
 
         boolean withinBoundaries = false;
 

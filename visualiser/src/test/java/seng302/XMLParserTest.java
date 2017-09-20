@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by osr13 on 12/05/17.
+ * Test for the XML Parser
  */
 public class XMLParserTest {
     private XMLParser raceParser;
@@ -54,7 +54,7 @@ public class XMLParserTest {
 
     @Test
     public void checkBoats() throws IOException {
-        Map<Integer, Boat> boats = boatParser.getBoats();
+        Map<Integer, BoatInterface> boats = boatParser.getBoats();
         Assert.assertTrue(boats.size() == 6);
     }
 

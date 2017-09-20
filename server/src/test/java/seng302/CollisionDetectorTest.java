@@ -3,10 +3,7 @@ package seng302;
 import javafx.scene.paint.Color;
 import org.junit.Test;
 import seng302.Modes.Race;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.CompoundMark;
-import seng302.RaceObjects.CourseLimit;
-import seng302.RaceObjects.Mark;
+import seng302.RaceObjects.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +12,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertEquals;
 
 /**
- * Created by msi52 on 11/09/17.
+ * Test for collision detection
  */
 public class CollisionDetectorTest {
     private Race race = new Race();
@@ -35,7 +32,7 @@ public class CollisionDetectorTest {
             race.addBoat(103);
 
             for (int i = 0; i < race.getBoats().size(); i++) {
-                Boat boat = race.getBoats().get(i);
+                BoatInterface boat = race.getBoats().get(i);
                 boat.setMark(marks.get(i % 2));
             }
 

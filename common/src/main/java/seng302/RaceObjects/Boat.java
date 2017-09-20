@@ -657,17 +657,17 @@ public class Boat implements BoatInterface{
         this.finishTime = finishTime;
     }
 
-    public int getAgarSize() {
-        return agarSize;
-    }
+//    public int getAgarSize() {
+//        return agarSize;
+//    }
 
     public void setAgarSize(int agarSize) {
         this.agarSize = agarSize;
     }
 
-    public int getLives() {
-        return lives;
-    }
+//    public int getLives() {
+//        return lives;
+//    }
 
     public void setLives(int lives) {
         this.lives = lives;

@@ -7,13 +7,14 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
 import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.BoatInterface;
 
 import static javafx.scene.paint.Color.PINK;
 
 
 public class BoatSprite {
     private Pane stack;
-    private Boat boatObject;
+    private BoatInterface boatObject;
     private Polyline boatIcon;
     private Polyline wake;
     private Text text;
@@ -28,7 +29,7 @@ public class BoatSprite {
     public static final int SAIL = 5;
 
 
-    public BoatSprite(Boat boat, int clientSourceId){
+    public BoatSprite(BoatInterface boat, int clientSourceId){
         this.boatObject = boat;
         initialiseBoatIcon();
         initialiseWake();
@@ -55,7 +56,7 @@ public class BoatSprite {
         return stack;
     }
 
-    public Boat getBoat(){
+    public BoatInterface getBoat(){
         return boatObject;
     }
 

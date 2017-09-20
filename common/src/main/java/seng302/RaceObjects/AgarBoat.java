@@ -9,7 +9,7 @@ public class AgarBoat extends BoatDecorator {
     private int lives;
     private int agarSize;
 
-    public AgarBoat(Boat boat) {
+    public AgarBoat(BoatInterface boat) {
         super(boat);
 
         lives = 3;

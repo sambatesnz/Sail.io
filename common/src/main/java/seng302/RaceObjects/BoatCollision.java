@@ -5,11 +5,11 @@ import static java.lang.Math.sqrt;
 
 public class BoatCollision {
     int collisionType;
-    Boat collider1;
-    Boat collider2;
-    boolean isColliding;
+    private BoatInterface collider1;
+    private BoatInterface collider2;
+    private boolean isColliding;
 
-    public BoatCollision(Boat collider1, Boat collider2){
+    public BoatCollision(BoatInterface collider1, BoatInterface collider2){
         this.collider1 = collider1;
         this.collider2 = collider2;
         this.isColliding = false;

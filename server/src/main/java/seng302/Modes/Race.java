@@ -33,7 +33,7 @@ public class Race {
     private List<Pair<CompoundMark, Rounding>> courseRoundingInfo;
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
-    private List<Boat> boats;
+    private List<BoatInterface> boats;
     Map<Integer, Integer> clientIDs;
     private List<CourseLimit> boundaries;
     private short windHeading;
@@ -54,9 +54,9 @@ public class Race {
     private static final int FIVE_KNOTS = 2573;
     private static final int DIRECTION_CHANGE_PROB = 25;
     final long ONE_MINUTE_IN_MILLIS = 60000;
-    private static int MAX_NUMBER_OF_BOATS = 20;
+    static int MAX_NUMBER_OF_BOATS = 20;
 
-    private BoatGenerator boatGenerator;
+    BoatGenerator boatGenerator;
     private BoatManager boatManager;
     private long finishTime;
     CollisionDetector collisionDetector;
@@ -78,8 +78,8 @@ public class Race {
         startingTime = getNewStartTime();
         finishTime = 0;
 
-        ObservableList<Boat> b = FXCollections.observableArrayList();
-        b.addListener((ListChangeListener<Boat>) c -> {
+        ObservableList<BoatInterface> b = FXCollections.observableArrayList();
+        b.addListener((ListChangeListener<BoatInterface>) c -> {
             initCollisions();
         });
         boats = b;
@@ -107,8 +107,8 @@ public class Race {
     public void removeBoat(int clientSocketSourceID) {
         try {
             int sourceId = clientIDs.get(clientSocketSourceID);
-            Boat boat = null;
-            for (Boat currentBoat: boats){
+            BoatInterface boat = null;
+            for (BoatInterface currentBoat: boats){
                 if (currentBoat.getSourceId() == sourceId) {
                     boat = currentBoat;
                 }
@@ -125,12 +125,12 @@ public class Race {
     /**
      * Sets the connected flag on a boat to false, where the given boat is the one identified by
      * the source id of the client in the map of boats to clients.
-     * @param clientSocketSourceID
+     * @param clientSocketSourceID The source ID of the client
      */
     public void setBoatAsDisconnected(int clientSocketSourceID) {
         try {
             int sourceId = clientIDs.get(clientSocketSourceID);
-            Boat boat = getBoatByID(sourceId);
+            BoatInterface boat = getBoatByID(sourceId);
             boat.disconnect();
         }catch (NullPointerException nullPoint){
             System.out.println("Spectator Disconnected");
@@ -143,9 +143,9 @@ public class Race {
      * @return boat that was added
      * @throws Exception the boat could not be created
      */
-    public Boat addBoat(int clientSocketSourceID) throws Exception {
+    public BoatInterface addBoat(int clientSocketSourceID) throws Exception {
         if (boats.size() < MAX_NUMBER_OF_BOATS){
-            Boat boat = boatGenerator.generateBoat();
+            BoatInterface boat = boatGenerator.generateBoat();
             clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
             return boat;
@@ -294,7 +294,7 @@ public class Race {
      *
      * @return the boats competing
      */
-    public List<Boat> getBoats() {
+    public List<BoatInterface> getBoats() {
         return boats;
     }
 
@@ -304,8 +304,8 @@ public class Race {
      * @param sourceID The number that identifies the boat
      * @return The boat identified with SourceID
      */
-    public Boat getBoatByID(int sourceID) {
-        for (Boat boat : boats) {
+    public BoatInterface getBoatByID(int sourceID) {
+        for (BoatInterface boat : boats) {
             if (boat.getSourceId() == sourceID) {
                 return boat;
             }
@@ -386,7 +386,7 @@ public class Race {
     public void updateBoats() {
         double movementMultiplier = 1;
 
-        for (Boat boat : boats) {
+        for (BoatInterface boat : boats) {
             if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
                 PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
             }
@@ -444,7 +444,7 @@ public class Race {
     }
 
     private boolean areAllContestantsFinished() {
-        for (Boat boat : boats) {
+        for (BoatInterface boat : boats) {
             if (!(boat.isFinished() || !boat.isConnected())){
                 return false;
             }
@@ -487,7 +487,7 @@ public class Race {
 
     public void checkCollisions(IServerData raceManager){
 
-        for (Boat boat : getBoats()) {
+        for (BoatInterface boat : getBoats()) {
             if (collisionDetector.checkBoatCollision(boat)!=null) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
                         boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
@@ -508,8 +508,8 @@ public class Race {
 
     private void initCollisions(){
         collisionMap = new HashMap<>();
-        for (Boat boat : boats){
-            for (Boat checkBoat : boats){
+        for (BoatInterface boat : boats){
+            for (BoatInterface checkBoat : boats){
                 BoatPair boatPair = new BoatPair(boat, checkBoat);
                 if(!collisionMap.containsKey(new BoatPair(boat, checkBoat))){
                     collisionMap.put(boatPair, new BoatCollision(boat, checkBoat));

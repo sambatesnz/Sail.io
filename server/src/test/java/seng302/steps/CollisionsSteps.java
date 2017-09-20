@@ -7,12 +7,13 @@ import org.junit.Assert;
 import seng302.BoatGenerator;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.BoatCollision;
+import seng302.RaceObjects.BoatInterface;
 
 import static junit.framework.TestCase.assertEquals;
 
 public class CollisionsSteps {
-    private Boat boat1;
-    private Boat boat2;
+    private BoatInterface boat1;
+    private BoatInterface boat2;
     private BoatCollision bc;
 
     @Given("^There are 2 boats$")
