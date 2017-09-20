@@ -37,6 +37,8 @@ public class Boat implements BoatInterface{
     private boolean headingChanged;
     private boolean sailsOut = false;
     private double size;
+    private int agarSize;
+    private int lives;
 
     private boolean upwindMemory = false;
     private boolean downwindMemory = false;
@@ -631,6 +633,22 @@ public class Boat implements BoatInterface{
 
     public void setFinishTime(long finishTime) {
         this.finishTime = finishTime;
+    }
+
+    public int getAgarSize() {
+        return agarSize;
+    }
+
+    public void setAgarSize(int agarSize) {
+        this.agarSize = agarSize;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 }
 

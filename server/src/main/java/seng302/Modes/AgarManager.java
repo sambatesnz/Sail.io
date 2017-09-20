@@ -158,7 +158,6 @@ public class AgarManager implements IServerData{
                 );
                 BinaryMessage agarMessage = new AgarMessage(boat.getSourceId(), 3, 1); //TODO: don't hardcode
                 broadcastMessageQueue.add(boatLocationMessage.createMessage());
-                System.out.println("we got to the making message");
                 broadcastMessageQueue.add(agarMessage.createMessage());
             }
         }

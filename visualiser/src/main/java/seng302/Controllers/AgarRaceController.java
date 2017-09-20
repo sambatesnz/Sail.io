@@ -308,6 +308,7 @@ public class AgarRaceController implements IRaceController {
     private void updateBoatPositions() {
         final int SAIL_OFFSET = 7;
         for (int i = 0; i < boats.size(); i++) {
+            Node boat = boats.get(i).getStack().getChildren().get(BoatSprite.BOAT);
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
                 double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
                 String speed = "";
@@ -321,10 +322,10 @@ public class AgarRaceController implements IRaceController {
                 //Position of boat, wake and annotations.
                 boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
                 boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
-                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.BOAT));
+                updateNodeScale(boat, boats.get(i).getBoat().getAgarSize());
                 boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
-                // Temporary hard coding to differentiate between the boat in user control
+                // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
                 if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
                     updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
                 }
@@ -1067,6 +1068,17 @@ public class AgarRaceController implements IRaceController {
             raceSeconds = 0;
         }
         clock.setText(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+    }
+
+    /**
+     * updates node scale with a bonus size( used for when boats grow )
+     * @param nodeToScale node to scale based on current level of zoom
+     * @param bonusSize percentage of bonus scale to give the node.
+     */
+    private void updateNodeScale(Node nodeToScale, int bonusSize) {
+        double bonusScale = ((double) bonusSize) / 100;
+        nodeToScale.setScaleX(1/(1+Coordinate.getZoom()*0.9) + bonusScale);
+        nodeToScale.setScaleY(1/(1+Coordinate.getZoom()*0.9) + bonusScale);
     }
 
     /**
