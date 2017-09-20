@@ -5,48 +5,44 @@ package seng302.RaceObjects;
  */
 public class AgarBoat extends BoatDecorator {
 
-    private boolean eliminated = false;
     private int lives;
     private int agarSize;
 
     public AgarBoat(BoatInterface boat) {
         super(boat);
-
         lives = 3;
         agarSize = 1;
     }
 
+    @Override
     public void setSpeed(int speed) {
-        int totalSpeed = speed;
+        int totalSpeed = speed + 100000;
         super.setSpeed(totalSpeed);
     }
 
+    @Override
     public void loseLife() {
         lives = lives - 1;
         resetAgarSize();
-        if (lives < 1) {
-            setEliminated();
-        }
     }
 
     private void resetAgarSize() {
         agarSize = 1;
     }
 
+    @Override
     public int getAgarSize() {
         return agarSize;
     }
 
+    @Override
     public int getLives() {
         return lives;
     }
 
-    private void setEliminated() {
-        eliminated = true;
-    }
-
+    @Override
     public boolean isEliminated() {
-        return eliminated;
+        return lives == 0;
     }
 
 
