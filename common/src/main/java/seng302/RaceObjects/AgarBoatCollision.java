@@ -6,19 +6,19 @@ import static java.lang.Math.sqrt;
 public class AgarBoatCollision extends BoatCollision {
 
 
-    public AgarBoatCollision(Boat collider1, Boat collider2) {
+    public AgarBoatCollision(BoatInterface collider1, BoatInterface collider2) {
         super(collider1, collider2);
     }
 
-    public Boat getWinner(){
+    public BoatInterface getWinner(){
         if(abs(getCollisionFactor(collider1) - getCollisionFactor(collider2)) < 2) return collider1; //should be null when not testing
         return getCollisionFactor(collider1) < getCollisionFactor(collider2) ? collider2 : collider1;
     }
-    public Boat getLoser(){
+    public BoatInterface getLoser(){
         return getCollisionFactor(collider1) > getCollisionFactor(collider2) ? collider2 : collider1;
     }
 
-    private double getCollisionFactor(Boat boat){
+    private double getCollisionFactor(BoatInterface boat){
         return boat.getAgarSize();
     }
 }

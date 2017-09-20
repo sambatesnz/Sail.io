@@ -54,7 +54,7 @@ public class Race {
     private boolean viewReady;
     private boolean hasRegatta;
     private int clientSourceId;
-    private Boat clientBoat;
+    private BoatInterface clientBoat;
     private int collisionCount = 0;
     public ObservableList<BoatInterface> boatsObs;
     private SimpleStringProperty timeToStart;
@@ -142,7 +142,7 @@ public class Race {
         viewMax = max;
     }
 
-    public Boat getClientBoat() {
+    public BoatInterface getClientBoat() {
         if (clientBoat == null) {
             clientBoat = boats.get(clientSourceId);
         }

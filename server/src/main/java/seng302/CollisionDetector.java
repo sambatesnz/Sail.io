@@ -72,7 +72,7 @@ public class CollisionDetector {
      * @param boat the boat being checked
      * @return the BoatCollision if the boat is colliding, null otherwise
      */
-    public boolean checkBoatCollision(BoatInterface boat) {
+    public BoatCollision checkBoatCollision(BoatInterface boat) {
 
         Map<BoatPair, BoatCollision> collisionMap = race.getCollisionMap();
 

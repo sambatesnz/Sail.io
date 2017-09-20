@@ -5,8 +5,8 @@ import static java.lang.Math.sqrt;
 
 public class BoatCollision {
     int collisionType;
-    private BoatInterface collider1;
-    private BoatInterface collider2;
+    BoatInterface collider1;
+    BoatInterface collider2;
     private boolean isColliding;
 
     public BoatCollision(BoatInterface collider1, BoatInterface collider2){
@@ -51,7 +51,7 @@ public class BoatCollision {
         return isColliding;
     }
 
-    public Boat getWinner(){
+    public BoatInterface getWinner(){
         if(abs(getCollisionFactor(collider1) - getCollisionFactor(collider2)) < 2)
         {
             System.out.println("EVEN STEVEN");
@@ -59,7 +59,8 @@ public class BoatCollision {
         }
         return getCollisionFactor(collider1) < getCollisionFactor(collider2) ? collider2 : collider1;
     }
-    public Boat getLoser(){
+
+    public BoatInterface getLoser(){
         if(abs(getCollisionFactor(collider1) - getCollisionFactor(collider2)) < 2)
         {
             System.out.println("EVEN STEVEN2");
@@ -68,7 +69,7 @@ public class BoatCollision {
         return getCollisionFactor(collider1) < getCollisionFactor(collider2) ? collider1 : collider2;
     }
 
-    private double getCollisionFactor(Boat boat){
+    private double getCollisionFactor(BoatInterface boat){
         return boat.getAgarSize();
     }
 

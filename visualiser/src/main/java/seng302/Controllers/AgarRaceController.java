@@ -332,7 +332,7 @@ public class AgarRaceController implements IRaceController {
     }
 
     private void updateBoatLives() {
-        Boat boat =  race.getClientBoat();
+        BoatInterface boat =  race.getClientBoat();
         switch (boat.getLives()) {
             case 1:
                 imageOne.setVisible(true);

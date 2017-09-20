@@ -45,7 +45,7 @@ public class AgarRace extends Race {
         }
     }
 
-    private void killBoat(Boat loser) {
+    private void killBoat(BoatInterface loser) {
     }
 
     @Override

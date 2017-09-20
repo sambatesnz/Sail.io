@@ -33,7 +33,7 @@ public class Race {
     private List<Pair<CompoundMark, Rounding>> courseRoundingInfo;
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
-    private List<BoatInterface> boats;
+    List<BoatInterface> boats;
     Map<Integer, Integer> clientIDs;
     private List<CourseLimit> boundaries;
     private short windHeading;
