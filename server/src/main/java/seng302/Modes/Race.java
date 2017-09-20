@@ -148,6 +148,7 @@ public class Race {
             BoatInterface boat = boatGenerator.generateBoat();
             clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
+            LocationSpawner.generateSpawnPoints(boats, boundaries, collisionDetector);
             return boat;
         } else {
             throw new Exception("cannot create boat");

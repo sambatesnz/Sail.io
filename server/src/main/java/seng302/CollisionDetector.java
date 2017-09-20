@@ -115,6 +115,16 @@ public class CollisionDetector {
         return withinBoundaries;
     }
 
+    public boolean checkAllCollisions(BoatInterface boat, List<CourseLimit> boundaries, List<BoatInterface> boats) {
+        boolean isCollision = false;
+        BoatCollision bc = checkBoatCollision(boat);
+        if (bc != null) return true;
+        isCollision = checkWithinBoundary(boat, boundaries)
+                || checkMarkCollisions(boat, race.getCompoundMarks());
+        return isCollision;
+    }
+
+
     public Iterable<? extends BoatPair> getCurrentCollisions(seng302.Modes.Race race) {
         return new ArrayList<>();
     }

@@ -71,7 +71,7 @@ public interface BoatInterface {
 
     int getTargetMarkIndex();
 
-    void setMark(Mark mapCenter);
+    void setMark(Mark mark);
 
     int getCurrentLegIndex();
 

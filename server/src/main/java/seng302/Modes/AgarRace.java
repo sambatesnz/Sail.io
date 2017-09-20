@@ -1,6 +1,7 @@
 package seng302.Modes;
 
 import seng302.DataGeneration.IServerData;
+import seng302.LocationSpawner;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
@@ -10,6 +11,9 @@ import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.BoatDecorator;
 import seng302.RaceObjects.BoatInterface;
 import seng302.RaceObjects.BoatCollision;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Extension of base race
@@ -49,6 +53,10 @@ public class AgarRace extends Race {
     }
 
     private void killBoat(BoatInterface loser) {
+        loser.setSailsOut(false);
+        List<BoatInterface> boats = new ArrayList<>();
+        boats.add(loser);
+        LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector);
     }
 
     @Override
@@ -57,6 +65,7 @@ public class AgarRace extends Race {
             BoatDecorator boat = new AgarBoat(boatGenerator.generateBoat());
             clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
+            LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector);
             return boat;
         } else {
             throw new Exception("cannot create boat");
