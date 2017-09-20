@@ -319,7 +319,6 @@ public class Race {
      * @param raceStatus The status of the race
      */
     public void setRaceStatus(RaceStatus raceStatus) {
-        System.out.println(raceStatus);
         this.raceStatus = raceStatus;
         if (raceStatus.equals(RaceStatus.FINISHED)) {
             System.out.println("finishRace called");
@@ -453,15 +452,6 @@ public class Race {
     }
 
     public void finishRace() {
-//        Thread killRacethread = new Thread(() -> {
-//            try {
-//                Thread.sleep(10000);
-//                finished.setValue(true);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//        killRacethread.start();
         finished.setValue(true);
     }
 

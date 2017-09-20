@@ -1083,6 +1083,7 @@ public class RaceController implements IRaceController {
     }
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        resetZoom();
     }
     /**
      * This gets called once the visualiser receives information that the players boat has finished the race.

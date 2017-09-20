@@ -133,16 +133,6 @@ public class StartController {
                             }
                         }
                 );
-//            } else if (view.equals(ViewScreenType.GAME.getViewScreenType())) { // connected
-//                Platform.runLater(
-//                    () -> {
-//                        try {
-//                            newConnection(race);
-//                        } catch (InterruptedException | IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                );
             } else if (view.equals(ViewScreenType.MENU_ERROR.getViewScreenType())) {
                 Platform.runLater(
                     () -> {
@@ -165,7 +155,7 @@ public class StartController {
                         }
                 );
 
-            }else if (view.equals(ViewScreenType.SCORE_SCREEN.getViewScreenType())) {
+            } else if (view.equals(ViewScreenType.SCORE_SCREEN.getViewScreenType())) {
                 Platform.runLater(
                         () -> {
                             try {
