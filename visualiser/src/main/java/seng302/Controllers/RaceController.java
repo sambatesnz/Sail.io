@@ -238,6 +238,7 @@ public class RaceController implements IRaceController {
 
     private void initialiseRaceListener() {
         raceListener = new AnimationTimer() {
+
             @Override
             public void handle(long currentNanoTime) {
                 rotateWindArrow();
@@ -285,20 +286,19 @@ public class RaceController implements IRaceController {
                     }
                 }
                 if (race.isFinished()) {
+                    System.out.println("Stopping raceListener");
                     raceListener.stop();
                 }
-                sparkCounter++;
             }
         };
     }
-
-
 
     private void startRaceListener() {
         raceListener.start();
     }
 
     private void stopRaceListener() {
+        System.out.println("Stop RaceListener method called");
         raceListener.stop();
     }
 
@@ -1081,6 +1081,7 @@ public class RaceController implements IRaceController {
     }
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        resetZoom();
     }
     /**
      * This gets called once the visualiser receives information that the players boat has finished the race.
@@ -1101,12 +1102,16 @@ public class RaceController implements IRaceController {
                             isFinishersHidden = false;
                             clientFinished = true;
                         }
-
-
                     }
                 }
+//                if (race.getBoatsMap().size() == race.getBoatsForScoreBoard().size()){
+//                    race.finishRace();
+//                }
+//                else if (!raceFinishTimerStarted && race.getBoatsForScoreBoard().size() > 0){
+//                    race.finishRace();
+//                    raceFinishTimerStarted = true;
+//                }
             }
-
         });
     }
 

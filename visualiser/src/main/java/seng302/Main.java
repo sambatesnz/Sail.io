@@ -23,8 +23,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("RaceView.fxml"));
-//            RaceViewController raceViewController = new RaceViewController(primaryStage);
 
 
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/StartingPage.fxml"));

@@ -72,7 +72,7 @@ public class StartController {
         switch (raceMode){
             case AGAR: {
 //                String ip = "http://132.181.16.12"; //Turn me on for production
-                String ip = "http://127.0.01";
+                String ip = "http://127.0.0.1";
                 int port = raceMode.getPort();
                 connectLobby(ip, port, raceMode);
                 break;
@@ -130,16 +130,6 @@ public class StartController {
                             }
                         }
                 );
-//            } else if (view.equals(ViewScreenType.GAME.getViewScreenType())) { // connected
-//                Platform.runLater(
-//                    () -> {
-//                        try {
-//                            newConnection(race);
-//                        } catch (InterruptedException | IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                );
             } else if (view.equals(ViewScreenType.MENU_ERROR.getViewScreenType())) {
                 Platform.runLater(
                     () -> {
@@ -162,7 +152,7 @@ public class StartController {
                         }
                 );
 
-            }else if (view.equals(ViewScreenType.SCORE_SCREEN.getViewScreenType())) {
+            } else if (view.equals(ViewScreenType.SCORE_SCREEN.getViewScreenType())) {
                 Platform.runLater(
                         () -> {
                             try {
@@ -299,8 +289,8 @@ public class StartController {
 
         startController.setPrimaryStage(primaryStage);
         startController.setStartScene(rootScene);
-
     }
+
     public void showScoreScreen() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/ScoreScreen.fxml"));
 

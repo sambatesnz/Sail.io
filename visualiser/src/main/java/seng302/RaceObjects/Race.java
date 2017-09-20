@@ -328,6 +328,9 @@ public class Race {
      */
     public void setRaceStatus(RaceStatus raceStatus) {
         this.raceStatus = raceStatus;
+        if (raceStatus.equals(RaceStatus.FINISHED)) {
+            finishRace();
+        }
     }
 
     /**

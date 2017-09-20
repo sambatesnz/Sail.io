@@ -89,6 +89,8 @@ public class LobbyController {
     public void forceStart() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
 
+        primaryStage.setWidth(1200);
+        primaryStage.setHeight(800);
         IRaceController raceController = null;
         switch (race.getRaceMode()) {
             case RACE:
