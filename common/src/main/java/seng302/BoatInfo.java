@@ -34,7 +34,7 @@ final class BoatInfo {
         for (int i = amount-1; i>-1 ; i--) { //So we put nice boat names on top
             String boatName = boatNames.get(i);
             List<String> boatData = dataMap.get(boatName);
-            Boat boat = new Boat(boatName, boatData.get(1), sourceId, boatData.get(0));
+            BoatInterface boat = new Boat(boatName, boatData.get(1), sourceId, boatData.get(0));
             boat.setHeading(180);
             Mark mark = new Mark(getRandomDouble(57.6727450, 57.6714450),
                     getRandomDouble(11.8316340, 11.8255920));

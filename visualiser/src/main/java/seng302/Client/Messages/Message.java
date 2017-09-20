@@ -4,6 +4,7 @@ import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketParsing.PacketParserUtils;
 import seng302.PacketParsing.XMLParser;
+import seng302.RaceMode;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.CompoundMark;
 
@@ -99,13 +100,14 @@ public class Message {
                     regattaSet = true;
                     break;
                 case BOAT:
+                    RaceMode mode = race.getRaceMode();
                     if (race.getRaceStatus() == RaceStatus.WARNING || race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET || (race.getClientSourceId() == 0)) {
                         if (race.getClientSourceId() != 0) { //Spectating
-                            race.setBoats(xmlParser.getBoats());
+                            race.setBoats(xmlParser.getBoats(mode));
                         } else if (race.getBoatsMap() == null){
-                            race.setBoats(xmlParser.getBoats());
-                        } else if (race.getBoatsMap().size() != xmlParser.getBoats().size()){
-                            race.setBoats(xmlParser.getBoats());
+                            race.setBoats(xmlParser.getBoats(mode));
+                        } else if (race.getBoatsMap().size() != xmlParser.getBoats(race.getRaceMode()).size()){
+                            race.setBoats(xmlParser.getBoats(mode));
                         }
                         boatsSet = true;
                     }

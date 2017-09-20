@@ -120,4 +120,6 @@ public interface BoatInterface {
     void updateHeading(int windHeading, boolean upwind);
 
     void setHeadingToVMG(int windHeading);
+
+    double getCollisionFactor();
 }

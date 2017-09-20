@@ -27,6 +27,7 @@ public class AgarMessage {
      */
     public AgarMessage(byte[] bytes, Race race) {
         boatSourceId = PacketParserUtils.byteArrayToInt(bytes, 0, 4);
+        System.out.println(boatSourceId);
         boatLives = PacketParserUtils.byteArrayToInt(bytes, 4, 4);
         boatSize = PacketParserUtils.byteArrayToInt(bytes, 8, 4);
         boatDict = race.getBoatsMap();

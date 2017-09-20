@@ -377,6 +377,7 @@ public class AgarRaceController implements IRaceController {
                 //Position of boat, wake and annotations.
                 boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
                 boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
+                System.out.println(boats.get(i).getBoat().getAgarSize());
                 updateNodeScale(boat, boats.get(i).getBoat().getAgarSize());
                 boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
@@ -1132,8 +1133,8 @@ public class AgarRaceController implements IRaceController {
      */
     private void updateNodeScale(Node nodeToScale, int bonusSize) {
         double bonusScale = ((double) bonusSize) / 100;
-        nodeToScale.setScaleX(1/(1+Coordinate.getZoom()*0.9) + bonusScale);
-        nodeToScale.setScaleY(1/(1+Coordinate.getZoom()*0.9) + bonusScale);
+        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()*0.9) ) * bonusScale);
+        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()*0.9) )* bonusScale);
     }
 
     /**

@@ -52,25 +52,21 @@ public class BoatCollision {
     }
 
     public BoatInterface getWinner(){
-        if(abs(getCollisionFactor(collider1) - getCollisionFactor(collider2)) < 2)
+        if(abs(collider1.getCollisionFactor() - collider2.getCollisionFactor()) < 2)
         {
             System.out.println("EVEN STEVEN");
             return collider1; //should be null when not testing
         }
-        return getCollisionFactor(collider1) < getCollisionFactor(collider2) ? collider2 : collider1;
+        return collider1.getCollisionFactor() < collider2.getCollisionFactor() ? collider2 : collider1;
     }
 
     public BoatInterface getLoser(){
-        if(abs(getCollisionFactor(collider1) - getCollisionFactor(collider2)) < 2)
+        if(abs(collider1.getCollisionFactor() - collider2.getCollisionFactor()) < 2)
         {
             System.out.println("EVEN STEVEN2");
             return collider2; //should be null when not testing
         }
-        return getCollisionFactor(collider1) < getCollisionFactor(collider2) ? collider1 : collider2;
-    }
-
-    private double getCollisionFactor(BoatInterface boat){
-        return boat.getAgarSize();
+        return collider1.getCollisionFactor() < collider1.getCollisionFactor() ? collider1 : collider2;
     }
 
 }

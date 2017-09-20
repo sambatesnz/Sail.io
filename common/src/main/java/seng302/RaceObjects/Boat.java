@@ -207,6 +207,11 @@ public class Boat implements BoatInterface{
         turnBoat(isClockwise, finalHeading);
     }
 
+    @Override
+    public double getCollisionFactor() {
+        return 0;
+    }
+
     private int getRelativeAngle(int angle1, double angle2){
         return Math.floorMod(((int)angle2 - angle1), 360);
     }
@@ -431,6 +436,7 @@ public class Boat implements BoatInterface{
     @Override
     public int getAgarSize() {
         //Noops
+        System.out.println("this shouldn't be called please send help");
         return 0;
     }
 

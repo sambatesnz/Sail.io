@@ -54,7 +54,7 @@ public class XMLParserTest {
 
     @Test
     public void checkBoats() throws IOException {
-        Map<Integer, BoatInterface> boats = boatParser.getBoats();
+        Map<Integer, BoatInterface> boats = boatParser.getBoats(RaceMode.RACE);
         Assert.assertTrue(boats.size() == 6);
     }
 

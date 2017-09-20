@@ -13,7 +13,7 @@ public class AgarBoat extends BoatDecorator {
         super(boat);
 
         lives = 3;
-        agarSize = 1;
+        agarSize = 100;
     }
 
     public void setSpeed(int speed) {
@@ -49,6 +49,9 @@ public class AgarBoat extends BoatDecorator {
         return eliminated;
     }
 
+    public double getCollisionFactor(){
+        return getAgarSize() * getSpeed();
+    }
 
 
 }

@@ -298,5 +298,10 @@ public class BoatDecorator implements BoatInterface{
         boat.setHeadingToVMG(windHeading);
     }
 
+    @Override
+    public double getCollisionFactor() {
+        return 0;
+    }
+
 
 }
