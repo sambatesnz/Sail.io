@@ -17,6 +17,8 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -136,6 +138,10 @@ public class AgarRaceController implements IRaceController {
     private Stage primaryStage;
     private boolean clientFinished = false;
 
+    private ImageView imageOne;
+    private ImageView imageTwo;
+    private ImageView imageThree;
+
 
     public AgarRaceController(Race race){
         this.race = race;
@@ -178,6 +184,8 @@ public class AgarRaceController implements IRaceController {
         if (race.getClientSourceId() == 0){
             initialiseSpectatorZoom();
         }
+
+        drawLives();
 
         startRaceListener();
     }
@@ -262,6 +270,7 @@ public class AgarRaceController implements IRaceController {
                     updateCourseLayout();
                     if (race.isRaceReady() && boatLocationDataInitialised) {
                         updateBoatPositions();
+                        updateBoatLives();
                         //updateBoatPaths();
                     }
                 } catch (Exception e) {
@@ -295,7 +304,56 @@ public class AgarRaceController implements IRaceController {
         };
     }
 
+    private void drawLives() {
+        double totalVert = 100;
+        imageOne = new ImageView();
+        imageOne.setImage(new Image("2000px-Love_Heart_symbol.svg.png"));
+        imageOne.setFitHeight(40.0);
+        imageOne.setFitWidth(40.0);
+        imageOne.setX(20);
+        imageOne.setY(totalVert);
+        totalVert += imageOne.getFitHeight();
 
+        imageTwo = new ImageView();
+        imageTwo.setImage(new Image("2000px-Love_Heart_symbol.svg.png"));
+        imageTwo.setFitHeight(40.0);
+        imageTwo.setFitWidth(40.0);
+        imageTwo.setX(20);
+        imageTwo.setY(totalVert);
+        totalVert += imageTwo.getFitHeight();
+
+        imageThree = new ImageView();
+        imageThree.setImage(new Image("2000px-Love_Heart_symbol.svg.png"));
+        imageThree.setFitHeight(40.0);
+        imageThree.setFitWidth(40.0);
+        imageThree.setX(20);
+        imageThree.setY(totalVert);
+
+        viewAnchorPane.getChildren().add(imageOne);
+        viewAnchorPane.getChildren().add(imageTwo);
+        viewAnchorPane.getChildren().add(imageThree);
+    }
+
+    private void updateBoatLives() {
+        Boat boat =  race.getClientBoat();
+        switch (boat.getLives()) {
+            case 1:
+                imageOne.setVisible(true);
+                imageTwo.setVisible(false);
+                imageThree.setVisible(false);
+                break;
+            case 2:
+                imageOne.setVisible(true);
+                imageTwo.setVisible(true);
+                imageThree.setVisible(false);
+                break;
+            case 3:
+                imageOne.setVisible(true);
+                imageTwo.setVisible(true);
+                imageThree.setVisible(true);
+                break;
+        }
+    }
 
     private void startRaceListener() {
         raceListener.start();
