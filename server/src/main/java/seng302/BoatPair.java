@@ -1,7 +1,7 @@
 package seng302;
 
-import javafx.util.Pair;
 import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.BoatInterface;
 
 import java.util.Objects;
 
@@ -13,7 +13,7 @@ public final class BoatPair {
     private Boat winner;
     private Boat loser;
 
-    public BoatPair(Boat boat1, Boat boat2) {
+    public BoatPair(BoatInterface boat1, BoatInterface boat2) {
         this.boat1 = Objects.requireNonNull(boat1);
         this.boat2 = Objects.requireNonNull(boat2);
         this.id1 = (boat1.getSourceId() < boat2.getSourceId()) ? boat1.getSourceId() : boat2.getSourceId();

@@ -1,6 +1,7 @@
 package seng302;
 
 import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.BoatInterface;
 import seng302.RaceObjects.Mark;
 
 import java.util.*;
@@ -25,10 +26,10 @@ final class BoatInfo {
      * Creates a stack of boats
      * @return stack of boats
      */
-    static Stack<Boat> createBoats(int lowestSourceId, int amount) {
+    static Stack<BoatInterface> createBoats(int lowestSourceId, int amount) {
         int sourceId = lowestSourceId + amount-1;
         Map<String, List<String>> dataMap = getBoatMap();
-        Stack<Boat> boats = new Stack();
+        Stack<BoatInterface> boats = new Stack();
         int numberOfBoats = boatNames.size();
         for (int i = amount-1; i>-1 ; i--) { //So we put nice boat names on top
             String boatName = boatNames.get(i);

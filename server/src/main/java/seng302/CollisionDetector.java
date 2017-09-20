@@ -26,7 +26,7 @@ public class CollisionDetector {
      * @param compoundMarks the marks to check against
      * @return true if the boat is colliding with one of the marks, otherwise, false.
      */
-    public boolean checkMarkCollisions(Boat boat, List<CompoundMark> compoundMarks) {
+    public boolean checkMarkCollisions(BoatInterface boat, List<CompoundMark> compoundMarks) {
 
         Mark boatMark = boat.getMark();
 
@@ -71,7 +71,7 @@ public class CollisionDetector {
      * @param boat the boat being checked
      * @return true if colliding, false otherwise
      */
-    public boolean checkBoatCollision(Boat boat) {
+    public boolean checkBoatCollision(BoatInterface boat) {
 
         Map<BoatPair, BoatCollision> collisionMap = race.getCollisionMap();
 
@@ -91,7 +91,7 @@ public class CollisionDetector {
      * @param boundaries the boundaries to be checked
      * @return true or false depending on if it is in the course boundaries or not
      */
-    public boolean checkWithinBoundary(Boat boat, List<CourseLimit> boundaries) {
+    public boolean checkWithinBoundary(BoatInterface boat, List<CourseLimit> boundaries) {
 
         boolean withinBoundaries = false;
 

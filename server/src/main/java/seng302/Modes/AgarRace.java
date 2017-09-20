@@ -4,7 +4,10 @@ import seng302.DataGeneration.IServerData;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
+import seng302.RaceObjects.AgarBoat;
 import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.BoatDecorator;
+import seng302.RaceObjects.BoatInterface;
 
 /**
  * Extension of base race
@@ -32,6 +35,18 @@ public class AgarRace extends Race {
                 );
                 raceManager.addMessage(markCollisionEventMessage.createMessage());
             }
+        }
+    }
+
+    @Override
+    public BoatInterface addBoat(int clientSocketSourceID) throws Exception {
+        if (boats.size() < MAX_NUMBER_OF_BOATS){
+            BoatDecorator boat = new AgarBoat(boatGenerator.generateBoat());
+            clientIDs.put(clientSocketSourceID, boat.getSourceId());
+            boats.add(boat);
+            return boat;
+        } else {
+            throw new Exception("cannot create boat");
         }
     }
 }
