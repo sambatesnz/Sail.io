@@ -377,18 +377,18 @@ public class AgarRaceController implements IRaceController {
                 //Position of boat, wake and annotations.
                 boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
                 boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
-                System.out.println(boats.get(i).getBoat().getAgarSize());
+                System.out.println("agarsize: " + boats.get(i).getBoat().getAgarSize());
                 updateNodeScale(boat, boats.get(i).getBoat().getAgarSize());
                 boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
                 // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
                 if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
-                    updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
+                    updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), boats.get(i).getBoat().getAgarSize());
                 }
 
                 //Boats wake
                 boats.get(i).getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
-                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.WAKE));
+                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.WAKE), boats.get(i).getBoat().getAgarSize());
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setRotate(race.getBoats().get(i).getHeading());
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * (1 / (1 + Coordinate.getZoom() * 0.9)))
                         * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
@@ -402,7 +402,7 @@ public class AgarRaceController implements IRaceController {
 
                 //Sails
                 Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
-                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.SAIL));
+                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.SAIL), boats.get(i).getBoat().getAgarSize());
                 double headingDif = (360 + boats.get(i).getBoat().getHeading() - race.getWindHeading()) % 360;
                 if (race.getBoats().get(i).isSailsOut()){
                     boats.get(i).sailOut();
@@ -420,7 +420,7 @@ public class AgarRaceController implements IRaceController {
 
                 }
                 double sailLength = 720d / 45d;
-                sail.setLayoutY((1/(1 + Coordinate.getZoom() * 0.9)) * (sailLength)/2 - SAIL_OFFSET);
+                sail.setLayoutY((1/(1 + Coordinate.getZoom())) * (sailLength)/2 - SAIL_OFFSET);
             }
         }
     }
@@ -1127,14 +1127,15 @@ public class AgarRaceController implements IRaceController {
     }
 
     /**
-     * updates node scale with a bonus size( used for when boats grow )
+     * updates node scale with a % of  area of boat( used for when boats grow )
      * @param nodeToScale node to scale based on current level of zoom
-     * @param bonusSize percentage of bonus scale to give the node.
+     * @param areaPercent area % of the base area that the boat should be drawn at.
      */
-    private void updateNodeScale(Node nodeToScale, int bonusSize) {
-        double bonusScale = ((double) bonusSize) / 100;
-        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()*0.9) ) * bonusScale);
-        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()*0.9) )* bonusScale);
+    private void updateNodeScale(Node nodeToScale, int areaPercent) {
+        double extraArea = ((double) areaPercent) / 100 - 1;
+        double extraRadius = sqrt(extraArea/Math.PI);
+        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()*0.9) ) * (extraRadius + 1));
+        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()*0.9) )* (extraRadius + 1));
     }
 
     /**

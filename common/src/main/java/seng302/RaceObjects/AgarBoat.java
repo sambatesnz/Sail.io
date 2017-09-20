@@ -15,6 +15,9 @@ public class AgarBoat extends BoatDecorator {
         lives = 3;
         agarSize = 100;
     }
+    public void setAgarSize(int size){
+        this.agarSize = size;
+    }
 
     public void setSpeed(int speed) {
         int totalSpeed = speed;
@@ -28,6 +31,7 @@ public class AgarBoat extends BoatDecorator {
             setEliminated();
         }
     }
+
 
     private void resetAgarSize() {
         agarSize = 1;

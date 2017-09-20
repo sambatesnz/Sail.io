@@ -74,7 +74,6 @@ public class ConnectionStore {
             int clientID = ServerMessageGenerationUtils.unwrapHeader(message);
             byte[] messageToSend = ServerMessageGenerationUtils.unwrapBody(message);
 
-            System.out.println(clientID);
             Socket clientSocket = (Socket) socketStreams.get(clientID);
             OutputStream stream = clientSocket.getOutputStream();
             boolean hasPackets = messageToSend.length > 0;

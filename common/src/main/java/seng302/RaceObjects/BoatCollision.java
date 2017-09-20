@@ -7,12 +7,14 @@ public class BoatCollision {
     int collisionType;
     BoatInterface collider1;
     BoatInterface collider2;
-    private boolean isColliding;
+    boolean isColliding;
+    boolean reactedToCollision;
 
     public BoatCollision(BoatInterface collider1, BoatInterface collider2){
         this.collider1 = collider1;
         this.collider2 = collider2;
         this.isColliding = false;
+        reactedToCollision = false;
     }
 
     /**
@@ -39,6 +41,7 @@ public class BoatCollision {
             isColliding = true;
         } else {
             isColliding = false;
+            reactedToCollision = false;
         }
     }
 
@@ -55,7 +58,7 @@ public class BoatCollision {
         if(abs(collider1.getCollisionFactor() - collider2.getCollisionFactor()) < 2)
         {
             System.out.println("EVEN STEVEN");
-            return collider1; //should be null when not testing
+            return null; //should be null when not testing
         }
         return collider1.getCollisionFactor() < collider2.getCollisionFactor() ? collider2 : collider1;
     }
@@ -64,11 +67,17 @@ public class BoatCollision {
         if(abs(collider1.getCollisionFactor() - collider2.getCollisionFactor()) < 2)
         {
             System.out.println("EVEN STEVEN2");
-            return collider2; //should be null when not testing
+            return null; //should be null when not testing
         }
         return collider1.getCollisionFactor() < collider1.getCollisionFactor() ? collider1 : collider2;
     }
 
+    public boolean isReactedToCollision(){
+        return reactedToCollision;
+    }
+    public void setReactedToCollision(boolean bool){
+        reactedToCollision = bool;
+    }
 }
 
 

@@ -29,9 +29,12 @@ public class AgarRace extends Race {
                         boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
                 );
 
-                collision.getWinner().setAgarSize(collision.getWinner().getAgarSize() + collision.getLoser().getAgarSize());
+                if (!collision.isReactedToCollision()) {
+                    collision.getWinner().setAgarSize(collision.getWinner().getAgarSize() + collision.getLoser().getAgarSize());
+                    System.out.println(collision.getWinner().getAgarSize() + collision.getLoser().getAgarSize());
+                    collision.setReactedToCollision(true);
+                }
                 killBoat(collision.getLoser());
-
 
                 raceManager.addMessage(boatCollisionEventMessage.createMessage());
             }
