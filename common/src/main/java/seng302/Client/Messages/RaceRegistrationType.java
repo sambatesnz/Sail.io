@@ -7,8 +7,7 @@ public enum RaceRegistrationType {
 
     DEFAULT(-1),
     VIEW(0),
-    PARTICIPATE(1),
-    AGAR(4);
+    PARTICIPATE(1);
 
     private int registrationType;
 

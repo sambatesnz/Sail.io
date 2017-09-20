@@ -3,6 +3,7 @@ package seng302;
 import seng302.RaceObjects.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -69,9 +70,9 @@ public class CollisionDetector {
     /**
      * Check the collision of a boat
      * @param boat the boat being checked
-     * @return true if colliding, false otherwise
+     * @return the BoatCollision if the boat is colliding, null otherwise
      */
-    public boolean checkBoatCollision(Boat boat) {
+    public BoatCollision checkBoatCollision(Boat boat) {
 
         Map<BoatPair, BoatCollision> collisionMap = race.getCollisionMap();
 
@@ -79,10 +80,10 @@ public class CollisionDetector {
             if (!checkBoat.equals(boat)) {
                 BoatPair boatPair = new BoatPair(boat, checkBoat);
                 BoatCollision boat1Collision = collisionMap.get(boatPair);
-                if (boat1Collision.isColliding()) return true;
+                if (boat1Collision.isColliding()) return boat1Collision;
             }
         }
-        return false;
+        return null;
     }
 
     /**

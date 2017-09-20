@@ -1,12 +1,13 @@
 package seng302.RaceObjects;
 
+import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
 
 public class BoatCollision {
     int collisionType;
-    private Boat collider1;
-    private Boat collider2;
-    private boolean isColliding;
+    Boat collider1;
+    Boat collider2;
+    boolean isColliding;
 
     public BoatCollision(Boat collider1, Boat collider2){
         this.collider1 = collider1;
@@ -49,6 +50,28 @@ public class BoatCollision {
         updateCollision();
         return isColliding;
     }
+
+    public Boat getWinner(){
+        if(abs(getCollisionFactor(collider1) - getCollisionFactor(collider2)) < 2)
+        {
+            System.out.println("EVEN STEVEN");
+            return collider1; //should be null when not testing
+        }
+        return getCollisionFactor(collider1) < getCollisionFactor(collider2) ? collider2 : collider1;
+    }
+    public Boat getLoser(){
+        if(abs(getCollisionFactor(collider1) - getCollisionFactor(collider2)) < 2)
+        {
+            System.out.println("EVEN STEVEN2");
+            return collider2; //should be null when not testing
+        }
+        return getCollisionFactor(collider1) < getCollisionFactor(collider2) ? collider1 : collider2;
+    }
+
+    private double getCollisionFactor(Boat boat){
+        return boat.getAgarSize();
+    }
+
 }
 
 

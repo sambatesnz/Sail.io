@@ -39,14 +39,10 @@ public class AgarMessage {
      *
      */
     private void setAgarBoatStats() {
-        System.out.println("receiveed pecket");
         if (boatDict != null && boatDict.containsKey(boatSourceId)) {
             Boat boat = boatDict.get(boatSourceId);
             boat.setLives(boatLives);
             boat.setAgarSize(boatSize);
-
-            System.out.println("Agar pakcet has been HEARD. YOU HAVE A VOICE");
-            System.out.println("id " + boatSourceId + " lives " + boatLives + " size " + boatSize);
         }
     }
 }

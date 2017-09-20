@@ -4,7 +4,9 @@ import seng302.DataGeneration.IServerData;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
+import seng302.RaceObjects.AgarBoatCollision;
 import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.BoatCollision;
 
 /**
  * Extension of base race
@@ -18,11 +20,16 @@ public class AgarRace extends Race {
     @Override
     public void checkCollisions(IServerData raceManager){
         for (Boat boat : getBoats()) {
-            if (collisionDetector.checkBoatCollision(boat)) {
+            BoatCollision collision = collisionDetector.checkBoatCollision(boat);
+            if (null != collision) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
                         boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
                 );
-                boat.setAgarSize(boat.getAgarSize() + 1);
+
+                collision.getWinner().setAgarSize(collision.getWinner().getAgarSize() + collision.getLoser().getAgarSize());
+                killBoat(collision.getLoser());
+
+
                 raceManager.addMessage(boatCollisionEventMessage.createMessage());
             }
 
@@ -33,5 +40,8 @@ public class AgarRace extends Race {
                 raceManager.addMessage(markCollisionEventMessage.createMessage());
             }
         }
+    }
+
+    private void killBoat(Boat loser) {
     }
 }
