@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import seng302.RaceMode;
 import seng302.RaceObjects.*;
 import seng302.Rounding;
 
@@ -264,9 +265,9 @@ public class XMLParser {
         return markMap;
     }
 
-    public Map<Integer, Boat> getBoats() {
+    public Map<Integer, BoatInterface> getBoats(RaceMode mode) {
         NodeList nodes = xmlDoc.getElementsByTagName(BOATS).item(0).getChildNodes();
-        Map<Integer, Boat> boats = new HashMap<>();
+        Map<Integer, BoatInterface> boats = new HashMap<>();
         try {
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
@@ -278,7 +279,11 @@ public class XMLParser {
                         String boatName = nnm.getNamedItem(BOATNAME).getNodeValue();
                         String country = nnm.getNamedItem(COUNTRY).getNodeValue();
 
-                        Boat boat = new Boat(boatName, shortName, srcId, country);
+                        BoatInterface boat = new Boat(boatName, shortName, srcId, country);
+
+                        if (mode == RaceMode.AGAR) {
+                            boat = new AgarBoat(boat);
+                        }
                         boats.put(srcId, boat);
                     }
                 }

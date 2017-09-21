@@ -1,8 +1,9 @@
-package seng302.DataGeneration;
+package seng302.Modes;
 
-import seng302.*;
+import seng302.BoatManager;
 import seng302.DataGeneration.BoatXMLCreator;
-import seng302.DataGeneration.RaceManager;
+import seng302.DataGeneration.IServerData;
+import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatus;
@@ -11,33 +12,34 @@ import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
-import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.BoatInterface;
 import seng302.XMLCreation.RaceXMLCreator;
 import seng302.XMLCreation.XMLCreator;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Queue;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.lang.System.currentTimeMillis;
 
 /**
- * Practising mode manager.
+ * Manages the race
  */
-public class PractiseRaceManager implements IServerData {
-
+public class RaceManager implements IServerData {
     private Race race;
     private BinaryMessage rsm;
     private Queue<byte[]> broadcastMessageQueue;
     private Queue<byte[]> singularMessageQueue;
     private Timer timer = new Timer();
     private BoatManager boatManager;
+    private RaceManager parent = this;
 
-    public PractiseRaceManager(){
-        this.race = new PracticeRace();
+
+    public RaceManager(){
+        this.race = new Race();
+        race.parseCourseXML("Race.xml");
+        race.parseRaceXML("Race.xml");
+        race.setUp();
         boatManager = race.getBoatManager();
         broadcastMessageQueue = new LinkedBlockingQueue<>();
         singularMessageQueue = new LinkedBlockingQueue<>();
@@ -89,12 +91,11 @@ public class PractiseRaceManager implements IServerData {
 
     @Override
     public void beginGeneratingData() {
-        timer.schedule(new PractiseRaceManager.XMLSender(), 0, 2000);
-        timer.schedule(new PractiseRaceManager.RSMSender(), 100, 500);
-        timer.schedule(new PractiseRaceManager.BoatPosSender(), 1000, 17);
-        timer.schedule(new PractiseRaceManager.CollisionDetection(), 10000, 500);
-        timer.schedule(new PractiseRaceManager.RaceRunner(), 2000, 17);
-        timer.schedule(new PractiseRaceManager.raceEventHandler(), 2000, 17);
+        timer.schedule(new XMLSender(), 0, 2000);
+        timer.schedule(new RSMSender(), 100, 500);
+        timer.schedule(new BoatPosSender(), 100, 17);
+        timer.schedule(new RaceRunner(), 200, 17);
+        timer.schedule(new raceEventHandler(), 200, 17);
     }
 
     @Override
@@ -106,6 +107,15 @@ public class PractiseRaceManager implements IServerData {
     @Override
     public void addXMLPackets() throws IOException {
         generateXML();
+    }
+
+    /**
+     * adds a message to the broadcast queue
+     * @param message the message you want to add
+     */
+    @Override
+    public void addMessage(byte[] message) {
+        broadcastMessageQueue.add(message);
     }
 
     class XMLSender extends TimerTask {
@@ -139,7 +149,7 @@ public class PractiseRaceManager implements IServerData {
     class BoatPosSender extends TimerTask {
         @Override
         public void run() {
-            for (Boat boat : race.getBoats()) {
+            for (BoatInterface boat : race.getBoats()) {
                 BinaryMessage boatLocationMessage = new BoatLocationMessage(
                         1, System.currentTimeMillis(), boat.getSourceId(),
                         1, 1,
@@ -155,33 +165,12 @@ public class PractiseRaceManager implements IServerData {
         }
     }
 
-    class CollisionDetection extends TimerTask {
-        @Override
-        public void run() {
-            CollisionDetector detector = new CollisionDetector();
-            for (Boat boat : race.getBoats()) {
-                if (detector.checkBoatCollision(boat, race)) {
-                    BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
-                            boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
-                    );
-                    broadcastMessageQueue.add(boatCollisionEventMessage.createMessage());
-                }
-
-                if (detector.checkMarkCollisions(boat, race.getCompoundMarks()) || !detector.checkWithinBoundary(boat, race.getBoundaries())) {
-                    BinaryMessage markCollisionEventMessage = new YachtEventMessage(
-                            boat.getSourceId(), YachtIncidentEvent.MARKCOLLISION
-                    );
-                    broadcastMessageQueue.add(markCollisionEventMessage.createMessage());
-                }
-            }
-        }
-    }
 
     class raceEventHandler extends TimerTask {
         @Override
         public void run() {
             if (boatManager.hasABoatFinished()) {
-                Boat boat = boatManager.getFinishedBoat();
+                BoatInterface boat = boatManager.getFinishedBoat();
                 BinaryMessage yachtEventMessage = new YachtEventMessage(
                         boat.getSourceId(),
                         YachtIncidentEvent.FINISHED
@@ -197,7 +186,7 @@ public class PractiseRaceManager implements IServerData {
         public void run() {
             if(race.getRaceStatus() != RaceStatus.WARNING && race.getRaceStatus() != RaceStatus.START_TIME_NOT_SET) {
                 race.updateBoats();
-                race.updateBoats();
+                race.checkCollisions(parent);
             }
             race.updateRaceInfo();
         }

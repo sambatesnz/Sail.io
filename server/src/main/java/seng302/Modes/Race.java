@@ -1,11 +1,16 @@
-package seng302;
+package seng302.Modes;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.util.Pair;
+import seng302.*;
+import seng302.DataGeneration.IServerData;
+import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.RaceStatus;
+import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
+import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
 import seng302.PacketParsing.XMLParser;
 import seng302.Polars.PolarUtils;
 import seng302.RaceObjects.*;
@@ -23,14 +28,14 @@ import static java.lang.Math.*;
  * This displays a text-based play by play commentary of the race as it happens
  */
 public class Race {
-    private Map<BoatPair, BoatCollision> collisionMap;
+    Map<BoatPair, BoatCollision> collisionMap;
     private int numFinishers = 0;
     private List<Pair<CompoundMark, Rounding>> courseRoundingInfo;
-    private List<CompoundMark> compoundMarks;
+    List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
-    private List<Boat> boats;
+    List<BoatInterface> boats;
     Map<Integer, Integer> clientIDs;
-    private List<CourseLimit> boundaries;
+    List<CourseLimit> boundaries;
     private short windHeading;
     private short startingWindSpeed;
     private int windSpeed;
@@ -49,19 +54,26 @@ public class Race {
     private static final int FIVE_KNOTS = 2573;
     private static final int DIRECTION_CHANGE_PROB = 25;
     final long ONE_MINUTE_IN_MILLIS = 60000;
-    private static int MAX_NUMBER_OF_BOATS = 20;
+    static int MAX_NUMBER_OF_BOATS = 20;
 
-    private BoatGenerator boatGenerator;
+    BoatGenerator boatGenerator;
     private BoatManager boatManager;
     private long finishTime;
-
+    CollisionDetector collisionDetector;
 
     /**
      * Constructor for the race class.
      */
     public Race() {
+    }
+
+    public void raceDefaultSetup(){
         parseCourseXML("Race.xml");
         parseRaceXML("Race.xml");
+        setUp();
+    }
+
+    public void setUp() {
         // setWindHeading(190);
         startingWindSpeed = (short) (FORTY_KNOTS * 2) ;
         setStartingWindSpeed();
@@ -73,14 +85,14 @@ public class Race {
         startingTime = getNewStartTime();
         finishTime = 0;
 
-        ObservableList<Boat> b = FXCollections.observableArrayList();
-        b.addListener((ListChangeListener<Boat>) c -> {
+        ObservableList<BoatInterface> b = FXCollections.observableArrayList();
+        b.addListener((ListChangeListener<BoatInterface>) c -> {
             initCollisions();
         });
         boats = b;
 
         clientIDs = new HashMap<>();
-
+        collisionDetector = new CollisionDetector();
         positionStrings = FXCollections.observableArrayList();
     }
 
@@ -91,7 +103,7 @@ public class Race {
     Date getNewStartTime() {
         Calendar date = Calendar.getInstance();
         long currentTime = date.getTimeInMillis();
-        return new Date(currentTime + ONE_MINUTE_IN_MILLIS * 2 / 3);
+        return new Date(currentTime + ONE_MINUTE_IN_MILLIS / 4);
     }
 
     /**
@@ -102,8 +114,8 @@ public class Race {
     public void removeBoat(int clientSocketSourceID) {
         try {
             int sourceId = clientIDs.get(clientSocketSourceID);
-            Boat boat = null;
-            for (Boat currentBoat: boats){
+            BoatInterface boat = null;
+            for (BoatInterface currentBoat: boats){
                 if (currentBoat.getSourceId() == sourceId) {
                     boat = currentBoat;
                 }
@@ -120,12 +132,12 @@ public class Race {
     /**
      * Sets the connected flag on a boat to false, where the given boat is the one identified by
      * the source id of the client in the map of boats to clients.
-     * @param clientSocketSourceID
+     * @param clientSocketSourceID The source ID of the client
      */
     public void setBoatAsDisconnected(int clientSocketSourceID) {
         try {
             int sourceId = clientIDs.get(clientSocketSourceID);
-            Boat boat = getBoatByID(sourceId);
+            BoatInterface boat = getBoatByID(sourceId);
             boat.disconnect();
         }catch (NullPointerException nullPoint){
             System.out.println("Spectator Disconnected");
@@ -138,11 +150,12 @@ public class Race {
      * @return boat that was added
      * @throws Exception the boat could not be created
      */
-    public Boat addBoat(int clientSocketSourceID) throws Exception {
+    public BoatInterface addBoat(int clientSocketSourceID) throws Exception {
         if (boats.size() < MAX_NUMBER_OF_BOATS){
-            Boat boat = boatGenerator.generateBoat();
+            BoatInterface boat = boatGenerator.generateBoat();
             clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
+            LocationSpawner.generateSpawnPoints(boats, boundaries, collisionDetector, collisionMap);
             return boat;
         } else {
             throw new Exception("cannot create boat");
@@ -289,7 +302,7 @@ public class Race {
      *
      * @return the boats competing
      */
-    public List<Boat> getBoats() {
+    public List<BoatInterface> getBoats() {
         return boats;
     }
 
@@ -299,8 +312,8 @@ public class Race {
      * @param sourceID The number that identifies the boat
      * @return The boat identified with SourceID
      */
-    public Boat getBoatByID(int sourceID) {
-        for (Boat boat : boats) {
+    public BoatInterface getBoatByID(int sourceID) {
+        for (BoatInterface boat : boats) {
             if (boat.getSourceId() == sourceID) {
                 return boat;
             }
@@ -313,8 +326,7 @@ public class Race {
      * Reads the course.xml file to get the attributes of things on the course
      * @param fileName the filename to parse
      */
-    private void parseCourseXML(String fileName) {
-
+    public void parseCourseXML(String fileName) {
         try {
             DataGenerator dataGenerator = new DataGenerator();
             String xmlString = dataGenerator.loadFile(fileName);
@@ -354,7 +366,7 @@ public class Race {
      * Reads the Race.xml file to get the attributes of things of the race.
      * @param fileName the filename to parse
      */
-    private void parseRaceXML(String fileName) {
+    public void parseRaceXML(String fileName) {
         try {
             RaceCreator rc = new RaceCreator(fileName);
             raceID = rc.getRaceID();
@@ -381,7 +393,7 @@ public class Race {
     public void updateBoats() {
         double movementMultiplier = 1;
 
-        for (Boat boat : boats) {
+        for (BoatInterface boat : boats) {
             if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
                 PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
             }
@@ -393,20 +405,20 @@ public class Race {
             boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
             boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
 
-            if (raceStatus == RaceStatus.STARTED) {
-                if (!boat.isFinished()) {
-                    RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
-                } else if (!boat.isAdded()) {
-                    boatManager.addFinishedBoat(boat);
-                    boat.setAdded(true);
-                    if (!raceFinishing) {
-                        setFinishTime(ONE_MINUTE_IN_MILLIS);
+            if (compoundMarks.size() > 0) {
+                if (raceStatus == RaceStatus.STARTED) {
+                    if (!boat.isFinished()) {
+                        RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
+                    } else if (!boat.isAdded()) {
+                        boatManager.addFinishedBoat(boat);
+                        boat.setAdded(true);
+                        if (!raceFinishing) {
+                            setFinishTime(ONE_MINUTE_IN_MILLIS);
+                        }
                     }
                 }
             }
-
-
-            boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
+            boat.getMark().setX(newX);
             boat.getMark().setY(newY);
             boat.setHeadingChangedToFalse();
         }
@@ -439,7 +451,7 @@ public class Race {
     }
 
     private boolean areAllContestantsFinished() {
-        for (Boat boat : boats) {
+        for (BoatInterface boat : boats) {
             if (!(boat.isFinished() || !boat.isConnected())){
                 return false;
             }
@@ -480,10 +492,31 @@ public class Race {
     }
 
 
+    public void checkCollisions(IServerData raceManager){
+
+        for (BoatInterface boat : getBoats()) {
+            if (collisionDetector.checkBoatCollision(boat, boats, collisionMap)!=null) {
+                BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
+                        boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
+                );
+             /*   boat.loseLife();
+                boat.setAgarSize();*/
+                raceManager.addMessage(boatCollisionEventMessage.createMessage());
+            }
+
+            if (collisionDetector.checkMarkCollisions(boat, getCompoundMarks()) || !collisionDetector.checkWithinBoundary(boat, getBoundaries())) {
+                BinaryMessage markCollisionEventMessage = new YachtEventMessage(
+                        boat.getSourceId(), YachtIncidentEvent.MARKCOLLISION
+                );
+                raceManager.addMessage(markCollisionEventMessage.createMessage());
+            }
+        }
+    }
+
     private void initCollisions(){
         collisionMap = new HashMap<>();
-        for (Boat boat : boats){
-            for (Boat checkBoat : boats){
+        for (BoatInterface boat : boats){
+            for (BoatInterface checkBoat : boats){
                 BoatPair boatPair = new BoatPair(boat, checkBoat);
                 if(!collisionMap.containsKey(new BoatPair(boat, checkBoat))){
                     collisionMap.put(boatPair, new BoatCollision(boat, checkBoat));

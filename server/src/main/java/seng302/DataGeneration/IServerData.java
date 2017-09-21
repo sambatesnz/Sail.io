@@ -1,7 +1,7 @@
 package seng302.DataGeneration;
 
 
-import seng302.Race;
+import seng302.Modes.Race;
 
 import java.io.IOException;
 
@@ -14,6 +14,8 @@ public interface IServerData {
     byte[] getDataForOne();
 
     void addSingleMessage(byte[] message);
+
+    void addMessage(byte[] message);
 
     boolean finished();
 

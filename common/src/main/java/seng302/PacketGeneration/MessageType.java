@@ -20,7 +20,8 @@ public enum MessageType {
     RACE_REGISTRATION(55),
     PARTICIPANT_CONFIRMATION(56),
     BOAT_ACTION(100),
-    PRACTICE(99);
+    PRACTICE(99),
+    AGAR(98);
 
     private int messageType;
 

@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import seng302.Client.Messages.Message;
+import seng302.RaceObjects.BoatInterface;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 
@@ -64,7 +65,7 @@ public class LocationMessageTest {
         List participants = new ArrayList<Integer>();
         participants.add(101);
         race.setParticipants(participants);
-        HashMap<Integer, Boat> testBoatMap = new HashMap<Integer, Boat>();
+        HashMap<Integer, BoatInterface> testBoatMap = new HashMap<Integer, BoatInterface>();
         testBoatMap.put(101, new Boat("Test_1", "Test_1", 101, "Country_1"));
         race.setBoats(testBoatMap);
         message = new Message(locationTestMessage, race);

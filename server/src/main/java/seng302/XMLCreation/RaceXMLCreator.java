@@ -4,11 +4,8 @@ import javafx.util.Pair;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import seng302.Race;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.CompoundMark;
-import seng302.RaceObjects.CourseLimit;
-import seng302.RaceObjects.Mark;
+import seng302.Modes.Race;
+import seng302.RaceObjects.*;
 import seng302.Rounding;
 
 import java.io.IOException;
@@ -59,7 +56,7 @@ public class RaceXMLCreator implements XMLCreator {
         Element participants = root.addElement("Participants");
 
 
-        for (Boat b : race.getBoats()) {
+        for (BoatInterface b : race.getBoats()) {
             participants.addElement("Yacht")
                     .addAttribute("SourceID", String.valueOf(b.getSourceId()));
         }
@@ -87,17 +84,19 @@ public class RaceXMLCreator implements XMLCreator {
         Element compoundMarkSequence = root.addElement("CompoundMarkSequence");
 
         int seqId = 1;
-        for (Pair<CompoundMark, Rounding> pair: race.getCourseRoundingInfo()) {
-            CompoundMark compoundMark = pair.getKey();
-            String rounding = pair.getValue().getRounding();
+        if (race.getCompoundMarks().size() > 0) {
+            for (Pair<CompoundMark, Rounding> pair: race.getCourseRoundingInfo()) {
+                CompoundMark compoundMark = pair.getKey();
+                String rounding = pair.getValue().getRounding();
 
-            compoundMarkSequence.addElement("Corner")
-                    .addAttribute("SeqID", String.valueOf(seqId))
-                    .addAttribute("CompoundMarkID", String.valueOf(compoundMark.getId()))
-                    .addAttribute("Rounding", rounding)
-                    .addAttribute("ZoneSize", "/TODO");
+                compoundMarkSequence.addElement("Corner")
+                        .addAttribute("SeqID", String.valueOf(seqId))
+                        .addAttribute("CompoundMarkID", String.valueOf(compoundMark.getId()))
+                        .addAttribute("Rounding", rounding)
+                        .addAttribute("ZoneSize", "/TODO");
 
-            seqId++;
+                seqId++;
+            }
         }
 
 //        seqId = 1;

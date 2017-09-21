@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import seng302.RaceObjects.BoatInterface;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 import seng302.UserInput.KeyBindingUtility;
@@ -23,9 +24,9 @@ public class LobbyController {
 
     @FXML private Button forceStartBtn;
     private Stage primaryStage;
-    @FXML private TableView<Boat> contestantTable;
-    @FXML private TableColumn<Boat, String> teamColumn;
-    @FXML private TableColumn<Boat, String> clientColumn;
+    @FXML private TableView<BoatInterface> contestantTable;
+    @FXML private TableColumn<BoatInterface, String> teamColumn;
+    @FXML private TableColumn<BoatInterface, String> clientColumn;
     private Race race;
     private boolean raceStarted;
     private String ipAddr;
@@ -40,11 +41,11 @@ public class LobbyController {
 
     public void initialiseTable(){
         teamColumn.setCellValueFactory(
-                new PropertyValueFactory<Boat, String>("boatName")
+                new PropertyValueFactory<BoatInterface, String>("boatName")
         );
 
         clientColumn.setCellValueFactory(
-                new PropertyValueFactory<Boat, String>("country")
+                new PropertyValueFactory<BoatInterface, String>("country")
         );
 
         contestantTable.setItems(race.boatsObs);
@@ -88,6 +89,8 @@ public class LobbyController {
     public void forceStart() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
 
+        primaryStage.setWidth(1200);
+        primaryStage.setHeight(800);
         IRaceController raceController = null;
         switch (race.getRaceMode()) {
             case RACE:
@@ -97,6 +100,8 @@ public class LobbyController {
                 raceController = new RaceController(race);
                 break;
             case AGAR:
+                System.out.println("JUST MADE AN AGAIR CONTROLERLAER");
+                raceController = new AgarRaceController(race);
                 break;
         }
 

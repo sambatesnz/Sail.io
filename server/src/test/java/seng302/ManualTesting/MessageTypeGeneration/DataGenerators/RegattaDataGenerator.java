@@ -5,7 +5,7 @@ import seng302.DataGenerator;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
-import seng302.Race;
+import seng302.Modes.Race;
 
 import java.util.NoSuchElementException;
 import java.util.Queue;
@@ -43,6 +43,11 @@ public class RegattaDataGenerator implements IServerData {
 
     @Override
     public void addSingleMessage(byte[] message) {
+
+    }
+
+    @Override
+    public void addMessage(byte[] message) {
 
     }
 

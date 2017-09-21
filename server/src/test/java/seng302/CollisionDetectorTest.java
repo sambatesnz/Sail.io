@@ -2,10 +2,8 @@ package seng302;
 
 import javafx.scene.paint.Color;
 import org.junit.Test;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.CompoundMark;
-import seng302.RaceObjects.CourseLimit;
-import seng302.RaceObjects.Mark;
+import seng302.Modes.Race;
+import seng302.RaceObjects.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,10 +12,10 @@ import java.util.List;
 import static junit.framework.TestCase.assertEquals;
 
 /**
- * Created by msi52 on 11/09/17.
+ * Test for collision detection
  */
 public class CollisionDetectorTest {
-
+    private Race race = new Race();
     private CollisionDetector detector = new CollisionDetector();
 
     @Test
@@ -28,8 +26,7 @@ public class CollisionDetectorTest {
         Mark other = new Mark(25.256412, 36.325522);
 
         ArrayList<Mark> marks = new ArrayList<>(Arrays.asList(checkMark, other));
-
-        Race race = new Race();
+        race.raceDefaultSetup();
 
         try {
             race.addBoat(101);
@@ -37,15 +34,16 @@ public class CollisionDetectorTest {
             race.addBoat(103);
 
             for (int i = 0; i < race.getBoats().size(); i++) {
-                Boat boat = race.getBoats().get(i);
+                BoatInterface boat = race.getBoats().get(i);
                 boat.setMark(marks.get(i % 2));
             }
 
-            assertEquals(true, detector.checkBoatCollision(race.getBoats().get(0), race));
-            assertEquals(false, detector.checkBoatCollision(race.getBoats().get(1), race));
-            assertEquals(true, detector.checkBoatCollision(race.getBoats().get(2), race));
+            assertEquals(true, null != detector.checkBoatCollision(race.getBoats().get(0), race.getBoats(), race.getCollisionMap()));
+            assertEquals(false, null != detector.checkBoatCollision(race.getBoats().get(1), race.getBoats(), race.getCollisionMap()));
+            assertEquals(true, null != detector.checkBoatCollision(race.getBoats().get(2), race.getBoats(), race.getCollisionMap()));
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Whoops");
         }
     }

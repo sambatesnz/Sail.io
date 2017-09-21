@@ -4,7 +4,6 @@ import javafx.scene.paint.Color;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.abs;
@@ -14,7 +13,7 @@ import static java.lang.Math.round;
 /**
  * Represent a boat competing in yacht race
  */
-public class Boat {
+public class Boat implements BoatInterface{
     private static final int HEADING_INCREMENT = 3;
 
     private Mark mark;
@@ -37,6 +36,8 @@ public class Boat {
     private boolean headingChanged;
     private boolean sailsOut = false;
     private double size;
+    private int agarSize;
+    private int lives;
 
     private boolean upwindMemory = false;
     private boolean downwindMemory = false;
@@ -204,6 +205,26 @@ public class Boat {
         }
         updateStopTurnThread();
         turnBoat(isClockwise, finalHeading);
+    }
+
+    @Override
+    public double getCollisionFactor() {
+        return 0;
+    }
+
+    @Override
+    public long getLastAgarSizeDecreaseTime() {
+        return 0;
+    }
+
+    @Override
+    public void setLastAgarSizeDecreaseTime(long time) {
+
+    }
+
+    @Override
+    public void resetAgarSize() {
+
     }
 
     private int getRelativeAngle(int angle1, double angle2){
@@ -408,6 +429,30 @@ public class Boat {
      */
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    @Override
+    public void loseLife() {
+        //Noops
+    }
+
+    @Override
+    public int getLives() {
+        //Noops
+        return 0;
+    }
+
+    @Override
+    public boolean isEliminated() {
+        //Noops
+        return false;
+    }
+
+    @Override
+    public int getAgarSize() {
+        //Noops
+        System.out.println("this shouldn't be called please send help");
+        return 0;
     }
 
     /**
@@ -631,6 +676,22 @@ public class Boat {
 
     public void setFinishTime(long finishTime) {
         this.finishTime = finishTime;
+    }
+
+//    public int getAgarSize() {
+//        return agarSize;
+//    }
+
+    public void setAgarSize(int agarSize) {
+        this.agarSize = agarSize;
+    }
+
+//    public int getLives() {
+//        return lives;
+//    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 }
 

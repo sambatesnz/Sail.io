@@ -2,7 +2,7 @@ package seng302;
 
 import org.junit.Test;
 import seng302.DataGeneration.IServerData;
-import seng302.DataGeneration.RaceManager;
+import seng302.Modes.RaceManager;
 
 import static org.junit.Assert.*;
 

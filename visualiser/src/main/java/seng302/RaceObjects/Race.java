@@ -25,8 +25,8 @@ public class Race {
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
     private Map<Integer, Mark> marks;
-    private ObservableMap<Integer, Boat> boats;
-    private ObservableList<Boat> boatsForScoreBoard;
+    private ObservableMap<Integer, BoatInterface> boats;
+    private ObservableList<BoatInterface> boatsForScoreBoard;
     private List<Mark> boundaries;
     private List<Leg> courseOrder;
     private double windHeading;
@@ -48,14 +48,15 @@ public class Race {
 
     private final int COLLISION_FRAMES = 50;
 
-    // yellow, blue, pink, orange, green, purple, red, brown
-    private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300");
+    // yellow, blue, pink, orange, green, purple, red, brown, another orange, lime,
+    private List<String> colourList = Arrays.asList("#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300", "#FF5733", "#A6FF00", "#2A00FF", "#DC00FF","#ffff00", "#0033cc", "#cc00ff", "#ff6600", "#00cc00", "#6600cc", "#ff0000", "#663300", "#FF5733", "#A6FF00", "#2A00FF", "#DC00FF");
     private boolean receivedRaceXML;
     private boolean viewReady;
     private boolean hasRegatta;
     private int clientSourceId;
+    private BoatInterface clientBoat;
     private int collisionCount = 0;
-    public ObservableList<Boat> boatsObs;
+    public ObservableList<BoatInterface> boatsObs;
     private SimpleStringProperty timeToStart;
     private RaceMode raceMode;
 
@@ -114,7 +115,7 @@ public class Race {
         return hasRegatta;
     }
 
-    public ObservableList<Boat> getBoatsObs() {
+    public ObservableList<BoatInterface> getBoatsObs() {
         return boatsObs;
     }
 
@@ -139,6 +140,13 @@ public class Race {
     public void setViewMinMax(Mark min, Mark max){
         viewMin = min;
         viewMax = max;
+    }
+
+    public BoatInterface getClientBoat() {
+        if (clientBoat == null) {
+            clientBoat = boats.get(clientSourceId);
+        }
+        return clientBoat;
     }
 
     public Mark getViewMin(){
@@ -195,7 +203,7 @@ public class Race {
      * Getter for finished boat list.
      * @return finished boat list.
      */
-    public ObservableList<Boat> getBoatsForScoreBoard() { return boatsForScoreBoard; }
+    public ObservableList<BoatInterface> getBoatsForScoreBoard() { return boatsForScoreBoard; }
 
     public double getWindHeading() {
         return windHeading;
@@ -211,7 +219,7 @@ public class Race {
         }
         MarkStrings.add("Race Results");
         int i = 1;
-        for (Boat boat : boatsForScoreBoard) {
+        for (BoatInterface boat : boatsForScoreBoard) {
             MarkStrings.add(i + ": " + boat.getName());
             i++;
         }
@@ -320,6 +328,9 @@ public class Race {
      */
     public void setRaceStatus(RaceStatus raceStatus) {
         this.raceStatus = raceStatus;
+        if (raceStatus.equals(RaceStatus.FINISHED)) {
+            finishRace();
+        }
     }
 
     /**
@@ -334,7 +345,7 @@ public class Race {
      * Get the boats competing
      * @return the boats competing
      */
-    public List<Boat> getBoats() {
+    public List<BoatInterface> getBoats() {
         if (!raceReady || boats.values().size() == 0){
             return FXCollections.observableList(new ArrayList<>());
         } else {
@@ -391,11 +402,11 @@ public class Race {
         return regatta;
     }
 
-    public void setBoats(Map<Integer, Boat> boats) {
-        ObservableMap<Integer, Boat> participatingBoats = FXCollections.observableHashMap();
+    public void setBoats(Map<Integer, BoatInterface> boats) {
+        ObservableMap<Integer, BoatInterface> participatingBoats = FXCollections.observableHashMap();
         for (int i = 0; i < participants.size(); i++) {
             Integer boatId = participants.get(i);
-            Boat boat = boats.get(boatId);
+            BoatInterface boat = boats.get(boatId);
             boat.setColour(Color.valueOf(colourList.get(i)));
             participatingBoats.put(boatId, boat);
         }
@@ -415,7 +426,7 @@ public class Race {
         return boundaries;
     }
 
-    public ObservableMap<Integer, Boat> getBoatsMap() {
+    public ObservableMap<Integer, BoatInterface> getBoatsMap() {
         return boats;
     }
 
@@ -468,7 +479,7 @@ public class Race {
      */
     public boolean addBoatToScoreBoard(int boatSourceId, boolean finished) {
         boolean hasChanged = false;
-        Boat finishedBoat = boats.get(boatSourceId);
+        BoatInterface finishedBoat = boats.get(boatSourceId);
         if (!boatsForScoreBoard.contains(finishedBoat)) {
             if(finished) finishedBoat.setFinished(true);
             boatsForScoreBoard.add(finishedBoat);

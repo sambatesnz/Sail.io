@@ -1,6 +1,5 @@
 package seng302;
 
-import seng302.BoatPair;
 import seng302.RaceObjects.*;
 
 import java.util.ArrayList;
@@ -10,12 +9,14 @@ import java.util.Map;
 import static java.lang.Math.sqrt;
 
 /**
- * Created by msi52 on 11/09/17.
+ * Detects collisions between two boats, boats and marks, and boats and the boundary
  */
 public class CollisionDetector {
 
     private static double MARK_SIZE = 5;
 
+    public CollisionDetector(){
+    }
     /**
      * When called, checks if the given boat is in the same location, and hence colliding with any of the marks in the
      * given list
@@ -23,7 +24,7 @@ public class CollisionDetector {
      * @param compoundMarks the marks to check against
      * @return true if the boat is colliding with one of the marks, otherwise, false.
      */
-    public boolean checkMarkCollisions(Boat boat, List<CompoundMark> compoundMarks) {
+    public boolean checkMarkCollisions(BoatInterface boat, List<CompoundMark> compoundMarks) {
 
         Mark boatMark = boat.getMark();
 
@@ -66,21 +67,18 @@ public class CollisionDetector {
     /**
      * Check the collision of a boat
      * @param boat the boat being checked
-     * @param race the race
-     * @return true if colliding, false otherwise
+     * @param boats
+     * @return the BoatCollision if the boat is colliding, null otherwise
      */
-    public boolean checkBoatCollision(Boat boat, Race race) {
-
-        Map<BoatPair, BoatCollision> collisionMap = race.getCollisionMap();
-
-        for (Boat checkBoat : race.getBoats()) {
-            if (!checkBoat.equals(boat)) {
+    public BoatCollision checkBoatCollision(BoatInterface boat, List<BoatInterface> boats, Map<BoatPair, BoatCollision> collisionMap) {
+        for (BoatInterface checkBoat : boats) {
+            if (!checkBoat.equals(boat)) { //not the same boat
                 BoatPair boatPair = new BoatPair(boat, checkBoat);
                 BoatCollision boat1Collision = collisionMap.get(boatPair);
-                if (boat1Collision.isColliding()) return true;
+                if (boat1Collision.isColliding()) return boat1Collision;
             }
         }
-        return false;
+        return null;
     }
 
     /**
@@ -89,7 +87,7 @@ public class CollisionDetector {
      * @param boundaries the boundaries to be checked
      * @return true or false depending on if it is in the course boundaries or not
      */
-    public boolean checkWithinBoundary(Boat boat, List<CourseLimit> boundaries) {
+    public boolean checkWithinBoundary(BoatInterface boat, List<CourseLimit> boundaries) {
 
         boolean withinBoundaries = false;
 
@@ -112,7 +110,11 @@ public class CollisionDetector {
         return withinBoundaries;
     }
 
-    public Iterable<? extends BoatPair> getCurrentCollisions(Race race) {
-        return new ArrayList<>();
+    public boolean hasCollision(BoatInterface boat, List<CourseLimit> boundaries,
+                                List<BoatInterface> boats, Map<BoatPair, BoatCollision> collisionMap) {
+        BoatCollision bc = checkBoatCollision(boat, boats, collisionMap);
+        return !checkWithinBoundary(boat, boundaries) || bc != null;
     }
+
+
 }

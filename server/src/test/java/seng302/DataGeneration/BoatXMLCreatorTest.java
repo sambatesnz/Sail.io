@@ -3,6 +3,7 @@ package seng302.DataGeneration;
 import org.junit.Test;
 import seng302.BoatGenerator;
 import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.BoatInterface;
 import seng302.XMLCreation.XMLCreator;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class BoatXMLCreatorTest {
     public void getXML() throws Exception {
         BoatGenerator boatGenerator = new BoatGenerator();
 
-        List<Boat> boats = new ArrayList<>(Arrays.asList());
+        List<BoatInterface> boats = new ArrayList<>(Arrays.asList());
 
         for (int i = 0; i < 20; i++) {
             boats.add(boatGenerator.generateBoat());

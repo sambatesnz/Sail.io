@@ -1,8 +1,9 @@
-package seng302.AgarMode;
+package seng302.Modes;
 
 import seng302.*;
 import seng302.DataGeneration.BoatXMLCreator;
 import seng302.DataGeneration.IServerData;
+import seng302.PacketGeneration.AgarPackets.AgarMessage;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatus;
@@ -11,7 +12,7 @@ import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
-import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.BoatInterface;
 import seng302.XMLCreation.RaceXMLCreator;
 import seng302.XMLCreation.XMLCreator;
 
@@ -32,9 +33,13 @@ public class AgarManager implements IServerData{
     private Queue<byte[]> singularMessageQueue;
     private Timer timer = new Timer();
     private BoatManager boatManager;
+    private AgarManager parent = this;
 
     public AgarManager(){
         this.race = new AgarRace();
+        race.parseCourseXML("Race.xml");
+        race.parseRaceXML("Race.xml");
+        race.setUp();
         boatManager = race.getBoatManager();
         broadcastMessageQueue = new LinkedBlockingQueue<>();
         singularMessageQueue = new LinkedBlockingQueue<>();
@@ -45,6 +50,14 @@ public class AgarManager implements IServerData{
         return race;
     }
 
+    /**
+     * adds a message to the broadcast queue
+     * @param message the message you want to add
+     */
+    @Override
+    public void addMessage(byte[] message) {
+        broadcastMessageQueue.add(message);
+    }
 
     @Override
     public byte[] getDataForAll() {
@@ -88,10 +101,9 @@ public class AgarManager implements IServerData{
     public void beginGeneratingData() {
         timer.schedule(new AgarManager.XMLSender(), 0, 2000);
         timer.schedule(new AgarManager.RSMSender(), 100, 500);
-        timer.schedule(new AgarManager.BoatPosSender(), 1000, 17);
-        timer.schedule(new AgarManager.CollisionDetection(), 10000, 500);
-        timer.schedule(new AgarManager.RaceRunner(), 2000, 17);
-        timer.schedule(new AgarManager.raceEventHandler(), 2000, 17);
+        timer.schedule(new AgarManager.BoatPosSender(), 100, 17);
+        timer.schedule(new AgarManager.RaceRunner(), 200, 17);
+        timer.schedule(new AgarManager.raceEventHandler(), 200, 17);
     }
 
     @Override
@@ -136,7 +148,7 @@ public class AgarManager implements IServerData{
     class BoatPosSender extends TimerTask {
         @Override
         public void run() {
-            for (Boat boat : race.getBoats()) {
+            for (BoatInterface boat : race.getBoats()) {
                 BinaryMessage boatLocationMessage = new BoatLocationMessage(
                         1, System.currentTimeMillis(), boat.getSourceId(),
                         1, 1,
@@ -147,48 +159,19 @@ public class AgarManager implements IServerData{
                         (short) 100, (short) 100, (short) 100,
                         (short) (boat.isSailsOut() ? 1 : 0), (short) 100, (short) 100
                 );
+                BinaryMessage agarMessage = new AgarMessage(boat.getSourceId(), boat.getLives(), boat.getAgarSize());
                 broadcastMessageQueue.add(boatLocationMessage.createMessage());
+                broadcastMessageQueue.add(agarMessage.createMessage());
             }
         }
     }
 
-    class CollisionDetection extends TimerTask {
-        @Override
-        public void run() {
-            CollisionDetector detector = new CollisionDetector();
-
-            //TODO FLESH THIS OUT
-            for (BoatPair boatPair: detector.getCurrentCollisions(race)) {
-                Boat winner = boatPair.getWinner();
-                Boat loser = boatPair.getLoser();
-                //TODO CREATE COLLISION MESSAGE
-                //TODO SEND COLLISION MESSAGE
-            }
-
-            for (Boat boat : race.getBoats()) {
-                if (detector.checkBoatCollision(boat, race)) {
-                    System.out.println("Collision detected.....");
-                    BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
-                            boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
-                    );
-                    broadcastMessageQueue.add(boatCollisionEventMessage.createMessage());
-                }
-
-                if (detector.checkMarkCollisions(boat, race.getCompoundMarks()) || !detector.checkWithinBoundary(boat, race.getBoundaries())) {
-                    BinaryMessage markCollisionEventMessage = new YachtEventMessage(
-                            boat.getSourceId(), YachtIncidentEvent.MARKCOLLISION
-                    );
-                    broadcastMessageQueue.add(markCollisionEventMessage.createMessage());
-                }
-            }
-        }
-    }
 
     class raceEventHandler extends TimerTask {
         @Override
         public void run() {
             if (boatManager.hasABoatFinished()) {
-                Boat boat = boatManager.getFinishedBoat();
+                BoatInterface boat = boatManager.getFinishedBoat();
                 BinaryMessage yachtEventMessage = new YachtEventMessage(
                         boat.getSourceId(),
                         YachtIncidentEvent.FINISHED
@@ -204,7 +187,7 @@ public class AgarManager implements IServerData{
         public void run() {
             if(race.getRaceStatus() != RaceStatus.WARNING && race.getRaceStatus() != RaceStatus.START_TIME_NOT_SET) {
                 race.updateBoats();
-                race.updateBoats();
+                race.checkCollisions(parent);
             }
             race.updateRaceInfo();
         }

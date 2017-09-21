@@ -1,7 +1,8 @@
 package seng302.Server;
 
-import seng302.Race;
+import seng302.Modes.Race;
 import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.BoatInterface;
 import seng302.UserInputController.BoatAction;
 
 public class Delegator {
@@ -25,12 +26,12 @@ public class Delegator {
                 VMG(boatID);
                 break;
             case SAILS_IN: {
-                Boat boat = race.getBoatByID(boatID);
+                BoatInterface boat = race.getBoatByID(boatID);
                 boat.setSailsOut(false);
                 break;
             }
             case SAILS_OUT:{
-                Boat boat = race.getBoatByID(boatID);
+                BoatInterface boat = race.getBoatByID(boatID);
                 boat.setSailsOut(true);
                 break;
             }
@@ -45,7 +46,7 @@ public class Delegator {
      * @param sourceID source id of the boat
      */
     private void tackOrGybeBoat(int sourceID) {
-        Boat boat = race.getBoatByID(sourceID);
+        BoatInterface boat = race.getBoatByID(sourceID);
         int windHeading = race.getWindHeading();
         boat.tackOrGybe(windHeading);
     }
@@ -56,7 +57,7 @@ public class Delegator {
      * @param upwind True if the boat is turning upwind, false if turning downwind
      */
     private void changeBoatHeading(int sourceID, boolean upwind){
-        Boat boat = race.getBoatByID(sourceID);
+        BoatInterface boat = race.getBoatByID(sourceID);
         int windHeading = race.getWindHeading();
         boat.updateHeading(windHeading, upwind);
     }
@@ -66,7 +67,7 @@ public class Delegator {
      //     * @param sourceID source id of the boat
      //     */
     private void VMG(int sourceID) {
-        Boat boat = race.getBoatByID(sourceID);
+        BoatInterface boat = race.getBoatByID(sourceID);
         int windHeading = race.getWindHeading();
         boat.setHeadingToVMG(windHeading);
     }

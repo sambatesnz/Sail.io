@@ -1,17 +1,20 @@
 package seng302.RaceObjects;
 
+import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
 
 public class BoatCollision {
     int collisionType;
-    private Boat collider1;
-    private Boat collider2;
-    private boolean isColliding;
+    BoatInterface collider1;
+    BoatInterface collider2;
+    boolean isColliding;
+    boolean reactedToCollision;
 
-    public BoatCollision(Boat collider1, Boat collider2){
+    public BoatCollision(BoatInterface collider1, BoatInterface collider2){
         this.collider1 = collider1;
         this.collider2 = collider2;
         this.isColliding = false;
+        reactedToCollision = false;
     }
 
     /**
@@ -38,6 +41,7 @@ public class BoatCollision {
             isColliding = true;
         } else {
             isColliding = false;
+            reactedToCollision = false;
         }
     }
 
@@ -48,6 +52,35 @@ public class BoatCollision {
     public boolean isColliding() {
         updateCollision();
         return isColliding;
+    }
+
+    public BoatInterface getOther(BoatInterface boat){
+        return boat == collider1 ? collider2 : collider1;
+    }
+
+    public BoatInterface getWinner(){
+        if(abs(collider1.getCollisionFactor() - collider2.getCollisionFactor()) < 2)
+        {
+            System.out.println("EVEN STEVEN");
+            return null; //should be null when not testing
+        }
+        return collider1.getCollisionFactor() < collider2.getCollisionFactor() ? collider2 : collider1;
+    }
+
+    public BoatInterface getLoser(){
+        if(abs(collider1.getCollisionFactor() - collider2.getCollisionFactor()) < 2)
+        {
+            System.out.println("EVEN STEVEN2");
+            return null; //should be null when not testing
+        }
+        return collider1.getCollisionFactor() < collider1.getCollisionFactor() ? collider1 : collider2;
+    }
+
+    public boolean isReactedToCollision(){
+        return reactedToCollision;
+    }
+    public void setReactedToCollision(boolean bool){
+        reactedToCollision = bool;
     }
 }
 
