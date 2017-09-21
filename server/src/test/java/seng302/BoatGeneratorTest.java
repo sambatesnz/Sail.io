@@ -31,10 +31,10 @@ public class BoatGeneratorTest {
     public void addRemoveBoats() throws Exception {
         boatGenerator.generateBoat();
         GenericBoat secondBoat = boatGenerator.generateBoat();
-        String expectedName = secondBoat.getName();
+        String expectedName = secondBoat.getName().getValue();
         boatGenerator.makeAvailable(secondBoat);
         GenericBoat thirdBoat = boatGenerator.generateBoat();
-        assertEquals(expectedName, thirdBoat.getName());
+        assertEquals(expectedName, thirdBoat.getName().getValue());
     }
 
     @Test

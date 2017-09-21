@@ -1,5 +1,7 @@
 package seng302.RaceObjects;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
 
 import java.math.RoundingMode;
@@ -17,7 +19,7 @@ public class Boat extends GenericBoat {
     private static final int HEADING_INCREMENT = 3;
 
     private Mark mark;
-    private String boatName;
+    private StringProperty boatName;
     private double currentLegDistance;
     private int currentLegIndex;
     private double heading = 0;
@@ -30,7 +32,7 @@ public class Boat extends GenericBoat {
     private long timeToNextMark;
     private long timeToFinish;
     private String shortName;
-    private String country;
+    private StringProperty country;
     private int speed;               //mm/sec
     private boolean knowsBoatLocation;
     private boolean headingChanged;
@@ -67,10 +69,10 @@ public class Boat extends GenericBoat {
      * @param country e.g. New Zealand
      */
     public Boat(String name, String shortName, int sourceId, String country) {
-        this.boatName = name;
+        this.boatName = new SimpleStringProperty(name);
         this.shortName = shortName;
         this.sourceId = sourceId;
-        this.country = country;
+        this.country = new SimpleStringProperty(country);
         this.knowsBoatLocation = false;
         this.mark = new Mark();
         this.raceTime = Integer.toUnsignedLong(0);
@@ -86,7 +88,7 @@ public class Boat extends GenericBoat {
      */
     public Boat(Integer sourceID, String boatName) {
         this.sourceId = sourceID;
-        this.boatName = boatName;
+        this.boatName = new SimpleStringProperty(boatName);
         this.finished = false;
     }
 
@@ -307,7 +309,7 @@ public class Boat extends GenericBoat {
         return shortName;
     }
 
-    public String getBoatName() {
+    public StringProperty getBoatName() {
         return boatName;
     }
 
@@ -319,7 +321,7 @@ public class Boat extends GenericBoat {
         return sourceId;
     }
 
-    public String getCountry() {
+    public StringProperty getCountry() {
         return country;
     }
 
@@ -459,7 +461,7 @@ public class Boat extends GenericBoat {
      * Get the name of the boat
      * @return the name of the boat
      */
-    public String getName() {
+    public StringProperty getName() {
         return boatName;
     }
 

@@ -1,16 +1,20 @@
 package seng302.Controllers;
 
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Race;
 import seng302.UserInput.KeyBindingUtility;
@@ -21,9 +25,9 @@ public class LobbyController {
 
     @FXML private Button forceStartBtn;
     private Stage primaryStage;
-    @FXML private TableView<GenericBoat> contestantTable;
-    @FXML private TableColumn<GenericBoat, String> teamColumn;
-    @FXML private TableColumn<GenericBoat, String> clientColumn;
+    @FXML private JFXTreeTableView<GenericBoat> contestantTable;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> teamColumn;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> clientColumn;
     private Race race;
     private boolean raceStarted;
     private String ipAddr;
@@ -37,15 +41,31 @@ public class LobbyController {
     }
 
     public void initialiseTable(){
+        teamColumn = new JFXTreeTableColumn<>("Team Name");
+        clientColumn = new JFXTreeTableColumn<>("Country");
+
         teamColumn.setCellValueFactory(
-                new PropertyValueFactory<GenericBoat, String>("boatName")
+                new Callback<TreeTableColumn.CellDataFeatures<GenericBoat, String>, ObservableValue<String>>() {
+                    @Override
+                    public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<GenericBoat, String> param) {
+                        return param.getValue().getValue().getBoatName();
+                    }
+                }
         );
 
-        clientColumn.setCellValueFactory(
-                new PropertyValueFactory<GenericBoat, String>("country")
-        );
+        clientColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<GenericBoat, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<GenericBoat, String> param) {
+                return param.getValue().getValue().getCountry();
+            }
+        });
 
-        contestantTable.setItems(race.boatsObs);
+        TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<GenericBoat>(race.boatsObs, RecursiveTreeObject::getChildren);
+        contestantTable.setRoot(tableRoot);
+        contestantTable.getColumns().setAll(teamColumn, clientColumn);
+        contestantTable.setShowRoot(false);
+        forceStartBtn.setFocusTraversable(true);
+        //contestantTable.setItems(race.boatsObs);
         forceStartBtn.setVisible(false);  //Temporarily removed Force Start button for demonstration
     }
 

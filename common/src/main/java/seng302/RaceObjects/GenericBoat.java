@@ -1,6 +1,7 @@
 package seng302.RaceObjects;
 
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
 
 /**
@@ -54,7 +55,7 @@ public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
 
     abstract void setColour(Color color);
 
-    public abstract String getName();
+    public abstract StringProperty getName();
 
     public abstract void setFinished(boolean b);
 
@@ -112,9 +113,9 @@ public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
 
     public abstract void updateRoundingStage();
 
-    public abstract String getBoatName();
+    public abstract StringProperty getBoatName();
 
-    public abstract String getCountry();
+    public abstract StringProperty getCountry();
 
     public abstract void tackOrGybe(int windHeading);
 

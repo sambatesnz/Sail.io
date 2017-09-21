@@ -1,5 +1,6 @@
 package seng302.RaceObjects;
 
+import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
 
 /**
@@ -129,7 +130,7 @@ public class BoatDecorator extends GenericBoat {
     }
 
     @Override
-    public String getName() {
+    public StringProperty getName() {
         return boat.getName();
     }
 
@@ -274,12 +275,12 @@ public class BoatDecorator extends GenericBoat {
     }
 
     @Override
-    public String getBoatName() {
+    public StringProperty getBoatName() {
         return boat.getBoatName();
     }
 
     @Override
-    public String getCountry() {
+    public StringProperty getCountry() {
         return boat.getCountry();
     }
 

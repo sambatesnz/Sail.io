@@ -885,7 +885,7 @@ public class RaceController implements IRaceController {
         for (GenericBoat boat :race.getBoats()) {
             XYChart.Series<Number, Number> newSeries = new XYChart.Series<>();
             newSeries.getData().add(new XYChart.Data<>(0,0));
-            newSeries.setName(boat.getName());
+            newSeries.setName(boat.getName().getValue());
             series.add(newSeries);
         }
 

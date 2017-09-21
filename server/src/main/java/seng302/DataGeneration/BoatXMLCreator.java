@@ -29,8 +29,8 @@ public class BoatXMLCreator implements XMLCreator {
                     .addAttribute("Type", "Yacht")
                     .addAttribute("SourceID", String.valueOf(boat.getSourceId()))
                     .addAttribute("ShortName", boat.getShortName())
-                    .addAttribute("BoatName", boat.getBoatName())
-                    .addAttribute("Country", boat.getCountry());
+                    .addAttribute("BoatName", boat.getBoatName().getValue())
+                    .addAttribute("Country", boat.getCountry().getValue());
         }
 
         return boatXML;
