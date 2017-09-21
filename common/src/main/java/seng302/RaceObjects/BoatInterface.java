@@ -127,5 +127,7 @@ public interface BoatInterface {
 
     void setLastAgarSizeDecreaseTime(long time);
 
+    void setBaseSpeed();
+
     void resetAgarSize();
 }

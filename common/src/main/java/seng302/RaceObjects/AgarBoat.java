@@ -8,6 +8,7 @@ public class AgarBoat extends BoatDecorator {
     private boolean eliminated = false;
     private int lives;
     private int agarSize;
+    private int baseSpeed;
     private long lastAgarSizeDecreaseTime;
 
     private static final int BASE_AGAR_SIZE = 100;
@@ -23,7 +24,7 @@ public class AgarBoat extends BoatDecorator {
     }
 
     public void setSpeed(int speed) {
-        int totalSpeed = speed;
+        int totalSpeed = speed + baseSpeed;
         super.setSpeed(totalSpeed);
     }
 
@@ -66,5 +67,18 @@ public class AgarBoat extends BoatDecorator {
 
     public void setLastAgarSizeDecreaseTime(long time) {
         this.lastAgarSizeDecreaseTime = time;
+    }
+
+    public void setBaseSpeed() {
+        baseSpeed = calculateBaseSpeed(agarSize);
+    }
+
+    private static int calculateBaseSpeed(int boatSize) {
+        System.out.println("Boat size changed, need to set a new min speed");
+        double size = (double) boatSize/800;
+        double baseSpeed = Math.log(size) * -10000;
+        System.out.println(baseSpeed);
+
+        return (int) baseSpeed;
     }
 }
