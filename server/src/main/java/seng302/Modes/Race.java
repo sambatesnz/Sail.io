@@ -28,7 +28,7 @@ import static java.lang.Math.*;
  * This displays a text-based play by play commentary of the race as it happens
  */
 public class Race {
-    private Map<BoatPair, BoatCollision> collisionMap;
+    Map<BoatPair, BoatCollision> collisionMap;
     private int numFinishers = 0;
     private List<Pair<CompoundMark, Rounding>> courseRoundingInfo;
     List<CompoundMark> compoundMarks;
@@ -67,6 +67,12 @@ public class Race {
     public Race() {
     }
 
+    public void raceDefaultSetup(){
+        parseCourseXML("Race.xml");
+        parseRaceXML("Race.xml");
+        setUp();
+    }
+
     public void setUp() {
         // setWindHeading(190);
         startingWindSpeed = (short) (FORTY_KNOTS * 2) ;
@@ -86,7 +92,7 @@ public class Race {
         boats = b;
 
         clientIDs = new HashMap<>();
-        collisionDetector = new CollisionDetector(this);
+        collisionDetector = new CollisionDetector();
         positionStrings = FXCollections.observableArrayList();
     }
 
@@ -149,7 +155,7 @@ public class Race {
             BoatInterface boat = boatGenerator.generateBoat();
             clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
-            LocationSpawner.generateSpawnPoints(boats, boundaries, collisionDetector);
+            LocationSpawner.generateSpawnPoints(boats, boundaries, collisionDetector, collisionMap);
             return boat;
         } else {
             throw new Exception("cannot create boat");
@@ -321,8 +327,6 @@ public class Race {
      * @param fileName the filename to parse
      */
     public void parseCourseXML(String fileName) {
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-
         try {
             DataGenerator dataGenerator = new DataGenerator();
             String xmlString = dataGenerator.loadFile(fileName);
@@ -491,7 +495,7 @@ public class Race {
     public void checkCollisions(IServerData raceManager){
 
         for (BoatInterface boat : getBoats()) {
-            if (collisionDetector.checkBoatCollision(boat)!=null) {
+            if (collisionDetector.checkBoatCollision(boat, boats, collisionMap)!=null) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
                         boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
                 );

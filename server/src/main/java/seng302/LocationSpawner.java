@@ -1,10 +1,12 @@
 package seng302;
 
+import seng302.RaceObjects.BoatCollision;
 import seng302.RaceObjects.BoatInterface;
 import seng302.RaceObjects.CourseLimit;
 import seng302.RaceObjects.Mark;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -14,10 +16,14 @@ public class LocationSpawner {
 
     private static final int AGAR_BASE_SIZE = 200;
 
-    public static void generateSpawnPoints(List<BoatInterface> boats, List<CourseLimit> courseLimits, CollisionDetector collisionDetector){
+    public static void generateSpawnPoints(List<BoatInterface> boats,
+                                           List<CourseLimit> courseLimits,
+                                           CollisionDetector collisionDetector,
+                                           Map<BoatPair, BoatCollision> collisionMap) {
+
         for (BoatInterface boat : boats) {
             getRandomSpawnLocation(boat, courseLimits);
-            while (!collisionDetector.checkAllCollisions(boat, courseLimits, boats)) {
+            while (collisionDetector.hasCollision(boat, courseLimits, boats, collisionMap)) {
                 getRandomSpawnLocation(boat, courseLimits);
             }
             boat.setAgarSize(AGAR_BASE_SIZE);

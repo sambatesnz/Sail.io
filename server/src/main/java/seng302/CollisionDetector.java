@@ -3,7 +3,6 @@ package seng302;
 import seng302.RaceObjects.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -15,10 +14,8 @@ import static java.lang.Math.sqrt;
 public class CollisionDetector {
 
     private static double MARK_SIZE = 5;
-    private seng302.Modes.Race race;
 
-    public CollisionDetector(seng302.Modes.Race race){
-        this.race = race;
+    public CollisionDetector(){
     }
     /**
      * When called, checks if the given boat is in the same location, and hence colliding with any of the marks in the
@@ -70,13 +67,11 @@ public class CollisionDetector {
     /**
      * Check the collision of a boat
      * @param boat the boat being checked
+     * @param boats
      * @return the BoatCollision if the boat is colliding, null otherwise
      */
-    public BoatCollision checkBoatCollision(BoatInterface boat) {
-
-        Map<BoatPair, BoatCollision> collisionMap = race.getCollisionMap();
-
-        for (BoatInterface checkBoat : race.getBoats()) {
+    public BoatCollision checkBoatCollision(BoatInterface boat, List<BoatInterface> boats, Map<BoatPair, BoatCollision> collisionMap) {
+        for (BoatInterface checkBoat : boats) {
             if (!checkBoat.equals(boat)) { //not the same boat
                 BoatPair boatPair = new BoatPair(boat, checkBoat);
                 BoatCollision boat1Collision = collisionMap.get(boatPair);
@@ -115,17 +110,11 @@ public class CollisionDetector {
         return withinBoundaries;
     }
 
-    public boolean checkAllCollisions(BoatInterface boat, List<CourseLimit> boundaries, List<BoatInterface> boats) {
-        boolean isCollision = false;
-        BoatCollision bc = checkBoatCollision(boat);
-        if (bc != null) return true;
-        isCollision = checkWithinBoundary(boat, boundaries)
-                || checkMarkCollisions(boat, race.getCompoundMarks());
-        return isCollision;
+    public boolean hasCollision(BoatInterface boat, List<CourseLimit> boundaries,
+                                List<BoatInterface> boats, Map<BoatPair, BoatCollision> collisionMap) {
+        BoatCollision bc = checkBoatCollision(boat, boats, collisionMap);
+        return !checkWithinBoundary(boat, boundaries) || bc != null;
     }
 
 
-    public Iterable<? extends BoatPair> getCurrentCollisions(seng302.Modes.Race race) {
-        return new ArrayList<>();
-    }
 }

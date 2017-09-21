@@ -12,6 +12,7 @@ public class RaceXMLCreatorTest {
     @Test
     public void getXML() throws Exception {
         Race myRace = new Race();
+        myRace.raceDefaultSetup();
         RaceXMLCreator race = new RaceXMLCreator(myRace);
         System.out.println(race.getXML());
         //System.out.println(race.createDocument().toString());

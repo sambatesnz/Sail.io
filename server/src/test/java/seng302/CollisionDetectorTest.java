@@ -16,7 +16,7 @@ import static junit.framework.TestCase.assertEquals;
  */
 public class CollisionDetectorTest {
     private Race race = new Race();
-    private CollisionDetector detector = new CollisionDetector(race);
+    private CollisionDetector detector = new CollisionDetector();
 
     @Test
     public void testBoatCollisions() {
@@ -26,6 +26,8 @@ public class CollisionDetectorTest {
         Mark other = new Mark(25.256412, 36.325522);
 
         ArrayList<Mark> marks = new ArrayList<>(Arrays.asList(checkMark, other));
+        race.raceDefaultSetup();
+
         try {
             race.addBoat(101);
             race.addBoat(102);
@@ -36,11 +38,12 @@ public class CollisionDetectorTest {
                 boat.setMark(marks.get(i % 2));
             }
 
-            assertEquals(true, null != detector.checkBoatCollision(race.getBoats().get(0)));
-            assertEquals(false, null != detector.checkBoatCollision(race.getBoats().get(1)));
-            assertEquals(true, null != detector.checkBoatCollision(race.getBoats().get(2)));
+            assertEquals(true, null != detector.checkBoatCollision(race.getBoats().get(0), race.getBoats(), race.getCollisionMap()));
+            assertEquals(false, null != detector.checkBoatCollision(race.getBoats().get(1), race.getBoats(), race.getCollisionMap()));
+            assertEquals(true, null != detector.checkBoatCollision(race.getBoats().get(2), race.getBoats(), race.getCollisionMap()));
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Whoops");
         }
     }

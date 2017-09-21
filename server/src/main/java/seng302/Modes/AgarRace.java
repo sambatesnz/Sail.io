@@ -1,6 +1,5 @@
 package seng302.Modes;
 
-import javafx.util.Pair;
 import seng302.DataGeneration.IServerData;
 import seng302.DataGenerator;
 import seng302.LocationSpawner;
@@ -9,12 +8,10 @@ import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
 import seng302.PacketParsing.XMLParser;
 import seng302.RaceObjects.*;
-import seng302.Rounding;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -34,7 +31,6 @@ public class AgarRace extends Race {
 
     @Override
     public void parseCourseXML(String fileName){
-        System.out.println("++++++++++++++++++++++++++++++++");
 
         try {
             DataGenerator dataGenerator = new DataGenerator();
@@ -50,7 +46,7 @@ public class AgarRace extends Race {
     @Override
     public void checkCollisions(IServerData raceManager){
         for (BoatInterface boat : getBoats()) {
-            BoatCollision collision = collisionDetector.checkBoatCollision(boat);
+            BoatCollision collision = collisionDetector.checkBoatCollision(boat, boats, collisionMap);
             if (collision != null) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
                         boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
@@ -91,7 +87,7 @@ public class AgarRace extends Race {
         loser.setSailsOut(false);
         List<BoatInterface> boats = new ArrayList<>();
         boats.add(loser);
-        LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector);
+        LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
     }
 
     private void reduceBoatSize(BoatInterface boat) {
@@ -110,7 +106,7 @@ public class AgarRace extends Race {
             BoatDecorator boat = new AgarBoat(boatGenerator.generateBoat());
             clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
-            LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector);
+            LocationSpawner.generateSpawnPoints(boats, super.boundaries, collisionDetector, super.collisionMap);
             return boat;
         } else {
             throw new Exception("cannot create boat");
