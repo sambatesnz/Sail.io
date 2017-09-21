@@ -10,11 +10,13 @@ public class AgarBoat extends BoatDecorator {
     private int agarSize;
     private long lastAgarSizeDecreaseTime;
 
+    private static final int BASE_AGAR_SIZE = 200;
+
     public AgarBoat(BoatInterface boat) {
         super(boat);
 
         lives = 3;
-        agarSize = 100;
+        agarSize = BASE_AGAR_SIZE;
     }
     public void setAgarSize(int size){
         this.agarSize = size;
@@ -35,7 +37,7 @@ public class AgarBoat extends BoatDecorator {
 
 
     private void resetAgarSize() {
-        agarSize = 1;
+        agarSize = BASE_AGAR_SIZE;
     }
 
     public int getAgarSize() {

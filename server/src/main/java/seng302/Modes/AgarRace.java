@@ -23,8 +23,8 @@ import static java.lang.System.currentTimeMillis;
 public class AgarRace extends Race {
 
     private static final int AGAR_SIZE_DECREMENT = 5;
-    private static final int MINIMUM_AGAR_SIZE = 5;
-    private static final int SIZE_DECREASE_TICK = 1000;
+    private static final int MINIMUM_AGAR_SIZE = 100;
+    private static final int SIZE_DECREASE_TICK_MS = 250;
 
     AgarRace() {
         super();
@@ -34,7 +34,7 @@ public class AgarRace extends Race {
     public void checkCollisions(IServerData raceManager){
         for (BoatInterface boat : getBoats()) {
             BoatCollision collision = collisionDetector.checkBoatCollision(boat);
-            if (null != collision) {
+            if (collision != null) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
                         boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
                 );
@@ -43,8 +43,8 @@ public class AgarRace extends Race {
                     collision.getWinner().setAgarSize(collision.getWinner().getAgarSize() + collision.getLoser().getAgarSize());
                     System.out.println(collision.getWinner().getAgarSize() + collision.getLoser().getAgarSize());
                     collision.setReactedToCollision(true);
+                    killBoat(collision.getLoser());
                 }
-                killBoat(collision.getLoser());
 
                 raceManager.addMessage(boatCollisionEventMessage.createMessage());
             }
@@ -69,9 +69,9 @@ public class AgarRace extends Race {
     }
 
     private void reduceBoatSize(BoatInterface boat) {
-        if (currentTimeMillis() - boat.getLastAgarSizeDecreaseTime() > SIZE_DECREASE_TICK) {
+        if (currentTimeMillis() - boat.getLastAgarSizeDecreaseTime() > SIZE_DECREASE_TICK_MS) {
             boat.setAgarSize(boat.getAgarSize() - AGAR_SIZE_DECREMENT);
-            if (boat.getAgarSize() < MINIMUM_AGAR_SIZE) {
+            if (boat.getAgarSize() <= MINIMUM_AGAR_SIZE) {
                 killBoat(boat);
             }
             boat.setLastAgarSizeDecreaseTime(currentTimeMillis());

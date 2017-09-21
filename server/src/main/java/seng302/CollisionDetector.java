@@ -77,7 +77,7 @@ public class CollisionDetector {
         Map<BoatPair, BoatCollision> collisionMap = race.getCollisionMap();
 
         for (BoatInterface checkBoat : race.getBoats()) {
-            if (!checkBoat.equals(boat)) {
+            if (!checkBoat.equals(boat)) { //not the same boat
                 BoatPair boatPair = new BoatPair(boat, checkBoat);
                 BoatCollision boat1Collision = collisionMap.get(boatPair);
                 if (boat1Collision.isColliding()) return boat1Collision;
