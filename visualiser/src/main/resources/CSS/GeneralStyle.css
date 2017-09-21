@@ -61,5 +61,7 @@
 }
 
 #startAnchor {
-    -fx-background-image: url("../BackgroundImages/render.png");
+    -fx-background-image: url("../BackgroundImages/north_wind_blows.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: stretch;
 }
