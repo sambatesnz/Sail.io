@@ -13,7 +13,7 @@ import static java.lang.Math.round;
 /**
  * Represent a boat competing in yacht race
  */
-public class Boat implements BoatInterface{
+public class Boat extends GenericBoat {
     private static final int HEADING_INCREMENT = 3;
 
     private Mark mark;

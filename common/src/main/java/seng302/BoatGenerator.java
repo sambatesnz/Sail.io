@@ -1,7 +1,6 @@
 package seng302;
 
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 
 import java.util.*;
 
@@ -17,8 +16,8 @@ public class BoatGenerator {
     private int numberOfBoats = 0;
     private HashSet addedBoats;
 
-    private Stack<BoatInterface> availableBoats;
-    private HashSet<BoatInterface> usedBoats;
+    private Stack<GenericBoat> availableBoats;
+    private HashSet<GenericBoat> usedBoats;
 
 
     /**
@@ -37,8 +36,8 @@ public class BoatGenerator {
      * @return generated boat
      * @throws Exception if it cannot generate a boat
      */
-    public BoatInterface generateBoat() throws Exception {
-        BoatInterface boat;
+    public GenericBoat generateBoat() throws Exception {
+        GenericBoat boat;
         try {
             boat = availableBoats.pop();
             usedBoats.add(boat);
@@ -58,7 +57,7 @@ public class BoatGenerator {
      * @param boat boat you wish to make available
      * @return Whether it has been successfully made available
      */
-    public boolean makeAvailable(BoatInterface boat) {
+    public boolean makeAvailable(GenericBoat boat) {
         availableBoats.push(boat);
         return usedBoats.remove(boat);
     }

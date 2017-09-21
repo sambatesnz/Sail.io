@@ -7,12 +7,11 @@ import org.junit.Assert;
 import seng302.DataGeneration.IServerData;
 import seng302.Modes.RaceManager;
 import seng302.Modes.Race;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 
 public class MarkRoundingSteps {
     private Race race;
-    private BoatInterface boat;
+    private GenericBoat boat;
 
     @Given("^the race is already running$")
     public void the_race_is_already_running() throws Throwable {

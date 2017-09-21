@@ -1,6 +1,6 @@
 package seng302.Polars;
 
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class PolarUtils {
      * @param windHeading current wind heading
      * @param windSpeed current wind speed
      */
-    public static void updateBoatSpeed(BoatInterface boat, double windHeading, int windSpeed){
+    public static void updateBoatSpeed(GenericBoat boat, double windHeading, int windSpeed){
         Map<Integer, PolarRatio> polarMap = generatePolarMap();
         double diff = abs(windHeading - boat.getHeading());
         double angleRelative = abs(180-diff);

@@ -1,7 +1,7 @@
 package seng302;
 
 import seng302.RaceObjects.BoatCollision;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.CourseLimit;
 import seng302.RaceObjects.Mark;
 
@@ -14,12 +14,12 @@ import java.util.Random;
  */
 public class LocationSpawner {
 
-    public static void generateSpawnPoints(List<BoatInterface> boats,
+    public static void generateSpawnPoints(List<GenericBoat> boats,
                                            List<CourseLimit> courseLimits,
                                            CollisionDetector collisionDetector,
                                            Map<BoatPair, BoatCollision> collisionMap) {
 
-        for (BoatInterface boat : boats) {
+        for (GenericBoat boat : boats) {
             getRandomSpawnLocation(boat, courseLimits);
             while (collisionDetector.hasCollision(boat, courseLimits, boats, collisionMap)) {
                 getRandomSpawnLocation(boat, courseLimits);
@@ -28,7 +28,7 @@ public class LocationSpawner {
         }
     }
 
-    private static void getRandomSpawnLocation(BoatInterface boat, List<CourseLimit> courseLimits) {
+    private static void getRandomSpawnLocation(GenericBoat boat, List<CourseLimit> courseLimits) {
         double maxLat = Double.MIN_VALUE;
         double maxLong = Double.MIN_VALUE;
         double minLat = Double.MAX_VALUE;

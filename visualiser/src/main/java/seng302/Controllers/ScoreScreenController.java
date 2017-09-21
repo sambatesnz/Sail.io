@@ -5,8 +5,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.ViewScreenType;
 
@@ -17,13 +16,13 @@ import java.io.IOException;
  */
 public class ScoreScreenController {
     @FXML
-    private TableView<BoatInterface> finishersTable;
+    private TableView<GenericBoat> finishersTable;
     @FXML
-    private TableColumn<BoatInterface, String> boatColumn;
+    private TableColumn<GenericBoat, String> boatColumn;
     @FXML
-    private TableColumn<BoatInterface, String> positionColumn;
+    private TableColumn<GenericBoat, String> positionColumn;
     @FXML
-    private TableColumn<BoatInterface, String> finishTimeColumn;
+    private TableColumn<GenericBoat, String> finishTimeColumn;
 
     private Stage primaryStage;
 
@@ -40,15 +39,15 @@ public class ScoreScreenController {
     }
     public void initialiseTable(){
         positionColumn.setCellValueFactory(
-                new PropertyValueFactory<BoatInterface, String>("placement")
+                new PropertyValueFactory<GenericBoat, String>("placement")
         );
 
         boatColumn.setCellValueFactory(
-                new PropertyValueFactory<BoatInterface, String>("boatName")
+                new PropertyValueFactory<GenericBoat, String>("boatName")
         );
 
         finishTimeColumn.setCellValueFactory(
-                new PropertyValueFactory<BoatInterface, String>("finishTimeString")
+                new PropertyValueFactory<GenericBoat, String>("finishTimeString")
         );
 
         finishersTable.setItems(race.getBoatsForScoreBoard());

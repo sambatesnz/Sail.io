@@ -5,11 +5,11 @@ import javafx.scene.paint.Color;
 /**
  * Decorator for the boat class
  */
-public class BoatDecorator implements BoatInterface{
+public class BoatDecorator extends GenericBoat {
 
-    protected BoatInterface boat;
+    protected GenericBoat boat;
 
-    public BoatDecorator(BoatInterface boat) {
+    public BoatDecorator(GenericBoat boat) {
         this.boat = boat;
     }
 

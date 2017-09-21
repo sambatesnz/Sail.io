@@ -3,8 +3,7 @@ package seng302.PacketGeneration.RaceStatusGeneration;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.PacketGenerationUtils;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -27,7 +26,7 @@ public class RaceStatusMessage extends BinaryMessage {
     private byte[] numberOfBoatsByte;
     private byte[] raceType;
     private byte[] boatsAsBytes;
-    private List<BoatInterface> boats;
+    private List<GenericBoat> boats;
     private int numberOfBoatsInt;
 
     public static int CURRENT_VERSION_NUMBER= 2;
@@ -44,7 +43,7 @@ public class RaceStatusMessage extends BinaryMessage {
      * @param raceType Type of race e.g. Match or Fleet Race
      * @param boats List of boats in the race
      */
-    public RaceStatusMessage(long currentTime, int raceID, int raceStatus, long startTime, short windDirection, short windSpeed, char numberOfBoats, char raceType, List<BoatInterface> boats) {
+    public RaceStatusMessage(long currentTime, int raceID, int raceStatus, long startTime, short windDirection, short windSpeed, char numberOfBoats, char raceType, List<GenericBoat> boats) {
         this.versionNumber = PacketGenerationUtils.intToOneByte(CURRENT_VERSION_NUMBER);
         this.currentTime = PacketGenerationUtils.longToSixBytes(currentTime);
         this.raceID = PacketGenerationUtils.intToFourBytes(raceID);
@@ -72,7 +71,7 @@ public class RaceStatusMessage extends BinaryMessage {
      * @param raceType Type of race e.g. Match or Fleet Race
      * @param boats List of boats in the race
      */
-    public RaceStatusMessage(int versionNumber, long currentTime, int raceID, int raceStatus, long startTime, short windDirection, short windSpeed, char numberOfBoats, char raceType, List<BoatInterface> boats) {
+    public RaceStatusMessage(int versionNumber, long currentTime, int raceID, int raceStatus, long startTime, short windDirection, short windSpeed, char numberOfBoats, char raceType, List<GenericBoat> boats) {
         this.versionNumber = PacketGenerationUtils.intToOneByte(versionNumber);
         this.currentTime = PacketGenerationUtils.longToSixBytes(currentTime);
         this.raceID = PacketGenerationUtils.intToFourBytes(raceID);
@@ -106,7 +105,7 @@ public class RaceStatusMessage extends BinaryMessage {
         body.put(raceType);
 
         if (boats != null){
-            for (BoatInterface boat: boats){
+            for (GenericBoat boat: boats){
                 BoatStatusMessage message = new BoatStatusMessage(boat.getSourceId(), (char)2, (char)boat.getTargetMarkIndex(), 1, 1);
                 body.put(message.getBoatStatusMessage());
             }

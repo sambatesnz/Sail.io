@@ -6,8 +6,7 @@ import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketGeneration.RaceStatusGeneration.RaceStatusMessage;
 import seng302.Modes.Race;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
@@ -121,7 +120,7 @@ public class RaceRestartTest implements IServerData {
     class BoatPosSender extends TimerTask {
         @Override
         public void run() {
-            for (BoatInterface boat : race.getBoats()) {
+            for (GenericBoat boat : race.getBoats()) {
                 BinaryMessage boatLocationMessage = new BoatLocationMessage(
                         1, System.currentTimeMillis(), boat.getSourceId(),
                         1, 1,

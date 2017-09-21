@@ -1,7 +1,6 @@
 package seng302.DataGeneration;
 
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 import seng302.XMLCreation.XMLCreator;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -13,11 +12,11 @@ public class BoatXMLCreator implements XMLCreator {
 
     private Document xml;
 
-    public BoatXMLCreator(List<BoatInterface> boats) {
+    public BoatXMLCreator(List<GenericBoat> boats) {
         this.xml = createDocument(boats);
     }
 
-    private Document createDocument(List<BoatInterface> boats) {
+    private Document createDocument(List<GenericBoat> boats) {
         Document boatXML = DocumentHelper.createDocument();
         Element root = boatXML.addElement("BoatConfig");
 
@@ -25,7 +24,7 @@ public class BoatXMLCreator implements XMLCreator {
 
         Element boatsElement = root.addElement("Boats");
 
-        for (BoatInterface boat: boats){
+        for (GenericBoat boat: boats){
             boatsElement.addElement("Boat")
                     .addAttribute("Type", "Yacht")
                     .addAttribute("SourceID", String.valueOf(boat.getSourceId()))

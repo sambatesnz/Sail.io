@@ -2,19 +2,15 @@ package seng302.Visualiser;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
-
-import static javafx.scene.paint.Color.PINK;
+import seng302.RaceObjects.GenericBoat;
 
 
 public class BoatSprite {
     private Pane stack;
-    private BoatInterface boatObject;
+    private GenericBoat boatObject;
     private Polyline boatIcon;
     private Polyline wake;
     private Text text;
@@ -29,7 +25,7 @@ public class BoatSprite {
     public static final int SAIL = 5;
 
 
-    public BoatSprite(BoatInterface boat, int clientSourceId){
+    public BoatSprite(GenericBoat boat, int clientSourceId){
         this.boatObject = boat;
         initialiseBoatIcon();
         initialiseWake();
@@ -56,7 +52,7 @@ public class BoatSprite {
         return stack;
     }
 
-    public BoatInterface getBoat(){
+    public GenericBoat getBoat(){
         return boatObject;
     }
 

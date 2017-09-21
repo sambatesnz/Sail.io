@@ -265,9 +265,9 @@ public class XMLParser {
         return markMap;
     }
 
-    public Map<Integer, BoatInterface> getBoats(RaceMode mode) {
+    public Map<Integer, GenericBoat> getBoats(RaceMode mode) {
         NodeList nodes = xmlDoc.getElementsByTagName(BOATS).item(0).getChildNodes();
-        Map<Integer, BoatInterface> boats = new HashMap<>();
+        Map<Integer, GenericBoat> boats = new HashMap<>();
         try {
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
@@ -279,7 +279,7 @@ public class XMLParser {
                         String boatName = nnm.getNamedItem(BOATNAME).getNodeValue();
                         String country = nnm.getNamedItem(COUNTRY).getNodeValue();
 
-                        BoatInterface boat = new Boat(boatName, shortName, srcId, country);
+                        GenericBoat boat = new Boat(boatName, shortName, srcId, country);
 
                         if (mode == RaceMode.AGAR) {
                             boat = new AgarBoat(boat);
