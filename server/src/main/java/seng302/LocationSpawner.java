@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by osr13 on 20/09/17.
+ * Class that generates points around a course for boats to respawn at
  */
 public class LocationSpawner {
 

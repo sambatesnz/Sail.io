@@ -300,8 +300,17 @@ public class BoatDecorator implements BoatInterface{
 
     @Override
     public double getCollisionFactor() {
-        return 0;
+        return boat.getCollisionFactor();
     }
 
+    @Override
+    public long getLastAgarSizeDecreaseTime() {
+        return boat.getLastAgarSizeDecreaseTime();
+    }
+
+    @Override
+    public void setLastAgarSizeDecreaseTime(long time) {
+        boat.setLastAgarSizeDecreaseTime(time);
+    }
 
 }
