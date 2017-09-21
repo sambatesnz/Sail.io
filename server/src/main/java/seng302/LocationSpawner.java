@@ -12,12 +12,15 @@ import java.util.Random;
  */
 public class LocationSpawner {
 
+    private static final int AGAR_BASE_SIZE = 200;
+
     public static void generateSpawnPoints(List<BoatInterface> boats, List<CourseLimit> courseLimits, CollisionDetector collisionDetector){
         for (BoatInterface boat : boats) {
             getRandomSpawnLocation(boat, courseLimits);
             while (!collisionDetector.checkAllCollisions(boat, courseLimits, boats)) {
                 getRandomSpawnLocation(boat, courseLimits);
             }
+            boat.setAgarSize(AGAR_BASE_SIZE);
         }
     }
 

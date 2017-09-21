@@ -12,7 +12,6 @@ import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
-import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.BoatInterface;
 import seng302.XMLCreation.RaceXMLCreator;
 import seng302.XMLCreation.XMLCreator;
@@ -38,6 +37,9 @@ public class AgarManager implements IServerData{
 
     public AgarManager(){
         this.race = new AgarRace();
+        race.parseCourseXML("Race.xml");
+        race.parseRaceXML("Race.xml");
+        race.setUp();
         boatManager = race.getBoatManager();
         broadcastMessageQueue = new LinkedBlockingQueue<>();
         singularMessageQueue = new LinkedBlockingQueue<>();
