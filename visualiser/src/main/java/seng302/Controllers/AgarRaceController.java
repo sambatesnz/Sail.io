@@ -163,8 +163,6 @@ public class AgarRaceController implements IRaceController {
         fpsCounter = new FPSCounter(fpsLabel);
 
         initialiseZoomFollowing();
-        initialiseRoundingArrow();
-        initialiseNextMarkArrow();
         initialisePositionsTable();
         enableScrolling();
         toggleFinishersBtn.setVisible(false);
@@ -264,7 +262,7 @@ public class AgarRaceController implements IRaceController {
                 initialiseBoatMetaData();
                 initialiseBoatLocation();
                 try {
-                    updateCourseLayout();
+//                    updateCourseLayout();
                     if (race.isRaceReady() && boatLocationDataInitialised) {
                         updateBoatPositions();
                         updateBoatLives();
@@ -296,7 +294,6 @@ public class AgarRaceController implements IRaceController {
                 if (race.isFinished()) {
                     raceListener.stop();
                 }
-                sparkCounter++;
             }
         };
     }
@@ -425,65 +422,15 @@ public class AgarRaceController implements IRaceController {
         }
     }
 
-    private void updateBoatPaths(){
-        //boat paths
-        int pathPoints = 250;
-        int skipAmount = 15;
-        for (int i = 0; i < boats.size(); i++){
-            try {
-                if (race.getBoats().get(i).isKnowsBoatLocation()) {
-                    if (viewUpdateCount % skipAmount == 0) {
-                        if (absolutePaths.get(i).size() > pathPoints) {
-                            paths.get(i).getElements().remove(1);
-                            absolutePaths.get(i).remove(0);
-                        }
-                        absolutePaths.get(i).add(new Point2D(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-                        paths.get(i).getElements().add(new LineTo());
-                    }
-                    lastHeadings.set(i, race.getBoats().get(i).getHeading());
-
-                    ((MoveTo) paths.get(i).getElements().get(0))
-                            .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(0).getX()));
-                    ((MoveTo) paths.get(i).getElements().get(0))
-                            .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(0).getY()));
-                    for (int j = 1; j < paths.get(i).getElements().size(); j++) {
-                        ((LineTo) paths.get(i).getElements().get(j))
-                                .setX(Coordinate.getRelativeX(absolutePaths.get(i).get(j - 1).getX()));
-                        ((LineTo) paths.get(i).getElements().get(j))
-                                .setY(Coordinate.getRelativeY(absolutePaths.get(i).get(j - 1).getY()));
-                    }
-                }
-            } catch (IndexOutOfBoundsException e) {
-//                e.printStackTrace();
-            }
-        }
-    }
-
     private void initialiseBoatMetaData() {
         if(race.boatsReady() && !boatMetaDataInitialised && race.isRaceReady()){
             for (int i = 0; i < race.getBoats().size(); i++) {
                 BoatSprite boatSprite = new BoatSprite(race.getBoats().get(i), race.getClientSourceId());
                 boats.add(boatSprite);
             }
-////                Path path = new Path();
-////                path.setStroke(race.getBoats().get(i).getColour());
-////                path.getElements().add(new MoveTo(race.getBoats().get(i).getX(), race.getBoats().get(i).getY()));
-////                path.setFill(Color.TRANSPARENT);
-////                paths.add(path);
-////                absolutePaths.add(new ArrayList<>());
-////
-////                lastHeadings.add(race.getBoats().get(i).getHeading() + 1);  // guarantee its different
-//
-//            }
             for (BoatSprite boat : boats){
                 group.getChildren().addAll(boat.getStack());
             }
-//            group.getChildren().addAll(boats);
-//            for (Path path: paths) {
-//                group.getChildren().add(path);
-//            }
-
-            //createChart();
             boatMetaDataInitialised = true;
         }
     }

@@ -31,11 +31,11 @@ public class Race {
     private Map<BoatPair, BoatCollision> collisionMap;
     private int numFinishers = 0;
     private List<Pair<CompoundMark, Rounding>> courseRoundingInfo;
-    private List<CompoundMark> compoundMarks;
+    List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
     List<BoatInterface> boats;
     Map<Integer, Integer> clientIDs;
-    private List<CourseLimit> boundaries;
+    List<CourseLimit> boundaries;
     private short windHeading;
     private short startingWindSpeed;
     private int windSpeed;
@@ -65,8 +65,9 @@ public class Race {
      * Constructor for the race class.
      */
     public Race() {
-        parseCourseXML("Race.xml");
-        parseRaceXML("Race.xml");
+    }
+
+    public void setUp() {
         // setWindHeading(190);
         startingWindSpeed = (short) (FORTY_KNOTS * 2) ;
         setStartingWindSpeed();
@@ -96,7 +97,7 @@ public class Race {
     Date getNewStartTime() {
         Calendar date = Calendar.getInstance();
         long currentTime = date.getTimeInMillis();
-        return new Date(currentTime + ONE_MINUTE_IN_MILLIS / 5);
+        return new Date(currentTime + ONE_MINUTE_IN_MILLIS / 3);
     }
 
     /**
@@ -319,7 +320,8 @@ public class Race {
      * Reads the course.xml file to get the attributes of things on the course
      * @param fileName the filename to parse
      */
-    private void parseCourseXML(String fileName) {
+    public void parseCourseXML(String fileName) {
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
         try {
             DataGenerator dataGenerator = new DataGenerator();
@@ -360,7 +362,7 @@ public class Race {
      * Reads the Race.xml file to get the attributes of things of the race.
      * @param fileName the filename to parse
      */
-    private void parseRaceXML(String fileName) {
+    public void parseRaceXML(String fileName) {
         try {
             RaceCreator rc = new RaceCreator(fileName);
             raceID = rc.getRaceID();
@@ -399,20 +401,20 @@ public class Race {
             boat.getMark().setX(boat.getX() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier); //TODO put this 17 ticks into a config file
             boat.getMark().setY(boat.getY() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier);
 
-            if (raceStatus == RaceStatus.STARTED) {
-                if (!boat.isFinished()) {
-                    RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
-                } else if (!boat.isAdded()) {
-                    boatManager.addFinishedBoat(boat);
-                    boat.setAdded(true);
-                    if (!raceFinishing) {
-                        setFinishTime(ONE_MINUTE_IN_MILLIS);
+            if (compoundMarks.size() > 0) {
+                if (raceStatus == RaceStatus.STARTED) {
+                    if (!boat.isFinished()) {
+                        RoundingUtility.determineMarkRounding(courseRoundingInfo, boat);
+                    } else if (!boat.isAdded()) {
+                        boatManager.addFinishedBoat(boat);
+                        boat.setAdded(true);
+                        if (!raceFinishing) {
+                            setFinishTime(ONE_MINUTE_IN_MILLIS);
+                        }
                     }
                 }
             }
-
-
-            boat.getMark().setX(newX); //TODO put this 17 ticks into a config file
+            boat.getMark().setX(newX);
             boat.getMark().setY(newY);
             boat.setHeadingChangedToFalse();
         }

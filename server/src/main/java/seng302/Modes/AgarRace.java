@@ -1,19 +1,20 @@
 package seng302.Modes;
 
+import javafx.util.Pair;
 import seng302.DataGeneration.IServerData;
+import seng302.DataGenerator;
 import seng302.LocationSpawner;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
-import seng302.RaceObjects.AgarBoat;
-import seng302.RaceObjects.AgarBoatCollision;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatDecorator;
-import seng302.RaceObjects.BoatInterface;
-import seng302.RaceObjects.BoatCollision;
+import seng302.PacketParsing.XMLParser;
+import seng302.RaceObjects.*;
+import seng302.Rounding;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Extension of base race
@@ -22,6 +23,22 @@ public class AgarRace extends Race {
 
     AgarRace() {
         super();
+    }
+
+
+    @Override
+    public void parseCourseXML(String fileName){
+        System.out.println("++++++++++++++++++++++++++++++++");
+
+        try {
+            DataGenerator dataGenerator = new DataGenerator();
+            String xmlString = dataGenerator.loadFile(fileName);
+            XMLParser xmlParser = new XMLParser(xmlString);
+            compoundMarks = new ArrayList<>();
+            boundaries = xmlParser.getCourseLimits();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

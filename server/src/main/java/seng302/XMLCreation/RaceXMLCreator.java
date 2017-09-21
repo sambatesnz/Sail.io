@@ -84,17 +84,19 @@ public class RaceXMLCreator implements XMLCreator {
         Element compoundMarkSequence = root.addElement("CompoundMarkSequence");
 
         int seqId = 1;
-        for (Pair<CompoundMark, Rounding> pair: race.getCourseRoundingInfo()) {
-            CompoundMark compoundMark = pair.getKey();
-            String rounding = pair.getValue().getRounding();
+        if (race.getCompoundMarks().size() > 0) {
+            for (Pair<CompoundMark, Rounding> pair: race.getCourseRoundingInfo()) {
+                CompoundMark compoundMark = pair.getKey();
+                String rounding = pair.getValue().getRounding();
 
-            compoundMarkSequence.addElement("Corner")
-                    .addAttribute("SeqID", String.valueOf(seqId))
-                    .addAttribute("CompoundMarkID", String.valueOf(compoundMark.getId()))
-                    .addAttribute("Rounding", rounding)
-                    .addAttribute("ZoneSize", "/TODO");
+                compoundMarkSequence.addElement("Corner")
+                        .addAttribute("SeqID", String.valueOf(seqId))
+                        .addAttribute("CompoundMarkID", String.valueOf(compoundMark.getId()))
+                        .addAttribute("Rounding", rounding)
+                        .addAttribute("ZoneSize", "/TODO");
 
-            seqId++;
+                seqId++;
+            }
         }
 
 //        seqId = 1;
