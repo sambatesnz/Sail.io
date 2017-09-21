@@ -390,10 +390,10 @@ public class AgarRaceController implements IRaceController {
                 boats.get(i).getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
                 updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.WAKE), boats.get(i).getBoat().getAgarSize());
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setRotate(race.getBoats().get(i).getHeading());
-                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * (1 / (1 + Coordinate.getZoom() * 0.9)))
+                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * getScale(boats.get(i).getBoat().getAgarSize()))
                         * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
-                        * (1 / (1 + Coordinate.getZoom() * 0.9))) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                        * getScale(boats.get(i).getBoat().getAgarSize())) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
 
                 //Boat annotations (name and speed)
                 boats.get(i).getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
@@ -420,7 +420,7 @@ public class AgarRaceController implements IRaceController {
 
                 }
                 double sailLength = 720d / 45d;
-                sail.setLayoutY((1/(1 + Coordinate.getZoom())) * (sailLength)/2 - SAIL_OFFSET);
+                sail.setLayoutY(getScale(boats.get(i).getBoat().getAgarSize()) * (sailLength)/2 - SAIL_OFFSET);
             }
         }
     }
@@ -1133,17 +1133,23 @@ public class AgarRaceController implements IRaceController {
      */
     private void updateNodeScale(Node nodeToScale, int areaPercent) {
         double extraArea = ((double) areaPercent) / 100 - 1;
+        double extraRadius = sqrt(abs(extraArea/Math.PI)) * (extraArea / abs(extraArea));
+        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()) ) * (extraRadius/2 + 1));
+        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()) )* (extraRadius/2 + 1));
+    }
+
+    private double getScale(int areaPercent){
+        double extraArea = ((double) areaPercent) / 100 - 1;
         double extraRadius = sqrt(extraArea/Math.PI);
-        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()*0.9) ) * (extraRadius + 1));
-        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()*0.9) )* (extraRadius + 1));
+        return (1/(1+Coordinate.getZoom()) ) * (extraRadius/2 + 1);
     }
 
     /**
      * @param nodeToScale node to scale based on current level of zoom
      */
     private void updateNodeScale(Node nodeToScale) {
-        nodeToScale.setScaleX(1/(1+Coordinate.getZoom()*0.9));
-        nodeToScale.setScaleY(1/(1+Coordinate.getZoom()*0.9));
+        nodeToScale.setScaleX(1/(1+Coordinate.getZoom()));
+        nodeToScale.setScaleY(1/(1+Coordinate.getZoom()));
     }
 
     public void setAddr(String ip, int port) {

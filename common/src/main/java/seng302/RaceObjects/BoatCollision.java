@@ -54,6 +54,10 @@ public class BoatCollision {
         return isColliding;
     }
 
+    public BoatInterface getOther(BoatInterface boat){
+        return boat == collider1 ? collider2 : collider1;
+    }
+
     public BoatInterface getWinner(){
         if(abs(collider1.getCollisionFactor() - collider2.getCollisionFactor()) < 2)
         {
