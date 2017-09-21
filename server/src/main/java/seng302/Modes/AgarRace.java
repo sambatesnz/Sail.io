@@ -24,7 +24,7 @@ public class AgarRace extends Race {
     private static final int MINIMUM_AGAR_SIZE = 0;
     private static final int SIZE_DECREASE_TICK_MS = 50;
 
-    AgarRace() {
+    public AgarRace() {
         super();
     }
 

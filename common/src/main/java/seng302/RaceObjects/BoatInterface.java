@@ -130,4 +130,6 @@ public interface BoatInterface {
     void setBaseSpeed();
 
     void resetAgarSize();
+
+    int getBaseSpeed();
 }

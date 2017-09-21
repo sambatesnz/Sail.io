@@ -74,11 +74,12 @@ public class AgarBoat extends BoatDecorator {
     }
 
     private static int calculateBaseSpeed(int boatSize) {
-        System.out.println("Boat size changed, need to set a new min speed");
         double size = (double) boatSize/800;
         double baseSpeed = Math.log(size) * -10000;
-        System.out.println(baseSpeed);
-
         return (int) baseSpeed;
+    }
+
+    public int getBaseSpeed() {
+        return baseSpeed;
     }
 }

@@ -224,6 +224,11 @@ public class Boat implements BoatInterface{
     public void resetAgarSize() {}
 
     @Override
+    public int getBaseSpeed() {
+        return 0;
+    }
+
+    @Override
     public void setBaseSpeed() {}
 
     private int getRelativeAngle(int angle1, double angle2){

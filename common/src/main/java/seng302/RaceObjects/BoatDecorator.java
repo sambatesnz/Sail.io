@@ -322,4 +322,9 @@ public class BoatDecorator implements BoatInterface{
         boat.resetAgarSize();
     }
 
+    @Override
+    public int getBaseSpeed() {
+        return boat.getBaseSpeed();
+    }
+
 }
