@@ -12,11 +12,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -32,6 +35,7 @@ import seng302.Visualiser.Arrow;
 import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,7 +85,7 @@ public class RaceController implements IRaceController {
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
     private Arrow nextMarkArrow;
-    private Arrow windArrow = new Arrow();
+    private ImageView windArrow1;
     private Group roundingArrow1 = new Group();
     private Group roundingArrow2 = new Group();
     private Group roundingArrowMirrored1 = new Group();
@@ -146,9 +150,11 @@ public class RaceController implements IRaceController {
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
-        windArrow.setTranslateX(50);
-        windArrow.setTranslateY(50);
-        group.getChildren().add(windArrow);
+        windArrow1 = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("Red_Arrow_Up.png")));
+        windArrow1.setFitHeight(100);
+        windArrow1.setFitWidth(100);
+        windArrow1.setPreserveRatio(true);
+        group.getChildren().add(windArrow1);
 
         clock.setFont(new Font("Arial", 30));
         clock.setText(" 00:00:00");
@@ -242,7 +248,6 @@ public class RaceController implements IRaceController {
             @Override
             public void handle(long currentNanoTime) {
                 rotateWindArrow();
-                scaleWindArrow();
                 setUTC();
                 updateClock();
                 fpsCounter.update(currentNanoTime);
@@ -825,14 +830,7 @@ public class RaceController implements IRaceController {
      * Rotates the wind arrow based on the heading
      */
     private void rotateWindArrow() {
-        windArrow.setRotate(race.getWindHeading() + 180);
-    }
-
-    /**
-     * Scales the wind arrow based on the wind speed
-     */
-    private void scaleWindArrow() {
-        windArrow.updateScaling(race.getWindSpeed());
+        windArrow1.setRotate(race.getWindHeading() + 180);
     }
 
     /**
