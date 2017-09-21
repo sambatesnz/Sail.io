@@ -330,22 +330,12 @@ public class AgarRaceController implements IRaceController {
 
     private void updateBoatLives() {
         BoatInterface boat =  race.getClientBoat();
-        switch (boat.getLives()) {
-            case 1:
-                imageOne.setVisible(true);
-                imageTwo.setVisible(false);
-                imageThree.setVisible(false);
-                break;
-            case 2:
-                imageOne.setVisible(true);
-                imageTwo.setVisible(true);
-                imageThree.setVisible(false);
-                break;
-            case 3:
-                imageOne.setVisible(true);
-                imageTwo.setVisible(true);
-                imageThree.setVisible(true);
-                break;
+        final int MAX_BOAT_LIVES = 3;
+        List<ImageView> images = Arrays.asList(imageOne, imageTwo, imageThree);
+
+        int lives = boat.getLives();
+        for (int i = 0; i < MAX_BOAT_LIVES; i++) {
+            images.get(i).setVisible(i < lives);
         }
     }
 

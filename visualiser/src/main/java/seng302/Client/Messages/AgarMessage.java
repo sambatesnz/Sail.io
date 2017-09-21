@@ -36,7 +36,9 @@ public class AgarMessage extends ClientSideMessageParser {
         boatDict = race.getBoatsMap();
         if (boatDict != null && boatDict.containsKey(boatSourceId)) {
             BoatInterface boat = boatDict.get(boatSourceId);
-            boat.setLives(boatLives);
+            while (boat.getLives() > boatLives) {
+                boat.loseLife();
+            }
             boat.setAgarSize(boatSize);
         }
     }
