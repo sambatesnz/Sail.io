@@ -313,4 +313,9 @@ public class BoatDecorator implements BoatInterface{
         boat.setLastAgarSizeDecreaseTime(time);
     }
 
+    @Override
+    public void resetAgarSize() {
+        boat.resetAgarSize();
+    }
+
 }

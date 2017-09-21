@@ -36,7 +36,7 @@ public class AgarBoat extends BoatDecorator {
     }
 
 
-    private void resetAgarSize() {
+    public void resetAgarSize() {
         agarSize = BASE_AGAR_SIZE;
     }
 

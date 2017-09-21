@@ -126,4 +126,6 @@ public interface BoatInterface {
     long getLastAgarSizeDecreaseTime();
 
     void setLastAgarSizeDecreaseTime(long time);
+
+    void resetAgarSize();
 }

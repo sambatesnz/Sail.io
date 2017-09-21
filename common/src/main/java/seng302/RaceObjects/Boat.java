@@ -222,6 +222,11 @@ public class Boat implements BoatInterface{
 
     }
 
+    @Override
+    public void resetAgarSize() {
+
+    }
+
     private int getRelativeAngle(int angle1, double angle2){
         return Math.floorMod(((int)angle2 - angle1), 360);
     }
