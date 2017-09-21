@@ -218,18 +218,13 @@ public class Boat implements BoatInterface{
     }
 
     @Override
-    public void setLastAgarSizeDecreaseTime(long time) {
-
-    }
+    public void setLastAgarSizeDecreaseTime(long time) {}
 
     @Override
-    public void resetAgarSize() {
-
-    }
+    public void resetAgarSize() {}
 
     @Override
-    public void setBaseSpeed() {
-    }
+    public void setBaseSpeed() {}
 
     private int getRelativeAngle(int angle1, double angle2){
         return Math.floorMod(((int)angle2 - angle1), 360);
