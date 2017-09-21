@@ -2,10 +2,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import seng302.BoatGenerator;
-import seng302.Modes.AgarRace;
-import seng302.Modes.Race;
 import seng302.RaceObjects.AgarBoat;
-import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.BoatInterface;
 
 /**
@@ -13,7 +10,6 @@ import seng302.RaceObjects.BoatInterface;
  */
 public class BoatBaseSpeedTest {
     private BoatGenerator boatGenerator = new BoatGenerator();
-    private Race race = new AgarRace();
     private BoatInterface b;
 
 
@@ -28,7 +24,6 @@ public class BoatBaseSpeedTest {
         double size = (double) b.getAgarSize()/800;
         int baseSpeed = (int) (Math.log(size) * -10000);
         b.setBaseSpeed();
-        System.out.println(baseSpeed+ ", "+ b.getBaseSpeed());
         Assert.assertTrue(baseSpeed == b.getBaseSpeed());
     }
 
@@ -42,7 +37,6 @@ public class BoatBaseSpeedTest {
         b.setBaseSpeed();
         int speedAfter = b.getBaseSpeed();
 
-        System.out.println(speedBefore + ", "+ speedAfter);
         Assert.assertTrue(speedAfter > speedBefore);
     }
 
