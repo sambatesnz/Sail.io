@@ -58,3 +58,7 @@
     -fx-background-insets: 0;
     -fx-background-radius: 1;
 }
+
+#startAnchor {
+    -fx-background-image: url("../BackgroundImages/render.png");
+}
