@@ -30,11 +30,20 @@ public class AgarRace extends Race {
                 );
 
                 if (!collision.isReactedToCollision()) {
-                    collision.getWinner().setAgarSize(collision.getWinner().getAgarSize() + collision.getLoser().getAgarSize());
-                    System.out.println(collision.getWinner().getAgarSize() + collision.getLoser().getAgarSize());
+                    BoatInterface winner = collision.getWinner();
+                    BoatInterface loser = collision.getOther(winner);
+
+                    System.out.println("Collision Occurred!");
+                    System.out.println("Winner: " + winner + " Loser: " + loser);
+                    System.out.println("Winners old size: " + winner.getAgarSize());
+
+                    winner.setAgarSize(winner.getAgarSize() + loser.getAgarSize());
                     collision.setReactedToCollision(true);
+                    killBoat(loser);
+
+                    System.out.println("Winners new size: " + winner.getAgarSize());
+
                 }
-                killBoat(collision.getLoser());
 
                 raceManager.addMessage(boatCollisionEventMessage.createMessage());
             }
