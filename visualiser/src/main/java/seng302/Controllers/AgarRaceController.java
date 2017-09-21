@@ -349,67 +349,134 @@ public class AgarRaceController implements IRaceController {
 
     private void updateBoatPositions() {
         final int SAIL_OFFSET = 7;
+
         for (int i = 0; i < boats.size(); i++) {
-            Node boat = boats.get(i).getStack().getChildren().get(BoatSprite.BOAT);
-            if(race.getBoats().get(i).isKnowsBoatLocation()) {
-                double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
-                String speed = "";
-                String name = "";
-                if (showSpeed) {
-                    speed = String.valueOf(race.getBoats().get(i).getSpeedInKnots()) + " knots";
-                }
-                if (showName) {
-                    name = race.getBoats().get(i).getShortName();
-                }
-                //Position of boat, wake and annotations.
-                boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
-                boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
-//                System.out.println("agarsize: " + boats.get(i).getBoat().getAgarSize());
-                updateNodeScale(boat, boats.get(i).getBoat().getAgarSize());
-                boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
-
-                // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
-                    updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), boats.get(i).getBoat().getAgarSize());
-                }
-
-                //Boats wake
-                boats.get(i).getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
-                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.WAKE), boats.get(i).getBoat().getAgarSize());
-                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setRotate(race.getBoats().get(i).getHeading());
-                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * getScale(boats.get(i).getBoat().getAgarSize()))
-                        * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
-                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
-                        * getScale(boats.get(i).getBoat().getAgarSize())) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
-
-                //Boat annotations (name and speed)
-                boats.get(i).getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
-                boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateX(10);
-                boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateY(0);
-
-                //Sails
-                Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
-                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.SAIL), boats.get(i).getBoat().getAgarSize());
-                double headingDif = (360 + boats.get(i).getBoat().getHeading() - race.getWindHeading()) % 360;
-                if (race.getBoats().get(i).isSailsOut()){
-                    boats.get(i).sailOut();
-                    sail.getTransforms().clear();
-                    if (headingDif < 180 ) {
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 30, 0, 0));
+            BoatSprite currentBoat = boats.get(i);
+            if (currentBoat.getBoat().isEliminated()) {
+                currentBoat.getStack().setVisible(false);
+            } else {
+                Node boat = currentBoat.getStack().getChildren().get(BoatSprite.BOAT);
+                if (race.getBoats().get(i).isKnowsBoatLocation()) {
+                    double boatSpeed = race.getBoats().get(i).getSpeed() / 1000;
+                    String speed = "";
+                    String name = "";
+                    if (showSpeed) {
+                        speed = String.valueOf(race.getBoats().get(i).getSpeedInKnots()) + " knots";
                     }
-                    else {
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 30, 0, 0));
+                    if (showName) {
+                        name = race.getBoats().get(i).getShortName();
                     }
-                } else {
-                    boats.get(i).sailIn();
-                    sail.getTransforms().clear();
-                    sail.getTransforms().add(new Rotate(race.getWindHeading(), 0,0));
+                    //Position of boat, wake and annotations.
+                    currentBoat.getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
+                    currentBoat.getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
+//                System.out.println("agarsize: " + currentBoat.getBoat().getAgarSize());
+                    updateNodeScale(boat, currentBoat.getBoat().getAgarSize());
+                    currentBoat.getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
+                    // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
+                    if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
+                        updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), currentBoat.getBoat().getAgarSize());
+                    }
+
+                    //Boats wake
+                    currentBoat.getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
+                    updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.WAKE), currentBoat.getBoat().getAgarSize());
+                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setRotate(race.getBoats().get(i).getHeading());
+                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * getScale(currentBoat.getBoat().getAgarSize()))
+                            * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
+                            * getScale(currentBoat.getBoat().getAgarSize())) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
+
+                    //Boat annotations (name and speed)
+                    currentBoat.getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
+                    currentBoat.getStack().getChildren().get(BoatSprite.TEXT).setTranslateX(10);
+                    currentBoat.getStack().getChildren().get(BoatSprite.TEXT).setTranslateY(0);
+
+                    //Sails
+                    Node sail = currentBoat.getStack().getChildren().get(BoatSprite.SAIL);
+                    updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.SAIL), currentBoat.getBoat().getAgarSize());
+                    double headingDif = (360 + currentBoat.getBoat().getHeading() - race.getWindHeading()) % 360;
+                    if (race.getBoats().get(i).isSailsOut()) {
+                        currentBoat.sailOut();
+                        sail.getTransforms().clear();
+                        if (headingDif < 180) {
+                            sail.getTransforms().add(new Rotate(race.getWindHeading() + 30, 0, 0));
+                        } else {
+                            sail.getTransforms().add(new Rotate(race.getWindHeading() - 30, 0, 0));
+                        }
+                    } else {
+                        currentBoat.sailIn();
+                        sail.getTransforms().clear();
+                        sail.getTransforms().add(new Rotate(race.getWindHeading(), 0, 0));
+
+                    }
+                    double sailLength = 720d / 45d;
+                    sail.setLayoutY(getScale(currentBoat.getBoat().getAgarSize()) * (sailLength) / 2 - SAIL_OFFSET);
                 }
-                double sailLength = 720d / 45d;
-                sail.setLayoutY(getScale(boats.get(i).getBoat().getAgarSize()) * (sailLength)/2 - SAIL_OFFSET);
             }
         }
+
+//        for (int i = 0; i < boats.size(); i++) {
+//            Node boat = boats.get(i).getStack().getChildren().get(BoatSprite.BOAT);
+//            if(race.getBoats().get(i).isKnowsBoatLocation()) {
+//                double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
+//                String speed = "";
+//                String name = "";
+//                if (showSpeed) {
+//                    speed = String.valueOf(race.getBoats().get(i).getSpeedInKnots()) + " knots";
+//                }
+//                if (showName) {
+//                    name = race.getBoats().get(i).getShortName();
+//                }
+//                //Position of boat, wake and annotations.
+//                boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
+//                boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
+////                System.out.println("agarsize: " + boats.get(i).getBoat().getAgarSize());
+//                updateNodeScale(boat, boats.get(i).getBoat().getAgarSize());
+//                boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
+//
+//                // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
+//                if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
+//                    updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), boats.get(i).getBoat().getAgarSize());
+//                }
+//
+//                //Boats wake
+//                boats.get(i).getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
+//                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.WAKE), boats.get(i).getBoat().getAgarSize());
+//                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setRotate(race.getBoats().get(i).getHeading());
+//                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * getScale(boats.get(i).getBoat().getAgarSize()))
+//                        * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
+//                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
+//                        * getScale(boats.get(i).getBoat().getAgarSize())) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
+//
+//                //Boat annotations (name and speed)
+//                boats.get(i).getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
+//                boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateX(10);
+//                boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateY(0);
+//
+//                //Sails
+//                Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
+//                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.SAIL), boats.get(i).getBoat().getAgarSize());
+//                double headingDif = (360 + boats.get(i).getBoat().getHeading() - race.getWindHeading()) % 360;
+//                if (race.getBoats().get(i).isSailsOut()){
+//                    boats.get(i).sailOut();
+//                    sail.getTransforms().clear();
+//                    if (headingDif < 180 ) {
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 30, 0, 0));
+//                    }
+//                    else {
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 30, 0, 0));
+//                    }
+//                } else {
+//                    boats.get(i).sailIn();
+//                    sail.getTransforms().clear();
+//                    sail.getTransforms().add(new Rotate(race.getWindHeading(), 0,0));
+//
+//                }
+//                double sailLength = 720d / 45d;
+//                sail.setLayoutY(getScale(boats.get(i).getBoat().getAgarSize()) * (sailLength)/2 - SAIL_OFFSET);
+//            }
+//        }
     }
 
     private void initialiseBoatMetaData() {
