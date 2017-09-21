@@ -1080,14 +1080,24 @@ public class AgarRaceController implements IRaceController {
      */
     private void updateNodeScale(Node nodeToScale, int areaPercent) {
         double extraArea = ((double) areaPercent) / 100 - 1;
-        double extraRadius = sqrt(abs(extraArea/Math.PI)) * (extraArea / abs(extraArea));
+        double extraRadius = 0;
+        if(extraArea < 0) {
+            extraRadius = -sqrt(abs(extraArea / Math.PI));
+        }else if (extraArea > 0) {
+            extraRadius = sqrt(abs(extraArea / Math.PI));
+        }
         nodeToScale.setScaleX((1/(1+Coordinate.getZoom()) ) * (extraRadius/2 + 1));
         nodeToScale.setScaleY((1/(1+Coordinate.getZoom()) )* (extraRadius/2 + 1));
     }
 
     private double getScale(int areaPercent){
         double extraArea = ((double) areaPercent) / 100 - 1;
-        double extraRadius = sqrt(extraArea/Math.PI);
+        double extraRadius = 0;
+        if(extraArea < 0) {
+            extraRadius = -sqrt(abs(extraArea / Math.PI));
+        }else if (extraArea > 0) {
+            extraRadius = sqrt(abs(extraArea / Math.PI));
+        }
         return (1/(1+Coordinate.getZoom()) ) * (extraRadius/2 + 1);
     }
 

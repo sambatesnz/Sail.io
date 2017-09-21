@@ -10,7 +10,7 @@ public class AgarBoat extends BoatDecorator {
     private int agarSize;
     private long lastAgarSizeDecreaseTime;
 
-    private static final int BASE_AGAR_SIZE = 200;
+    private static final int BASE_AGAR_SIZE = 100;
 
     public AgarBoat(BoatInterface boat) {
         super(boat);
