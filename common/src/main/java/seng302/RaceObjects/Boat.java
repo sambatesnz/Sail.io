@@ -77,7 +77,7 @@ public class Boat implements BoatInterface{
         this.headingChanged = false;
         this.finished = false;
         this.connected = true;
-        this.size = 18;
+        this.size = 10;
     }
 
     /**
