@@ -1,20 +1,20 @@
 package seng302.Controllers;
 
+import com.jfoenix.controls.*;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -26,6 +26,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import seng302.RaceObjects.*;
 import seng302.Rounding;
 import seng302.Visualiser.Arrow;
@@ -54,22 +55,21 @@ public class RaceController implements IRaceController {
     @FXML private Label localTimeZone;
     @FXML private Label localTime;
     @FXML private ListView<String> finishedListView;
-    @FXML private TableView<GenericBoat> positionTable;
-    @FXML private TableColumn<GenericBoat, String> positionCol;
-    @FXML private TableColumn<GenericBoat, String> nameCol;
-    @FXML private TableColumn<GenericBoat, String> speedCol;
-    @FXML private TableColumn<GenericBoat, String> legCol;
+    @FXML private JFXTreeTableView<GenericBoat> positionTable;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> positionCol;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> nameCol;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> speedCol;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> legCol;
     @FXML private Label fpsLabel;
-    @FXML private Button annotationBtn;
-    @FXML private Button fpsBtn;
+    @FXML private JFXButton annotationBtn;
+    @FXML private JFXButton fpsBtn;
     @FXML private ListView<String> startersList;
-    @FXML private LineChart<Number, Number> sparklinesChart;
-    @FXML private SplitPane sidePanelSplit;
+    @FXML private AnchorPane sidePanelSplit;
     @FXML private Pane finishingPane;
     @FXML private Group finishingGroup;
-    @FXML private CheckBox BoatNameCheckBox;
-    @FXML private CheckBox BoatSpeedCheckBox;
-    @FXML private Button toggleFinishersBtn;
+    @FXML private JFXCheckBox BoatNameCheckBox;
+    @FXML private JFXCheckBox BoatSpeedCheckBox;
+    @FXML private JFXButton toggleFinishersBtn;
 
     private Race race;
 
@@ -98,9 +98,7 @@ public class RaceController implements IRaceController {
     private int raceHours = 0;
     private int raceMinutes = 0;
     private int raceSeconds = 0;
-    private long lastTime = 0;
-    private long timerUpdate = 1000000000;
-    private int frameCount = 0;
+
     private int viewUpdateCount = 0;
     private double windowWidth = 0;
     private double windowHeight = 0;
@@ -109,17 +107,6 @@ public class RaceController implements IRaceController {
     private AnimationTimer raceListener;
     private boolean isFinishersHidden = true;
 
-    // Sparkline variables
-    @FXML    private NumberAxis xAxis;
-    @FXML    private NumberAxis yAxis;
-    private ObservableList<XYChart.Series<Number, Number>> seriesList;
-    private Integer secondCounter = 1;
-    private Integer sparkCounter = 0;
-    private List<GenericBoat> sortedBoats;
-    private List<GenericBoat> otherSortedBoats;
-    private int EARTH_RADIUS = 6371;
-    private int METERS_CONVERSION = 1000;
-    private final int SPARKLINEHEIGHT = 239;
     private final double BOUNDARY_OPACITY = 0.5;
     private FPSCounter fpsCounter;
     private int roundingArrowRotationClockwise = 0;
@@ -181,7 +168,7 @@ public class RaceController implements IRaceController {
     private void initialiseSpectatorZoom() {
         positionTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                spectatorBoat = race.getBoatsMap().get(newValue.getSourceId());
+                spectatorBoat = race.getBoatsMap().get(newValue.getValue().getSourceId());
                 if (followingBoat) {
                     zoomLevel = Coordinate.getZoom();
                     resetZoom();
@@ -214,25 +201,34 @@ public class RaceController implements IRaceController {
         });
     }
 
-    private void initialiseMarkRoundingSprites() {
-
-    }
-
     private void initialisePositionsTable() {
-//        positionCol.setCellValueFactory(p -> {
-//            String pos = String.valueOf(p.getValue().getPosition());
-//            return new ReadOnlyObjectWrapper<>(pos);
-//        });
-//        positionCol.setVisible(false);
+        legCol = new JFXTreeTableColumn<>("Leg");
+        nameCol = new JFXTreeTableColumn<>("Name");
+        speedCol = new JFXTreeTableColumn<>("Speed");
 
+        legCol.setCellValueFactory(p -> {
+            String leg = String.valueOf(p.getValue().getValue().getCurrentLegIndex());
+            return new ReadOnlyObjectWrapper<>(leg);
+        });
 
-        legCol.setCellValueFactory(new PropertyValueFactory<>("currentLegIndex"));
-        legCol.setSortType(TableColumn.SortType.ASCENDING);
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        legCol.setSortType(TreeTableColumn.SortType.ASCENDING);
+
+        nameCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<GenericBoat, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<GenericBoat, String> param) {
+                return param.getValue().getValue().getBoatName();
+            }
+        });
+
         speedCol.setCellValueFactory(p -> {
-            String speed = String.valueOf(p.getValue().getSpeedInKnots());
+            String speed = String.valueOf(p.getValue().getValue().getSpeedInKnots());
             return new ReadOnlyObjectWrapper<>(speed);
         });
+
+        TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<GenericBoat>(race.boatsObs, RecursiveTreeObject::getChildren);
+        positionTable.setRoot(tableRoot);
+        positionTable.getColumns().setAll(legCol, nameCol, speedCol);
+        positionTable.setShowRoot(false);
     }
 
     private void initialiseRaceListener() {
@@ -267,11 +263,10 @@ public class RaceController implements IRaceController {
                 updateBoundary();
 
                 viewUpdateCount++;
-                    if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0) {
-                        positionTable.refresh();
-                        positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
-                        positionTable.setPrefHeight(Coordinate.getWindowHeightY());
-                    }
+                if (race.isRaceReady() && fpsCounter.getFrameCount() % 30 == 0) {
+                    positionTable.refresh();
+                    positionTable.setPrefHeight(Coordinate.getWindowHeightY());
+                }
                 if (race.getCollisionCount() > 0) {
                     race.reduceCollisionCount();
                     // need to find a way to highlight only the users specific boat.
@@ -864,56 +859,6 @@ public class RaceController implements IRaceController {
     }
 
     /**
-     * Creates the chart that gets displayed in the sidebar. Created at first with no data.
-     * Creates a timer that calls the update sparklines every second, allowing the graph to continue to update
-     */
-    private void createChart() {
-
-        sparklinesChart.setLegendVisible(false);
-
-        // Hide the Y axis
-        sparklinesChart.getYAxis().setTickLabelsVisible(false);
-        sparklinesChart.getYAxis().setVisible(false);
-
-        // Hide the X axis
-        sparklinesChart.getXAxis().setTickLabelsVisible(false);
-        sparklinesChart.getXAxis().setVisible(false);
-
-        sparklinesChart.setCreateSymbols(false);
-
-        List<XYChart.Series<Number, Number>> series = new ArrayList<>();
-        for (GenericBoat boat :race.getBoats()) {
-            XYChart.Series<Number, Number> newSeries = new XYChart.Series<>();
-            newSeries.getData().add(new XYChart.Data<>(0,0));
-            newSeries.setName(boat.getName().getValue());
-            series.add(newSeries);
-        }
-
-        seriesList = FXCollections.observableList(series);
-        sparklinesChart.setData(seriesList);
-    }
-
-    /**
-     * Called by a timer, updates the data displayed in the sparkline chart in the sidebar.
-     */
-    private void updateSparkLineChart() {
-        checkPositions();
-        // Check the data is up to date.
-        // Retrieve the boat position data.'
-        for (int i = 0; i < race.getBoats().size(); i++) {
-            // update the chart
-            Number reversedOrder = race.getBoats().size() - race.getBoats().get(i).getPosition() + 1;
-            seriesList.get(i).getData().add(new XYChart.Data<>(secondCounter, reversedOrder));
-        }
-
-        otherSortedBoats = sortedBoats;
-        sortedBoats = race.getBoats();
-        sparklinesChart.setData(seriesList);
-        positionTable.setItems(FXCollections.observableArrayList(race.getBoats()));
-        secondCounter++;
-    }
-
-    /**
      * Generates the boundary to be displayed around the race course
      * @param race the race being run
      * @return a polygon object of the race boundary
@@ -1078,6 +1023,7 @@ public class RaceController implements IRaceController {
         this.ipAddr = ip;
         this.port = port;
     }
+
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
         resetZoom();
