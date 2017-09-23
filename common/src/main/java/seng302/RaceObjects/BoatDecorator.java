@@ -327,4 +327,9 @@ public class BoatDecorator implements BoatInterface{
         return boat.getBaseSpeed();
     }
 
+    @Override
+    public void setSize(double size) {
+        boat.setSize(size);
+    }
+
 }

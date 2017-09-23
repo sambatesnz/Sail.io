@@ -56,19 +56,19 @@ public class AgarRace extends Race {
                     BoatInterface winner = collision.getWinner();
                     BoatInterface loser = collision.getOther(winner);
 
-                    if (winner == null)
+                    if (winner != null) {
 
-                    System.out.println("Collision Occurred!");
-                    System.out.println("Winner: " + winner + " Loser: " + loser);
-                    System.out.println("Winners old size: " + winner.getAgarSize());
+                        System.out.println("Collision Occurred!");
+                        System.out.println("Winner: " + winner + " Loser: " + loser);
+                        System.out.println("Winners old size: " + winner.getAgarSize());
 
-                    winner.setAgarSize(winner.getAgarSize() + loser.getAgarSize());
-                    winner.setBaseSpeed();
-                    collision.setReactedToCollision(true);
-                    killBoat(loser);
+                        winner.setAgarSize(winner.getAgarSize() + loser.getAgarSize());
+                        winner.setBaseSpeed();
+                        collision.setReactedToCollision(true);
+                        killBoat(loser);
 
-                    System.out.println("Winners new size: " + winner.getAgarSize());
-
+                        System.out.println("Winners new size: " + winner.getAgarSize());
+                    }
                 }
 
                 raceManager.addMessage(boatCollisionEventMessage.createMessage());

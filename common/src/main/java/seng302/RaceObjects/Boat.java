@@ -59,6 +59,7 @@ public class Boat implements BoatInterface{
     private boolean connected;
     private boolean added;
 
+
     /**
      * Boat constructor
      * @param name the name of the boat
@@ -77,7 +78,7 @@ public class Boat implements BoatInterface{
         this.headingChanged = false;
         this.finished = false;
         this.connected = true;
-        this.size = 20;
+        this.size = 32;
     }
 
     /**
@@ -230,6 +231,8 @@ public class Boat implements BoatInterface{
 
     @Override
     public void setBaseSpeed() {}
+
+
 
     private int getRelativeAngle(int angle1, double angle2){
         return Math.floorMod(((int)angle2 - angle1), 360);
