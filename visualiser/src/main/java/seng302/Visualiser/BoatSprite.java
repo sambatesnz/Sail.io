@@ -88,16 +88,13 @@ public class BoatSprite {
             controlCircle.setStroke(Color.GREEN);
             controlCircle.setFill(Color.TRANSPARENT);
         } else {
-            if (clientSourceId == boatObject.getSourceId()) {
-                controlCircle = new Circle(10);
-                controlCircle.setCenterX(0);
-                controlCircle.setCenterY(0);
-                controlCircle.setStroke(Color.RED);
-                controlCircle.setFill(Color.TRANSPARENT);
-            }
-        stack.getChildren().add(controlCircle);
-
+            controlCircle = new Circle(10);
+            controlCircle.setCenterX(0);
+            controlCircle.setCenterY(0);
+            controlCircle.setStroke(Color.RED);
+            controlCircle.setFill(Color.TRANSPARENT);
         }
+        stack.getChildren().add(controlCircle);
     }
 
     private void initialiseSail(){

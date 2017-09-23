@@ -56,6 +56,8 @@ public class AgarRace extends Race {
                     BoatInterface winner = collision.getWinner();
                     BoatInterface loser = collision.getOther(winner);
 
+                    if (winner == null)
+
                     System.out.println("Collision Occurred!");
                     System.out.println("Winner: " + winner + " Loser: " + loser);
                     System.out.println("Winners old size: " + winner.getAgarSize());
