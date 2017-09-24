@@ -241,18 +241,11 @@ public class RaceController implements IRaceController {
     }
 
     private void scaleWindArrow() {
-        System.out.println(race.getWindSpeed());
-        double scale = race.getWindSpeed()/5000;
+        double scale = Math.pow(race.getWindSpeed(), 0.33)/8;
         windArrow.setScaleX(scale);
         windArrow.setScaleY(scale);
         windArrow.setTranslateX(windArrowSize*scale/2);
         windArrow.setTranslateY(windArrowSize*scale/2);
-    }
-
-    public double random( double min, double max )
-    {
-        double diff = max - min;
-        return min + Math.random( ) * diff;
     }
 
     private void initialiseRaceListener() {
