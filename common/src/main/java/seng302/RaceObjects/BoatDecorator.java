@@ -145,6 +145,11 @@ public class BoatDecorator extends GenericBoat {
     }
 
     @Override
+    public String getFinishTimeString(){
+        return boat.getFinishTimeString();
+    }
+
+    @Override
     public void setPlacement(int size) {
         boat.setPlacement(size);
     }

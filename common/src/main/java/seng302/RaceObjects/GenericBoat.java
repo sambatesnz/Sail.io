@@ -61,6 +61,8 @@ public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
 
     abstract void setFinishTime(long l);
 
+    abstract String getFinishTimeString();
+
     abstract void setPlacement(int size);
 
     public abstract double getSpeedInKnots();
