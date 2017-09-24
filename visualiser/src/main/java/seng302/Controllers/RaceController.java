@@ -496,26 +496,23 @@ public class RaceController implements IRaceController {
     }
 
     private void updateNextMarkArrow(CompoundMark cm) {
-        double arrowTranslate = 15/(1+Coordinate.getZoom());
         int playerBoat = race.getClientSourceId();
         if (playerBoat == 0) {
             nextMarkArrow.setVisible(false);
         } else {
             double playerX = Coordinate.getRelativeX(race.getBoatsMap().get(playerBoat).getX());
             double playerY = Coordinate.getRelativeY(race.getBoatsMap().get(playerBoat).getY());
-            double arrowX = playerX + arrowTranslate;
-            double arrowY = playerY + arrowTranslate;
             double markX = Coordinate.getRelativeX(cm.getX());
             double markY = Coordinate.getRelativeY(cm.getY());
             boolean markIsFar = cm.getMarks().stream().allMatch(mark -> {
 
                 double markX1 = Coordinate.getRelativeX(mark.getX());
                 double markY1 = Coordinate.getRelativeY(mark.getY());
-                double distX = abs(markX1 - arrowX);
-                double distY = abs(markY1 - arrowY);
+                double distX = abs(markX1 - playerX);
+                double distY = abs(markY1 - playerY);
 
-                double offsetX = 100;
-                double offsetY = 100;
+                double offsetX = 120;
+                double offsetY = 120;
                 if (markX1 > playerX) {
                     offsetX *= -1;
                 }
@@ -531,9 +528,12 @@ public class RaceController implements IRaceController {
 
 
             if (followingBoat && markIsFar) {
-                double angleToNextMark = toDegrees(atan2(markY - arrowY, markX - arrowX));
-                nextMarkArrow.setTranslateX(arrowX);
-                nextMarkArrow.setTranslateY(arrowY);
+                double angleToNextMark = toDegrees(atan2(markY - playerY, markX - playerX));
+
+                double arrowTranslate = 30/(1+Coordinate.getZoom());
+                nextMarkArrow.setTranslateX(playerX + arrowTranslate*cos(toRadians(angleToNextMark)));
+                nextMarkArrow.setTranslateY(playerY + arrowTranslate*sin(toRadians(angleToNextMark)));
+
                 nextMarkArrow.setRotate(angleToNextMark + 90);
                 nextMarkArrow.setVisible(true);
                 updateNodeScale(nextMarkArrow);
