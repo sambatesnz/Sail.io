@@ -84,7 +84,7 @@ public class RaceController implements IRaceController {
     private List<List<Point2D>> absolutePaths = new ArrayList<>();
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
-    private Arrow nextMarkArrow;
+    private ImageView nextMarkArrow;
     private ImageView windArrow1;
     private Group roundingArrow1 = new Group();
     private Group roundingArrow2 = new Group();
@@ -126,6 +126,7 @@ public class RaceController implements IRaceController {
     private int METERS_CONVERSION = 1000;
     private final int SPARKLINEHEIGHT = 239;
     private final double BOUNDARY_OPACITY = 0.5;
+    private final int NEXT_MARK_SIZE = 20;
     private FPSCounter fpsCounter;
     private int roundingArrowRotationClockwise = 0;
     private int roundingArrowRotationAntiClockwise = 0;
@@ -150,7 +151,7 @@ public class RaceController implements IRaceController {
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
-        windArrow1 = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("Red_Arrow_Up.png")));
+        windArrow1 = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("windArrow.png")));
         windArrow1.setFitHeight(100);
         windArrow1.setFitWidth(100);
         windArrow1.setPreserveRatio(true);
@@ -195,7 +196,7 @@ public class RaceController implements IRaceController {
                     Coordinate.setTrackingBoat(false);
                     followingBoat = !followingBoat;
                 }
-                Platform.runLater( ()-> {  positionTable.getSelectionModel().clearSelection();  });
+                Platform.runLater( ()-> positionTable.getSelectionModel().clearSelection());
             }
         });
     }
@@ -530,9 +531,9 @@ public class RaceController implements IRaceController {
             if (followingBoat && markIsFar) {
                 double angleToNextMark = toDegrees(atan2(markY - playerY, markX - playerX));
 
-                double arrowTranslate = 30/(1+Coordinate.getZoom());
-                nextMarkArrow.setTranslateX(playerX + arrowTranslate*cos(toRadians(angleToNextMark)));
-                nextMarkArrow.setTranslateY(playerY + arrowTranslate*sin(toRadians(angleToNextMark)));
+                double arrowTranslateFactor = 20/(1+Coordinate.getZoom());
+                nextMarkArrow.setTranslateX(playerX + arrowTranslateFactor*cos(toRadians(angleToNextMark)) - NEXT_MARK_SIZE/2);
+                nextMarkArrow.setTranslateY(playerY + arrowTranslateFactor*sin(toRadians(angleToNextMark)) - NEXT_MARK_SIZE/2);
 
                 nextMarkArrow.setRotate(angleToNextMark + 90);
                 nextMarkArrow.setVisible(true);
@@ -695,8 +696,9 @@ public class RaceController implements IRaceController {
 
     private void initialiseNextMarkArrow() {
         if (race.getClientSourceId() != 0) {
-            nextMarkArrow = new Arrow();
-            nextMarkArrow.setFill(Color.GREEN);
+            nextMarkArrow = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("nextMark.png")));
+            nextMarkArrow.setFitHeight(NEXT_MARK_SIZE);
+            nextMarkArrow.setFitWidth(NEXT_MARK_SIZE);
             group.getChildren().add(nextMarkArrow);
         }
     }
