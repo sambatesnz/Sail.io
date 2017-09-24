@@ -48,7 +48,7 @@ public class FinishingController {
         finishTimeColumn = new JFXTreeTableColumn<>("Finish Time");
 
         positionColumn.setCellValueFactory(p -> {
-            String position = String.valueOf(p.getValue().getValue().getPosition());
+            String position = String.valueOf(p.getValue().getValue().getPlacement());
             return new ReadOnlyObjectWrapper<>(position);
         });
 

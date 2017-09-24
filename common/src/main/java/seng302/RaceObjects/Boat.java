@@ -76,7 +76,6 @@ public class Boat extends GenericBoat {
         this.finished = false;
         this.connected = true;
         this.size = 18;
-        this.position = 0;
     }
 
     /**

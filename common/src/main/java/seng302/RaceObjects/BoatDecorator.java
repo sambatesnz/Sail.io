@@ -155,6 +155,11 @@ public class BoatDecorator extends GenericBoat {
     }
 
     @Override
+    public int getPlacement() {
+        return boat.getPlacement();
+    }
+
+    @Override
     public double getSpeedInKnots() {
         return boat.getSpeedInKnots();
     }
