@@ -12,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -31,16 +30,13 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import seng302.RaceObjects.*;
 import seng302.Rounding;
-import seng302.Visualiser.Arrow;
 import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.*;
@@ -85,7 +81,7 @@ public class RaceController implements IRaceController {
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
     private ImageView nextMarkArrow;
-    private ImageView windArrow1;
+    private ImageView windArrow;
     private Group roundingArrow1 = new Group();
     private Group roundingArrow2 = new Group();
     private Group roundingArrowMirrored1 = new Group();
@@ -127,6 +123,7 @@ public class RaceController implements IRaceController {
     private final int SPARKLINEHEIGHT = 239;
     private final double BOUNDARY_OPACITY = 0.5;
     private final int NEXT_MARK_SIZE = 20;
+    private double windArrowSize = 40;
     private FPSCounter fpsCounter;
     private int roundingArrowRotationClockwise = 0;
     private int roundingArrowRotationAntiClockwise = 0;
@@ -151,11 +148,11 @@ public class RaceController implements IRaceController {
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
-        windArrow1 = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("windArrow.png")));
-        windArrow1.setFitHeight(100);
-        windArrow1.setFitWidth(100);
-        windArrow1.setPreserveRatio(true);
-        group.getChildren().add(windArrow1);
+        windArrow = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("windArrow.png")));
+        windArrow.setFitHeight(windArrowSize);
+        windArrow.setFitWidth(windArrowSize);
+        windArrow.setPreserveRatio(true);
+        group.getChildren().add(windArrow);
 
         clock.setFont(new Font("Arial", 30));
         clock.setText(" 00:00:00");
@@ -243,6 +240,21 @@ public class RaceController implements IRaceController {
         });
     }
 
+    private void scaleWindArrow() {
+        System.out.println(race.getWindSpeed());
+        double scale = race.getWindSpeed()/5000;
+        windArrow.setScaleX(scale);
+        windArrow.setScaleY(scale);
+        windArrow.setTranslateX(windArrowSize*scale/2);
+        windArrow.setTranslateY(windArrowSize*scale/2);
+    }
+
+    public double random( double min, double max )
+    {
+        double diff = max - min;
+        return min + Math.random( ) * diff;
+    }
+
     private void initialiseRaceListener() {
         raceListener = new AnimationTimer() {
 
@@ -251,6 +263,7 @@ public class RaceController implements IRaceController {
                 rotateWindArrow();
                 setUTC();
                 updateClock();
+                scaleWindArrow();
                 fpsCounter.update(currentNanoTime);
                 setViewParameters();
 
@@ -832,7 +845,7 @@ public class RaceController implements IRaceController {
      * Rotates the wind arrow based on the heading
      */
     private void rotateWindArrow() {
-        windArrow1.setRotate(race.getWindHeading() + 180);
+        windArrow.setRotate(race.getWindHeading() + 180);
     }
 
     /**
