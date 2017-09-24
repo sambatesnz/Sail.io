@@ -3,12 +3,11 @@ package seng302.Controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
@@ -23,16 +22,11 @@ import java.io.IOException;
  * Created by sba136 on 28/08/17.
  */
 public class FinishingController {
-    @FXML
-    private JFXTreeTableView<GenericBoat> finishersTable;
-    @FXML
-    private JFXTreeTableColumn<GenericBoat, String> boatColumn;
-    @FXML
-    private JFXTreeTableColumn<GenericBoat, String> positionColumn;
-    @FXML
-    private JFXTreeTableColumn<GenericBoat, String> finishTimeColumn;
-    @FXML
-    private JFXButton exitToMenuBtn;
+    @FXML private JFXTreeTableView<GenericBoat> finishersTable;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> boatColumn;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> positionColumn;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> finishTimeColumn;
+    @FXML private JFXButton exitToMenuBtn;
 
     private Stage primaryStage;
 
@@ -49,6 +43,10 @@ public class FinishingController {
     }
 
     public void initialiseTable(){
+        positionColumn = new JFXTreeTableColumn<>("Position");
+        boatColumn = new JFXTreeTableColumn<>("Boat Name");
+        finishTimeColumn = new JFXTreeTableColumn<>("Finish Time");
+
         positionColumn.setCellValueFactory(p -> {
             String position = String.valueOf(p.getValue().getValue().getPosition());
             return new ReadOnlyObjectWrapper<>(position);
@@ -62,11 +60,15 @@ public class FinishingController {
         });
 
         finishTimeColumn.setCellValueFactory(p -> {
-            String finishTime = String.valueOf(p.getValue().getValue().getTimeToFinish());
+            String finishTime = String.valueOf(p.getValue().getValue().getFinishTimeString());
             return new ReadOnlyObjectWrapper<>(finishTime);
         });
 
-        finishersTable.setItems(race.getBoatsForScoreBoard());
+        TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<GenericBoat>(race.getBoatsForScoreBoard(), RecursiveTreeObject::getChildren);
+        finishersTable.setRoot(tableRoot);
+        finishersTable.getColumns().setAll(positionColumn, boatColumn, finishTimeColumn);
+        finishersTable.setShowRoot(false);
+
     }
 
     @FXML
