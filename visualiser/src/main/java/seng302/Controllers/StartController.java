@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import seng302.RaceMode;
@@ -25,6 +26,7 @@ public class StartController {
     @FXML private JFXButton connectBtn;
     @FXML private JFXTextField ipField;
     @FXML private JFXTextField portField;
+    @FXML private ImageView logoImageView;
     @FXML private Label statusLbl;
     @FXML private Text fullMastText;
     @FXML private JFXToggleButton RaceModeButton;
