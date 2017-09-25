@@ -45,7 +45,7 @@ public class AgarRace extends Race {
 
     @Override
     public void checkCollisions(IServerData raceManager){
-        for (BoatInterface boat : getBoats()) {
+        for (GenericBoat boat : getBoats()) {
             BoatCollision collision = collisionDetector.checkBoatCollision(boat, boats, collisionMap);
             if (collision != null) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
@@ -53,8 +53,8 @@ public class AgarRace extends Race {
                 );
 
                 if (!collision.isReactedToCollision()) {
-                    BoatInterface winner = collision.getWinner();
-                    BoatInterface loser = collision.getOther(winner);
+                    GenericBoat winner = collision.getWinner();
+                    GenericBoat loser = collision.getOther(winner);
 
                     System.out.println("Collision Occurred!");
                     System.out.println("Winner: " + winner + " Loser: " + loser);
@@ -83,16 +83,16 @@ public class AgarRace extends Race {
         }
     }
 
-    private void killBoat(BoatInterface loser) {
+    private void killBoat(GenericBoat loser) {
         loser.loseLife();
         loser.setSailsOut(false);
-        List<BoatInterface> boats = new ArrayList<>();
+        List<GenericBoat> boats = new ArrayList<>();
         boats.add(loser);
         LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
         loser.setBaseSpeed();
     }
 
-    private void reduceBoatSize(BoatInterface boat) {
+    private void reduceBoatSize(GenericBoat boat) {
         if (currentTimeMillis() - boat.getLastAgarSizeDecreaseTime() > SIZE_DECREASE_TICK_MS) {
             boat.setAgarSize(boat.getAgarSize() - AGAR_SIZE_DECREMENT);
             boat.setBaseSpeed();
@@ -104,7 +104,7 @@ public class AgarRace extends Race {
     }
 
     @Override
-    public BoatInterface addBoat(int clientSocketSourceID) throws Exception {
+    public GenericBoat addBoat(int clientSocketSourceID) throws Exception {
         if (boats.size() < MAX_NUMBER_OF_BOATS){
             BoatDecorator boat = new AgarBoat(boatGenerator.generateBoat());
             clientIDs.put(clientSocketSourceID, boat.getSourceId());

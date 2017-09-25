@@ -1,7 +1,6 @@
 package seng302;
 
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,8 +12,8 @@ import java.util.Set;
  */
 public class BoatManager {
 
-    private Set<BoatInterface> finishedBoats;
-    private List<BoatInterface> boatsToSend;
+    private Set<GenericBoat> finishedBoats;
+    private List<GenericBoat> boatsToSend;
 
     public BoatManager(){
         this.finishedBoats = new HashSet<>();
@@ -25,7 +24,7 @@ public class BoatManager {
      * Processes when a boat has finished the race after rounding the final mark
      * @param boat Boat that has finished
      */
-    public void addFinishedBoat(BoatInterface boat) {
+    public void addFinishedBoat(GenericBoat boat) {
         if (boat.isFinished()) {
             Boolean changed = finishedBoats.add(boat);
             if (changed) {
@@ -38,7 +37,7 @@ public class BoatManager {
         return boatsToSend.size() > 0;
     }
 
-    public BoatInterface getFinishedBoat() {
+    public GenericBoat getFinishedBoat() {
         return boatsToSend.remove(0);
     }
 }

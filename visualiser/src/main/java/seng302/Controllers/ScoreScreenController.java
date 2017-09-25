@@ -1,12 +1,20 @@
 package seng302.Controllers;
 
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import javafx.util.Callback;
+import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.ViewScreenType;
 
@@ -17,13 +25,13 @@ import java.io.IOException;
  */
 public class ScoreScreenController {
     @FXML
-    private TableView<BoatInterface> finishersTable;
+    private JFXTreeTableView<GenericBoat> finishersTable;
     @FXML
-    private TableColumn<BoatInterface, String> boatColumn;
+    private JFXTreeTableColumn<GenericBoat, String> boatColumn;
     @FXML
-    private TableColumn<BoatInterface, String> positionColumn;
+    private JFXTreeTableColumn<GenericBoat, String> positionColumn;
     @FXML
-    private TableColumn<BoatInterface, String> finishTimeColumn;
+    private JFXTreeTableColumn<GenericBoat, String> finishTimeColumn;
 
     private Stage primaryStage;
 
@@ -39,20 +47,34 @@ public class ScoreScreenController {
 
     }
     public void initialiseTable(){
-        positionColumn.setCellValueFactory(
-                new PropertyValueFactory<BoatInterface, String>("placement")
-        );
+        positionColumn = new JFXTreeTableColumn<>("Position");
+        boatColumn = new JFXTreeTableColumn<>("Boat Name");
+        finishTimeColumn = new JFXTreeTableColumn<>("Finish Time");
 
-        boatColumn.setCellValueFactory(
-                new PropertyValueFactory<BoatInterface, String>("boatName")
-        );
+        positionColumn.setCellValueFactory(p -> {
+            String position = String.valueOf(p.getValue().getValue().getPlacement());
+            return new ReadOnlyObjectWrapper<>(position);
+        });
 
-        finishTimeColumn.setCellValueFactory(
-                new PropertyValueFactory<BoatInterface, String>("finishTimeString")
-        );
+        boatColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<GenericBoat, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<GenericBoat, String> param) {
+                return param.getValue().getValue().getBoatName();
+            }
+        });
 
-        finishersTable.setItems(race.getBoatsForScoreBoard());
+        finishTimeColumn.setCellValueFactory(p -> {
+            String finishTime = String.valueOf(p.getValue().getValue().getFinishTimeString());
+            return new ReadOnlyObjectWrapper<>(finishTime);
+        });
+
+        TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<GenericBoat>(race.getBoatsForScoreBoard(), RecursiveTreeObject::getChildren);
+        finishersTable.setRoot(tableRoot);
+        finishersTable.getColumns().setAll(positionColumn, boatColumn, finishTimeColumn);
+        finishersTable.setShowRoot(false);
+
     }
+
     @FXML
     public void exitToMenu() throws IOException {
         race.setConnectedToServer(0);

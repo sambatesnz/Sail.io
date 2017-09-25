@@ -1,19 +1,18 @@
 package seng302;
 
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 
 import java.util.Objects;
 
 public final class BoatPair {
-    private final BoatInterface boat1;
-    private final BoatInterface boat2;
+    private final GenericBoat boat1;
+    private final GenericBoat boat2;
     private final int id1;
     private final int id2;
-    private BoatInterface winner;
-    private BoatInterface loser;
+    private GenericBoat winner;
+    private GenericBoat loser;
 
-    public BoatPair(BoatInterface boat1, BoatInterface boat2) {
+    public BoatPair(GenericBoat boat1, GenericBoat boat2) {
         this.boat1 = Objects.requireNonNull(boat1);
         this.boat2 = Objects.requireNonNull(boat2);
         this.id1 = (boat1.getSourceId() < boat2.getSourceId()) ? boat1.getSourceId() : boat2.getSourceId();
@@ -25,16 +24,16 @@ public final class BoatPair {
         this.loser = boat2;
     }
 
-    public BoatInterface getWinner() {
+    public GenericBoat getWinner() {
         return winner;
     }
 
-    public BoatInterface getLoser() {
+    public GenericBoat getLoser() {
         return loser;
     }
 
-    public BoatInterface getBoat1() { return boat1; }
-    public BoatInterface getBoat2() { return boat2; }
+    public GenericBoat getBoat1() { return boat1; }
+    public GenericBoat getBoat2() { return boat2; }
 
     /**
      * Checks if the objects are equal.

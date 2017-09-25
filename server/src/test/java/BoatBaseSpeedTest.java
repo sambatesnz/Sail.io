@@ -3,14 +3,14 @@ import org.junit.Before;
 import org.junit.Test;
 import seng302.BoatGenerator;
 import seng302.RaceObjects.AgarBoat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 
 /**
  * Created by osr13 on 21/09/17.
  */
 public class BoatBaseSpeedTest {
     private BoatGenerator boatGenerator = new BoatGenerator();
-    private BoatInterface b;
+    private GenericBoat b;
 
 
     @Before

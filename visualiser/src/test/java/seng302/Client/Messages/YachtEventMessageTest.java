@@ -5,8 +5,7 @@ import seng302.BoatGenerator;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.YachtEventGeneration.*;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Race;
 
 import java.util.*;
@@ -32,9 +31,9 @@ public class YachtEventMessageTest {
     public void YachtEventMessageUpdate() throws Exception {
         Race race = new Race();
         BoatGenerator generator = new BoatGenerator();
-        BoatInterface boat1 = generator.generateBoat();
-        BoatInterface boat2 = generator.generateBoat();
-        Map<Integer, BoatInterface> boatsList = new HashMap<>();
+        GenericBoat boat1 = generator.generateBoat();
+        GenericBoat boat2 = generator.generateBoat();
+        Map<Integer, GenericBoat> boatsList = new HashMap<>();
         boatsList.put(boat1.getSourceId(), boat1);
         boatsList.put(boat2.getSourceId(), boat2);
         race.setParticipants(new ArrayList<>(Arrays.asList(boat1.getSourceId(), boat2.getSourceId())));
