@@ -4,7 +4,7 @@ import org.junit.Test;
 import seng302.DataGeneration.IServerData;
 import seng302.DataGeneration.RaceManager;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests the race mode chooser

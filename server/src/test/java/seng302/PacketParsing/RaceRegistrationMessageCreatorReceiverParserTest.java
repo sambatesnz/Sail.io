@@ -6,7 +6,7 @@ import seng302.Client.Messages.RaceRegistrationType;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class RaceRegistrationMessageCreatorReceiverParserTest {
 

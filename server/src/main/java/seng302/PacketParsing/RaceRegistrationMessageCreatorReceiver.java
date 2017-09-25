@@ -11,8 +11,6 @@ import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 import seng302.RaceObjects.Boat;
 
-import java.util.Arrays;
-
 /**
  * Takes a wrapped race registration message and tries to add a boat if someone wants to participate
  */

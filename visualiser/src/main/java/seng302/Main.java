@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import seng302.Controllers.Coordinate;
 import seng302.Controllers.StartController;
-import seng302.UserInput.KeyBindingUtility;
 
 import java.io.IOException;
 

@@ -1,11 +1,11 @@
 package seng302.Controllers;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.fxml.FXML;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.ViewScreenType;

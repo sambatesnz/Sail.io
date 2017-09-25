@@ -2,13 +2,10 @@ package seng302.Visualiser;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
 import seng302.RaceObjects.Boat;
-
-import static javafx.scene.paint.Color.PINK;
 
 
 public class BoatSprite {

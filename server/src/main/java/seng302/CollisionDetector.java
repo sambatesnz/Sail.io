@@ -1,6 +1,5 @@
 package seng302;
 
-import seng302.BoatPair;
 import seng302.RaceObjects.*;
 
 import java.util.ArrayList;

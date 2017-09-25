@@ -1,22 +1,8 @@
 package seng302;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
-import javafx.util.Pair;
 import seng302.PacketGeneration.RaceStatus;
-import seng302.PacketParsing.XMLParser;
-import seng302.Polars.PolarUtils;
-import seng302.RaceObjects.*;
-import seng302.Server.RaceCreator;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static java.lang.Math.*;
+import java.util.Date;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35

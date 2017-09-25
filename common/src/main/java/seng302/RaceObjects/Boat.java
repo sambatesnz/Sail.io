@@ -4,12 +4,7 @@ import javafx.scene.paint.Color;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
-import static java.lang.Math.abs;
-import static java.lang.Math.floorMod;
-import static java.lang.Math.round;
 
 /**
  * Represent a boat competing in yacht race

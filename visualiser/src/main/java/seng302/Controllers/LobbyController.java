@@ -1,8 +1,6 @@
 package seng302.Controllers;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,8 +11,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
+import seng302.RaceObjects.Race;
 import seng302.UserInput.KeyBindingUtility;
 
 import java.io.IOException;

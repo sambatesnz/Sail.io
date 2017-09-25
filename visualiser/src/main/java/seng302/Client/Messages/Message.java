@@ -4,8 +4,8 @@ import seng302.PacketGeneration.MessageType;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketParsing.PacketParserUtils;
 import seng302.PacketParsing.XMLParser;
-import seng302.RaceObjects.Race;
 import seng302.RaceObjects.CompoundMark;
+import seng302.RaceObjects.Race;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

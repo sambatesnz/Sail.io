@@ -10,7 +10,10 @@ import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.Race;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 

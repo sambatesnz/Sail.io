@@ -1,8 +1,6 @@
 package seng302.DataGeneration;
 
 import seng302.*;
-import seng302.DataGeneration.BoatXMLCreator;
-import seng302.DataGeneration.RaceManager;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatus;

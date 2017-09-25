@@ -1,7 +1,6 @@
 package seng302.PacketParsing;
 
 import seng302.DataGeneration.IServerData;
-import seng302.PacketGeneration.PacketGenerationUtils;
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
 
 /**

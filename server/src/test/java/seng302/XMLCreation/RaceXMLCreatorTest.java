@@ -1,6 +1,5 @@
 package seng302.XMLCreation;
 
-import org.dom4j.Document;
 import org.junit.Test;
 import seng302.Race;
 

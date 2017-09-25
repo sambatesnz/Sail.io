@@ -1,6 +1,5 @@
 package seng302;
 
-import javafx.util.Pair;
 import seng302.RaceObjects.Boat;
 
 import java.util.Objects;
