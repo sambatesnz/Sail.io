@@ -216,14 +216,18 @@ public class Boat extends GenericBoat {
     }
 
     @Override
-    public void setLastAgarSizeDecreaseTime(long time) {
+    public void setLastAgarSizeDecreaseTime(long time) {}
 
+    @Override
+    public void resetAgarSize() {}
+
+    @Override
+    public int getBaseSpeed() {
+        return 0;
     }
 
     @Override
-    public void resetAgarSize() {
-
-    }
+    public void setBaseSpeed() {}
 
     private int getRelativeAngle(int angle1, double angle2){
         return Math.floorMod(((int)angle2 - angle1), 360);

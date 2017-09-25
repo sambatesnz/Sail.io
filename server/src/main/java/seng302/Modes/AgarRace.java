@@ -24,7 +24,7 @@ public class AgarRace extends Race {
     private static final int MINIMUM_AGAR_SIZE = 0;
     private static final int SIZE_DECREASE_TICK_MS = 50;
 
-    AgarRace() {
+    public AgarRace() {
         super();
     }
 
@@ -61,6 +61,7 @@ public class AgarRace extends Race {
                     System.out.println("Winners old size: " + winner.getAgarSize());
 
                     winner.setAgarSize(winner.getAgarSize() + loser.getAgarSize());
+                    winner.setBaseSpeed();
                     collision.setReactedToCollision(true);
                     killBoat(loser);
 
@@ -88,11 +89,13 @@ public class AgarRace extends Race {
         List<GenericBoat> boats = new ArrayList<>();
         boats.add(loser);
         LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
+        loser.setBaseSpeed();
     }
 
     private void reduceBoatSize(GenericBoat boat) {
         if (currentTimeMillis() - boat.getLastAgarSizeDecreaseTime() > SIZE_DECREASE_TICK_MS) {
             boat.setAgarSize(boat.getAgarSize() - AGAR_SIZE_DECREMENT);
+            boat.setBaseSpeed();
             if (boat.getAgarSize() <= MINIMUM_AGAR_SIZE) {
                 killBoat(boat);
             }
@@ -107,6 +110,7 @@ public class AgarRace extends Race {
             clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
             LocationSpawner.generateSpawnPoints(boats, super.boundaries, collisionDetector, super.collisionMap);
+            boat.setBaseSpeed();
             return boat;
         } else {
             throw new Exception("cannot create boat");
