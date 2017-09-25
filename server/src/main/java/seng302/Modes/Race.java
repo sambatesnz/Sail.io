@@ -527,11 +527,11 @@ public class Race {
 
     /**
      * Gets boats that havent been eliminated
-     * @return ArrayList<BoatInterface></BoatInterface>
+     * @return ArrayList<GenericBoat>
      */
-    public ArrayList<BoatInterface> getBoatsInRace() {
-        ArrayList<BoatInterface> boats = new ArrayList<>();
-        for (BoatInterface boat: this.boats){
+    public ArrayList<GenericBoat> getBoatsInRace() {
+        ArrayList<GenericBoat> boats = new ArrayList<>();
+        for (GenericBoat boat: this.boats){
             if (!boat.isEliminated()) {
                 boats.add(boat);
             }
