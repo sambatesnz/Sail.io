@@ -111,6 +111,7 @@
     -fx-background-image: url("../BackgroundImages/north_wind_blows.jpg");
     -fx-background-repeat: no-repeat;
     -fx-background-size: stretch;
+    -fx-opacity: 0.7;
 }
 
 .tree-table-view .column-header-background{
