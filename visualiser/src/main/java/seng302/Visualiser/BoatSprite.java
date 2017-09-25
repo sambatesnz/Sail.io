@@ -1,13 +1,21 @@
 package seng302.Visualiser;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
 import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.BoatInterface;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import static javafx.scene.paint.Color.PINK;
 
@@ -27,6 +35,7 @@ public class BoatSprite {
     public static final int DOT = 3;
     public static final int TEXT = 4;
     public static final int SAIL = 5;
+    public static final int IMAGE = 5;
 
 
     public BoatSprite(BoatInterface boat, int clientSourceId){
@@ -46,6 +55,18 @@ public class BoatSprite {
         stack.getChildren().add(tc);
         stack.getChildren().add(text);
         stack.getChildren().add(sail);
+
+        try {
+            BufferedImage bi = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("boat.png"));
+            bi = (new ImageColourChanger(bi)).colouredImage(new int[] {255, 0, 0, 255});
+            System.out.println(bi);
+            ImageView iv = new ImageView();
+            iv.setImage(SwingFXUtils.toFXImage(bi, null));
+            System.out.println(iv + ", " + iv.getImage());
+            stack.getChildren().add(iv);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

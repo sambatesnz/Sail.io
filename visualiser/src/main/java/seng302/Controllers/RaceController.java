@@ -17,6 +17,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -319,6 +320,9 @@ public class RaceController implements IRaceController {
                 boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
                 boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
                 updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.BOAT));
+                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.IMAGE));
+                ((ImageView) boats.get(i).getStack().getChildren().get(BoatSprite.IMAGE)).setScaleX(0.1);
+                ((ImageView) boats.get(i).getStack().getChildren().get(BoatSprite.IMAGE)).setScaleY(0.1);
                 boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
                 // Temporary hard coding to differentiate between the boat in user control
