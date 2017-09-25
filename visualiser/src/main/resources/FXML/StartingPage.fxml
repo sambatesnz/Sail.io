@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -9,36 +14,36 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../CSS/GeneralStyle.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng302.Controllers.StartController">
-   <children>
-      <Text fx:id="fullMastText" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: WHITE;" text="Developed by Full Mast" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
-      <JFXTogglePane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <AnchorPane id="startAnchor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" />
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../CSS/GeneralStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng302.Controllers.StartController">
+    <children>
+        <Text fx:id="fullMastText" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: WHITE;" text="Developed by Full Mast" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
+        <JFXTogglePane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <AnchorPane id="startAnchor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" />
+                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
 
-                                 <children>
-                  <Text layoutX="277.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: WHITE;" text="SAIL" wrappingWidth="209.22724437713623">
-                     <font>
-                        <Font name="Century Gothic" size="90.0" />
-                     </font>
-                  </Text>
-                  <Label fx:id="statusLbl" alignment="CENTER" layoutX="309.0" layoutY="468.0" prefHeight="15.0" prefWidth="171.0" />
-                  <Text layoutX="479.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: WHITE;" text="LTS" wrappingWidth="44.22724437713623">
-                     <font>
-                        <Font name="Century Gothic" size="24.0" />
-                     </font>
-                  </Text>
-                  <JFXButton fx:id="connectBtn" layoutX="317.0" layoutY="430.0" onAction="#connect" prefHeight="36.0" prefWidth="152.0" text="Connect" />
-                  <JFXRadioButton fx:id="RaceModeRadioButton" layoutX="195.0" layoutY="349.0" selected="true" text="Race" />
-                  <JFXRadioButton fx:id="AgarModeRadioButton" layoutX="276.0" layoutY="349.0" text="Agar" />
-                  <JFXRadioButton fx:id="PracticeModeRadioButton" layoutX="355.0" layoutY="349.0" prefHeight="15.0" prefWidth="102.0" text="Practice" />
-                  <JFXTextField fx:id="ipField" focusColor="WHITE" labelFloat="true" layoutX="273.0" layoutY="385.0" prefHeight="36.0" prefWidth="144.0" promptText="IP" unFocusColor="#464646" />
-                  <JFXRadioButton fx:id="CustomModeRadioButton" layoutX="457.0" layoutY="349.0" prefHeight="15.0" prefWidth="102.0" text="Custom Race" />
-                  <JFXTextField fx:id="portField" focusColor="WHITE" labelFloat="true" layoutX="427.0" layoutY="385.0" prefHeight="36.0" prefWidth="87.0" promptText="Port" unFocusColor="#464646" />
-               </children>
-            </AnchorPane>
-         </children>
-      </JFXTogglePane>
-   </children>
+                    <children>
+                        <Text layoutX="277.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: WHITE;" text="SAIL" wrappingWidth="209.22724437713623">
+                            <font>
+                                <Font name="Century Gothic" size="90.0" />
+                            </font>
+                        </Text>
+                        <Label fx:id="statusLbl" alignment="CENTER" layoutX="309.0" layoutY="468.0" prefHeight="15.0" prefWidth="171.0" />
+                        <Text layoutX="479.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: WHITE;" text="LTS" wrappingWidth="44.22724437713623">
+                            <font>
+                                <Font name="Century Gothic" size="24.0" />
+                            </font>
+                        </Text>
+                        <JFXButton fx:id="connectBtn" layoutX="317.0" layoutY="438.0" onAction="#connect" prefHeight="36.0" prefWidth="152.0" text="Connect" />
+                        <JFXTextField fx:id="ipField" focusColor="WHITE" labelFloat="true" layoutX="273.0" layoutY="393.0" prefHeight="36.0" prefWidth="144.0" promptText="IP" unFocusColor="#464646" />
+                        <JFXTextField fx:id="portField" focusColor="WHITE" labelFloat="true" layoutX="427.0" layoutY="393.0" prefHeight="36.0" prefWidth="87.0" promptText="Port" unFocusColor="#464646" />
+                        <JFXToggleButton fx:id="RaceModeButton" layoutX="166.0" layoutY="320.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="107.0" text="Race" />
+                        <JFXToggleButton fx:id="AgarModeButton" layoutX="273.0" layoutY="320.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="107.0" text="Agar" />
+                        <JFXToggleButton fx:id="PracModeButton" layoutX="380.0" layoutY="320.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="130.0" text="Practice" />
+                        <JFXToggleButton fx:id="CustModeButton" layoutX="510.0" layoutY="320.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="122.0" text="Custom" />
+                    </children>
+                </AnchorPane>
+            </children>
+        </JFXTogglePane>
+    </children>
 </AnchorPane>

@@ -3,7 +3,9 @@ package seng302.Controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.application.Platform;
+import javafx.css.CssMetaData;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,11 +27,10 @@ public class StartController {
     @FXML private JFXTextField portField;
     @FXML private Label statusLbl;
     @FXML private Text fullMastText;
-    @FXML private JFXRadioButton RaceModeRadioButton;
-    @FXML private JFXRadioButton AgarModeRadioButton;
-    @FXML private JFXRadioButton PracticeModeRadioButton;
-    @FXML private JFXRadioButton CustomModeRadioButton;
-
+    @FXML private JFXToggleButton RaceModeButton;
+    @FXML private JFXToggleButton AgarModeButton;
+    @FXML private JFXToggleButton PracModeButton;
+    @FXML private JFXToggleButton CustModeButton;
 
     private Stage primaryStage;
     private Scene rootScene;
@@ -54,14 +55,15 @@ public class StartController {
         fullMastText.setFocusTraversable(true);
 
         modeGroup = new ToggleGroup();
+        RaceModeButton.getCssMetaData().stream().map(CssMetaData::getProperty).forEach(System.out::println);
 
-        modeGroup.getToggles().add(RaceModeRadioButton);
-        modeGroup.getToggles().add(AgarModeRadioButton);
-        modeGroup.getToggles().add(PracticeModeRadioButton);
-        modeGroup.getToggles().add(CustomModeRadioButton);
+        modeGroup.getToggles().add(RaceModeButton);
+        modeGroup.getToggles().add(AgarModeButton);
+        modeGroup.getToggles().add(PracModeButton);
+        modeGroup.getToggles().add(CustModeButton);
 
-        ipField.visibleProperty().bind(CustomModeRadioButton.selectedProperty());
-        portField.visibleProperty().bind(CustomModeRadioButton.selectedProperty());
+        ipField.visibleProperty().bind(CustModeButton.selectedProperty());
+        portField.visibleProperty().bind(CustModeButton.selectedProperty());
     }
 
 
@@ -331,7 +333,7 @@ public class StartController {
     }
 
     public RaceMode getRaceMode() {
-        RadioButton a = (RadioButton) modeGroup.getSelectedToggle();
+        ToggleButton a = (ToggleButton) modeGroup.getSelectedToggle();
         String mode = a.getText().toLowerCase();
         return RaceMode.getRaceMode(mode);
     }

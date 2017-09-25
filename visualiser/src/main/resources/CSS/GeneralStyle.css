@@ -12,6 +12,27 @@
     -fx-text-fill: white;
 }
 
+.jfx-button {
+    -fx-background-color: rgb(40, 109, 168);
+}
+
+.jfx-radio-button {
+    -jfx-selected-color: rgb(40, 109, 168);
+}
+
+.jfx-text-field {
+    -fx-background-color: rgba(40, 109, 168, 0.9);
+    -fx-text-fill: white;
+}
+
+.jfx-toggle-button {
+    -jfx-toggle-color: rgb(40, 109, 168);
+    -jfx-untoggle-color: rgb(40, 109, 168);
+    -fx-background-color: rgba(40, 109, 168, 0.9);
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+}
+
 /*.table-view{*/
     /*-fx-background-color: #007a49;*/
 /*}*/
