@@ -40,6 +40,8 @@ public class PracticeRaceManager implements IServerData {
 
     public PracticeRaceManager(){
         this.race = new PracticeRace();
+        race.parseCourseXML("Race.xml");
+        race.parseRaceXML("Race.xml");
         race.setUp();
         boatManager = race.getBoatManager();
         broadcastMessageQueue = new LinkedBlockingQueue<>();
