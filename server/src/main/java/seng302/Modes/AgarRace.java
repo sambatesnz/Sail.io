@@ -95,6 +95,10 @@ public class AgarRace extends Race {
         LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
     }
 
+    /**
+     * Reduces size of a given boat
+     * @param boat you wish to reduce
+     */
     public void reduceBoatSize(BoatInterface boat) {
         if (currentTimeMillis() - boat.getLastAgarSizeDecreaseTime() > SIZE_DECREASE_TICK_MS) {
             boat.setAgarSize(boat.getAgarSize() - AGAR_SIZE_DECREMENT);

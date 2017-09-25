@@ -230,7 +230,6 @@ public class Boat implements BoatInterface{
 
     @Override
     public void haltBoat() {
-        System.out.println("halting boat....");
         speed = 0;
     }
 
