@@ -23,6 +23,7 @@ public class RaceXMLCreator implements XMLCreator {
 
 
     public RaceXMLCreator(Race race) throws IOException {
+        this.race = race;
         this.xml = createDocument(race);
     }
 
@@ -55,7 +56,7 @@ public class RaceXMLCreator implements XMLCreator {
 
         Element participants = root.addElement("Participants");
 
-
+        System.out.println(race + ", " + race.getBoats() + ", " + participants);
         for (BoatInterface b : race.getBoats()) {
             participants.addElement("Yacht")
                     .addAttribute("SourceID", String.valueOf(b.getSourceId()));

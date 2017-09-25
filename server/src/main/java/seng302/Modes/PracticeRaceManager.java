@@ -40,6 +40,7 @@ public class PracticeRaceManager implements IServerData {
 
     public PracticeRaceManager(){
         this.race = new PracticeRace();
+        race.setUp();
         boatManager = race.getBoatManager();
         broadcastMessageQueue = new LinkedBlockingQueue<>();
         singularMessageQueue = new LinkedBlockingQueue<>();
@@ -99,6 +100,7 @@ public class PracticeRaceManager implements IServerData {
 
     @Override
     public void beginGeneratingData() {
+        race.startingTime = race.getNewStartTime();
         timer.schedule(new PracticeRaceManager.XMLSender(), 0, 2000);
         timer.schedule(new PracticeRaceManager.RSMSender(), 100, 500);
         timer.schedule(new PracticeRaceManager.BoatPosSender(), 1000, 17);
