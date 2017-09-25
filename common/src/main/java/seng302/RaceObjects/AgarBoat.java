@@ -67,7 +67,7 @@ public class AgarBoat extends BoatDecorator {
     }
 
     public double getCollisionFactor(){
-        return getAgarSize() * getSpeed();
+        return getAgarSize() * (getSpeed() / 4);
     }
 
     public long getLastAgarSizeDecreaseTime() {
