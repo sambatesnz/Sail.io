@@ -21,7 +21,7 @@ import static java.lang.System.currentTimeMillis;
 public class AgarRace extends Race {
 
     private static final int AGAR_SIZE_DECREMENT = 1;
-    private static final int MINIMUM_AGAR_SIZE = 0;
+    public static final int MINIMUM_AGAR_SIZE = 0;
     private static final int SIZE_DECREASE_TICK_MS = 50;
 
     public AgarRace() {
@@ -91,11 +91,11 @@ public class AgarRace extends Race {
         loser.setSailsOut(false);
         List<BoatInterface> boats = new ArrayList<>();
         boats.add(loser);
-        LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
         loser.setBaseSpeed();
+        LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
     }
 
-    private void reduceBoatSize(BoatInterface boat) {
+    public void reduceBoatSize(BoatInterface boat) {
         if (currentTimeMillis() - boat.getLastAgarSizeDecreaseTime() > SIZE_DECREASE_TICK_MS) {
             boat.setAgarSize(boat.getAgarSize() - AGAR_SIZE_DECREMENT);
             boat.setBaseSpeed();
