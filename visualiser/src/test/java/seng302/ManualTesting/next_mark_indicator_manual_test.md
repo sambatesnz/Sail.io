@@ -31,7 +31,7 @@
 ####Testing log:
 
 #####Test:
-- Date: 
-- Current Commit of branch: 
-- Performed By:         
-- Result: 
+- Date: 25/09/2017
+- Current Commit of branch: 8479c1a
+- Performed By: Abel Svoboda, Sam Bates
+- Result: **Pass**

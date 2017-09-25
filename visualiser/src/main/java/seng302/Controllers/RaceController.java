@@ -123,7 +123,7 @@ public class RaceController implements IRaceController {
     private final int SPARKLINEHEIGHT = 239;
     private final double BOUNDARY_OPACITY = 0.5;
     private final int NEXT_MARK_SIZE = 20;
-    private double windArrowSize = 40;
+    private double WIND_ARROW_SIZE = 20;
     private FPSCounter fpsCounter;
     private int roundingArrowRotationClockwise = 0;
     private int roundingArrowRotationAntiClockwise = 0;
@@ -149,8 +149,8 @@ public class RaceController implements IRaceController {
         mainBorderPane.setCenter(viewAnchorPane);
 
         windArrow = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("windArrow.png")));
-        windArrow.setFitHeight(windArrowSize);
-        windArrow.setFitWidth(windArrowSize);
+        windArrow.setFitHeight(WIND_ARROW_SIZE);
+        windArrow.setFitWidth(WIND_ARROW_SIZE);
         windArrow.setPreserveRatio(true);
         group.getChildren().add(windArrow);
 
@@ -244,8 +244,8 @@ public class RaceController implements IRaceController {
         double scale = Math.pow(race.getWindSpeed(), 0.33)/8;
         windArrow.setScaleX(scale);
         windArrow.setScaleY(scale);
-        windArrow.setTranslateX(windArrowSize*scale/2);
-        windArrow.setTranslateY(windArrowSize*scale/2);
+        windArrow.setTranslateX(WIND_ARROW_SIZE*2);//*scale/2);
+        windArrow.setTranslateY(WIND_ARROW_SIZE*2);//*scale/2);
     }
 
     private void initialiseRaceListener() {
