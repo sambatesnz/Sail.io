@@ -360,7 +360,7 @@ public class AgarRaceController implements IRaceController {
     private void updateBoatPositions() {
         final int SAIL_OFFSET = 7;
         for (int i = 0; i < boats.size(); i++) {
-            Node boat = boats.get(i).getStack().getChildren().get(BoatSprite.BOAT);
+            Node boatImage = boats.get(i).getStack().getChildren().get(BoatSprite.IMAGE);
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
                 double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
                 String speed = "";
@@ -375,8 +375,10 @@ public class AgarRaceController implements IRaceController {
                 boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
                 boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
 //                System.out.println("agarsize: " + boats.get(i).getBoat().getAgarSize());
-                updateNodeScale(boat, boats.get(i).getBoat().getAgarSize());
-                boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
+                updateNodeScale(boatImage, boats.get(i).getBoat().getAgarSize());
+                boatImage.setScaleX(boatImage.getScaleX()*0.07);
+                boatImage.setScaleY(boatImage.getScaleY()*0.07);
+                boatImage.setRotate(race.getBoats().get(i).getHeading());
 
                 // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
                 if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
