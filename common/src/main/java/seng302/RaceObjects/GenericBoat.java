@@ -67,6 +67,10 @@ public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
 
     public abstract int getPlacement();
 
+    public abstract int getBaseSpeed();
+
+    public abstract void setBaseSpeed();
+
     public abstract double getSpeedInKnots();
 
     public abstract boolean isKnowsBoatLocation();

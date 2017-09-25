@@ -70,30 +70,38 @@ public class LobbyController {
     }
 
     @FXML
-    public void initialiseTime(){
+    public void initialiseTime() {
         timeToStart.textProperty().bind(race.timeToStartProperty());
 
         timeToStart.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.equals(String.format(" %02d:%02d:%02d", 0, 0, 10)) || (race.getClientSourceId() == 0 && race.isRaceReady() && !raceStarted)) {
                 Platform.runLater(
-                    () -> {
-                        try {
-                            forceStart();
-                            raceStarted = true;
-                        } catch (Exception ignored) {
-                            ignored.printStackTrace();
+                        () -> {
+                            try {
+                                forceStart();
+                                raceStarted = true;
+                            } catch (Exception ignored) {
+                                ignored.printStackTrace();
+                            }
                         }
-                    }
                 );
             }
+            try {
 
-            // 99:99:99 means raceStatus is raceStartTimeNotSet so hide countdown
-            if (newValue.equals(String.format(" %02d:%02d:%02d", 99, 99, 99))) {
-                timeToStart.setVisible(false);
-                lobbyDescriptionText.textProperty().setValue("Waiting for more players to join.");
-            } else {
-                timeToStart.setVisible(true);
-                lobbyDescriptionText.textProperty().setValue("Time to race start:");
+                // 99:99:99 means raceStatus is raceStartTimeNotSet so hide countdown
+                Platform.runLater(() -> {
+                    if (newValue.equals(String.format(" %02d:%02d:%02d", 99, 99, 99))) {
+                        timeToStart.setVisible(false);
+                        lobbyDescriptionText.textProperty().setValue("Waiting for more players to join.");
+                    } else {
+                        timeToStart.setVisible(true);
+                        lobbyDescriptionText.textProperty().setValue("Time to race start:");
+                    }
+                });
+
+            } catch (Exception e) {
+                System.out.println("tried to set time, but I null-pointered.");
+                e.printStackTrace();
             }
         });
     }

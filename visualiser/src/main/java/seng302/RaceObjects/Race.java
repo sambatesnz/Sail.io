@@ -1,5 +1,6 @@
 package seng302.RaceObjects;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -265,9 +266,9 @@ public class Race {
     public void setExpectedStartTime(long expectedStartTime) {
         long raceTime;
         this.expectedStartTime = expectedStartTime;
-        int raceHours = 0;
-        int raceMinutes = 0;
-        int raceSeconds = 0;
+        final int raceHours;
+        final int raceMinutes;
+        final int raceSeconds;
         raceTime = getExpectedStartTime() - getCurrentTime();
 
         raceHours = (int) TimeUnit.MILLISECONDS.toHours(raceTime);
@@ -276,11 +277,16 @@ public class Race {
         raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceTime) -
             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
 
-        if(raceStatus == RaceStatus.START_TIME_NOT_SET){
-            timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 98));
-            timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 99));
-        }else {
-            timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+        try {
+            if(raceStatus == RaceStatus.START_TIME_NOT_SET){
+                timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 98));
+                timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 99));
+            }else {
+                timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+            }
+        } catch (Exception e) {
+            System.out.println("Unable to set time");
+            e.printStackTrace();
         }
     }
 
