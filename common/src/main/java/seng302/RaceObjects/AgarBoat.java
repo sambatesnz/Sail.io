@@ -28,7 +28,7 @@ public class AgarBoat extends BoatDecorator {
     }
 
     public void updateBoatCollisionSize() {
-        double size = BASE_BOAT_SIZE * Math.sqrt(agarSize / 100 / Math.PI);
+        double size = BASE_BOAT_SIZE * Math.sqrt((double) agarSize / 100);
         boat.setSize(size);
     }
 

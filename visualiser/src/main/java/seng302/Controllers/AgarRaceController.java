@@ -1,5 +1,6 @@
 package seng302.Controllers;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -376,6 +377,7 @@ public class AgarRaceController implements IRaceController {
                 boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
 //                System.out.println("agarsize: " + boats.get(i).getBoat().getAgarSize());
                 updateNodeScale(boat, boats.get(i).getBoat().getAgarSize());
+
                 boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
                 // Temporary (turns out it's permanent) hard coding to differentiate bet                if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
@@ -1077,15 +1079,10 @@ public class AgarRaceController implements IRaceController {
      * @param areaPercent area % of the base area that the boat should be drawn at.
      */
     private void updateNodeScale(Node nodeToScale, int areaPercent) {
-        double extraArea = ((double) areaPercent) / 100 - 1;
-        double extraRadius = 0;
-        if(extraArea < 0) {
-            extraRadius = -sqrt(abs(extraArea / Math.PI));
-        }else if (extraArea > 0) {
-            extraRadius = sqrt(abs(extraArea / Math.PI));
-        }
-        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()) ) * (extraRadius/2 + 1));
-        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()) )* (extraRadius/2 + 1));
+        double areaScale = ((double) areaPercent) / 100;
+        double radiusScale = sqrt(areaScale);
+        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()) ) * (radiusScale));
+        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()) )* (radiusScale));
     }
 
     private double getScale(int areaPercent){
