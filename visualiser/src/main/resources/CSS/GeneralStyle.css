@@ -107,6 +107,12 @@
     -fx-border-width: 0 1 0 1;
 }
 
+#startAnchor {
+    -fx-background-image: url("../BackgroundImages/north_wind_blows.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: stretch;
+}
+
 .tree-table-view .column-header-background{
     -fx-border-width : 0 0.0 1 0;
     -fx-border-color:#F3F3F3;
