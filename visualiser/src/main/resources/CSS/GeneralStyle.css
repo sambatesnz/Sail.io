@@ -25,12 +25,39 @@
     -fx-text-fill: white;
 }
 
+.text-input {
+    -fx-prompt-text-fill: rgba(256, 256, 256, 0.7);
+}
+
 .jfx-toggle-button {
-    -jfx-toggle-color: rgb(40, 109, 168);
-    -jfx-untoggle-color: rgb(40, 109, 168);
+    /*-jfx-toggle-color: rgb(40, 109, 168);*/
+    /*-jfx-untoggle-color: rgb(40, 109, 168);*/
+
+    -jfx-toggle-color: transparent;
+    -jfx-untoggle-color: transparent;
+    -jfx-toggle-line-color: transparent;
+    -jfx-untoggle-line-color: transparent;
+    -fx-text-alignment: left;
+    -fx-text-fill: white;
+
     -fx-background-color: rgba(40, 109, 168, 0.9);
     -fx-border-radius: 0px;
     -fx-background-radius: 0px;
+}
+
+.jfx-toggle-button:selected {
+    -fx-background-color: rgba(253, 231, 76, 0.9);
+    -fx-text-fill: black;
+}
+
+.jfx-toggle-button:selected .jfx-rippler {
+    -fx-rippler-fill: transparent;
+    -fx-opacity: 0;
+}
+
+.jfx-toggle-button .jfx-rippler {
+    -fx-rippler-fill: transparent;
+    -fx-opacity: 0;
 }
 
 /*.table-view{*/

@@ -57,7 +57,9 @@ public class StartController {
         fullMastText.setFocusTraversable(true);
 
         modeGroup = new ToggleGroup();
-        RaceModeButton.getCssMetaData().stream().map(CssMetaData::getProperty).forEach(System.out::println);
+//        AgarModeButton.getCssMetaData().stream().map(CssMetaData::getProperty).forEach(System.out::println);
+
+        AgarModeButton.setSelected(true);
 
         modeGroup.getToggles().add(RaceModeButton);
         modeGroup.getToggles().add(AgarModeButton);
@@ -336,7 +338,7 @@ public class StartController {
 
     public RaceMode getRaceMode() {
         ToggleButton a = (ToggleButton) modeGroup.getSelectedToggle();
-        String mode = a.getText().toLowerCase();
+        String mode = a.getText().toLowerCase().trim();
         return RaceMode.getRaceMode(mode);
     }
 }
