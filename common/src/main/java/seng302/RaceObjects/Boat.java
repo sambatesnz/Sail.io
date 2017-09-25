@@ -229,6 +229,12 @@ public class Boat implements BoatInterface{
     }
 
     @Override
+    public void haltBoat() {
+        System.out.println("halting boat....");
+        speed = 0;
+    }
+
+    @Override
     public void setBaseSpeed() {}
 
     private int getRelativeAngle(int angle1, double angle2){

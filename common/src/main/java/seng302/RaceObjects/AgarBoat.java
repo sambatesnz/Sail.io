@@ -15,7 +15,6 @@ public class AgarBoat extends BoatDecorator {
 
     public AgarBoat(BoatInterface boat) {
         super(boat);
-
         lives = 3;
         agarSize = BASE_AGAR_SIZE;
     }

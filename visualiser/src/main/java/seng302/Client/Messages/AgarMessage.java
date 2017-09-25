@@ -40,6 +40,9 @@ public class AgarMessage extends ClientSideMessageParser {
                 boat.loseLife();
             }
             boat.setAgarSize(boatSize);
+            if (boat.isEliminated()) {
+                boat.setSpeed(0); //Cant move because its eliminated
+            }
         }
     }
 

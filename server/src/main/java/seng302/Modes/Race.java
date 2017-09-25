@@ -393,7 +393,7 @@ public class Race {
     public void updateBoats() {
         double movementMultiplier = 1;
 
-        for (BoatInterface boat : boats) {
+        for (BoatInterface boat : getBoatsInRace()) {
             if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
                 PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
             }
@@ -523,6 +523,20 @@ public class Race {
                 }
             }
         }
+    }
+
+    /**
+     * Gets boats that havent been eliminated
+     * @return ArrayList<BoatInterface></BoatInterface>
+     */
+    public ArrayList<BoatInterface> getBoatsInRace() {
+        ArrayList<BoatInterface> boats = new ArrayList<>();
+        for (BoatInterface boat: this.boats){
+            if (!boat.isEliminated()) {
+                boats.add(boat);
+            }
+        }
+        return boats;
     }
 
 }

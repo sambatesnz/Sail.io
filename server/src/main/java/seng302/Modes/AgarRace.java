@@ -45,7 +45,7 @@ public class AgarRace extends Race {
 
     @Override
     public void checkCollisions(IServerData raceManager){
-        for (BoatInterface boat : getBoats()) {
+        for (BoatInterface boat : getBoatsInRace()) {
             BoatCollision collision = collisionDetector.checkBoatCollision(boat, boats, collisionMap);
             if (collision != null) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
@@ -85,6 +85,9 @@ public class AgarRace extends Race {
 
     private void killBoat(BoatInterface loser) {
         loser.loseLife();
+        if (loser.isEliminated()){
+            loser.haltBoat();
+        }
         loser.setSailsOut(false);
         List<BoatInterface> boats = new ArrayList<>();
         boats.add(loser);
