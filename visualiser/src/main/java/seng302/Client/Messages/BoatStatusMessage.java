@@ -1,9 +1,8 @@
 package seng302.Client.Messages;
 
 
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Race;
-import seng302.RaceObjects.Boat;
 
 import java.util.Map;
 
@@ -19,7 +18,7 @@ public class BoatStatusMessage {
     private long estTimeToNextMark;
     private long estTimeToFinish;
 
-    private Map<Integer, BoatInterface> boatDict;
+    private Map<Integer, GenericBoat> boatDict;
 
     /**
      * Constructor for the class. Takes the data extracted from the packet and prepares it
@@ -51,7 +50,7 @@ public class BoatStatusMessage {
      */
     public void setBoatDetails() {
         if (null != boatDict && boatDict.containsKey(sourceID)) {
-            BoatInterface boat = boatDict.get(sourceID);
+            GenericBoat boat = boatDict.get(sourceID);
             boat.setStatus(status);
             boat.setCurrentLegIndex(legNumber);
             if (boat.getTargetMarkIndex() < legNumber) {

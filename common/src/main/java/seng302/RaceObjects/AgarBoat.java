@@ -3,7 +3,7 @@ package seng302.RaceObjects;
 /**
  * Boat to use for Agar mode, which has lives, size, and a base speed.
  */
-public class AgarBoat extends BoatDecorator {
+public class AgarBoat extends BoatDecorator{
 
     private boolean eliminated = false;
     private int lives;
@@ -13,7 +13,7 @@ public class AgarBoat extends BoatDecorator {
 
     private static final int BASE_AGAR_SIZE = 100;
 
-    public AgarBoat(BoatInterface boat) {
+    public AgarBoat(GenericBoat boat) {
         super(boat);
         lives = 3;
         agarSize = BASE_AGAR_SIZE;

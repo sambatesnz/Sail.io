@@ -1,15 +1,16 @@
 package seng302.RaceObjects;
 
+import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
 
 /**
  * Decorator for the boat class
  */
-public class BoatDecorator implements BoatInterface{
+public class BoatDecorator extends GenericBoat {
 
-    protected BoatInterface boat;
+    protected GenericBoat boat;
 
-    public BoatDecorator(BoatInterface boat) {
+    public BoatDecorator(GenericBoat boat) {
         this.boat = boat;
     }
 
@@ -129,7 +130,7 @@ public class BoatDecorator implements BoatInterface{
     }
 
     @Override
-    public String getName() {
+    public StringProperty getName() {
         return boat.getName();
     }
 
@@ -144,8 +145,18 @@ public class BoatDecorator implements BoatInterface{
     }
 
     @Override
+    public String getFinishTimeString(){
+        return boat.getFinishTimeString();
+    }
+
+    @Override
     public void setPlacement(int size) {
         boat.setPlacement(size);
+    }
+
+    @Override
+    public int getPlacement() {
+        return boat.getPlacement();
     }
 
     @Override
@@ -274,12 +285,12 @@ public class BoatDecorator implements BoatInterface{
     }
 
     @Override
-    public String getBoatName() {
+    public StringProperty getBoatName() {
         return boat.getBoatName();
     }
 
     @Override
-    public String getCountry() {
+    public StringProperty getCountry() {
         return boat.getCountry();
     }
 

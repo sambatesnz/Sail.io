@@ -1,5 +1,6 @@
 package seng302.RaceObjects;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -25,8 +26,8 @@ public class Race {
     private List<CompoundMark> compoundMarks;
     private List<CompoundMark> gates;
     private Map<Integer, Mark> marks;
-    private ObservableMap<Integer, BoatInterface> boats;
-    private ObservableList<BoatInterface> boatsForScoreBoard;
+    private ObservableMap<Integer, GenericBoat> boats;
+    private ObservableList<GenericBoat> boatsForScoreBoard;
     private List<Mark> boundaries;
     private List<Leg> courseOrder;
     private double windHeading;
@@ -54,9 +55,9 @@ public class Race {
     private boolean viewReady;
     private boolean hasRegatta;
     private int clientSourceId;
-    private BoatInterface clientBoat;
+    private GenericBoat clientBoat;
     private int collisionCount = 0;
-    public ObservableList<BoatInterface> boatsObs;
+    public ObservableList<GenericBoat> boatsObs;
     private SimpleStringProperty timeToStart;
     private RaceMode raceMode;
 
@@ -115,7 +116,7 @@ public class Race {
         return hasRegatta;
     }
 
-    public ObservableList<BoatInterface> getBoatsObs() {
+    public ObservableList<GenericBoat> getBoatsObs() {
         return boatsObs;
     }
 
@@ -142,7 +143,7 @@ public class Race {
         viewMax = max;
     }
 
-    public BoatInterface getClientBoat() {
+    public GenericBoat getClientBoat() {
         if (clientBoat == null) {
             clientBoat = boats.get(clientSourceId);
         }
@@ -203,7 +204,7 @@ public class Race {
      * Getter for finished boat list.
      * @return finished boat list.
      */
-    public ObservableList<BoatInterface> getBoatsForScoreBoard() { return boatsForScoreBoard; }
+    public ObservableList<GenericBoat> getBoatsForScoreBoard() { return boatsForScoreBoard; }
 
     public double getWindHeading() {
         return windHeading;
@@ -219,7 +220,7 @@ public class Race {
         }
         MarkStrings.add("Race Results");
         int i = 1;
-        for (BoatInterface boat : boatsForScoreBoard) {
+        for (GenericBoat boat : boatsForScoreBoard) {
             MarkStrings.add(i + ": " + boat.getName());
             i++;
         }
@@ -265,9 +266,9 @@ public class Race {
     public void setExpectedStartTime(long expectedStartTime) {
         long raceTime;
         this.expectedStartTime = expectedStartTime;
-        int raceHours = 0;
-        int raceMinutes = 0;
-        int raceSeconds = 0;
+        final int raceHours;
+        final int raceMinutes;
+        final int raceSeconds;
         raceTime = getExpectedStartTime() - getCurrentTime();
 
         raceHours = (int) TimeUnit.MILLISECONDS.toHours(raceTime);
@@ -276,11 +277,16 @@ public class Race {
         raceSeconds = (int) (TimeUnit.MILLISECONDS.toSeconds(raceTime) -
             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(raceTime)));
 
-        if(raceStatus == RaceStatus.START_TIME_NOT_SET){
-            timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 98));
-            timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 99));
-        }else {
-            timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+        try {
+            if(raceStatus == RaceStatus.START_TIME_NOT_SET){
+                timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 98));
+                timeToStart.set(String.format(" %02d:%02d:%02d", 99, 99, 99));
+            }else {
+                timeToStart.set(String.format(" %02d:%02d:%02d", raceHours, raceMinutes, raceSeconds));
+            }
+        } catch (Exception e) {
+            System.out.println("Unable to set time");
+            e.printStackTrace();
         }
     }
 
@@ -345,7 +351,7 @@ public class Race {
      * Get the boats competing
      * @return the boats competing
      */
-    public List<BoatInterface> getBoats() {
+    public List<GenericBoat> getBoats() {
         if (!raceReady || boats.values().size() == 0){
             return FXCollections.observableList(new ArrayList<>());
         } else {
@@ -402,11 +408,11 @@ public class Race {
         return regatta;
     }
 
-    public void setBoats(Map<Integer, BoatInterface> boats) {
-        ObservableMap<Integer, BoatInterface> participatingBoats = FXCollections.observableHashMap();
+    public void setBoats(Map<Integer, GenericBoat> boats) {
+        ObservableMap<Integer, GenericBoat> participatingBoats = FXCollections.observableHashMap();
         for (int i = 0; i < participants.size(); i++) {
             Integer boatId = participants.get(i);
-            BoatInterface boat = boats.get(boatId);
+            GenericBoat boat = boats.get(boatId);
             boat.setColour(Color.valueOf(colourList.get(i)));
             participatingBoats.put(boatId, boat);
         }
@@ -426,7 +432,7 @@ public class Race {
         return boundaries;
     }
 
-    public ObservableMap<Integer, BoatInterface> getBoatsMap() {
+    public ObservableMap<Integer, GenericBoat> getBoatsMap() {
         return boats;
     }
 
@@ -479,7 +485,7 @@ public class Race {
      */
     public boolean addBoatToScoreBoard(int boatSourceId, boolean finished) {
         boolean hasChanged = false;
-        BoatInterface finishedBoat = boats.get(boatSourceId);
+        GenericBoat finishedBoat = boats.get(boatSourceId);
         if (!boatsForScoreBoard.contains(finishedBoat)) {
             if(finished) finishedBoat.setFinished(true);
             boatsForScoreBoard.add(finishedBoat);

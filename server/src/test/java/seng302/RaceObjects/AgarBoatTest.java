@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class AgarBoatTest {
 
-    BoatInterface boat;
+    GenericBoat boat;
 
     @Before
     public void setup() throws Exception {

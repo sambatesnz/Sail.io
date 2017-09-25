@@ -2,8 +2,7 @@ package seng302;
 
 import org.junit.Before;
 import org.junit.Test;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 
 import java.util.ArrayList;
 
@@ -22,7 +21,7 @@ public class BoatGeneratorTest {
     public void generateBoat() throws Exception {
         int expectedSourceId = boatGenerator.getLowestSourceId(); //Lowest source id
         for (int i = 0; i < 20; i++) {
-            BoatInterface b = boatGenerator.generateBoat();
+            GenericBoat b = boatGenerator.generateBoat();
             assertEquals(b.getSourceId(), expectedSourceId);
             expectedSourceId++;
         }
@@ -31,17 +30,17 @@ public class BoatGeneratorTest {
     @Test
     public void addRemoveBoats() throws Exception {
         boatGenerator.generateBoat();
-        BoatInterface secondBoat = boatGenerator.generateBoat();
-        String expectedName = secondBoat.getName();
+        GenericBoat secondBoat = boatGenerator.generateBoat();
+        String expectedName = secondBoat.getName().getValue();
         boatGenerator.makeAvailable(secondBoat);
-        BoatInterface thirdBoat = boatGenerator.generateBoat();
-        assertEquals(expectedName, thirdBoat.getName());
+        GenericBoat thirdBoat = boatGenerator.generateBoat();
+        assertEquals(expectedName, thirdBoat.getName().getValue());
     }
 
     @Test
     public void addAndRemoveMaxAmountOfBoats() {
         //This test adds and removes boats to see if they are being tracked properly
-        ArrayList<BoatInterface> boats = new ArrayList<>();
+        ArrayList<GenericBoat> boats = new ArrayList<>();
         addBoats(10, boats);
         removeBoats(5, boats);
         assertEquals(5, boats.size()); //There should now be five boats
@@ -50,7 +49,7 @@ public class BoatGeneratorTest {
 
     }
 
-    private void removeBoats(int amount, ArrayList<BoatInterface> boats) {
+    private void removeBoats(int amount, ArrayList<GenericBoat> boats) {
         for (int i = 0; i < amount; i++) {
             try {
                 boatGenerator.makeAvailable(boats.get(i));
@@ -61,7 +60,7 @@ public class BoatGeneratorTest {
         }
     }
 
-    private void addBoats(int amount, ArrayList<BoatInterface> boats) {
+    private void addBoats(int amount, ArrayList<GenericBoat> boats) {
         for (int i = 0; i < amount; i++) {
             try {
                 boats.add(boatGenerator.generateBoat());
