@@ -33,6 +33,14 @@ public class AgarBoat extends BoatDecorator{
         boat.disconnect();
         boat.haltBoat();
         setEliminated();
+        while (!isEliminated()) {
+            loseLife();
+        }
+        setLives(0);
+        boat.setLives(0); //its unclear where one should be setting lives
+        lives = 0;
+
+        System.out.println(boat.getSourceId() + " elimination status - " + isEliminated());
     }
 
     public void loseLife() {

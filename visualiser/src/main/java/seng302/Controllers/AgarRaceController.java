@@ -356,6 +356,7 @@ public class AgarRaceController implements IRaceController {
     private void updateBoatPositions() {
         final int SAIL_OFFSET = 7;
 
+
         for (int i = 0; i < boats.size(); i++) {
             BoatSprite currentBoat = boats.get(i);
             if (currentBoat.getBoat().isEliminated()) {
