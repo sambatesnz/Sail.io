@@ -450,7 +450,7 @@ public class Race {
         return (finishTime > 0) && (System.currentTimeMillis() > finishTime);
     }
 
-    private boolean areAllContestantsFinished() {
+    public boolean areAllContestantsFinished() {
         for (GenericBoat boat : boats) {
             if (!(boat.isFinished() || !boat.isConnected())){
                 return false;

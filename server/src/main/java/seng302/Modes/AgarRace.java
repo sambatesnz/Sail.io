@@ -131,4 +131,15 @@ public class AgarRace extends Race {
             throw new Exception("cannot create boat");
         }
     }
+
+    @Override
+    public boolean areAllContestantsFinished() {
+        System.out.println("checking if contestants are finished....");
+        for (GenericBoat boat : boats) {
+            if (!(boat.isFinished() || !boat.isConnected())){
+                return false;
+            }
+        }
+        return true;
+    }
 }
