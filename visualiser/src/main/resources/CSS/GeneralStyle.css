@@ -5,6 +5,19 @@
     -fx-background: rgb(40, 109, 168);
 }
 
+/*-----------------------------------Text Fields-----------------------------------------------------*/
+
+.jfx-text-field {
+    -fx-background-color: rgba(40, 109, 168, 0.9);
+    -fx-text-fill: white;
+}
+
+.text-input {
+    -fx-prompt-text-fill: rgba(256, 256, 256, 0.7);
+}
+
+/*--------------------------------Buttons------------------------------------------------------------*/
+
 .button {
     -fx-border-radius: 0px;
     -fx-background-radius: 0px;
@@ -14,19 +27,6 @@
 
 .jfx-button {
     -fx-background-color: rgb(40, 109, 168);
-}
-
-.jfx-radio-button {
-    -jfx-selected-color: rgb(40, 109, 168);
-}
-
-.jfx-text-field {
-    -fx-background-color: rgba(40, 109, 168, 0.9);
-    -fx-text-fill: white;
-}
-
-.text-input {
-    -fx-prompt-text-fill: rgba(256, 256, 256, 0.7);
 }
 
 .jfx-toggle-button {
@@ -59,6 +59,8 @@
     -fx-rippler-fill: transparent;
     -fx-opacity: 0;
 }
+
+/*---------------------------------------------Tables----------------------------------------------------*/
 
 .tree-table-view{
     -fx-tree-table-color: rgba(255, 150, 150, 0.8);
