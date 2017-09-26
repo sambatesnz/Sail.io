@@ -148,6 +148,10 @@ public class RaceController implements IRaceController {
 
         fpsCounter = new FPSCounter(fpsLabel);
 
+        fpsBtn.setFocusTraversable(false);
+        annotationBtn.setFocusTraversable(false);
+        toggleFinishersBtn.setFocusTraversable(false);
+
         initialiseZoomFollowing();
         initialiseRoundingArrow();
         initialiseNextMarkArrow();
@@ -211,6 +215,10 @@ public class RaceController implements IRaceController {
         legCol = new JFXTreeTableColumn<>("Leg");
         nameCol = new JFXTreeTableColumn<>("Name");
         speedCol = new JFXTreeTableColumn<>("Speed");
+
+        legCol.setSortable(true);
+        nameCol.setSortable(true);
+        speedCol.setSortable(true);
 
         legCol.setCellValueFactory(p -> {
             String leg = String.valueOf(p.getValue().getValue().getCurrentLegIndex());
