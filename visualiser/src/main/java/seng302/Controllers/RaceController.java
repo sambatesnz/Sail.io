@@ -347,10 +347,18 @@ public class RaceController implements IRaceController {
                 boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateY(0);
 
                 //Sails
-                Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
-//                updateNodeScale(sail);
-//                sail.setScaleX(sail.getScaleX()*0.1);
-//                sail.setScaleY(sail.getScaleY()*0.1);
+                final double sailScale = 0.04;
+                ImageView sail = (ImageView) boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
+                sail.setScaleX(0.1*getNodeScale());
+                sail.setScaleY(0.1*getNodeScale());
+                sail.setRotate(sail.getRotate()+3);
+//                sail.getTransforms().add(new Rotate(3, 0, 0));
+//                sail.setScaleY(1);
+//                sail.setScaleX(1);
+//                sail.setTranslateY(-sail.getImage().getHeight() * (0.5 - sailScale * getNodeScale()/2) - 25);
+//                sail.setTranslateX(-sail.getImage().getWidth() * (0.5 - sailScale * getNodeScale()/2) - 25);
+//                sail.setScaleY(sail.getScaleY()*sailScale);
+//                sail.setScaleX(sail.getScaleX()*sailScale);
 //                double headingDif = (360 + boats.get(i).getBoat().getHeading() - race.getWindHeading()) % 360;
 //                if (race.getBoats().get(i).isSailsOut()){
 //                    boats.get(i).sailOut();
@@ -1116,6 +1124,9 @@ public class RaceController implements IRaceController {
     private void updateNodeScale(Node nodeToScale) {
         nodeToScale.setScaleX(1/(1+Coordinate.getZoom()));
         nodeToScale.setScaleY(1/(1+Coordinate.getZoom()));
+    }
+    private double getNodeScale( ) {
+        return (1/(1+Coordinate.getZoom()));
     }
 
     public void setAddr(String ip, int port) {

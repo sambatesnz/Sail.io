@@ -106,11 +106,11 @@ public class BoatSprite {
     private void initialiseSail(){
 
         Image img = new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("sail1.png"));
+
         sail = new ImageView(img);
         sail.setTranslateX(-img.getWidth()/2);
         sail.setTranslateY(-img.getHeight()/2);
-        sail.setScaleX(0.2);
-        sail.setScaleY(0.2);
+
 
 //        sail = new Polyline();
 //        sail.setStroke(Color.RED);
