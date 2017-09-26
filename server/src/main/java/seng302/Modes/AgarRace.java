@@ -21,8 +21,9 @@ import static java.lang.System.currentTimeMillis;
 public class AgarRace extends Race {
 
     private static final int AGAR_SIZE_DECREMENT = 1;
-    private static final int MINIMUM_AGAR_SIZE = 0;
+    public static final int MINIMUM_AGAR_SIZE = 0;
     private static final int SIZE_DECREASE_TICK_MS = 50;
+    private static final double RADIUS_REDUCTION_FACTOR = 0.99;
 
     public AgarRace() {
         super();
@@ -45,7 +46,7 @@ public class AgarRace extends Race {
 
     @Override
     public void checkCollisions(IServerData raceManager){
-        for (GenericBoat boat : getBoats()) {
+        for (GenericBoat boat : getBoatsInRace()) {
             BoatCollision collision = collisionDetector.checkBoatCollision(boat, boats, collisionMap);
             if (collision != null) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
@@ -85,22 +86,36 @@ public class AgarRace extends Race {
 
     private void killBoat(GenericBoat loser) {
         loser.loseLife();
+        if (loser.isEliminated()){
+            loser.haltBoat();
+        }
         loser.setSailsOut(false);
         List<GenericBoat> boats = new ArrayList<>();
         boats.add(loser);
-        LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
         loser.setBaseSpeed();
+        LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
     }
 
-    private void reduceBoatSize(GenericBoat boat) {
+    /**
+     * Reduces size of a given boat
+     * @param boat you wish to reduce
+     */
+    public void reduceBoatSize(GenericBoat boat) {
         if (currentTimeMillis() - boat.getLastAgarSizeDecreaseTime() > SIZE_DECREASE_TICK_MS) {
-            boat.setAgarSize(boat.getAgarSize() - AGAR_SIZE_DECREMENT);
+            boat.setAgarSize(Math.min(boat.getAgarSize() - AGAR_SIZE_DECREMENT, getRelativeSmallerArea(boat.getAgarSize())));
             boat.setBaseSpeed();
             if (boat.getAgarSize() <= MINIMUM_AGAR_SIZE) {
                 killBoat(boat);
             }
             boat.setLastAgarSizeDecreaseTime(currentTimeMillis());
         }
+    }
+
+    private int getRelativeSmallerArea(int agarSize) {
+        double radius = Math.sqrt((agarSize/Math.PI));
+        double newRadius = radius * RADIUS_REDUCTION_FACTOR;
+        double newArea = Math.PI * newRadius * newRadius;
+        return (int)Math.floor(newArea);
     }
 
     @Override

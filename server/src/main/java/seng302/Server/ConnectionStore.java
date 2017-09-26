@@ -67,7 +67,7 @@ public class ConnectionStore {
     /**
      * Sends a message to a particular client
      * @param message A server message (AC35 spec message wrapped with a header which is the clients id)
-     * @throws IOException
+     * @throws IOException Failed to send message
      */
     public synchronized void sendToOne(byte[] message) throws IOException {
         synchronized (socketStreams) {
