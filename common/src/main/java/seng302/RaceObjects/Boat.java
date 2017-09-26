@@ -227,6 +227,11 @@ public class Boat extends GenericBoat {
     }
 
     @Override
+    public void haltBoat() {
+        speed = 0;
+    }
+
+    @Override
     public void setBaseSpeed() {}
 
     private int getRelativeAngle(int angle1, double angle2){
