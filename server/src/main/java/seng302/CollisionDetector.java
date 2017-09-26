@@ -73,7 +73,6 @@ public class CollisionDetector {
      */
     public BoatCollision checkBoatCollision(GenericBoat boat, List<GenericBoat> boats, Map<BoatPair, BoatCollision> collisionMap) {
         for (GenericBoat checkBoat : boats) {
-            System.out.println("Checkboat sourceId: " + checkBoat.getSourceId());
             if (!checkBoat.equals(boat)) { //not the same boat
                 BoatPair boatPair = new BoatPair(boat, checkBoat);
                 BoatCollision boat1Collision = collisionMap.get(boatPair);
