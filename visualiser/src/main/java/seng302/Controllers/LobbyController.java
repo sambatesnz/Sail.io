@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -43,6 +44,10 @@ public class LobbyController {
     public void initialiseTable(){
         teamColumn = new JFXTreeTableColumn<>("Team Name");
         clientColumn = new JFXTreeTableColumn<>("Country");
+        teamColumn.setSortable(false);
+        clientColumn.setSortable(false);
+
+        contestantTable.setSelectionModel(null);
 
         teamColumn.setCellValueFactory(
                 new Callback<TreeTableColumn.CellDataFeatures<GenericBoat, String>, ObservableValue<String>>() {

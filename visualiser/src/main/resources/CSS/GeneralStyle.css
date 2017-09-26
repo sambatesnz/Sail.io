@@ -1,7 +1,7 @@
 .root{
     -fx-font-size: 9.5pt;
     -fx-font-family: "Courier New";
-    -fx-base: #20b176;
+    -fx-base: rgba(253, 231, 76, 0.9);
     -fx-background: rgb(40, 109, 168);
 }
 
@@ -21,18 +21,20 @@
 .button {
     -fx-border-radius: 0px;
     -fx-background-radius: 0px;
-    -fx-background: #20b176;
+    -fx-background: #fde74c;
     -fx-text-fill: white;
 }
 
 .jfx-button {
-    -fx-background-color: rgb(40, 109, 168);
+    -fx-background-color: rgba(253, 231, 76, 0.9);
+    -fx-text-fill: black;
+}
+
+#connectBtn {
+    -fx-background-color: rgba(40, 109, 168, 0.9);
 }
 
 .jfx-toggle-button {
-    /*-jfx-toggle-color: rgb(40, 109, 168);*/
-    /*-jfx-untoggle-color: rgb(40, 109, 168);*/
-
     -jfx-toggle-color: transparent;
     -jfx-untoggle-color: transparent;
     -jfx-toggle-line-color: transparent;
@@ -60,52 +62,7 @@
     -fx-opacity: 0;
 }
 
-/*---------------------------------------------Tables----------------------------------------------------*/
-
-.tree-table-view{
-    -fx-tree-table-color: rgba(255, 150, 150, 0.8);
-    -fx-tree-table-rippler-color : rgba(255, 0, 0, 0.9);
-    -fx-background-color: rgba(40, 109, 168, 0.9);
-    -fx-text-fill: white;
-}
-
-.tree-table-view:focused .tree-table-row-cell:selected {
-    -fx-background-color: -fx-tree-table-color  ;
-    -fx-table-cell-border-color: -fx-tree-table-color;
-}
-
-
-.tree-table-view:focused .tree-table-row-cell:selected .tree-table-cell{
-    -fx-text-fill: white;
-}
-
-.tree-table-view .jfx-rippler {
-    -fx-rippler-fill: -fx-tree-table-rippler-color;
-}
-
-.tree-table-view .column-header ,
-.tree-table-view .column-header-background,
-.tree-table-view .column-header-background .filler{
-    -fx-background-color:TRANSPARENT;
-}
-
-.tree-table-view .column-header{
-    -fx-border-width : 0 0 0 1;
-    -fx-border-color: #F3F3F3;
-}
-
-.tree-table-view .column-header .label {
-    -fx-text-fill : #949494;
-    -fx-padding : 16 0 16 0 ;
-}
-
-.tree-table-view .column-header .arrow, .tree-table-view .column-header .sort-order-dot{
-    -fx-background-color : #949494;
-}
-
-.tree-table-view .column-header:last-visible {
-    -fx-border-width: 0 1 0 1;
-}
+/*--------------------------Background Images---------------------------------------*/
 
 #startAnchor {
     -fx-background-image: url("../BackgroundImages/north_wind_blows.jpg");
@@ -121,13 +78,65 @@
     -fx-opacity: 0.7;
 }
 
+/*---------------------------------------------Tables----------------------------------------------------*/
+
+.tree-table-view{
+    -fx-tree-table-color: rgba(40, 109, 168, 0.9);
+    -fx-tree-table-rippler-color: lightgrey;
+    -fx-background-color: rgba(253, 231, 76, 0.9);
+    -fx-text-fill: white;
+    -fx-base: white;
+}
+
+.tree-table-view .tree-table-row-cell:focused {
+    -fx-background-color: -fx-tree-table-color  ;
+    -fx-table-cell-border-color: white;
+}
+
+.tree-table-row-cell {
+    -fx-background-color: rgba(256, 256, 256, 0.9);
+    -fx-border-color:#F3F3F3;
+}
+
+.tree-table-view .tree-table-row-cell:selected .tree-table-cell{
+    -fx-background-color: -fx-tree-table-color;
+    -fx-text-fill: white;
+}
+
+.tree-table-view .jfx-rippler {
+    -fx-rippler-fill: -fx-tree-table-rippler-color;
+}
+
+.tree-table-view .column-header ,
+.tree-table-view .column-header-background,
+.tree-table-view .column-header-background .filler{
+    -fx-background-color: rgba(253, 231, 76, 0.9);
+}
+
+.tree-table-view .column-header{
+    -fx-border-width : 0 0 0 0;
+    -fx-border-color: #F3F3F3;
+}
+
+.tree-table-view .column-header .label {
+    -fx-text-fill : black;
+    -fx-padding : 16 0 16 0 ;
+}
+
+.tree-table-view .column-header .arrow, .tree-table-view .column-header .sort-order-dot{
+    -fx-background-color : black;
+}
+
+.tree-table-view .column-header:last-visible {
+    -fx-border-width: 0 0 0 0;
+}
+
 .tree-table-view .column-header-background{
     -fx-border-width : 0 0.0 1 0;
     -fx-border-color:#F3F3F3;
 }
 
 .tree-table-view .tree-table-cell{
-    -fx-border-width:0 0 0 0;
     -fx-padding : 16 0 16 0 ;
 }
 
@@ -151,12 +160,17 @@
     -fx-padding: 0.333333em 0.229em 0.333333em 0.229em; /* 4 */
     -fx-shape: "M 0 -3.5 L 4 0 L 0 3.5 z";
 }
+
 .tree-table-row-cell .jfx-text-field{
     -fx-focus-color: rgba(40, 109, 168, 0.9);
     -fx-text-fill: white;
 }
 
-/* ----------------------------------------------------------------------------------------------------------------------*/
+.tree-table-row-group {
+    -fx-background-color: rgb(230, 230, 230);
+}
+
+/* ------------------------------------Old Tables Style For Reference-----------------------------------------*/
 
 /*.table-view{*/
 /*-fx-background-color: #007a49;*/

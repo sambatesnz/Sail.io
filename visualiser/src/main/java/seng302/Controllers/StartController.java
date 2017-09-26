@@ -1,9 +1,6 @@
 package seng302.Controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXRadioButton;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleButton;
+import com.jfoenix.controls.*;
 import javafx.application.Platform;
 import javafx.css.CssMetaData;
 import javafx.fxml.FXML;
@@ -41,13 +38,8 @@ public class StartController {
     private ClientController clientController;
 
     public StartController() {
-//        this.primaryStage = mainStage;
-
         Coordinate.setWindowWidthX(800);
         Coordinate.setWindowHeightY(600);
-//
-//        mainStage.widthProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowWidthX((newValue).doubleValue()));
-//        mainStage.heightProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowHeightY(newValue.doubleValue()));
     }
 
     @FXML
