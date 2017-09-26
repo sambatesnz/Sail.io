@@ -96,6 +96,7 @@ public class AgarRace extends Race {
         boats.add(loser);
         loser.setBaseSpeed();
         LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
+        System.out.println("======= LOSER SIZE:" + loser.getSize() + " =============");
     }
 
     /**
