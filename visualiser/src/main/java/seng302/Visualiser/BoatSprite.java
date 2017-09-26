@@ -1,12 +1,14 @@
 package seng302.Visualiser;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
 import seng302.RaceObjects.BoatInterface;
 
 import javax.imageio.ImageIO;
@@ -21,7 +23,7 @@ public class BoatSprite {
     private Text text;
     private Circle tc;
     private Circle controlCircle;
-    private Polyline sail;
+    private ImageView sail;
     public static final int CONTROL_CIRCLE = 0;
     public static final int IMAGE = 1;
     public static final int WAKE = 2;
@@ -102,31 +104,39 @@ public class BoatSprite {
     }
 
     private void initialiseSail(){
-        sail = new Polyline();
-        sail.setStroke(Color.RED);
-        for(int i=0; i<360; i++){
-            sail.getPoints().addAll(Math.sin(Math.toRadians(i)*2), i/22.5);
-        }
+
+        Image img = new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("sail1.png"));
+        sail = new ImageView(img);
+        sail.setTranslateX(-img.getWidth()/2);
+        sail.setTranslateY(-img.getHeight()/2);
+        sail.setScaleX(0.2);
+        sail.setScaleY(0.2);
+
+//        sail = new Polyline();
+//        sail.setStroke(Color.RED);
+//        for(int i=0; i<360; i++){
+//            sail.getPoints().addAll(Math.sin(Math.toRadians(i)*2), i/22.5);
+//        }
     }
 
     /**
      * Redraws the sail to be luffing
      */
     public void sailIn(){
-        for(int i=0; i<720; i += 2){
-            sail.getPoints().set(i, Math.log(i+1)*0.25*Math.sin(Math.toRadians((System.currentTimeMillis()+i)/1.0d)));
-            sail.getPoints().set(i + 1, i/45d);
-        }
+//        for(int i=0; i<720; i += 2){
+//            sail.getPoints().set(i, Math.log(i+1)*0.25*Math.sin(Math.toRadians((System.currentTimeMillis()+i)/1.0d)));
+//            sail.getPoints().set(i + 1, i/45d);
+//        }
     }
 
     /**
      * Redraws the sail to be powered
      */
     public void sailOut() {
-        for (int i = 0; i < 720; i += 2) {
-            sail.getPoints().set(i, 0d);
-            sail.getPoints().set(i + 1, i/45d);
-        }
+//        for (int i = 0; i < 720; i += 2) {
+//            sail.getPoints().set(i, 0d);
+//            sail.getPoints().set(i + 1, i/45d);
+//        }
     }
 
     /**

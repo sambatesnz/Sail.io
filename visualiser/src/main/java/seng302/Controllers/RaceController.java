@@ -348,61 +348,63 @@ public class RaceController implements IRaceController {
 
                 //Sails
                 Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
-                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.SAIL));
-                double headingDif = (360 + boats.get(i).getBoat().getHeading() - race.getWindHeading()) % 360;
-                if (race.getBoats().get(i).isSailsOut()){
-                    boats.get(i).sailOut();
-                    sail.getTransforms().clear();
-                    if (headingDif < 11 || headingDif > 349) {
-                        // in irons, make the sail go wavy
-                        sail.getTransforms().add(new Rotate(race.getWindHeading(), 0, 0));
-                    } else if (headingDif > 10 && headingDif < 45) {
-                        // close hauled, set at small angle to wind on right of boat
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 18, 0, 0));
-                    } else if (headingDif > 44 && headingDif < 79) {
-                        // close reach, slightly larger angle on right of boat
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 36, 0, 0));
-                    } else if (headingDif > 78 && headingDif < 123) {
-                        // beam reach, bigger angle on right of boat
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 54, 0, 0));
-                    } else if (headingDif > 122 && headingDif < 157) {
-                        // broad reach, second biggest angle, on right of boat
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 72, 0, 0));
-                    } else if (headingDif > 156 && headingDif < 181) {
-                        //running, sail on right, biggest angle
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 90, 0, 0));
-                    } else if (headingDif > 180 && headingDif < 215) {
-                        //running, sail on left
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 90, 0, 0));
-                    } else if (headingDif > 214 && headingDif < 249) {
-                        // broad reach, left
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 72, 0, 0));
-                    } else if (headingDif > 248 && headingDif < 283) {
-                        // beam reach right
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 54, 0, 0));
-                    } else if (headingDif > 282 && headingDif < 317) {
-                        // close reach right
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 36, 0, 0));
-                    } else if (headingDif > 316 && headingDif < 351) {
-                        // close hauled right
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 18, 0, 0));
-                    }
-
-//                    if (headingDif < 180 ) {
+//                updateNodeScale(sail);
+//                sail.setScaleX(sail.getScaleX()*0.1);
+//                sail.setScaleY(sail.getScaleY()*0.1);
+//                double headingDif = (360 + boats.get(i).getBoat().getHeading() - race.getWindHeading()) % 360;
+//                if (race.getBoats().get(i).isSailsOut()){
+//                    boats.get(i).sailOut();
+//                    sail.getTransforms().clear();
+//                    if (headingDif < 11 || headingDif > 349) {
+//                        // in irons, make the sail go wavy
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading(), 0, 0));
+//                    } else if (headingDif > 10 && headingDif < 45) {
+//                        // close hauled, set at small angle to wind on right of boat
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 18, 0, 0));
+//                    } else if (headingDif > 44 && headingDif < 79) {
+//                        // close reach, slightly larger angle on right of boat
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 36, 0, 0));
+//                    } else if (headingDif > 78 && headingDif < 123) {
+//                        // beam reach, bigger angle on right of boat
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 54, 0, 0));
+//                    } else if (headingDif > 122 && headingDif < 157) {
+//                        // broad reach, second biggest angle, on right of boat
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 72, 0, 0));
+//                    } else if (headingDif > 156 && headingDif < 181) {
+//                        //running, sail on right, biggest angle
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 90, 0, 0));
+//                    } else if (headingDif > 180 && headingDif < 215) {
+//                        //running, sail on left
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 90, 0, 0));
+//                    } else if (headingDif > 214 && headingDif < 249) {
+//                        // broad reach, left
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 72, 0, 0));
+//                    } else if (headingDif > 248 && headingDif < 283) {
+//                        // beam reach right
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 54, 0, 0));
+//                    } else if (headingDif > 282 && headingDif < 317) {
+//                        // close reach right
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 36, 0, 0));
+//                    } else if (headingDif > 316 && headingDif < 351) {
+//                        // close hauled right
+//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 18, 0, 0));
+//                    }
 //
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 30, 0, 0));
-//                    }
-//                    else {
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 30, 0, 0));
-//                    }
-                } else {
-                    boats.get(i).sailIn();
-                    sail.getTransforms().clear();
-                    sail.getTransforms().add(new Rotate(race.getWindHeading(), 0,0));
-
-                }
-                double sailLength = 720d / 45d;
-                sail.setLayoutY((1/(1 + Coordinate.getZoom())) * (sailLength)/2 - SAIL_OFFSET);
+////                    if (headingDif < 180 ) {
+////
+////                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 30, 0, 0));
+////                    }
+////                    else {
+////                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 30, 0, 0));
+////                    }
+//                } else {
+//                    boats.get(i).sailIn();
+//                    sail.getTransforms().clear();
+//                    sail.getTransforms().add(new Rotate(race.getWindHeading(), 0,0));
+//
+//                }
+//                double sailLength = 720d / 45d;
+//                sail.setLayoutY((1/(1 + Coordinate.getZoom())) * (sailLength)/2 - SAIL_OFFSET);
             }
         }
     }
