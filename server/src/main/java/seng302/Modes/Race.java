@@ -425,7 +425,6 @@ public class Race {
 
         //System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS
         if(areAllContestantsFinished()){
-            System.out.println("finishing the ol race....");
             setFinishTime(ONE_MINUTE_IN_MILLIS/6);
         }
         if (isFinishTimerExpired() && raceStatus != RaceStatus.FINISHED) {
