@@ -88,6 +88,7 @@ public class AgarRace extends Race {
         loser.loseLife();
         if (loser.isEliminated()){
             loser.haltBoat();
+            boatManager.addEliminatedBoat(loser);
         }
         loser.setSailsOut(false);
         List<GenericBoat> boats = new ArrayList<>();
@@ -130,5 +131,14 @@ public class AgarRace extends Race {
         } else {
             throw new Exception("cannot create boat");
         }
+    }
+
+    @Override
+    public boolean areAllContestantsFinished() {
+        boolean isFinished = false;
+        if (boats.size() - boatManager.getEliminatedBoats().size() <= 1) {
+            isFinished = true;
+        }
+        return isFinished;
     }
 }

@@ -57,7 +57,7 @@ public class Race {
     static int MAX_NUMBER_OF_BOATS = 20;
 
     BoatGenerator boatGenerator;
-    private BoatManager boatManager;
+    protected BoatManager boatManager;
     private long finishTime;
     CollisionDetector collisionDetector;
 
@@ -450,7 +450,7 @@ public class Race {
         return (finishTime > 0) && (System.currentTimeMillis() > finishTime);
     }
 
-    private boolean areAllContestantsFinished() {
+    public boolean areAllContestantsFinished() {
         for (GenericBoat boat : boats) {
             if (!(boat.isFinished() || !boat.isConnected())){
                 return false;
