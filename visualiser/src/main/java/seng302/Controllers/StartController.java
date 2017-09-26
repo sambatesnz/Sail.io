@@ -39,13 +39,8 @@ public class StartController {
     private ClientController clientController;
 
     public StartController() {
-//        this.primaryStage = mainStage;
-
         Coordinate.setWindowWidthX(800);
         Coordinate.setWindowHeightY(600);
-//
-//        mainStage.widthProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowWidthX((newValue).doubleValue()));
-//        mainStage.heightProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowHeightY(newValue.doubleValue()));
     }
 
     @FXML
