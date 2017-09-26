@@ -62,7 +62,15 @@
     -fx-opacity: 0;
 }
 
-/*--------------------------Background Images---------------------------------------*/
+.jfx-check-box {
+    -jfx-checked-color: rgba(253, 231, 76, 0.9);
+}
+
+.jfx-check-box .mark {
+    -fx-background-color: black;
+}
+
+    /*--------------------------Background Images---------------------------------------*/
 
 #startAnchor {
     -fx-background-image: url("../BackgroundImages/north_wind_blows.jpg");
