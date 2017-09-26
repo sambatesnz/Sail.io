@@ -61,6 +61,12 @@ Test that the boat scaling functionality after a collision works as expected
     - Comment: was sailing two boats over one another at different speeds without a collision occuring
     - Result: Fail    
     
+##### Test:
+
+    - Date: 26/9/2017
+    - Current Commit of branch: 09127161960c7cfe58f77ad54433537a30a37264
+    - Performed By: Matt Simpson
+    - Result: Pass
  
     
     

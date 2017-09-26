@@ -231,6 +231,7 @@ public class Boat extends GenericBoat {
     @Override
     public void haltBoat() {
         speed = 0;
+        size = 0;
     }
 
     @Override

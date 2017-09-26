@@ -44,7 +44,6 @@ public class AgarBoat extends BoatDecorator{
         }
     }
 
-
     public void resetAgarSize() {
         agarSize = BASE_AGAR_SIZE;
         updateBoatCollisionSize();
