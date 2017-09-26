@@ -3,7 +3,7 @@ package seng302.Modes;
 import seng302.*;
 import seng302.DataGeneration.BoatXMLCreator;
 import seng302.DataGeneration.IServerData;
-import seng302.PacketGeneration.AgarPackets.AgarMessage;
+import seng302.PacketGeneration.AgarPackets.ServerAgarMessage;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatus;
@@ -159,7 +159,7 @@ public class AgarManager implements IServerData{
                         (short) 100, (short) 100, (short) 100,
                         (short) (boat.isSailsOut() ? 1 : 0), (short) 100, (short) 100
                 );
-                BinaryMessage agarMessage = new AgarMessage(boat.getSourceId(), boat.getLives(), boat.getAgarSize());
+                BinaryMessage agarMessage = new ServerAgarMessage(boat.getSourceId(), boat.getLives(), boat.getAgarSize());
                 broadcastMessageQueue.add(boatLocationMessage.createMessage());
                 broadcastMessageQueue.add(agarMessage.createMessage());
             }

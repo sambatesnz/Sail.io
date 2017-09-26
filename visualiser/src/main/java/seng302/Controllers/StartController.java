@@ -302,7 +302,7 @@ public class StartController {
         primaryStage.setMinWidth(800);
         primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
-        primaryStage.setTitle("RaceView");
+        primaryStage.setTitle("Sail IO");
         primaryStage.show();
 
         startController.setPrimaryStage(primaryStage);
@@ -325,7 +325,7 @@ public class StartController {
         primaryStage.setWidth(800);
         primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
-        primaryStage.setTitle("RaceView");
+        primaryStage.setTitle("Sail IO");
         primaryStage.show();
 
         scoreScreenController.setPrimaryStage(primaryStage);

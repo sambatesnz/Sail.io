@@ -67,7 +67,8 @@ public class CollisionDetector {
     /**
      * Check the collision of a boat
      * @param boat the boat being checked
-     * @param boats
+     * @param boats List of boats in the race
+     * @param collisionMap A map of collision status between all boats in the race
      * @return the BoatCollision if the boat is colliding, null otherwise
      */
     public BoatCollision checkBoatCollision(GenericBoat boat, List<GenericBoat> boats, Map<BoatPair, BoatCollision> collisionMap) {

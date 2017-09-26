@@ -82,7 +82,7 @@ public class Message {
                 new LocationMessage(body, race);
                 break;
             case AGAR:
-                new AgarMessage(body, race);
+                new AgarMessage(body).updateRace(race);
                 break;
             case PARTICIPANT_CONFIRMATION:
                 messageParser = new ClientParticipantConfirmationMessage(body);

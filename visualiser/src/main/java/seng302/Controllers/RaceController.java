@@ -129,6 +129,7 @@ public class RaceController implements IRaceController {
 
     /**
      * initializes the race display.
+     * @throws IOException Initialization Error
      */
     @FXML
     public void initialize() throws IOException {
