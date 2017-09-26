@@ -139,6 +139,11 @@ public class AgarRaceController implements IRaceController {
      */
     @FXML
     public void initialize() throws IOException {
+        primaryStage.setHeight(799);
+        primaryStage.setWidth(1199);
+        System.out.println(primaryStage.getWidth() + ", " + primaryStage.getHeight());
+        primaryStage.setHeight(800);
+        primaryStage.setWidth(1200);
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
@@ -154,6 +159,7 @@ public class AgarRaceController implements IRaceController {
 
         initialiseZoomFollowing();
         initialisePositionsTable();
+        legCol.setVisible(false);
         enableScrolling();
         toggleFinishersBtn.setVisible(false);
         toggleFinishersBtn.setText("Hide Finishers");
@@ -169,7 +175,6 @@ public class AgarRaceController implements IRaceController {
         if (race.getClientSourceId() == 0){
             initialiseSpectatorZoom();
         }
-
         drawLives();
 
         startRaceListener();
