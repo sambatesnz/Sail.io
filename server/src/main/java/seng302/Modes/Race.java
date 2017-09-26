@@ -527,7 +527,7 @@ public class Race {
 
     /**
      * Gets boats that havent been eliminated
-     * @return ArrayList<GenericBoat>
+     * @return The boats that are still active in the race
      */
     public ArrayList<GenericBoat> getBoatsInRace() {
         ArrayList<GenericBoat> boats = new ArrayList<>();

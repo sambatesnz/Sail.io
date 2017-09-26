@@ -17,7 +17,7 @@ public class PracticeMessage  extends BinaryMessage {
 
     /**
      * Constructor for a practice race message
-     * @param meaning
+     * @param meaning Meaning of the Message
      */
     public PracticeMessage(PracticeMessageMeaning meaning) {
         practiceRaceMessage = new byte[MESSAGE_SIZE];
@@ -26,12 +26,14 @@ public class PracticeMessage  extends BinaryMessage {
     }
 
     /**
-     * Constructor for a practice race message with sourceId
+     *
+     * @param meaning Meaning of the message
+     * @param boatSourceId Source ID of the boat
      */
-    public PracticeMessage(PracticeMessageMeaning meaning, int boatSourceid) {
+    public PracticeMessage(PracticeMessageMeaning meaning, int boatSourceId) {
         this.practiceRaceMessage = new byte[MESSAGE_SIZE];
         this.meaning = (byte) meaning.getValue();
-        this.boatSourceId = PacketGenerationUtils.intToFourBytes(boatSourceid);
+        this.boatSourceId = PacketGenerationUtils.intToFourBytes(boatSourceId);
     }
 
 

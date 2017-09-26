@@ -134,10 +134,16 @@ public class AgarRaceController implements IRaceController {
     }
 
     /**
-     * initializes the race display.
+     * Initialization for the AgarRaceController
+     * @throws IOException Initialization Failure
      */
     @FXML
     public void initialize() throws IOException {
+        primaryStage.setHeight(799);
+        primaryStage.setWidth(1199);
+        System.out.println(primaryStage.getWidth() + ", " + primaryStage.getHeight());
+        primaryStage.setHeight(800);
+        primaryStage.setWidth(1200);
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
@@ -153,6 +159,7 @@ public class AgarRaceController implements IRaceController {
 
         initialiseZoomFollowing();
         initialisePositionsTable();
+        legCol.setVisible(false);
         enableScrolling();
         toggleFinishersBtn.setVisible(false);
         toggleFinishersBtn.setText("Hide Finishers");
@@ -168,7 +175,6 @@ public class AgarRaceController implements IRaceController {
         if (race.getClientSourceId() == 0){
             initialiseSpectatorZoom();
         }
-
         drawLives();
 
         startRaceListener();
@@ -413,68 +419,6 @@ public class AgarRaceController implements IRaceController {
                 }
             }
         }
-
-//        for (int i = 0; i < boats.size(); i++) {
-//            Node boat = boats.get(i).getStack().getChildren().get(BoatSprite.BOAT);
-//            if(race.getBoats().get(i).isKnowsBoatLocation()) {
-//                double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
-//                String speed = "";
-//                String name = "";
-//                if (showSpeed) {
-//                    speed = String.valueOf(race.getBoats().get(i).getSpeedInKnots()) + " knots";
-//                }
-//                if (showName) {
-//                    name = race.getBoats().get(i).getShortName();
-//                }
-//                //Position of boat, wake and annotations.
-//                boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
-//                boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
-////                System.out.println("agarsize: " + boats.get(i).getBoat().getAgarSize());
-//                updateNodeScale(boat, boats.get(i).getBoat().getAgarSize());
-//                boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
-//
-//                // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
-//                if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
-//                    updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), boats.get(i).getBoat().getAgarSize());
-//                }
-//
-//                //Boats wake
-//                boats.get(i).getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
-//                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.WAKE), boats.get(i).getBoat().getAgarSize());
-//                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setRotate(race.getBoats().get(i).getHeading());
-//                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * getScale(boats.get(i).getBoat().getAgarSize()))
-//                        * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
-//                boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
-//                        * getScale(boats.get(i).getBoat().getAgarSize())) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
-//
-//                //Boat annotations (name and speed)
-//                boats.get(i).getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
-//                boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateX(10);
-//                boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateY(0);
-//
-//                //Sails
-//                Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
-//                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.SAIL), boats.get(i).getBoat().getAgarSize());
-//                double headingDif = (360 + boats.get(i).getBoat().getHeading() - race.getWindHeading()) % 360;
-//                if (race.getBoats().get(i).isSailsOut()){
-//                    boats.get(i).sailOut();
-//                    sail.getTransforms().clear();
-//                    if (headingDif < 180 ) {
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 30, 0, 0));
-//                    }
-//                    else {
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 30, 0, 0));
-//                    }
-//                } else {
-//                    boats.get(i).sailIn();
-//                    sail.getTransforms().clear();
-//                    sail.getTransforms().add(new Rotate(race.getWindHeading(), 0,0));
-//
-//                }
-//                double sailLength = 720d / 45d;
-//                sail.setLayoutY(getScale(boats.get(i).getBoat().getAgarSize()) * (sailLength)/2 - SAIL_OFFSET);
-//            }
-//        }
     }
 
     private void initialiseBoatMetaData() {
@@ -1110,8 +1054,10 @@ public class AgarRaceController implements IRaceController {
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
+
     /**
      * This gets called once the visualiser receives information that the players boat has finished the race.
+     * @throws IOException Failed to set the finishing pane to true
      */
     public void raceFinished() throws IOException {
         finishingPane.setVisible(true);
