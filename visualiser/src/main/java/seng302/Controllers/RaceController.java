@@ -351,7 +351,26 @@ public class RaceController implements IRaceController {
                 ImageView sail = (ImageView) boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
                 sail.setScaleX(0.1*getNodeScale());
                 sail.setScaleY(0.1*getNodeScale());
-                sail.setRotate(sail.getRotate()+3);
+
+
+                double relativeHeading = (360 + race.getBoats().get(i).getHeading() - race.getWindHeading()) % 360;
+
+                double value = 180 + relativeHeading / 2;
+                sail.setRotate(value);
+
+                if (!(relativeHeading >= 0 && relativeHeading < 180)) {
+                    // flip
+
+//                    sail.setTranslateZ(sail.getBoundsInLocal().getWidth() / 2.0);
+                    double rotate = sail.getRotate();
+                    sail.setRotate(90);
+                    rotate = rotate - sail.getRotate();
+                    sail.setScaleY(-0.1*getNodeScale());
+                    sail.setRotate(sail.getRotate() - rotate + 180);
+//                    sail.setRotate(value);
+
+                }
+
 //                sail.getTransforms().add(new Rotate(3, 0, 0));
 //                sail.setScaleY(1);
 //                sail.setScaleX(1);

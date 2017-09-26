@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import seng302.RaceObjects.BoatInterface;
 
@@ -100,7 +101,6 @@ public class BoatSprite {
             controlCircle = new Circle(0);
         }
         stack.getChildren().add(controlCircle);
-
     }
 
     private void initialiseSail(){
