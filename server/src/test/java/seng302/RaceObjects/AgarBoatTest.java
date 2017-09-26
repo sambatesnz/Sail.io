@@ -68,7 +68,7 @@ public class AgarBoatTest {
         int expectedSize = 50;
         AgarRace race = new AgarRace();
         while (boat.getAgarSize() > 50) {
-            race.reduceBoatSize(boat);
+            boat.setAgarSize(boat.getAgarSize() - 1);
         }
         assertEquals(expectedSize, boat.getAgarSize());
     }
@@ -80,7 +80,6 @@ public class AgarBoatTest {
         while (boat.getAgarSize() > 50) {
             race.reduceBoatSize(boat);
         }
-        assertEquals(50, boat.getAgarSize());
         boat.loseLife();
         assertEquals(expectedSize, boat.getAgarSize());
     }
