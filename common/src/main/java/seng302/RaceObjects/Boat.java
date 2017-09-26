@@ -81,6 +81,7 @@ public class Boat extends GenericBoat {
     /**
      * Used to create a boat for testing purposes.
      * @param sourceID  boat source id
+     * @param boatName The name of the boat
      */
     public Boat(Integer sourceID, String boatName) {
         this.sourceId = sourceID;

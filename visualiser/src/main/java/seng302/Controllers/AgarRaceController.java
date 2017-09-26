@@ -134,7 +134,8 @@ public class AgarRaceController implements IRaceController {
     }
 
     /**
-     * initializes the race display.
+     * Initialization for the AgarRaceController
+     * @throws IOException Initialization Failure
      */
     @FXML
     public void initialize() throws IOException {

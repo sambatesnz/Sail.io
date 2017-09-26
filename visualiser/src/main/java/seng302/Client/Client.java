@@ -122,6 +122,7 @@ public class Client {
 
     /**
      * Sends PracticeMessage over a socket stream indicating a practice race
+     * @param practiceMessage Initialization message for practice mode
      * @throws IOException if problem writing to stream
      */
     public void sendPracticeMessage(PracticeMessage practiceMessage) throws IOException {
@@ -132,7 +133,7 @@ public class Client {
 
     /**
      * Sends BoatActionMessages over a socket stream
-     * @throws IOException
+     * @throws IOException Message failed to send
      */
     private void sendMessage() throws IOException {
         if (KeyBindingUtility.keyPressed()){
