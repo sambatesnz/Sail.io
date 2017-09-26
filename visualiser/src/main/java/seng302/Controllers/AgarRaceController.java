@@ -824,7 +824,6 @@ public class AgarRaceController implements IRaceController {
         } catch (Exception e) {
         }
 
-
         if(Coordinate.getWindowHeightY() != windowHeight || Coordinate.getWindowWidthX() != windowWidth) {
             viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
             viewAnchorPane.setMaxHeight(Coordinate.getWindowHeightY());
@@ -1091,14 +1090,9 @@ public class AgarRaceController implements IRaceController {
     }
 
     private double getScale(int areaPercent){
-        double extraArea = ((double) areaPercent) / 100 - 1;
-        double extraRadius = 0;
-        if(extraArea < 0) {
-            extraRadius = -sqrt(abs(extraArea / Math.PI));
-        }else if (extraArea > 0) {
-            extraRadius = sqrt(abs(extraArea / Math.PI));
-        }
-        return (1/(1+Coordinate.getZoom()) ) * (extraRadius/2 + 1);
+        double areaScale = ((double) areaPercent) / 100;
+        double radiusScale = sqrt(areaScale);
+        return ((1/(1+Coordinate.getZoom()) ) * (radiusScale));
     }
 
     /**
@@ -1135,8 +1129,6 @@ public class AgarRaceController implements IRaceController {
                             isFinishersHidden = false;
                             clientFinished = true;
                         }
-
-
                     }
                 }
             }

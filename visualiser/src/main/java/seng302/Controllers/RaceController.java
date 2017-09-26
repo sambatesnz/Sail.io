@@ -34,6 +34,7 @@ import seng302.Rounding;
 import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -770,7 +771,6 @@ public class RaceController implements IRaceController {
             }
         } catch (Exception e) {
         }
-
 
         if(Coordinate.getWindowHeightY() != windowHeight || Coordinate.getWindowWidthX() != windowWidth) {
             viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
