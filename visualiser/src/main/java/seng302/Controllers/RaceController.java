@@ -17,8 +17,6 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -26,7 +24,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import seng302.RaceObjects.*;
 import seng302.Rounding;
@@ -38,7 +35,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.*;
@@ -317,7 +313,7 @@ public class RaceController implements IRaceController {
                 if (showName) {
                     name = race.getBoats().get(i).getShortName();
                 }
-                //Position of boat, wake and annotations.
+                //  Position of boat, wake and annotations.
                 boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
                 boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
 
@@ -327,12 +323,12 @@ public class RaceController implements IRaceController {
                 boatImage.setScaleY(boatImage.getScaleY()*0.0666);
                 boatImage.setRotate(race.getBoats().get(i).getHeading());
 
-                // Temporary hard coding to differentiate between the boat in user control
+                //  Temporary hard coding to differentiate between the boat in user control
                 if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
                     updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
                 }
 
-                //Boats wake
+                //  Boats wake
                 boats.get(i).getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
                 updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.WAKE));
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setRotate(race.getBoats().get(i).getHeading());
@@ -341,97 +337,27 @@ public class RaceController implements IRaceController {
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
                         * (1 / (1 + Coordinate.getZoom()))) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
 
-                //Boat annotations (name and speed)
+                //  Boat annotations (name and speed)
                 boats.get(i).getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
                 boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateX(10);
                 boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateY(0);
 
-                //Sails
-                final double sailScale = 0.04;
-                ImageView sail = (ImageView) boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
-                sail.setScaleX(0.1*getNodeScale());
+                //  Sails
+                Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
+
                 sail.setScaleY(0.1*getNodeScale());
 
+                double boatHeading = race.getBoats().get(i).getHeading();
+                double relativeHeading = (360 + boatHeading - race.getWindHeading()) % 360;
+                double value = boatHeading - relativeHeading / 2;
 
-                double relativeHeading = (360 + race.getBoats().get(i).getHeading() - race.getWindHeading()) % 360;
-
-                double value = 180 + relativeHeading / 2;
-                sail.setRotate(value);
-
-                if (!(relativeHeading >= 0 && relativeHeading < 180)) {
-                    // flip
-
-//                    sail.setTranslateZ(sail.getBoundsInLocal().getWidth() / 2.0);
-                    double rotate = sail.getRotate();
-                    sail.setRotate(90);
-                    rotate = rotate - sail.getRotate();
-                    sail.setScaleY(-0.1*getNodeScale());
-                    sail.setRotate(sail.getRotate() - rotate + 180);
-//                    sail.setRotate(value);
-
+                if (relativeHeading >= 0 && relativeHeading < 180) {
+                    sail.setScaleX(-0.1*getNodeScale());
+                    sail.setRotate(value + 180);
+                } else {
+                    sail.setScaleX(0.1*getNodeScale());
+                    sail.setRotate(value);
                 }
-
-//                sail.getTransforms().add(new Rotate(3, 0, 0));
-//                sail.setScaleY(1);
-//                sail.setScaleX(1);
-//                sail.setTranslateY(-sail.getImage().getHeight() * (0.5 - sailScale * getNodeScale()/2) - 25);
-//                sail.setTranslateX(-sail.getImage().getWidth() * (0.5 - sailScale * getNodeScale()/2) - 25);
-//                sail.setScaleY(sail.getScaleY()*sailScale);
-//                sail.setScaleX(sail.getScaleX()*sailScale);
-//                double headingDif = (360 + boats.get(i).getBoat().getHeading() - race.getWindHeading()) % 360;
-//                if (race.getBoats().get(i).isSailsOut()){
-//                    boats.get(i).sailOut();
-//                    sail.getTransforms().clear();
-//                    if (headingDif < 11 || headingDif > 349) {
-//                        // in irons, make the sail go wavy
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading(), 0, 0));
-//                    } else if (headingDif > 10 && headingDif < 45) {
-//                        // close hauled, set at small angle to wind on right of boat
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 18, 0, 0));
-//                    } else if (headingDif > 44 && headingDif < 79) {
-//                        // close reach, slightly larger angle on right of boat
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 36, 0, 0));
-//                    } else if (headingDif > 78 && headingDif < 123) {
-//                        // beam reach, bigger angle on right of boat
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 54, 0, 0));
-//                    } else if (headingDif > 122 && headingDif < 157) {
-//                        // broad reach, second biggest angle, on right of boat
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 72, 0, 0));
-//                    } else if (headingDif > 156 && headingDif < 181) {
-//                        //running, sail on right, biggest angle
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 90, 0, 0));
-//                    } else if (headingDif > 180 && headingDif < 215) {
-//                        //running, sail on left
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 90, 0, 0));
-//                    } else if (headingDif > 214 && headingDif < 249) {
-//                        // broad reach, left
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 72, 0, 0));
-//                    } else if (headingDif > 248 && headingDif < 283) {
-//                        // beam reach right
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 54, 0, 0));
-//                    } else if (headingDif > 282 && headingDif < 317) {
-//                        // close reach right
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 36, 0, 0));
-//                    } else if (headingDif > 316 && headingDif < 351) {
-//                        // close hauled right
-//                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 18, 0, 0));
-//                    }
-//
-////                    if (headingDif < 180 ) {
-////
-////                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 30, 0, 0));
-////                    }
-////                    else {
-////                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 30, 0, 0));
-////                    }
-//                } else {
-//                    boats.get(i).sailIn();
-//                    sail.getTransforms().clear();
-//                    sail.getTransforms().add(new Rotate(race.getWindHeading(), 0,0));
-//
-//                }
-//                double sailLength = 720d / 45d;
-//                sail.setLayoutY((1/(1 + Coordinate.getZoom())) * (sailLength)/2 - SAIL_OFFSET);
             }
         }
     }
