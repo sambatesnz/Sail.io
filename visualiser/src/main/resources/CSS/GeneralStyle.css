@@ -32,6 +32,7 @@
 
 #connectBtn {
     -fx-background-color: rgba(40, 109, 168, 0.9);
+    -fx-text-fill: white;
 }
 
 .jfx-toggle-button {

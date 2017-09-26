@@ -2,6 +2,7 @@ package seng302.Controllers;
 
 import com.jfoenix.controls.*;
 import javafx.application.Platform;
+import javafx.beans.binding.BooleanBinding;
 import javafx.css.CssMetaData;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -60,6 +61,8 @@ public class StartController {
 
         ipField.visibleProperty().bind(CustModeButton.selectedProperty());
         portField.visibleProperty().bind(CustModeButton.selectedProperty());
+
+        connectBtn.disableProperty().bind(modeGroup.selectedToggleProperty().isNull());
     }
 
 
