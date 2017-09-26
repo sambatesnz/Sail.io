@@ -90,6 +90,11 @@ Test that the boat scaling functionality after a collision works as expected
 
 ##### Test:
 
+    - Date: 27/9/2017
+    - Current Commit of branch: fd289dab934e94594feb969a78c780e0ced2232c
+    - Performed By: Matt Simpson
+    - Comment: No scaling of boats occurs, and no lives are lost
+    - Result: Fail
     
     
 
