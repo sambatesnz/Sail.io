@@ -3,7 +3,7 @@ package seng302.Modes;
 import seng302.*;
 import seng302.DataGeneration.BoatXMLCreator;
 import seng302.DataGeneration.IServerData;
-import seng302.PacketGeneration.AgarPackets.AgarMessage;
+import seng302.PacketGeneration.AgarPackets.ServerAgarMessage;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatus;
@@ -12,7 +12,7 @@ import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 import seng302.XMLCreation.RaceXMLCreator;
 import seng302.XMLCreation.XMLCreator;
 
@@ -148,7 +148,7 @@ public class AgarManager implements IServerData{
     class BoatPosSender extends TimerTask {
         @Override
         public void run() {
-            for (BoatInterface boat : race.getBoats()) {
+            for (GenericBoat boat : race.getBoats()) {
                 BinaryMessage boatLocationMessage = new BoatLocationMessage(
                         1, System.currentTimeMillis(), boat.getSourceId(),
                         1, 1,
@@ -159,7 +159,7 @@ public class AgarManager implements IServerData{
                         (short) 100, (short) 100, (short) 100,
                         (short) (boat.isSailsOut() ? 1 : 0), (short) 100, (short) 100
                 );
-                BinaryMessage agarMessage = new AgarMessage(boat.getSourceId(), boat.getLives(), boat.getAgarSize());
+                BinaryMessage agarMessage = new ServerAgarMessage(boat.getSourceId(), boat.getLives(), boat.getAgarSize());
                 broadcastMessageQueue.add(boatLocationMessage.createMessage());
                 broadcastMessageQueue.add(agarMessage.createMessage());
             }
@@ -171,7 +171,7 @@ public class AgarManager implements IServerData{
         @Override
         public void run() {
             if (boatManager.hasABoatFinished()) {
-                BoatInterface boat = boatManager.getFinishedBoat();
+                GenericBoat boat = boatManager.getFinishedBoat();
                 BinaryMessage yachtEventMessage = new YachtEventMessage(
                         boat.getSourceId(),
                         YachtIncidentEvent.FINISHED

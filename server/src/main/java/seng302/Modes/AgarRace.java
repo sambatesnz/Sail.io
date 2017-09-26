@@ -21,7 +21,7 @@ import static java.lang.System.currentTimeMillis;
 public class AgarRace extends Race {
 
     private static final int AGAR_SIZE_DECREMENT = 1;
-    private static final int MINIMUM_AGAR_SIZE = 0;
+    public static final int MINIMUM_AGAR_SIZE = 0;
     private static final int SIZE_DECREASE_TICK_MS = 50;
 
     public AgarRace() {
@@ -45,7 +45,7 @@ public class AgarRace extends Race {
 
     @Override
     public void checkCollisions(IServerData raceManager){
-        for (BoatInterface boat : getBoats()) {
+        for (GenericBoat boat : getBoatsInRace()) {
             BoatCollision collision = collisionDetector.checkBoatCollision(boat, boats, collisionMap);
             if (collision != null) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
@@ -53,8 +53,8 @@ public class AgarRace extends Race {
                 );
 
                 if (!collision.isReactedToCollision()) {
-                    BoatInterface winner = collision.getWinner();
-                    BoatInterface loser = collision.getOther(winner);
+                    GenericBoat winner = collision.getWinner();
+                    GenericBoat loser = collision.getOther(winner);
 
                     if (winner != null) {
 
@@ -85,16 +85,23 @@ public class AgarRace extends Race {
         }
     }
 
-    private void killBoat(BoatInterface loser) {
+    private void killBoat(GenericBoat loser) {
         loser.loseLife();
+        if (loser.isEliminated()){
+            loser.haltBoat();
+        }
         loser.setSailsOut(false);
-        List<BoatInterface> boats = new ArrayList<>();
+        List<GenericBoat> boats = new ArrayList<>();
         boats.add(loser);
-        LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
         loser.setBaseSpeed();
+        LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
     }
 
-    private void reduceBoatSize(BoatInterface boat) {
+    /**
+     * Reduces size of a given boat
+     * @param boat you wish to reduce
+     */
+    public void reduceBoatSize(GenericBoat boat) {
         if (currentTimeMillis() - boat.getLastAgarSizeDecreaseTime() > SIZE_DECREASE_TICK_MS) {
             boat.setAgarSize(boat.getAgarSize() - AGAR_SIZE_DECREMENT);
             boat.setBaseSpeed();
@@ -106,7 +113,7 @@ public class AgarRace extends Race {
     }
 
     @Override
-    public BoatInterface addBoat(int clientSocketSourceID) throws Exception {
+    public GenericBoat addBoat(int clientSocketSourceID) throws Exception {
         if (boats.size() < MAX_NUMBER_OF_BOATS){
             BoatDecorator boat = new AgarBoat(boatGenerator.generateBoat());
             clientIDs.put(clientSocketSourceID, boat.getSourceId());

@@ -1,9 +1,8 @@
 package seng302.Client.Messages;
 
 import seng302.PacketParsing.PacketParserUtils;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Race;
-import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.Mark;
 
 import java.util.Map;
@@ -22,7 +21,7 @@ public class LocationMessage {
     private int speedOverGround;
     private boolean sailOut;
     private Race race;
-    private Map<Integer, BoatInterface> boatDict;
+    private Map<Integer, GenericBoat> boatDict;
 
 
     /**
@@ -56,7 +55,7 @@ public class LocationMessage {
      */
     private void setBoatLocation() {
         if (boatDict != null && boatDict.containsKey(sourceID)) {
-            BoatInterface boat = boatDict.get(sourceID);
+            GenericBoat boat = boatDict.get(sourceID);
             boat.setMark(new Mark(latitude, longitude));
             boat.setSpeed(speedOverGround);
             boat.setHeading(heading);

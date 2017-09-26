@@ -2,8 +2,7 @@ package seng302;
 
 
 import javafx.util.Pair;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.CompoundMark;
 import seng302.RaceObjects.Mark;
 
@@ -22,7 +21,7 @@ public class RoundingUtility {
      * @param courseRoundingInfo Race order of the marks in the race, with their rounding directions
      * @param boat The boat that the rounding info is wanted for
      */
-    public static void determineMarkRounding(List<Pair<CompoundMark, Rounding>> courseRoundingInfo, BoatInterface boat) {
+    public static void determineMarkRounding(List<Pair<CompoundMark, Rounding>> courseRoundingInfo, GenericBoat boat) {
 
         if (boat.getTargetMarkIndex() >= courseRoundingInfo.size()) {
             boat.setFinished(true);

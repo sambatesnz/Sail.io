@@ -9,10 +9,7 @@ import seng302.PacketGeneration.ParticipantConfirmationGeneration.ConfirmationSt
 import seng302.PacketGeneration.ParticipantConfirmationGeneration.ParticipantConfirmationMessage;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
-
-import java.util.Arrays;
+import seng302.RaceObjects.GenericBoat;
 
 /**
  * Takes a wrapped race registration message and tries to add a boat if someone wants to participate
@@ -44,7 +41,7 @@ public class RaceRegistrationMessageCreatorReceiver extends ServerSideMessageFac
         if (raceRegistrationType ==  RaceRegistrationType.PARTICIPATE){
             BinaryMessage confirmationMessage;
             if (raceData.getRace().getRaceStatus() == RaceStatus.WARNING || raceData.getRace().getRaceStatus() == RaceStatus.START_TIME_NOT_SET) {
-                BoatInterface boat = null;
+                GenericBoat boat = null;
                 try {
                     boat = raceData.getRace().addBoat(super.getClientID());
                     confirmationMessage = new ParticipantConfirmationMessage(boat.getSourceId(), ConfirmationStatus.PLAYING);

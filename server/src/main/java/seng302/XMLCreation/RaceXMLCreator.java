@@ -56,7 +56,7 @@ public class RaceXMLCreator implements XMLCreator {
         Element participants = root.addElement("Participants");
 
 
-        for (BoatInterface b : race.getBoats()) {
+        for (GenericBoat b : race.getBoats()) {
             participants.addElement("Yacht")
                     .addAttribute("SourceID", String.valueOf(b.getSourceId()));
         }

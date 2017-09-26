@@ -7,8 +7,7 @@ import seng302.BoatGenerator;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Race;
 
 import java.util.*;
@@ -21,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class BoatsFinishingSteps {
     private Race race;
     private BoatGenerator generator;
-    Map<Integer, BoatInterface> boatsList;
+    Map<Integer, GenericBoat> boatsList;
     List<Integer> boatsIdList;
 
     @Given("^the race is already running$")
@@ -35,7 +34,7 @@ public class BoatsFinishingSteps {
     @Given("^there are (\\d+) boats in the race$")
     public void there_are_boats_in_the_race(int numberOfBoats) throws Throwable {
         for (int i = 0; i < numberOfBoats; i++) {
-            BoatInterface boat = generator.generateBoat();
+            GenericBoat boat = generator.generateBoat();
             boatsList.put(boat.getSourceId(), boat);
             boatsIdList.add(boat.getSourceId());
         }

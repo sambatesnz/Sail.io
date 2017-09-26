@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import seng302.Client.Messages.Message;
 import seng302.PacketGeneration.RaceStatus;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.Boat;
 
@@ -80,7 +80,7 @@ public class RaceStatusMessageTest {
         participants.add(102);
         participants.add(103);
         race.setParticipants(participants);
-        HashMap<Integer, BoatInterface> testBoatMap = new HashMap<>();
+        HashMap<Integer, GenericBoat> testBoatMap = new HashMap<>();
         testBoatMap.put(101, new Boat("Test_1", "Test_1", 101, "Country_1"));
         testBoatMap.put(102, new Boat("Test_2", "Test_2", 102, "Country_2"));
         testBoatMap.put(103, new Boat("Test_3", "Test_3", 103, "Country_3"));
