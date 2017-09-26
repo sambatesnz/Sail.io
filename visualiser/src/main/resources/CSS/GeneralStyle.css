@@ -113,8 +113,10 @@
 
 
 .tree-table-view{
-    -fx-tree-table-color: rgba(0, 150, 0, 0.8);
+    -fx-tree-table-color: rgba(255, 150, 150, 0.8);
     -fx-tree-table-rippler-color : rgba(255, 0, 0, 0.9);
+    -fx-background-color: rgba(40, 109, 168, 0.9);
+    -fx-text-fill: white;
 }
 
 .tree-table-view:focused .tree-table-row-cell:selected {
@@ -162,6 +164,13 @@
     -fx-opacity: 0.7;
 }
 
+#lobbyAnchor {
+    -fx-background-image: url("../BackgroundImages/north_wind_blows.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: stretch;
+    -fx-opacity: 0.7;
+}
+
 .tree-table-view .column-header-background{
     -fx-border-width : 0 0.0 1 0;
     -fx-border-color:#F3F3F3;
@@ -194,5 +203,6 @@
     -fx-shape: "M 0 -3.5 L 4 0 L 0 3.5 z";
 }
 .tree-table-row-cell .jfx-text-field{
-    -fx-focus-color: rgba(240,40,40, 1);
+    -fx-focus-color: rgba(40, 109, 168, 0.9);
+    -fx-text-fill: white;
 }
