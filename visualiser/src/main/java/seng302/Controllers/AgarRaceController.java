@@ -409,17 +409,18 @@ public class AgarRaceController implements IRaceController {
                     //  Sails
                     Node sail = currentBoat.getStack().getChildren().get(BoatSprite.SAIL);
 
-                    sail.setScaleY(0.1*getNodeScale());
+                    updateNodeScale(sail, raceBoat.getAgarSize());
+                    sail.setScaleY(0.1*sail.getScaleY());
 
                     double boatHeading = raceBoat.getHeading();
                     double relativeHeading = (360 + boatHeading - race.getWindHeading()) % 360;
                     double value = boatHeading - relativeHeading / 2;
 
                     if (relativeHeading >= 0 && relativeHeading < 180) {
-                        sail.setScaleX(-0.1*getNodeScale());
+                        sail.setScaleX(-0.1*sail.getScaleX());
                         sail.setRotate(value + 180);
                     } else {
-                        sail.setScaleX(0.1*getNodeScale());
+                        sail.setScaleX(0.1*sail.getScaleX());
                         sail.setRotate(value);
                     }
 
