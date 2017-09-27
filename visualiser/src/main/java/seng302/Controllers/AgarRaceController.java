@@ -346,7 +346,6 @@ public class AgarRaceController implements IRaceController {
 
     private void updateBoatLives() {
         GenericBoat boat =  getMyBoat();
-        System.out.println("I am boat: " + boat.getSourceId() + " and I think I have lives: " + boat.getLives());
         final int MAX_BOAT_LIVES = 3;
         List<ImageView> images = Arrays.asList(imageOne, imageTwo, imageThree);
 

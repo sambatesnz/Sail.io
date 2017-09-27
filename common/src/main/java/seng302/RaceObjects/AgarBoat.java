@@ -29,7 +29,6 @@ public class AgarBoat extends BoatDecorator{
     }
 
     public void disconnect(){
-        System.out.println("Actually I am an agar boat! disconnect myself here");
         boat.disconnect();
         boat.haltBoat();
         setEliminated();
@@ -39,15 +38,12 @@ public class AgarBoat extends BoatDecorator{
         setLives(0);
         boat.setLives(0); //its unclear where one should be setting lives
         lives = 0;
-
-        System.out.println(boat.getSourceId() + " elimination status - " + isEliminated());
     }
 
     public void loseLife() {
         lives = lives - 1;
         resetAgarSize();
         if (lives < 1) {
-            System.out.println(boat.getSourceId() + " <- I have been eliminated");
             setEliminated();
         }
     }

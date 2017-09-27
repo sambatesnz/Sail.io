@@ -101,7 +101,6 @@ public class Message {
                     break;
                 case BOAT:
                     RaceMode mode = race.getRaceMode();
-                    System.out.println("MY RACE STATUS IS " + race.getRaceStatus() + " and client source id is " +  race.getClientSourceId());
                     if (race.getRaceStatus() == RaceStatus.WARNING || race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET || (race.getClientSourceId() == 0)) {
                         if (race.getClientSourceId() != 0) { //Spectating
                             race.setBoats(xmlParser.getBoats(mode));

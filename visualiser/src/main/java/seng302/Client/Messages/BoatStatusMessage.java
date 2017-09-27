@@ -52,7 +52,6 @@ public class BoatStatusMessage {
     public void setBoatDetails() {
         if (null != boatDict && boatDict.containsKey(sourceID)) {
             GenericBoat boat = boatDict.get(sourceID);
-            System.out.println("boat with id " + boat.getSourceId() + " has a before setting details of  " + boat.getAgarSize());
             boat.setStatus(status);
             boat.setCurrentLegIndex(legNumber);
             if (boat.getTargetMarkIndex() < legNumber) {
@@ -60,8 +59,6 @@ public class BoatStatusMessage {
             }
             boat.setTimeToNextMark(estTimeToNextMark);
             boat.setTimeToFinish(estTimeToFinish);
-            System.out.println("boat with id " + boat.getSourceId() + " has a after setting details of  " + boat.getAgarSize());
-
         }
     }
 

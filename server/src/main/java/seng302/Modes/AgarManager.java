@@ -149,8 +149,6 @@ public class AgarManager implements IServerData{
         @Override
         public void run() {
             for (GenericBoat boat : race.getBoats()) {
-                System.out.println(race.getBoats());
-                System.out.println("Why are there so many boats?");
                 BinaryMessage boatLocationMessage = new BoatLocationMessage(
                         1, System.currentTimeMillis(), boat.getSourceId(),
                         1, 1,
