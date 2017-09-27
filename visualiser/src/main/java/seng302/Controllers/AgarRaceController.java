@@ -928,6 +928,8 @@ public class AgarRaceController implements IRaceController {
         }
         boundary.setFill(Color.LIGHTBLUE);
         boundary.setOpacity(BOUNDARY_OPACITY);
+        boundary.setStroke(Color.BLACK);
+        boundary.setStrokeWidth(2.5);
         return boundary;
     }
 
