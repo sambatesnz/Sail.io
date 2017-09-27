@@ -36,7 +36,7 @@ public class Race {
     List<GenericBoat> boats;
     Map<Integer, Integer> clientIDs;
     List<CourseLimit> boundaries;
-    private short windHeading;
+    short windHeading;
     private short startingWindSpeed;
     private int windSpeed;
     private Boolean windHeadingChanged = false;
@@ -50,7 +50,7 @@ public class Race {
     private SimpleStringProperty timeToStart;
     private boolean raceFinishing = false;
     private static final int TEN_KNOTS = 5145;
-    private static final int FORTY_KNOTS = 20577;
+    static final int FORTY_KNOTS = 20577;
     private static final int FIVE_KNOTS = 2573;
     private static final int DIRECTION_CHANGE_PROB = 25;
     final long ONE_MINUTE_IN_MILLIS = 60000;
