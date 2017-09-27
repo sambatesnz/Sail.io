@@ -6,20 +6,17 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -29,7 +26,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import seng302.RaceObjects.*;
@@ -45,7 +41,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.*;
-import static java.lang.Math.atan2;
 import static javafx.scene.input.KeyCode.Z;
 
 /**
@@ -86,7 +81,6 @@ public class AgarRaceController implements IRaceController {
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
     private Arrow nextMarkArrow;
-    private Arrow windArrow = new Arrow();
     private Group roundingArrow1 = new Group();
     private Group roundingArrow2 = new Group();
     private Group roundingArrowMirrored1 = new Group();
@@ -113,6 +107,8 @@ public class AgarRaceController implements IRaceController {
     private boolean isFinishersHidden = true;
 
     private final double BOUNDARY_OPACITY = 0.5;
+    private final double WIND_ARROW_SIZE = 20;
+    private final int NEXT_MARK_SIZE = 20;
     private FPSCounter fpsCounter;
     private int roundingArrowRotationClockwise = 0;
     private int roundingArrowRotationAntiClockwise = 0;
@@ -127,6 +123,8 @@ public class AgarRaceController implements IRaceController {
     private ImageView imageOne;
     private ImageView imageTwo;
     private ImageView imageThree;
+    private ImageView windArrow;
+
 
 
     public AgarRaceController(Race race){
@@ -141,14 +139,15 @@ public class AgarRaceController implements IRaceController {
     public void initialize() throws IOException {
         primaryStage.setHeight(799);
         primaryStage.setWidth(1199);
-        System.out.println(primaryStage.getWidth() + ", " + primaryStage.getHeight());
         primaryStage.setHeight(800);
         primaryStage.setWidth(1200);
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
-        windArrow.setTranslateX(50);
-        windArrow.setTranslateY(50);
+        windArrow = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("windArrow.png")));
+        windArrow.setFitHeight(WIND_ARROW_SIZE);
+        windArrow.setFitWidth(WIND_ARROW_SIZE);
+        windArrow.setPreserveRatio(true);
         group.getChildren().add(windArrow);
 
         clock.setFont(new Font("Arial", 30));
@@ -190,7 +189,7 @@ public class AgarRaceController implements IRaceController {
                     Coordinate.setTrackingBoat(false);
                     followingBoat = !followingBoat;
                 }
-                Platform.runLater( ()-> {  positionTable.getSelectionModel().clearSelection();  });
+                Platform.runLater( ()-> positionTable.getSelectionModel().clearSelection());
             }
         });
     }
@@ -202,6 +201,7 @@ public class AgarRaceController implements IRaceController {
             }
         });
     }
+
 
     private void enableScrolling() {
         mainBorderPane.setOnScroll(event -> {
@@ -216,10 +216,6 @@ public class AgarRaceController implements IRaceController {
         });
     }
 
-    private void initialiseMarkRoundingSprites() {
-
-    }
-
     private void initialisePositionsTable() {
         legCol = new JFXTreeTableColumn<>("Leg");
         nameCol = new JFXTreeTableColumn<>("Name");
@@ -232,19 +228,14 @@ public class AgarRaceController implements IRaceController {
 
         legCol.setSortType(TreeTableColumn.SortType.ASCENDING);
 
-        nameCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<GenericBoat, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<GenericBoat, String> param) {
-                return param.getValue().getValue().getBoatName();
-            }
-        });
+        nameCol.setCellValueFactory(param -> param.getValue().getValue().getBoatName());
 
         speedCol.setCellValueFactory(p -> {
             String speed = String.valueOf(p.getValue().getValue().getSpeedInKnots());
             return new ReadOnlyObjectWrapper<>(speed);
         });
 
-        TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<GenericBoat>(race.boatsObs, RecursiveTreeObject::getChildren);
+        TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<>(race.boatsObs, RecursiveTreeObject::getChildren);
         positionTable.setRoot(tableRoot);
         positionTable.getColumns().setAll(legCol, nameCol, speedCol);
         positionTable.setShowRoot(false);
@@ -373,8 +364,8 @@ public class AgarRaceController implements IRaceController {
             if (raceBoat.isEliminated()) {
                 currentBoat.getStack().setVisible(false);
             } else {
-                Node boat = currentBoat.getStack().getChildren().get(BoatSprite.BOAT);
-                if (raceBoat.isKnowsBoatLocation()) {
+                Node boatImage = currentBoat.getStack().getChildren().get(BoatSprite.IMAGE);
+                if(raceBoat.isKnowsBoatLocation()) {
                     double boatSpeed = raceBoat.getSpeed() / 1000;
                     String speed = "";
                     String name = "";
@@ -385,11 +376,13 @@ public class AgarRaceController implements IRaceController {
                         name = raceBoat.getShortName();
                     }
                     //Position of boat, wake and annotations.
-                    currentBoat.getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
-                    currentBoat.getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
-//                    System.out.println("agarsize: " + raceBoat.getAgarSize());
-                    updateNodeScale(boat, raceBoat.getAgarSize());
-                    currentBoat.getStack().getChildren().get(BoatSprite.BOAT).setRotate(raceBoat.getHeading());
+                    currentBoat.getStack().setLayoutX(Coordinate.getRelativeX(raceBoat.getX()));
+                    currentBoat.getStack().setLayoutY(Coordinate.getRelativeY(raceBoat.getY()));
+                    updateNodeScale(boatImage, raceBoat.getAgarSize());
+                    boatImage.setScaleX(boatImage.getScaleX() * 0.07);
+                    boatImage.setScaleY(boatImage.getScaleY() * 0.07);
+                    boatImage.setRotate(raceBoat.getHeading());
+
 
                     // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
                     if (raceBoat.getSourceId() == race.getClientSourceId()) {
@@ -410,26 +403,29 @@ public class AgarRaceController implements IRaceController {
                     currentBoat.getStack().getChildren().get(BoatSprite.TEXT).setTranslateX(10);
                     currentBoat.getStack().getChildren().get(BoatSprite.TEXT).setTranslateY(0);
 
-                    //Sails
+                    //  Sails
                     Node sail = currentBoat.getStack().getChildren().get(BoatSprite.SAIL);
-                    updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.SAIL), raceBoat.getAgarSize());
-                    double headingDif = (360 + raceBoat.getHeading() - race.getWindHeading()) % 360;
+
+                    sail.setScaleY(0.1*getNodeScale());
+
+                    double boatHeading = raceBoat.getHeading();
+                    double relativeHeading = (360 + boatHeading - race.getWindHeading()) % 360;
+                    double value = boatHeading - relativeHeading / 2;
+
+                    if (relativeHeading >= 0 && relativeHeading < 180) {
+                        sail.setScaleX(-0.1*getNodeScale());
+                        sail.setRotate(value + 180);
+                    } else {
+                        sail.setScaleX(0.1*getNodeScale());
+                        sail.setRotate(value);
+                    }
+
                     if (raceBoat.isSailsOut()) {
-                        currentBoat.sailOut();
-                        sail.getTransforms().clear();
-                        if (headingDif < 180) {
-                            sail.getTransforms().add(new Rotate(race.getWindHeading() + 30, 0, 0));
-                        } else {
-                            sail.getTransforms().add(new Rotate(race.getWindHeading() - 30, 0, 0));
-                        }
+                        boats.get(i).sailOut();
                     } else {
                         currentBoat.sailIn();
-                        sail.getTransforms().clear();
-                        sail.getTransforms().add(new Rotate(race.getWindHeading(), 0, 0));
-
+                        sail.setRotate(race.getWindHeading() + 180);
                     }
-                    double sailLength = 720d / 45d;
-                    sail.setLayoutY(getScale(raceBoat.getAgarSize()) * (sailLength) / 2 - SAIL_OFFSET);
                 }
             }
         }
@@ -510,26 +506,23 @@ public class AgarRaceController implements IRaceController {
     }
 
     private void updateNextMarkArrow(CompoundMark cm) {
-        double arrowTranslate = 15/(1+Coordinate.getZoom());
         int playerBoat = race.getClientSourceId();
         if (playerBoat == 0) {
             nextMarkArrow.setVisible(false);
         } else {
             double playerX = Coordinate.getRelativeX(race.getBoatsMap().get(playerBoat).getX());
             double playerY = Coordinate.getRelativeY(race.getBoatsMap().get(playerBoat).getY());
-            double arrowX = playerX + arrowTranslate;
-            double arrowY = playerY + arrowTranslate;
             double markX = Coordinate.getRelativeX(cm.getX());
             double markY = Coordinate.getRelativeY(cm.getY());
             boolean markIsFar = cm.getMarks().stream().allMatch(mark -> {
 
                 double markX1 = Coordinate.getRelativeX(mark.getX());
                 double markY1 = Coordinate.getRelativeY(mark.getY());
-                double distX = abs(markX1 - arrowX);
-                double distY = abs(markY1 - arrowY);
+                double distX = abs(markX1 - playerX);
+                double distY = abs(markY1 - playerY);
 
-                double offsetX = 100;
-                double offsetY = 100;
+                double offsetX = 15*getNodeScale();
+                double offsetY = 15*getNodeScale();
                 if (markX1 > playerX) {
                     offsetX *= -1;
                 }
@@ -545,9 +538,12 @@ public class AgarRaceController implements IRaceController {
 
 
             if (followingBoat && markIsFar) {
-                double angleToNextMark = toDegrees(atan2(markY - arrowY, markX - arrowX));
-                nextMarkArrow.setTranslateX(arrowX);
-                nextMarkArrow.setTranslateY(arrowY);
+                double angleToNextMark = toDegrees(atan2(markY - playerY, markX - playerX));
+
+                double arrowTranslateFactor = 20/(1+Coordinate.getZoom());
+                nextMarkArrow.setTranslateX(playerX + arrowTranslateFactor*cos(toRadians(angleToNextMark)) - NEXT_MARK_SIZE/2);
+                nextMarkArrow.setTranslateY(playerY + arrowTranslateFactor*sin(toRadians(angleToNextMark)) - NEXT_MARK_SIZE/2);
+
                 nextMarkArrow.setRotate(angleToNextMark + 90);
                 nextMarkArrow.setVisible(true);
                 updateNodeScale(nextMarkArrow);
@@ -851,7 +847,11 @@ public class AgarRaceController implements IRaceController {
      * Scales the wind arrow based on the wind speed
      */
     private void scaleWindArrow() {
-        windArrow.updateScaling(race.getWindSpeed());
+        double scale = Math.pow(race.getWindSpeed(), 0.33)/8;
+        windArrow.setScaleX(scale);
+        windArrow.setScaleY(scale);
+        windArrow.setTranslateX(WIND_ARROW_SIZE*2);//*scale/2);
+        windArrow.setTranslateY(WIND_ARROW_SIZE*2);//*scale/2);
     }
 
     /**
@@ -1072,6 +1072,10 @@ public class AgarRaceController implements IRaceController {
         nodeToScale.setScaleY(1/(1+Coordinate.getZoom()));
     }
 
+    private double getNodeScale( ) {
+        return (1/(1+Coordinate.getZoom()));
+    }
+
     public void setAddr(String ip, int port) {
         this.ipAddr = ip;
         this.port = port;
@@ -1089,23 +1093,17 @@ public class AgarRaceController implements IRaceController {
     }
 
     private void initFinisherObserver(){
-        race.getBoatsForScoreBoard().addListener(new ListChangeListener<GenericBoat>() {
-            @Override
-            public void onChanged(Change<? extends GenericBoat> c) {
-                for (GenericBoat boat : race.getBoatsForScoreBoard()) {
-                    if (boat.getSourceId() == race.getClientSourceId()){
-                        if(!clientFinished) {
-                            finishingPane.setVisible(true);
-                            toggleFinishersBtn.setVisible(true);
-                            isFinishersHidden = false;
-                            clientFinished = true;
-                        }
-
-
+        race.getBoatsForScoreBoard().addListener((ListChangeListener<GenericBoat>) c -> {
+            for (GenericBoat boat : race.getBoatsForScoreBoard()) {
+                if (boat.getSourceId() == race.getClientSourceId()){
+                    if(!clientFinished) {
+                        finishingPane.setVisible(true);
+                        toggleFinishersBtn.setVisible(true);
+                        isFinishersHidden = false;
+                        clientFinished = true;
                     }
                 }
             }
-
         });
     }
 
@@ -1122,7 +1120,7 @@ public class AgarRaceController implements IRaceController {
         }
     }
 
-    public void loadFinishers() throws IOException {
+    private void loadFinishers() throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         AnchorPane anchorPane = fxmlLoader.load(getClass().getClassLoader().getResource("FXML/FinishingPage.fxml").openStream());
