@@ -153,6 +153,8 @@ public class RaceController implements IRaceController {
         fpsBtn.setFocusTraversable(false);
         annotationBtn.setFocusTraversable(false);
         toggleFinishersBtn.setFocusTraversable(false);
+        BoatNameCheckBox.setFocusTraversable(false);
+        BoatSpeedCheckBox.setFocusTraversable(false);
 
         initialiseZoomFollowing();
         initialiseRoundingArrow();
