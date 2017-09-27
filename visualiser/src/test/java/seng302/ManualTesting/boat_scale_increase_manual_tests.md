@@ -19,15 +19,27 @@ Test that the boat scaling functionality after a collision works as expected
     - Current Commit of branch: 8ef85318c3045f6cbf2a023c5f7eb46217efc60b
     - Performed By: Matt Simpson
     - Result: Fail
-    
+
+##### Test:
+
     - Date: 25/9/2017
     - Current Commit of branch: 8ef85318c3045f6cbf2a023c5f7eb46217efc60b
     - Performed By: Matt Simpson
     - Result: Pass
-    
+
+##### Test:
+
     - Date: 26/9/2017
     - Current Commit of branch: df8d9a7b805c3924b04366fa4af0201ac7f4f380
     - Performed By: Matt Simpson
+    - Result: Pass
+    
+    
+##### Test:
+
+    - Date: 27/9/2017
+    - Current Commit of branch: 2edd00d32a9514df292ca04ef054788162d30ea8
+    - Performed By: Matt Simpson, Ollie Robb
     - Result: Pass
 
 
@@ -67,6 +79,14 @@ Test that the boat scaling functionality after a collision works as expected
     - Current Commit of branch: 09127161960c7cfe58f77ad54433537a30a37264
     - Performed By: Matt Simpson
     - Result: Pass
+    
+    
+##### Test:
+
+    - Date: 27/9/2017
+    - Current Commit of branch: 2edd00d32a9514df292ca04ef054788162d30ea8
+    - Performed By: Matt Simpson, Ollie Robb
+    - Result: Pass
  
     
     
@@ -95,6 +115,14 @@ Test that the boat scaling functionality after a collision works as expected
     - Performed By: Matt Simpson
     - Comment: No scaling of boats occurs, and no lives are lost
     - Result: Fail
+    
+    
+##### Test:
+
+    - Date: 27/9/2017
+    - Current Commit of branch: 2edd00d32a9514df292ca04ef054788162d30ea8
+    - Performed By: Matt Simpson, Ollie Robb
+    - Result: Pass
     
     
 
