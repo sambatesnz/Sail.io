@@ -33,6 +33,7 @@
 #connectBtn {
     -fx-background-color: rgba(40, 109, 168, 0.9);
     -fx-text-fill: white;
+    -fx-opacity: 0.9;
 }
 
 .jfx-toggle-button {
@@ -73,7 +74,8 @@
     -fx-background-image: url("../BackgroundImages/north_wind_blows.jpg");
     -fx-background-repeat: no-repeat;
     -fx-background-size: stretch;
-    -fx-opacity: 0.7;
+    -fx-background-color: white;
+    -fx-opacity: 0.8;
 }
 
 /*---------------------------------------------Tables----------------------------------------------------*/
