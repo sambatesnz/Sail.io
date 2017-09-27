@@ -5,12 +5,12 @@ import static java.lang.Math.sqrt;
 
 public class BoatCollision {
     int collisionType;
-    BoatInterface collider1;
-    BoatInterface collider2;
+    GenericBoat collider1;
+    GenericBoat collider2;
     boolean isColliding;
     boolean reactedToCollision;
 
-    public BoatCollision(BoatInterface collider1, BoatInterface collider2){
+    public BoatCollision(GenericBoat collider1, GenericBoat collider2){
         this.collider1 = collider1;
         this.collider2 = collider2;
         this.isColliding = false;
@@ -47,18 +47,18 @@ public class BoatCollision {
 
     /**
      * Checks if the boat is colliding
-     * @return
+     * @return Whether or not the boat is colliding
      */
     public boolean isColliding() {
         updateCollision();
         return isColliding;
     }
 
-    public BoatInterface getOther(BoatInterface boat){
+    public GenericBoat getOther(GenericBoat boat){
         return boat == collider1 ? collider2 : collider1;
     }
 
-    public BoatInterface getWinner(){
+    public GenericBoat getWinner(){
         if(abs(collider1.getCollisionFactor() - collider2.getCollisionFactor()) < 2)
         {
             System.out.println("EVEN STEVEN");
@@ -67,7 +67,7 @@ public class BoatCollision {
         return collider1.getCollisionFactor() < collider2.getCollisionFactor() ? collider2 : collider1;
     }
 
-    public BoatInterface getLoser(){
+    public GenericBoat getLoser(){
         if(abs(collider1.getCollisionFactor() - collider2.getCollisionFactor()) < 2)
         {
             System.out.println("EVEN STEVEN2");

@@ -3,7 +3,7 @@ package seng302;
 import org.junit.Test;
 import seng302.PacketParsing.XMLParser;
 import seng302.RaceObjects.AgarBoat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,9 +19,9 @@ public class LocationSpawnerTest {
     public void LocationSpawnTest() throws Exception {
         boolean expectedCollision = false;
         BoatGenerator boatGenerator = new BoatGenerator();
-        BoatInterface boat = new AgarBoat(boatGenerator.generateBoat());
+        GenericBoat boat = new AgarBoat(boatGenerator.generateBoat());
 
-        ArrayList<BoatInterface> boats = new ArrayList<>(Arrays.asList(boat));
+        ArrayList<GenericBoat> boats = new ArrayList<>(Arrays.asList(boat));
         CollisionDetector detector = new CollisionDetector();
         XMLParser parser = new XMLParser(getRaceXml());
 

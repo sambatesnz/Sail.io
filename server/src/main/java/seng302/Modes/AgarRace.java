@@ -21,10 +21,11 @@ import static java.lang.System.currentTimeMillis;
 public class AgarRace extends Race {
 
     private static final int AGAR_SIZE_DECREMENT = 1;
-    private static final int MINIMUM_AGAR_SIZE = 0;
+    public static final int MINIMUM_AGAR_SIZE = 0;
     private static final int SIZE_DECREASE_TICK_MS = 50;
+    private static final double RADIUS_REDUCTION_FACTOR = 0.99;
 
-    AgarRace() {
+    public AgarRace() {
         super();
     }
 
@@ -45,7 +46,7 @@ public class AgarRace extends Race {
 
     @Override
     public void checkCollisions(IServerData raceManager){
-        for (BoatInterface boat : getBoats()) {
+        for (GenericBoat boat : getBoatsInRace()) {
             BoatCollision collision = collisionDetector.checkBoatCollision(boat, boats, collisionMap);
             if (collision != null) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
@@ -53,14 +54,15 @@ public class AgarRace extends Race {
                 );
 
                 if (!collision.isReactedToCollision()) {
-                    BoatInterface winner = collision.getWinner();
-                    BoatInterface loser = collision.getOther(winner);
+                    GenericBoat winner = collision.getWinner();
+                    GenericBoat loser = collision.getOther(winner);
 
                     System.out.println("Collision Occurred!");
                     System.out.println("Winner: " + winner + " Loser: " + loser);
                     System.out.println("Winners old size: " + winner.getAgarSize());
 
                     winner.setAgarSize(winner.getAgarSize() + loser.getAgarSize());
+                    winner.setBaseSpeed();
                     collision.setReactedToCollision(true);
                     killBoat(loser);
 
@@ -82,17 +84,26 @@ public class AgarRace extends Race {
         }
     }
 
-    private void killBoat(BoatInterface loser) {
+    private void killBoat(GenericBoat loser) {
         loser.loseLife();
+        if (loser.isEliminated()){
+            loser.haltBoat();
+        }
         loser.setSailsOut(false);
-        List<BoatInterface> boats = new ArrayList<>();
+        List<GenericBoat> boats = new ArrayList<>();
         boats.add(loser);
+        loser.setBaseSpeed();
         LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
     }
 
-    private void reduceBoatSize(BoatInterface boat) {
+    /**
+     * Reduces size of a given boat
+     * @param boat you wish to reduce
+     */
+    public void reduceBoatSize(GenericBoat boat) {
         if (currentTimeMillis() - boat.getLastAgarSizeDecreaseTime() > SIZE_DECREASE_TICK_MS) {
-            boat.setAgarSize(boat.getAgarSize() - AGAR_SIZE_DECREMENT);
+            boat.setAgarSize(Math.min(boat.getAgarSize() - AGAR_SIZE_DECREMENT, getRelativeSmallerArea(boat.getAgarSize())));
+            boat.setBaseSpeed();
             if (boat.getAgarSize() <= MINIMUM_AGAR_SIZE) {
                 killBoat(boat);
             }
@@ -100,13 +111,21 @@ public class AgarRace extends Race {
         }
     }
 
+    private int getRelativeSmallerArea(int agarSize) {
+        double radius = Math.sqrt((agarSize/Math.PI));
+        double newRadius = radius * RADIUS_REDUCTION_FACTOR;
+        double newArea = Math.PI * newRadius * newRadius;
+        return (int)Math.floor(newArea);
+    }
+
     @Override
-    public BoatInterface addBoat(int clientSocketSourceID) throws Exception {
+    public GenericBoat addBoat(int clientSocketSourceID) throws Exception {
         if (boats.size() < MAX_NUMBER_OF_BOATS){
             BoatDecorator boat = new AgarBoat(boatGenerator.generateBoat());
             clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
             LocationSpawner.generateSpawnPoints(boats, super.boundaries, collisionDetector, super.collisionMap);
+            boat.setBaseSpeed();
             return boat;
         } else {
             throw new Exception("cannot create boat");

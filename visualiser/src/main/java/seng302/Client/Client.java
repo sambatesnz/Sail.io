@@ -4,8 +4,7 @@ import seng302.Client.Messages.Message;
 import seng302.Client.Messages.RaceRegistrationMessage;
 import seng302.Client.Messages.RaceRegistrationType;
 import seng302.PacketGeneration.BinaryMessage;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Race;
 import seng302.RaceObjects.ViewScreenType;
 import seng302.UserInput.KeyBindingUtility;
@@ -123,6 +122,7 @@ public class Client {
 
     /**
      * Sends PracticeMessage over a socket stream indicating a practice race
+     * @param practiceMessage Initialization message for practice mode
      * @throws IOException if problem writing to stream
      */
     public void sendPracticeMessage(PracticeMessage practiceMessage) throws IOException {
@@ -133,7 +133,7 @@ public class Client {
 
     /**
      * Sends BoatActionMessages over a socket stream
-     * @throws IOException
+     * @throws IOException Message failed to send
      */
     private void sendMessage() throws IOException {
         if (KeyBindingUtility.keyPressed()){
@@ -171,7 +171,7 @@ public class Client {
             race.finishRace();
             Thread.sleep(40);
             if (race.getBoatsForScoreBoard().size() > 0) {
-                for (BoatInterface boat: race.getBoats()){
+                for (GenericBoat boat: race.getBoats()){
                     race.addBoatToScoreBoard(boat.getSourceId(), false);
                 }
                 race.setViewScreen(ViewScreenType.SCORE_SCREEN.getViewScreenType());

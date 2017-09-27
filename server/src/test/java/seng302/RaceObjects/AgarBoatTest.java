@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import seng302.BoatGenerator;
+import seng302.CollisionDetector;
+import seng302.Modes.AgarRace;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import sun.security.util.PendingException;
 
@@ -14,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class AgarBoatTest {
 
-    BoatInterface boat;
+    GenericBoat boat;
 
     @Before
     public void setup() throws Exception {
@@ -61,13 +63,41 @@ public class AgarBoatTest {
         assertEquals(expectedElimination, actualEliminationFlag);
     }
 
-
-
-    @Ignore @Test
-    public void sizeIncreas() throws Exception {
-        assertTrue("Functionality not implemented yet" ,true==false);
+    @Test
+    public void losingSizeTest() throws Exception {
+        int expectedSize = 50;
+        AgarRace race = new AgarRace();
+        while (boat.getAgarSize() > 50) {
+            boat.setAgarSize(boat.getAgarSize() - 1);
+        }
+        assertEquals(expectedSize, boat.getAgarSize());
     }
 
+    @Test
+    public void resettingSize() throws Exception {
+        int expectedSize = 100;
+        AgarRace race = new AgarRace();
+        while (boat.getAgarSize() > 50) {
+            race.reduceBoatSize(boat);
+        }
+        boat.loseLife();
+        assertEquals(expectedSize, boat.getAgarSize());
+    }
 
+    @Test
+    public void minimumSize() throws Exception {
+        int expectedLives = 2;
+
+        AgarRace race = new AgarRace();
+
+        while (boat.getLives() != 2) {
+            try {
+                race.reduceBoatSize(boat);
+            } catch (Exception e) {
+                //We expected this to fail
+            }
+        }
+        assertEquals(expectedLives, boat.getLives());
+    }
 
 }

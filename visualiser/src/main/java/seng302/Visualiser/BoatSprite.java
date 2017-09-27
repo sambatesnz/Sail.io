@@ -10,7 +10,7 @@ import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class BoatSprite {
     private Pane stack;
-    private BoatInterface boatObject;
+    private GenericBoat boatObject;
     private Polyline wake;
     private Text text;
     private Circle tc;
@@ -33,7 +33,7 @@ public class BoatSprite {
     public static final int TEXT = 5;
 
 
-    public BoatSprite(BoatInterface boat, int clientSourceId){
+    public BoatSprite(GenericBoat boat, int clientSourceId){
         this.boatObject = boat;
         initialiseWake();
         text = new Text();
@@ -79,7 +79,7 @@ public class BoatSprite {
         return stack;
     }
 
-    public BoatInterface getBoat(){
+    public GenericBoat getBoat(){
         return boatObject;
     }
 

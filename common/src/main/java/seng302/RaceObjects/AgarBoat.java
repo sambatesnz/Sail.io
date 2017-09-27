@@ -3,18 +3,18 @@ package seng302.RaceObjects;
 /**
  * Boat to use for Agar mode, which has lives, size, and a base speed.
  */
-public class AgarBoat extends BoatDecorator {
+public class AgarBoat extends BoatDecorator{
 
     private boolean eliminated = false;
     private int lives;
     private int agarSize;
+    private int baseSpeed;
     private long lastAgarSizeDecreaseTime;
 
     private static final int BASE_AGAR_SIZE = 100;
 
-    public AgarBoat(BoatInterface boat) {
+    public AgarBoat(GenericBoat boat) {
         super(boat);
-
         lives = 3;
         agarSize = BASE_AGAR_SIZE;
     }
@@ -23,7 +23,7 @@ public class AgarBoat extends BoatDecorator {
     }
 
     public void setSpeed(int speed) {
-        int totalSpeed = speed;
+        int totalSpeed = speed + baseSpeed;
         super.setSpeed(totalSpeed);
     }
 
@@ -66,5 +66,19 @@ public class AgarBoat extends BoatDecorator {
 
     public void setLastAgarSizeDecreaseTime(long time) {
         this.lastAgarSizeDecreaseTime = time;
+    }
+
+    public void setBaseSpeed() {
+        baseSpeed = calculateBaseSpeed(agarSize);
+    }
+
+    private static int calculateBaseSpeed(int boatSize) {
+        double size = (double) boatSize/800;
+        double baseSpeed = Math.log(size) * -10000;
+        return (int) baseSpeed;
+    }
+
+    public int getBaseSpeed() {
+        return baseSpeed;
     }
 }

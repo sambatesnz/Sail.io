@@ -1,23 +1,21 @@
 package seng302.RaceObjects;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.floorMod;
-import static java.lang.Math.round;
-
 /**
  * Represent a boat competing in yacht race
  */
-public class Boat implements BoatInterface{
+public class Boat extends GenericBoat {
     private static final int HEADING_INCREMENT = 3;
 
     private Mark mark;
-    private String boatName;
+    private StringProperty boatName;
     private double currentLegDistance;
     private int currentLegIndex;
     private double heading = 0;
@@ -30,7 +28,7 @@ public class Boat implements BoatInterface{
     private long timeToNextMark;
     private long timeToFinish;
     private String shortName;
-    private String country;
+    private StringProperty country;
     private int speed;               //mm/sec
     private boolean knowsBoatLocation;
     private boolean headingChanged;
@@ -67,10 +65,10 @@ public class Boat implements BoatInterface{
      * @param country e.g. New Zealand
      */
     public Boat(String name, String shortName, int sourceId, String country) {
-        this.boatName = name;
+        this.boatName = new SimpleStringProperty(name);
         this.shortName = shortName;
         this.sourceId = sourceId;
-        this.country = country;
+        this.country = new SimpleStringProperty(country);
         this.knowsBoatLocation = false;
         this.mark = new Mark();
         this.raceTime = Integer.toUnsignedLong(0);
@@ -83,10 +81,11 @@ public class Boat implements BoatInterface{
     /**
      * Used to create a boat for testing purposes.
      * @param sourceID  boat source id
+     * @param boatName The name of the boat
      */
     public Boat(Integer sourceID, String boatName) {
         this.sourceId = sourceID;
-        this.boatName = boatName;
+        this.boatName = new SimpleStringProperty(boatName);
         this.finished = false;
     }
 
@@ -218,14 +217,23 @@ public class Boat implements BoatInterface{
     }
 
     @Override
-    public void setLastAgarSizeDecreaseTime(long time) {
+    public void setLastAgarSizeDecreaseTime(long time) {}
 
+    @Override
+    public void resetAgarSize() {}
+
+    @Override
+    public int getBaseSpeed() {
+        return 0;
     }
 
     @Override
-    public void resetAgarSize() {
-
+    public void haltBoat() {
+        speed = 0;
     }
+
+    @Override
+    public void setBaseSpeed() {}
 
     private int getRelativeAngle(int angle1, double angle2){
         return Math.floorMod(((int)angle2 - angle1), 360);
@@ -307,7 +315,7 @@ public class Boat implements BoatInterface{
         return shortName;
     }
 
-    public String getBoatName() {
+    public StringProperty getBoatName() {
         return boatName;
     }
 
@@ -319,7 +327,7 @@ public class Boat implements BoatInterface{
         return sourceId;
     }
 
-    public String getCountry() {
+    public StringProperty getCountry() {
         return country;
     }
 
@@ -459,7 +467,7 @@ public class Boat implements BoatInterface{
      * Get the name of the boat
      * @return the name of the boat
      */
-    public String getName() {
+    public StringProperty getName() {
         return boatName;
     }
 

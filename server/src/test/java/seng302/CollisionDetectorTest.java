@@ -34,7 +34,7 @@ public class CollisionDetectorTest {
             race.addBoat(103);
 
             for (int i = 0; i < race.getBoats().size(); i++) {
-                BoatInterface boat = race.getBoats().get(i);
+                GenericBoat boat = race.getBoats().get(i);
                 boat.setMark(marks.get(i % 2));
             }
 

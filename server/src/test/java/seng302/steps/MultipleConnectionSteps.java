@@ -7,8 +7,7 @@ import seng302.ClientConnections.Client;
 import seng302.DataGeneration.IServerData;
 import seng302.Modes.RaceManager;
 import seng302.PacketGeneration.RaceStatus;
-import seng302.RaceObjects.Boat;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 import seng302.Server.Server;
 import seng302.steps.Helper.TestClient;
 
@@ -77,7 +76,7 @@ public class MultipleConnectionSteps {
         System.out.println(this.port);
         Thread.sleep(3000);
         Set<Integer> set = new HashSet<>();
-        for (BoatInterface boat: race.getRace().getBoats()){
+        for (GenericBoat boat: race.getRace().getBoats()){
             set.add(boat.getSourceId());
         }
 

@@ -1,14 +1,15 @@
 package seng302.Controllers;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import seng302.RaceMode;
@@ -23,13 +24,13 @@ public class StartController {
     @FXML private JFXButton connectBtn;
     @FXML private JFXTextField ipField;
     @FXML private JFXTextField portField;
+    @FXML private ImageView logoImageView;
     @FXML private Label statusLbl;
     @FXML private Text fullMastText;
-    @FXML private JFXRadioButton RaceModeRadioButton;
-    @FXML private JFXRadioButton AgarModeRadioButton;
-    @FXML private JFXRadioButton PracticeModeRadioButton;
-    @FXML private JFXRadioButton CustomModeRadioButton;
-
+    @FXML private JFXToggleButton RaceModeButton;
+    @FXML private JFXToggleButton AgarModeButton;
+    @FXML private JFXToggleButton PracModeButton;
+    @FXML private JFXToggleButton CustModeButton;
 
     private Stage primaryStage;
     private Scene rootScene;
@@ -38,13 +39,8 @@ public class StartController {
     private ClientController clientController;
 
     public StartController() {
-//        this.primaryStage = mainStage;
-
         Coordinate.setWindowWidthX(800);
         Coordinate.setWindowHeightY(600);
-//
-//        mainStage.widthProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowWidthX((newValue).doubleValue()));
-//        mainStage.heightProperty().addListener((observable, oldValue, newValue) -> Coordinate.setWindowHeightY(newValue.doubleValue()));
     }
 
     @FXML
@@ -54,14 +50,17 @@ public class StartController {
         fullMastText.setFocusTraversable(true);
 
         modeGroup = new ToggleGroup();
+//        AgarModeButton.getCssMetaData().stream().map(CssMetaData::getProperty).forEach(System.out::println);
 
-        modeGroup.getToggles().add(RaceModeRadioButton);
-        modeGroup.getToggles().add(AgarModeRadioButton);
-        modeGroup.getToggles().add(PracticeModeRadioButton);
-        modeGroup.getToggles().add(CustomModeRadioButton);
+        AgarModeButton.setSelected(true);
 
-        ipField.visibleProperty().bind(CustomModeRadioButton.selectedProperty());
-        portField.visibleProperty().bind(CustomModeRadioButton.selectedProperty());
+        modeGroup.getToggles().add(RaceModeButton);
+        modeGroup.getToggles().add(AgarModeButton);
+        modeGroup.getToggles().add(PracModeButton);
+        modeGroup.getToggles().add(CustModeButton);
+
+        ipField.visibleProperty().bind(CustModeButton.selectedProperty());
+        portField.visibleProperty().bind(CustModeButton.selectedProperty());
     }
 
 
@@ -79,6 +78,7 @@ public class StartController {
             case AGAR: {
 //                String ip = "http://132.181.16.12"; //Turn me on for production
                 String ip = "http://127.0.0.1";
+//                String ip = "http://132.181.12.107";
                 int port = raceMode.getPort();
                 connectLobby(ip, port, raceMode);
                 break;
@@ -300,7 +300,7 @@ public class StartController {
         primaryStage.setMinWidth(800);
         primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
-        primaryStage.setTitle("RaceView");
+        primaryStage.setTitle("Sail IO");
         primaryStage.show();
 
         startController.setPrimaryStage(primaryStage);
@@ -323,15 +323,15 @@ public class StartController {
         primaryStage.setWidth(800);
         primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
-        primaryStage.setTitle("RaceView");
+        primaryStage.setTitle("Sail IO");
         primaryStage.show();
 
         scoreScreenController.setPrimaryStage(primaryStage);
     }
 
     public RaceMode getRaceMode() {
-        RadioButton a = (RadioButton) modeGroup.getSelectedToggle();
-        String mode = a.getText().toLowerCase();
+        ToggleButton a = (ToggleButton) modeGroup.getSelectedToggle();
+        String mode = a.getText().toLowerCase().trim();
         return RaceMode.getRaceMode(mode);
     }
 }

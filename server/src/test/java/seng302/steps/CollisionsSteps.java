@@ -5,15 +5,14 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import seng302.BoatGenerator;
-import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.BoatCollision;
-import seng302.RaceObjects.BoatInterface;
+import seng302.RaceObjects.GenericBoat;
 
 import static junit.framework.TestCase.assertEquals;
 
 public class CollisionsSteps {
-    private BoatInterface boat1;
-    private BoatInterface boat2;
+    private GenericBoat boat1;
+    private GenericBoat boat2;
     private BoatCollision bc;
 
     @Given("^There are 2 boats$")

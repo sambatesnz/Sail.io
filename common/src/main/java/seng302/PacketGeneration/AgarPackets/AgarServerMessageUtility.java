@@ -5,7 +5,7 @@ import seng302.PacketGeneration.MessageEnumUtility;
 /**
  * Index and sizes of Agar messages
  */
-public enum AgarMessageUtility implements MessageEnumUtility{
+public enum AgarServerMessageUtility implements MessageEnumUtility{
 
     BOAT_SOURCE_ID(0, 4),
     LIVES(4, 4),
@@ -14,7 +14,7 @@ public enum AgarMessageUtility implements MessageEnumUtility{
     private int index;
     private int size;
 
-    AgarMessageUtility(int index, int size){
+    AgarServerMessageUtility(int index, int size){
         this.index = index;
         this.size = size;
     }
