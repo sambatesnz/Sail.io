@@ -250,7 +250,7 @@ public class AgarRaceController implements IRaceController {
 
         TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<>(race.boatsObs, RecursiveTreeObject::getChildren);
         positionTable.setRoot(tableRoot);
-        positionTable.getColumns().setAll(legCol, nameCol, speedCol);
+        positionTable.getColumns().setAll(Arrays.asList(legCol, nameCol, speedCol));
         positionTable.setShowRoot(false);
     }
 
@@ -367,9 +367,6 @@ public class AgarRaceController implements IRaceController {
     }
 
     private void updateBoatPositions() {
-        final int SAIL_OFFSET = 7;
-
-
         for (int i = 0; i < boats.size(); i++) {
             GenericBoat raceBoat = race.getBoats().get(i);
             BoatSprite currentBoat = boats.get(i);
