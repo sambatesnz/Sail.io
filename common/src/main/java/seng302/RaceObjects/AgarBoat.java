@@ -14,7 +14,6 @@ public class AgarBoat extends BoatDecorator{
     private static final int BASE_AGAR_SIZE = 100;
     final int BASE_BOAT_SIZE = 32;
 
-
     public AgarBoat(GenericBoat boat) {
         super(boat);
         lives = 3;
@@ -24,6 +23,7 @@ public class AgarBoat extends BoatDecorator{
     public void setAgarSize(int size) {
         this.agarSize = size;
         updateBoatCollisionSize();
+        setBaseSpeed();
     }
 
     public void updateBoatCollisionSize() {
@@ -47,6 +47,8 @@ public class AgarBoat extends BoatDecorator{
     public void resetAgarSize() {
         agarSize = BASE_AGAR_SIZE;
         updateBoatCollisionSize();
+        setBaseSpeed();
+        setSpeed(0);
     }
 
     public int getAgarSize() {

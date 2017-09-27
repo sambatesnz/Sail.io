@@ -33,7 +33,6 @@ public class AgarRace extends Race {
 
     @Override
     public void parseCourseXML(String fileName){
-
         try {
             DataGenerator dataGenerator = new DataGenerator();
             String xmlString = dataGenerator.loadFile(fileName);
@@ -60,17 +59,10 @@ public class AgarRace extends Race {
                     GenericBoat loser = collision.getOther(winner);
 
                     if (winner != null) {
-
-                        System.out.println("Collision Occurred!");
-                        System.out.println("Winner: " + winner + " Loser: " + loser);
-                        System.out.println("Winners old size: " + winner.getAgarSize());
-
                         winner.setAgarSize(winner.getAgarSize() + loser.getAgarSize());
                         winner.setBaseSpeed();
                         collision.setReactedToCollision(true);
                         killBoat(loser);
-
-                        System.out.println("Winners new size: " + winner.getAgarSize());
                     }
                 }
 
@@ -98,7 +90,6 @@ public class AgarRace extends Race {
         boats.add(loser);
         loser.setBaseSpeed();
         LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
-        System.out.println("======= LOSER SIZE:" + loser.getSize() + " =============");
     }
 
     /**
@@ -146,6 +137,7 @@ public class AgarRace extends Race {
             boats.add(boat);
             LocationSpawner.generateSpawnPoints(boats, super.boundaries, collisionDetector, super.collisionMap);
             boat.setBaseSpeed();
+            boat.setSpeed(0);
             return boat;
         } else {
             throw new Exception("cannot create boat");

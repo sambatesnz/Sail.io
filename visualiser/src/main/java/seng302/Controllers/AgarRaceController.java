@@ -146,7 +146,6 @@ public class AgarRaceController implements IRaceController {
     public void initialize() throws IOException {
         primaryStage.setHeight(799);
         primaryStage.setWidth(1199);
-        System.out.println(primaryStage.getWidth() + ", " + primaryStage.getHeight());
         primaryStage.setHeight(800);
         primaryStage.setWidth(1200);
         mainBorderPane.setLeft(sidePanelSplit);
@@ -223,10 +222,6 @@ public class AgarRaceController implements IRaceController {
                 }
             }
         });
-    }
-
-    private void initialiseMarkRoundingSprites() {
-
     }
 
     private void initialisePositionsTable() {
@@ -389,8 +384,8 @@ public class AgarRaceController implements IRaceController {
                     boatImage.setRotate(race.getBoats().get(i).getHeading());
 
 
-                // Temporary (turns out it's permanent) hard coding to differentiate bet                if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
-                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), boats.get(i).getBoat().getAgarSize());
+                    // Temporary (turns out it's permanent) hard coding to differentiate bet                if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
+                    updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), boats.get(i).getBoat().getAgarSize());
 
                     //Boats wake
                     currentBoat.getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));

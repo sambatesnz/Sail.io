@@ -382,7 +382,6 @@ public class Race {
         TimeZone tz = TimeZone.getTimeZone("NZST");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); // Quoted "Z" to indicate UTC, no timezone offset
         df.setTimeZone(tz);
-        System.out.println(startingTime + ", " + df);
         return df.format(startingTime);
     }
 
@@ -394,9 +393,8 @@ public class Race {
 
         for (GenericBoat boat : getBoatsInRace()) {
             if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
-                PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
+                updateBoatSpeed(boat);
             }
-            //Increments the the distance by the speed
             //Increments the the distance by the speed
             double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
             double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
@@ -434,6 +432,10 @@ public class Race {
         windHeadingChanged = false;
         windSpeedChanged = false;
 
+    }
+
+    public void updateBoatSpeed(GenericBoat boat) {
+        PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
     }
 
     private void setFinishTime(long msAfterCurrent) {
@@ -538,4 +540,7 @@ public class Race {
         return boats;
     }
 
+    public void setBoatAtBaseSpeed(GenericBoat boat) {
+        boat.setSpeed(0);
+    }
 }
