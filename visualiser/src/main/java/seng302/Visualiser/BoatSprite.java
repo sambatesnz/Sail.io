@@ -108,8 +108,7 @@ public class BoatSprite {
     }
 
     private void initialiseSail(){
-
-        sailOut = new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("sail1.png"));
+        sailOut = new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("sail2.png"));
         sailIn = new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("sailIn.png"));
 
         sail = new ImageView(sailOut);
