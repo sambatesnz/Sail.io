@@ -6,20 +6,17 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -29,7 +26,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import seng302.RaceObjects.*;
@@ -45,7 +41,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.*;
-import static java.lang.Math.atan2;
 import static javafx.scene.input.KeyCode.Z;
 
 /**
@@ -113,6 +108,7 @@ public class AgarRaceController implements IRaceController {
 
     private final double BOUNDARY_OPACITY = 0.5;
     private final double WIND_ARROW_SIZE = 20;
+    private final int NEXT_MARK_SIZE = 20;
     private FPSCounter fpsCounter;
     private int roundingArrowRotationClockwise = 0;
     private int roundingArrowRotationAntiClockwise = 0;
@@ -421,6 +417,13 @@ public class AgarRaceController implements IRaceController {
                         sail.setScaleX(0.1*getNodeScale());
                         sail.setRotate(value);
                     }
+
+                    if (race.getBoats().get(i).isSailsOut()) {
+                        boats.get(i).sailOut();
+                    } else {
+                        boats.get(i).sailIn();
+                        sail.setRotate(boatHeading + 180);
+                    }
                 }
             }
         }
@@ -501,23 +504,20 @@ public class AgarRaceController implements IRaceController {
     }
 
     private void updateNextMarkArrow(CompoundMark cm) {
-        double arrowTranslate = 15/(1+Coordinate.getZoom());
         int playerBoat = race.getClientSourceId();
         if (playerBoat == 0) {
             nextMarkArrow.setVisible(false);
         } else {
             double playerX = Coordinate.getRelativeX(race.getBoatsMap().get(playerBoat).getX());
             double playerY = Coordinate.getRelativeY(race.getBoatsMap().get(playerBoat).getY());
-            double arrowX = playerX + arrowTranslate;
-            double arrowY = playerY + arrowTranslate;
             double markX = Coordinate.getRelativeX(cm.getX());
             double markY = Coordinate.getRelativeY(cm.getY());
             boolean markIsFar = cm.getMarks().stream().allMatch(mark -> {
 
                 double markX1 = Coordinate.getRelativeX(mark.getX());
                 double markY1 = Coordinate.getRelativeY(mark.getY());
-                double distX = abs(markX1 - arrowX);
-                double distY = abs(markY1 - arrowY);
+                double distX = abs(markX1 - playerX);
+                double distY = abs(markY1 - playerY);
 
                 double offsetX = 15*getNodeScale();
                 double offsetY = 15*getNodeScale();
@@ -536,9 +536,12 @@ public class AgarRaceController implements IRaceController {
 
 
             if (followingBoat && markIsFar) {
-                double angleToNextMark = toDegrees(atan2(markY - arrowY, markX - arrowX));
-                nextMarkArrow.setTranslateX(arrowX);
-                nextMarkArrow.setTranslateY(arrowY);
+                double angleToNextMark = toDegrees(atan2(markY - playerY, markX - playerX));
+
+                double arrowTranslateFactor = 20/(1+Coordinate.getZoom());
+                nextMarkArrow.setTranslateX(playerX + arrowTranslateFactor*cos(toRadians(angleToNextMark)) - NEXT_MARK_SIZE/2);
+                nextMarkArrow.setTranslateY(playerY + arrowTranslateFactor*sin(toRadians(angleToNextMark)) - NEXT_MARK_SIZE/2);
+
                 nextMarkArrow.setRotate(angleToNextMark + 90);
                 nextMarkArrow.setVisible(true);
                 updateNodeScale(nextMarkArrow);

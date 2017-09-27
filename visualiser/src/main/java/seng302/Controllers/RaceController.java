@@ -4,10 +4,8 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,8 +13,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -354,18 +354,26 @@ public class RaceController implements IRaceController {
                 //  Sails
                 Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
 
-                sail.setScaleY(0.09*getNodeScale());
+                double sailScale = 0.05;
+                sail.setScaleY(sailScale*getNodeScale());
 
                 double boatHeading = race.getBoats().get(i).getHeading();
                 double relativeHeading = (360 + boatHeading - race.getWindHeading()) % 360;
                 double value = boatHeading - relativeHeading / 2;
 
                 if (relativeHeading >= 0 && relativeHeading < 180) {
-                    sail.setScaleX(-0.1*getNodeScale());
+                    sail.setScaleX(-sailScale*getNodeScale());
                     sail.setRotate(value + 180);
                 } else {
-                    sail.setScaleX(0.1*getNodeScale());
+                    sail.setScaleX(sailScale*getNodeScale());
                     sail.setRotate(value);
+                }
+
+                if (race.getBoats().get(i).isSailsOut()) {
+                    boats.get(i).sailOut();
+                } else {
+                    boats.get(i).sailIn();
+                    sail.setRotate(boatHeading + 180);
                 }
             }
         }
@@ -1092,6 +1100,4 @@ public class RaceController implements IRaceController {
         finishingController.initialiseTable();
         finishingPane.getChildren().setAll(anchorPane);
     }
-
-
 }
