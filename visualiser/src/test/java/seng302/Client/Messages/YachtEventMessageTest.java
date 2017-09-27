@@ -3,14 +3,17 @@ package seng302.Client.Messages;
 import org.junit.Test;
 import seng302.BoatGenerator;
 import seng302.PacketGeneration.BinaryMessage;
-import seng302.PacketGeneration.YachtEventGeneration.*;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
+import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
 import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Race;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests the yacht event message class

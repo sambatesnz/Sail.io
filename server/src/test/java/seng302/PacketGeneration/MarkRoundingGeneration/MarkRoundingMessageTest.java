@@ -6,7 +6,7 @@ import seng302.PacketGeneration.PacketUtils;
 
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for getting sections out of a markRoundingMessage

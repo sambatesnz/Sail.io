@@ -1,15 +1,11 @@
 package seng302.RaceObjects;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import seng302.BoatGenerator;
-import seng302.CollisionDetector;
 import seng302.Modes.AgarRace;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import sun.security.util.PendingException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Agar boat tests

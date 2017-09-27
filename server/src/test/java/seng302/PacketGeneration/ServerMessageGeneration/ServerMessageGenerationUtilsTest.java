@@ -5,10 +5,9 @@ import org.junit.Test;
 import seng302.Client.Messages.RaceRegistrationMessage;
 import seng302.Client.Messages.RaceRegistrationType;
 import seng302.PacketGeneration.BinaryMessage;
-import seng302.PacketGeneration.PacketGenerationUtils;
 import seng302.PacketParsing.PacketParserUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for message server message generation

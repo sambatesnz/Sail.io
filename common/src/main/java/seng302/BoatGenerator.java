@@ -2,7 +2,9 @@ package seng302;
 
 import seng302.RaceObjects.GenericBoat;
 
-import java.util.*;
+import java.util.EmptyStackException;
+import java.util.HashSet;
+import java.util.Stack;
 
 /**
  * Generates boats dynamically while tracking their source id

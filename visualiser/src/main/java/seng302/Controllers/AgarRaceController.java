@@ -159,6 +159,12 @@ public class AgarRaceController implements IRaceController {
 
         fpsCounter = new FPSCounter(fpsLabel);
 
+        fpsBtn.setFocusTraversable(false);
+        annotationBtn.setFocusTraversable(false);
+        toggleFinishersBtn.setFocusTraversable(false);
+        BoatNameCheckBox.setFocusTraversable(false);
+        BoatSpeedCheckBox.setFocusTraversable(false);
+
         initialiseZoomFollowing();
         initialisePositionsTable();
         legCol.setVisible(false);
@@ -224,6 +230,9 @@ public class AgarRaceController implements IRaceController {
         legCol = new JFXTreeTableColumn<>("Leg");
         nameCol = new JFXTreeTableColumn<>("Name");
         speedCol = new JFXTreeTableColumn<>("Speed");
+
+        nameCol.setSortable(true);
+        speedCol.setSortable(true);
 
         legCol.setCellValueFactory(p -> {
             String leg = String.valueOf(p.getValue().getValue().getCurrentLegIndex());
