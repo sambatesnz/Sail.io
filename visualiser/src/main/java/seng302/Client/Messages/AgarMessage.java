@@ -12,7 +12,7 @@ import java.util.Map;
  * contained in the boat agar packets
  */
 
-public class AgarMessage {
+public class AgarMessage extends ClientSideMessageParser {
     private int boatLives;
     private int boatSize;
     private int boatSourceId;
@@ -22,28 +22,40 @@ public class AgarMessage {
     /**
      * Constructor
      * @param bytes the message
-     * @param race the race
      */
-    public AgarMessage(byte[] bytes, Race race) {
+    public AgarMessage(byte[] bytes) {
+        super(bytes);
         boatSourceId = PacketParserUtils.byteArrayToInt(bytes, 0, 4);
         boatLives = PacketParserUtils.byteArrayToInt(bytes, 4, 4);
         boatSize = PacketParserUtils.byteArrayToInt(bytes, 8, 4);
-        boatDict = race.getBoatsMap();
-        this.race = race;
-
-        setAgarBoatStats();
     }
 
-    /**
-     * Updates the size and lives of an agar boat.
-     *
-     */
-    private void setAgarBoatStats() {
+    @Override
+    public void updateRace(Race race) {
+        boatDict = race.getBoatsMap();
         if (boatDict != null && boatDict.containsKey(boatSourceId)) {
             GenericBoat boat = boatDict.get(boatSourceId);
+            while (boat.getLives() > boatLives) {
+                boat.loseLife();
+            }
             boat.setLives(boatLives);
             boat.setAgarSize(boatSize);
+            if (boat.isEliminated()) {
+                boat.setSpeed(0); //Cant move because its eliminated
+            }
         }
+    }
+
+    public int getBoatSourceId() {
+        return boatSourceId;
+    }
+
+    public int getLives() {
+        return boatLives;
+    }
+
+    public int getBoatSize() {
+        return boatSize;
     }
 }
 

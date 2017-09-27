@@ -47,7 +47,7 @@ public class BoatCollision {
 
     /**
      * Checks if the boat is colliding
-     * @return
+     * @return Whether or not the boat is colliding
      */
     public boolean isColliding() {
         updateCollision();

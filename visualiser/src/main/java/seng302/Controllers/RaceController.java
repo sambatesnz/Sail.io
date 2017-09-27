@@ -131,6 +131,7 @@ public class RaceController implements IRaceController {
 
     /**
      * initializes the race display.
+     * @throws IOException Initialization Error
      */
     @FXML
     public void initialize() throws IOException {
@@ -148,6 +149,10 @@ public class RaceController implements IRaceController {
         clock.setVisible(true);
 
         fpsCounter = new FPSCounter(fpsLabel);
+
+        fpsBtn.setFocusTraversable(false);
+        annotationBtn.setFocusTraversable(false);
+        toggleFinishersBtn.setFocusTraversable(false);
 
         initialiseZoomFollowing();
         initialiseRoundingArrow();
@@ -215,6 +220,10 @@ public class RaceController implements IRaceController {
         legCol = new JFXTreeTableColumn<>("Leg");
         nameCol = new JFXTreeTableColumn<>("Name");
         speedCol = new JFXTreeTableColumn<>("Speed");
+
+        legCol.setSortable(true);
+        nameCol.setSortable(true);
+        speedCol.setSortable(true);
 
         legCol.setCellValueFactory(p -> {
             String leg = String.valueOf(p.getValue().getValue().getCurrentLegIndex());

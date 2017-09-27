@@ -338,4 +338,9 @@ public class BoatDecorator extends GenericBoat {
         return boat.getBaseSpeed();
     }
 
+    @Override
+    public void haltBoat() {
+        boat.haltBoat();
+    }
+
 }

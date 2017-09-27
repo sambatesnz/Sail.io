@@ -138,4 +138,6 @@ public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
     public abstract void setLastAgarSizeDecreaseTime(long time);
 
     public abstract void resetAgarSize();
+
+    public abstract void haltBoat();
 }

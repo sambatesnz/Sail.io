@@ -34,7 +34,7 @@ public class Server {
     /**
      * Constructor for the main application without ports
      * @param args array of arguments you want to instantiate the server with
-     * @throws Exception
+     * @throws Exception Failed to initiate server
      */
     public Server(String[] args) throws Exception {
         raceModeChooser = new RaceModeChooser(args);
@@ -48,7 +48,7 @@ public class Server {
      * Constructor for the main application
      * @param port port number
      * @param args array of arguments you want to instantiate the server with
-     * @throws Exception
+     * @throws Exception Failed to initiate server
      */
     public Server(int port, String[] args) throws Exception {
         RaceModeChooser chooser = new RaceModeChooser(args);
@@ -63,7 +63,7 @@ public class Server {
      * This shouldn't be used in future (above constructor can be used)
      * @param port port number
      * @param race Implementation of race
-     * @throws Exception
+     * @throws Exception Failed to initiate server
      */
     public Server(int port, IServerData race) throws Exception {
         this.mockRace = race;
@@ -74,7 +74,7 @@ public class Server {
 
     /**
      * Resets the race when the server RaceStatus becomes FINISHED.
-     * @throws Exception
+     * @throws Exception Failed to reset the server
      */
     private void resetRace() throws Exception {
 //        System.out.println("GIVING USERS 10s TO LOOK AT RESULTS.");
@@ -86,7 +86,7 @@ public class Server {
 
     /**
      * Starts the server on a specified port
-     * @throws Exception
+     * @throws Exception Failed to start server
      */
     private void startup() throws Exception {
         new Thread(() -> {
@@ -102,7 +102,7 @@ public class Server {
 
     /**
      * Initialises all server components for a fresh instance of the race.
-     * @throws IOException
+     * @throws IOException Failed to start server components
      */
     private void setServerComponents() throws IOException {
         connectionStore = new ConnectionStore(mockRace);
@@ -113,7 +113,7 @@ public class Server {
 
     /**
      * Starts the busy wait loop of the server
-     * @throws Exception
+     * @throws Exception Event loop failed
      */
     private void startEventLoop() throws Exception {
         boolean hasStarted = false;
