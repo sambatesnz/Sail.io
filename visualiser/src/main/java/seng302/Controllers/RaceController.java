@@ -181,9 +181,6 @@ public class RaceController implements IRaceController {
         }
 
         startRaceListener();
-        BoatSpeedCheckBox.setCheckedColor(Paint.valueOf("purple"));
-        BoatSpeedCheckBox.getControlCssMetaData().stream().map(CssMetaData::getProperty).forEach(System.out::println);
-//        BoatNameCheckBox.getCssMetaData().stream().map(CssMetaData::getProperty).forEach(System.out::println);
     }
 
     private void initialiseSpectatorZoom() {
