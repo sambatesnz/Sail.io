@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
+import javafx.css.CssMetaData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -152,6 +154,12 @@ public class RaceController implements IRaceController {
 
         fpsCounter = new FPSCounter(fpsLabel);
 
+        fpsBtn.setFocusTraversable(false);
+        annotationBtn.setFocusTraversable(false);
+        toggleFinishersBtn.setFocusTraversable(false);
+        BoatNameCheckBox.setFocusTraversable(false);
+        BoatSpeedCheckBox.setFocusTraversable(false);
+
         initialiseZoomFollowing();
         initialiseRoundingArrow();
         initialiseNextMarkArrow();
@@ -173,6 +181,9 @@ public class RaceController implements IRaceController {
         }
 
         startRaceListener();
+        BoatSpeedCheckBox.setCheckedColor(Paint.valueOf("purple"));
+        BoatSpeedCheckBox.getControlCssMetaData().stream().map(CssMetaData::getProperty).forEach(System.out::println);
+//        BoatNameCheckBox.getCssMetaData().stream().map(CssMetaData::getProperty).forEach(System.out::println);
     }
 
     private void initialiseSpectatorZoom() {
@@ -215,6 +226,10 @@ public class RaceController implements IRaceController {
         legCol = new JFXTreeTableColumn<>("Leg");
         nameCol = new JFXTreeTableColumn<>("Name");
         speedCol = new JFXTreeTableColumn<>("Speed");
+
+        legCol.setSortable(true);
+        nameCol.setSortable(true);
+        speedCol.setSortable(true);
 
         legCol.setCellValueFactory(p -> {
             String leg = String.valueOf(p.getValue().getValue().getCurrentLegIndex());

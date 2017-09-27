@@ -16,7 +16,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 
 /**
  * Tests for multiple connnections

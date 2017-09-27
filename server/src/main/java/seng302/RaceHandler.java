@@ -7,9 +7,6 @@ import seng302.PacketParsing.*;
 import seng302.Server.ConnectionListener;
 import seng302.UserInput.PracticeMessageMeaning;
 
-import java.util.Calendar;
-import java.util.Date;
-
 /**
  * Updates the race based on the message type (eg Boat action or race registration)
  */

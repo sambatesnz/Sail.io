@@ -6,9 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 import seng302.Client.Messages.Message;
 import seng302.PacketGeneration.RaceStatus;
+import seng302.RaceObjects.Boat;
 import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Race;
-import seng302.RaceObjects.Boat;
 
 import java.util.ArrayList;
 import java.util.HashMap;

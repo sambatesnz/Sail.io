@@ -8,7 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -61,6 +63,8 @@ public class StartController {
 
         ipField.visibleProperty().bind(CustModeButton.selectedProperty());
         portField.visibleProperty().bind(CustModeButton.selectedProperty());
+
+        connectBtn.disableProperty().bind(modeGroup.selectedToggleProperty().isNull());
     }
 
 

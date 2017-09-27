@@ -2,7 +2,7 @@ package seng302.Modes;
 
 import seng302.PacketGeneration.RaceStatus;
 
-import java.util.*;
+import java.util.Date;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35

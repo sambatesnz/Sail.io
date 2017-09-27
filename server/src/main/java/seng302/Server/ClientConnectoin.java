@@ -1,10 +1,10 @@
 package seng302.Server;
 
 import seng302.PacketGeneration.ServerMessageGeneration.ServerMessageGenerationUtils;
-import seng302.Server.Server;
 
-import java.io.*;
-import java.net.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.net.Socket;
 
 /**
  * Receives all packets FROM each Client - this includes the initial RRM, and the KeyStrokes.

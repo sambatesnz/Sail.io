@@ -2,8 +2,8 @@ package seng302;
 
 
 import javafx.util.Pair;
-import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.CompoundMark;
+import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Mark;
 
 import java.util.List;

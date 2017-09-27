@@ -5,7 +5,10 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import seng302.Modes.Race;
-import seng302.RaceObjects.*;
+import seng302.RaceObjects.CompoundMark;
+import seng302.RaceObjects.CourseLimit;
+import seng302.RaceObjects.GenericBoat;
+import seng302.RaceObjects.Mark;
 import seng302.Rounding;
 
 import java.io.IOException;

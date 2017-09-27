@@ -8,8 +8,6 @@ import seng302.BoatGenerator;
 import seng302.RaceObjects.BoatCollision;
 import seng302.RaceObjects.GenericBoat;
 
-import static junit.framework.TestCase.assertEquals;
-
 public class CollisionsSteps {
     private GenericBoat boat1;
     private GenericBoat boat2;

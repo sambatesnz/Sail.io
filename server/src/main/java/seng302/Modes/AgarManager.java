@@ -1,8 +1,9 @@
 package seng302.Modes;
 
-import seng302.*;
+import seng302.BoatManager;
 import seng302.DataGeneration.BoatXMLCreator;
 import seng302.DataGeneration.IServerData;
+import seng302.DataGenerator;
 import seng302.PacketGeneration.AgarPackets.ServerAgarMessage;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;

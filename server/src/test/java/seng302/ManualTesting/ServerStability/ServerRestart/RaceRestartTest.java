@@ -1,11 +1,11 @@
 package seng302.ManualTesting.ServerStability.ServerRestart;
 
 import seng302.DataGeneration.IServerData;
+import seng302.Modes.Race;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.BoatLocationGeneration.BoatLocationMessage;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketGeneration.RaceStatusGeneration.RaceStatusMessage;
-import seng302.Modes.Race;
 import seng302.RaceObjects.GenericBoat;
 
 import java.io.IOException;

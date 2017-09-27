@@ -1,13 +1,10 @@
 package seng302.steps;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import seng302.DataGeneration.IServerData;
 import seng302.RaceMode;
 import seng302.Server.Server;
-import org.junit.Assert.*;
 
 import static junit.framework.TestCase.assertEquals;
 
