@@ -12,6 +12,7 @@ import seng302.RaceObjects.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -120,6 +121,20 @@ public class AgarRace extends Race {
         double newRadius = radius * RADIUS_REDUCTION_FACTOR;
         double newArea = Math.PI * newRadius * newRadius;
         return (int)Math.floor(newArea);
+    }
+    @Override
+    public short retrieveWindSpeed() {
+        return (short) (FORTY_KNOTS * 3);
+    }
+    @Override
+    public short updateWindDirection() {
+        int rng1  = (int)(Math.random() * 30);
+        if(rng1 == 7){
+            short rng2 = (short)(Math.random() * 65535);
+            this.windHeading = rng2;
+            return rng2;
+        }
+        return this.windHeading;
     }
 
     @Override
