@@ -412,7 +412,7 @@ public class AgarRaceController implements IRaceController {
                         boats.get(i).sailOut();
                     } else {
                         boats.get(i).sailIn();
-                        sail.setRotate(race.getWindHeading());
+                        sail.setRotate(race.getWindHeading() + 180);
                     }
                 }
             }

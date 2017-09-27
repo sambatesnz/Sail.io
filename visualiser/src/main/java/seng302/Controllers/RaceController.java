@@ -368,7 +368,7 @@ public class RaceController implements IRaceController {
                     sail.setRotate(value);
                 }
 
-                if (race.getBoats().get(i).isSailsOut()) {
+                if (race.getBoats().get(i).isSailsOut() && race.getBoats().get(i).getSpeedInKnots() > 0.01) {
                     boats.get(i).sailOut();
                 } else {
                     boats.get(i).sailIn();
