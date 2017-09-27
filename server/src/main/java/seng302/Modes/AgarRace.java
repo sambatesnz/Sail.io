@@ -83,6 +83,7 @@ public class AgarRace extends Race {
         loser.loseLife();
         if (loser.isEliminated()){
             loser.haltBoat();
+            boatManager.addEliminatedBoat(loser);
         }
         loser.setSailsOut(false);
         List<GenericBoat> boats = new ArrayList<>();
@@ -141,5 +142,23 @@ public class AgarRace extends Race {
         } else {
             throw new Exception("cannot create boat");
         }
+    }
+
+    @Override
+    public boolean areAllContestantsFinished() {
+        boolean allFinished = false;
+        int competingBoats = boats.size() - boatManager.getEliminatedBoats().size();
+        if (competingBoats <= 1) {
+            allFinished = true;
+        }
+        return allFinished;
+    }
+
+    @Override
+    public void setBoatAsDisconnected(int clientSocketSourceID) {
+        super.setBoatAsDisconnected(clientSocketSourceID);
+        int sourceId = clientIDs.get(clientSocketSourceID);
+        GenericBoat boat = getBoatByID(sourceId);
+        boatManager.addEliminatedBoat(boat);
     }
 }

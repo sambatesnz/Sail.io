@@ -45,7 +45,7 @@ public class BoatStatusMessageTest {
 
     @Test
     public void testBoatStatus() throws Exception {
-        char boatStatus = BoatStatus.FINISHED.value();
+        char boatStatus = (char) BoatStatus.FINISHED.value();
 
         BoatStatusMessage boatStatusMessage = new BoatStatusMessage(
                 0,

@@ -13,10 +13,12 @@ import java.util.Set;
 public class BoatManager {
 
     private Set<GenericBoat> finishedBoats;
+    private Set<GenericBoat> eliminatedBoats;
     private List<GenericBoat> boatsToSend;
 
     public BoatManager(){
         this.finishedBoats = new HashSet<>();
+        this.eliminatedBoats = new HashSet<>();
         this.boatsToSend = new ArrayList<>();
     }
 
@@ -31,6 +33,23 @@ public class BoatManager {
                 boatsToSend.add(boat);
             }
         }
+    }
+
+    /**
+     * Adds an eliminated boat
+     * @param boat boat you wish to add
+     * @return whether the boat has been added
+     */
+    public boolean addEliminatedBoat(GenericBoat boat) {
+        boolean hasChanged = false;
+        if (boat.isEliminated()) {
+            hasChanged = eliminatedBoats.add(boat);
+        }
+        return hasChanged;
+    }
+
+    public Set<GenericBoat> getEliminatedBoats() {
+        return eliminatedBoats;
     }
 
     public boolean hasABoatFinished() {
