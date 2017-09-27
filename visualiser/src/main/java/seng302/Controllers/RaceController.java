@@ -133,6 +133,10 @@ public class RaceController implements IRaceController {
      */
     @FXML
     public void initialize() throws IOException {
+        primaryStage.setHeight(799);
+        primaryStage.setWidth(1199);
+        primaryStage.setHeight(800);
+        primaryStage.setWidth(1200);
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
