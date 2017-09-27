@@ -86,7 +86,6 @@ public class AgarRaceController implements IRaceController {
     private List<Double> lastHeadings = new ArrayList<>();
     private Polygon boundary = new Polygon();
     private Arrow nextMarkArrow;
-    private Arrow windArrow = new Arrow();
     private Group roundingArrow1 = new Group();
     private Group roundingArrow2 = new Group();
     private Group roundingArrowMirrored1 = new Group();
@@ -113,6 +112,7 @@ public class AgarRaceController implements IRaceController {
     private boolean isFinishersHidden = true;
 
     private final double BOUNDARY_OPACITY = 0.5;
+    private final double WIND_ARROW_SIZE = 20;
     private FPSCounter fpsCounter;
     private int roundingArrowRotationClockwise = 0;
     private int roundingArrowRotationAntiClockwise = 0;
@@ -127,6 +127,8 @@ public class AgarRaceController implements IRaceController {
     private ImageView imageOne;
     private ImageView imageTwo;
     private ImageView imageThree;
+    private ImageView windArrow;
+
 
 
     public AgarRaceController(Race race){
@@ -147,8 +149,10 @@ public class AgarRaceController implements IRaceController {
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
-        windArrow.setTranslateX(50);
-        windArrow.setTranslateY(50);
+        windArrow = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("windArrow.png")));
+        windArrow.setFitHeight(WIND_ARROW_SIZE);
+        windArrow.setFitWidth(WIND_ARROW_SIZE);
+        windArrow.setPreserveRatio(true);
         group.getChildren().add(windArrow);
 
         clock.setFont(new Font("Arial", 30));
@@ -202,6 +206,7 @@ public class AgarRaceController implements IRaceController {
             }
         });
     }
+
 
     private void enableScrolling() {
         mainBorderPane.setOnScroll(event -> {
@@ -839,7 +844,11 @@ public class AgarRaceController implements IRaceController {
      * Scales the wind arrow based on the wind speed
      */
     private void scaleWindArrow() {
-        windArrow.updateScaling(race.getWindSpeed());
+        double scale = Math.pow(race.getWindSpeed(), 0.33)/8;
+        windArrow.setScaleX(scale);
+        windArrow.setScaleY(scale);
+        windArrow.setTranslateX(WIND_ARROW_SIZE*2);//*scale/2);
+        windArrow.setTranslateY(WIND_ARROW_SIZE*2);//*scale/2);
     }
 
     /**

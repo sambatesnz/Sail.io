@@ -110,7 +110,7 @@ public class RaceController implements IRaceController {
 
     private final double BOUNDARY_OPACITY = 0.5;
     private final int NEXT_MARK_SIZE = 20;
-    private double WIND_ARROW_SIZE = 20;
+    private final double WIND_ARROW_SIZE = 20;
     private FPSCounter fpsCounter;
     private int roundingArrowRotationClockwise = 0;
     private int roundingArrowRotationAntiClockwise = 0;
