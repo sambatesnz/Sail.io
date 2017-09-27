@@ -368,7 +368,7 @@ public class AgarRaceController implements IRaceController {
             } else {
                 Node boatImage = boats.get(i).getStack().getChildren().get(BoatSprite.IMAGE);
                 if(race.getBoats().get(i).isKnowsBoatLocation()) {
-                    double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
+                    double boatSpeed = race.getBoats().get(i).getSpeed() / 1000;
                     String speed = "";
                     String name = "";
                     if (showSpeed) {
@@ -381,8 +381,8 @@ public class AgarRaceController implements IRaceController {
                     boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
                     boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
                     updateNodeScale(boatImage, boats.get(i).getBoat().getAgarSize());
-                    boatImage.setScaleX(boatImage.getScaleX()*0.07);
-                    boatImage.setScaleY(boatImage.getScaleY()*0.07);
+                    boatImage.setScaleX(boatImage.getScaleX() * 0.07);
+                    boatImage.setScaleY(boatImage.getScaleY() * 0.07);
                     boatImage.setRotate(race.getBoats().get(i).getHeading());
 
 
@@ -404,6 +404,24 @@ public class AgarRaceController implements IRaceController {
                     currentBoat.getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
                     currentBoat.getStack().getChildren().get(BoatSprite.TEXT).setTranslateX(10);
                     currentBoat.getStack().getChildren().get(BoatSprite.TEXT).setTranslateY(0);
+
+                    //  Sails
+                    Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
+
+                    sail.setScaleY(0.1*getNodeScale());
+
+                    double boatHeading = race.getBoats().get(i).getHeading();
+                    double relativeHeading = (360 + boatHeading - race.getWindHeading()) % 360;
+                    double value = boatHeading - relativeHeading / 2;
+
+                    if (relativeHeading >= 0 && relativeHeading < 180) {
+                        sail.setScaleX(-0.1*getNodeScale());
+                        sail.setRotate(value + 180);
+                    } else {
+                        sail.setScaleX(0.1*getNodeScale());
+                        sail.setRotate(value);
+                    }
+                }
             }
         }
     }
@@ -501,8 +519,8 @@ public class AgarRaceController implements IRaceController {
                 double distX = abs(markX1 - arrowX);
                 double distY = abs(markY1 - arrowY);
 
-                double offsetX = 100;
-                double offsetY = 100;
+                double offsetX = 15*getNodeScale();
+                double offsetY = 15*getNodeScale();
                 if (markX1 > playerX) {
                     offsetX *= -1;
                 }
@@ -1047,6 +1065,10 @@ public class AgarRaceController implements IRaceController {
     private void updateNodeScale(Node nodeToScale) {
         nodeToScale.setScaleX(1/(1+Coordinate.getZoom()));
         nodeToScale.setScaleY(1/(1+Coordinate.getZoom()));
+    }
+
+    private double getNodeScale( ) {
+        return (1/(1+Coordinate.getZoom()));
     }
 
     public void setAddr(String ip, int port) {

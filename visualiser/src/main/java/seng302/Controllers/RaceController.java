@@ -328,8 +328,8 @@ public class RaceController implements IRaceController {
 
                 Node boatImage = boats.get(i).getStack().getChildren().get(BoatSprite.IMAGE);
                 updateNodeScale(boatImage);
-                boatImage.setScaleX(boatImage.getScaleX()*0.0666);
-                boatImage.setScaleY(boatImage.getScaleY()*0.0666);
+                boatImage.setScaleX(boatImage.getScaleX()*0.0645);
+                boatImage.setScaleY(boatImage.getScaleY()*0.0645);
                 boatImage.setRotate(race.getBoats().get(i).getHeading());
 
                 //  Temporary hard coding to differentiate between the boat in user control
@@ -354,7 +354,7 @@ public class RaceController implements IRaceController {
                 //  Sails
                 Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
 
-                sail.setScaleY(0.1*getNodeScale());
+                sail.setScaleY(0.09*getNodeScale());
 
                 double boatHeading = race.getBoats().get(i).getHeading();
                 double relativeHeading = (360 + boatHeading - race.getWindHeading()) % 360;
@@ -1023,6 +1023,7 @@ public class RaceController implements IRaceController {
         nodeToScale.setScaleX(1/(1+Coordinate.getZoom()));
         nodeToScale.setScaleY(1/(1+Coordinate.getZoom()));
     }
+
     private double getNodeScale( ) {
         return (1/(1+Coordinate.getZoom()));
     }
