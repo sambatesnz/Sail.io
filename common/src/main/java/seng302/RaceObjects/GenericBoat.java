@@ -3,11 +3,14 @@ package seng302.RaceObjects;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
+import seng302.PacketGeneration.RaceStatusGeneration.BoatStatus;
 
 /**
  * Basic interface for the boat class so that it can be extended via the decorator pattern
  */
 public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
+
+    private char boatStatus;
 
     public abstract void setSpeed(int speed);
 
@@ -89,8 +92,6 @@ public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
 
     public abstract int getPosition();
 
-    public abstract void setStatus(int status);
-
     public abstract void setCurrentLegIndex(int legNumber);
 
     public abstract void passMark();
@@ -140,4 +141,8 @@ public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
     public abstract void resetAgarSize();
 
     public abstract void haltBoat();
+
+    public abstract void setStatus(BoatStatus boatStatus);
+
+    public abstract BoatStatus getStatus();
 }

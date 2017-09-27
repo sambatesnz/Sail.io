@@ -2,6 +2,7 @@ package seng302.RaceObjects;
 
 import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
+import seng302.PacketGeneration.RaceStatusGeneration.BoatStatus;
 
 /**
  * Decorator for the boat class
@@ -204,10 +205,6 @@ public class BoatDecorator extends GenericBoat {
         return boat.getPosition();
     }
 
-    @Override
-    public void setStatus(int status) {
-        boat.setStatus(status);
-    }
 
     @Override
     public void setCurrentLegIndex(int legNumber) {
@@ -341,6 +338,16 @@ public class BoatDecorator extends GenericBoat {
     @Override
     public void haltBoat() {
         boat.haltBoat();
+    }
+
+    @Override
+    public void setStatus(BoatStatus boatStatus) {
+        boat.setStatus(boatStatus);
+    }
+
+    @Override
+    public BoatStatus getStatus() {
+        return boat.getStatus();
     }
 
 }

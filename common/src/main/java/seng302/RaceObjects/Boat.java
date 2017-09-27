@@ -3,6 +3,7 @@ package seng302.RaceObjects;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
+import seng302.PacketGeneration.RaceStatusGeneration.BoatStatus;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -24,7 +25,7 @@ public class Boat extends GenericBoat {
     private int position;
     private String abrv;
     private int sourceId;
-    private int status;
+    private BoatStatus status;
     private long timeToNextMark;
     private long timeToFinish;
     private String shortName;
@@ -76,6 +77,7 @@ public class Boat extends GenericBoat {
         this.finished = false;
         this.connected = true;
         this.size = 18;
+        this.status = BoatStatus.RACING;
     }
 
     /**
@@ -476,7 +478,6 @@ public class Boat extends GenericBoat {
      * @return the position of the boat
      */
     public int getPosition() { return position; }
-
     /**
      * Sets the position of the boat.
      * @param position1 the position of the boat in the race
@@ -517,7 +518,7 @@ public class Boat extends GenericBoat {
      * 7: OCS (On Course Side – across start line early)
      * @return the status of the boat
      */
-    public int getStatus() {
+    public BoatStatus getStatus() {
         return status;
     }
 
@@ -533,7 +534,7 @@ public class Boat extends GenericBoat {
      * 7: OCS (On Course Side – across start line early)
      * @param status the status of the boat
      */
-    public void setStatus(int status) {
+    public void setStatus(BoatStatus status) {
         this.status = status;
     }
 

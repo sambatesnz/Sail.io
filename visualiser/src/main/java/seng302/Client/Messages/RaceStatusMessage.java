@@ -1,7 +1,10 @@
 package seng302.Client.Messages;
 
 
+import com.sun.xml.internal.ws.api.message.Packet;
+import seng302.PacketGeneration.PacketUtils;
 import seng302.PacketGeneration.RaceStatus;
+import seng302.PacketGeneration.RaceStatusGeneration.BoatStatus;
 import seng302.PacketParsing.PacketParserUtils;
 import seng302.RaceObjects.Race;
 
@@ -49,12 +52,15 @@ public class RaceStatusMessage {
 
         for (int i = 0; i < numBoatsInRace; i++) {
             long boatSourceID = PacketParserUtils.byteArrayToLong(bytes, offset, 4);
-            int boatStatus = PacketParserUtils.byteArrayToInt(bytes, offset + 4, 1);
+
+            byte[] tempMessage = new byte[8];
+            char boatStatus = PacketUtils.getCharFromByteArray(bytes, offset + 4, tempMessage, 1);
+            BoatStatus status = BoatStatus.getAction(boatStatus);
             int boatLegNumber = PacketParserUtils.byteArrayToInt(bytes, offset + 5, 1);
             long boatTimeToNextMark = PacketParserUtils.byteArrayToLong(bytes, offset + 8, 6);
             long boatTimeToFinish = PacketParserUtils.byteArrayToLong(bytes, offset + 14, 6);
 
-            BoatStatusMessage boatDetails = new BoatStatusMessage(boatSourceID, boatStatus,
+            BoatStatusMessage boatDetails = new BoatStatusMessage(boatSourceID, status,
                     boatLegNumber, boatTimeToNextMark, boatTimeToFinish, race);
             boatDetailsList[i] = boatDetails;
 
