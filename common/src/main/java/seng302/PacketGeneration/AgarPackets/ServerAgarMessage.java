@@ -21,6 +21,8 @@ public class ServerAgarMessage extends BinaryMessage {
         this.lives = PacketGenerationUtils.intToFourBytes(lives);
         this.boatSize = PacketGenerationUtils.intToFourBytes(boatSize);
         this.agarMessage = new byte[MESSAGE_SIZE];
+        System.out.println("boat with source id" + boatSourceId+ " has lives: " + lives);
+
     }
 
     @Override
