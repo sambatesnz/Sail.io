@@ -139,7 +139,6 @@ public class AgarRaceController implements IRaceController {
     public void initialize() throws IOException {
         primaryStage.setHeight(799);
         primaryStage.setWidth(1199);
-        System.out.println(primaryStage.getWidth() + ", " + primaryStage.getHeight());
         primaryStage.setHeight(800);
         primaryStage.setWidth(1200);
         mainBorderPane.setLeft(sidePanelSplit);
@@ -215,10 +214,6 @@ public class AgarRaceController implements IRaceController {
                 }
             }
         });
-    }
-
-    private void initialiseMarkRoundingSprites() {
-
     }
 
     private void initialisePositionsTable() {
