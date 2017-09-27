@@ -420,12 +420,13 @@ public class AgarRaceController implements IRaceController {
                     }
 
                     //Boats wake
-                    currentBoat.getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
+                    int colFactor = (int) sqrt(pow(boatSpeed, 3))*raceBoat.getAgarSize()/500;
+                    currentBoat.getStack().getChildren().set(BoatSprite.WAKE, newWake(colFactor));
                     updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.WAKE), raceBoat.getAgarSize());
                     currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setRotate(raceBoat.getHeading());
-                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * getScale(raceBoat.getAgarSize()))
+                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + colFactor) * getScale(raceBoat.getAgarSize()))
                             * Math.sin(-Math.toRadians(raceBoat.getHeading())));
-                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
+                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + colFactor)
                             * getScale(raceBoat.getAgarSize())) * cos(-Math.toRadians(raceBoat.getHeading())));
 
                     //Boat annotations (name and speed)
