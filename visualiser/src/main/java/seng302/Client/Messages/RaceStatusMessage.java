@@ -1,7 +1,6 @@
 package seng302.Client.Messages;
 
 
-import com.sun.xml.internal.ws.api.message.Packet;
 import seng302.PacketGeneration.PacketUtils;
 import seng302.PacketGeneration.RaceStatus;
 import seng302.PacketGeneration.RaceStatusGeneration.BoatStatus;
