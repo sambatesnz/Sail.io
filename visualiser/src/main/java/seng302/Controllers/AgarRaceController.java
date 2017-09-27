@@ -38,6 +38,7 @@ import seng302.Visualiser.Arrow;
 import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,6 +128,8 @@ public class AgarRaceController implements IRaceController {
     private ImageView imageOne;
     private ImageView imageTwo;
     private ImageView imageThree;
+    private List<ImageView> images;
+
 
 
     public AgarRaceController(Race race){
@@ -176,6 +179,7 @@ public class AgarRaceController implements IRaceController {
             initialiseSpectatorZoom();
         }
         drawLives();
+        images = Arrays.asList(imageOne, imageTwo, imageThree);
 
         startRaceListener();
     }
@@ -337,7 +341,6 @@ public class AgarRaceController implements IRaceController {
     private void updateBoatLives() {
         GenericBoat boat =  race.getClientBoat();
         final int MAX_BOAT_LIVES = 3;
-        List<ImageView> images = Arrays.asList(imageOne, imageTwo, imageThree);
 
         int lives = boat.getLives();
         for (int i = 0; i < MAX_BOAT_LIVES; i++) {
