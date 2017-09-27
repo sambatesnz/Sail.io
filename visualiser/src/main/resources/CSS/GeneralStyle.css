@@ -5,7 +5,7 @@
     -fx-background: rgb(40, 109, 168);
 }
 
-/*-----------------------------------Text Fields-----------------------------------------------------*/
+/*-----------------------------------------Text Fields------------------------------------------------*/
 
 .jfx-text-field {
     -fx-background-color: rgba(40, 109, 168, 0.9);
@@ -16,7 +16,7 @@
     -fx-prompt-text-fill: rgba(256, 256, 256, 0.7);
 }
 
-/*--------------------------------Buttons------------------------------------------------------------*/
+/*-----------------------------------------Buttons---------------------------------------------------*/
 
 .button {
     -fx-border-radius: 0px;
@@ -37,8 +37,6 @@
 }
 
 #connectBtn:disabled {
-    -fx-background-color: rgba(40, 109, 168, 0.9);
-    -fx-text-fill: white;
     -fx-opacity: 0.5;
 }
 
@@ -60,12 +58,8 @@
     -fx-text-fill: black;
 }
 
+.jfx-toggle-button .jfx-rippler,
 .jfx-toggle-button:selected .jfx-rippler {
-    -fx-rippler-fill: transparent;
-    -fx-opacity: 0;
-}
-
-.jfx-toggle-button .jfx-rippler {
     -fx-rippler-fill: transparent;
     -fx-opacity: 0;
 }
@@ -74,7 +68,7 @@
     -jfx-checked-color: rgba(253, 231, 76, 0.9);
 }
 
-    /*--------------------------Background Images---------------------------------------*/
+/*--------------------------------------------Background Images-----------------------------------------*/
 
 #startAnchor, #lobbyAnchor, #scoreAnchor {
     -fx-background-image: url("../BackgroundImages/north_wind_blows.jpg");
@@ -87,26 +81,23 @@
 /*---------------------------------------------Tables----------------------------------------------------*/
 
 .tree-table-view{
-    -fx-tree-table-color: rgba(40, 109, 168, 0.9);
+    -fx-tree-table-color: white;
     -fx-tree-table-rippler-color: lightgrey;
     -fx-background-color: rgba(253, 231, 76, 0.9);
     -fx-text-fill: white;
     -fx-base: white;
 }
 
-.tree-table-view .tree-table-row-cell:focused {
-    -fx-background-color: -fx-tree-table-color  ;
-    -fx-table-cell-border-color: white;
+.tree-table-view .tree-table-row-cell:focused,
+.tree-table-view .tree-table-row-cell:selected .tree-table-cell {
+    -fx-background-color: rgba(256, 256, 256, 0.9);
+    -fx-text-fill: black;
+    -fx-border-color:#F3F3F3;
 }
 
 .tree-table-row-cell {
     -fx-background-color: rgba(256, 256, 256, 0.9);
     -fx-border-color:#F3F3F3;
-}
-
-.tree-table-view .tree-table-row-cell:selected .tree-table-cell{
-    -fx-background-color: -fx-tree-table-color;
-    -fx-text-fill: white;
 }
 
 .tree-table-view .jfx-rippler {
@@ -168,63 +159,10 @@
 }
 
 .tree-table-row-cell .jfx-text-field{
-    -fx-focus-color: rgba(40, 109, 168, 0.9);
-    -fx-text-fill: white;
+    -fx-background-color: rgba(256, 256, 256, 0.9);
+    -fx-text-fill: black;
 }
 
 .tree-table-row-group {
     -fx-background-color: rgb(230, 230, 230);
 }
-
-/* ------------------------------------Old Tables Style For Reference-----------------------------------------*/
-
-/*.table-view{*/
-/*-fx-background-color: #007a49;*/
-/*}*/
-
-/*.table-view:focused{*/
-/*-fx-background-color: #007a49;*/
-/*}*/
-
-/*.table-view .column-header-background{*/
-/*-fx-background-color: #20b176;*/
-/*}*/
-
-/*.table-view .column-header-background .label{*/
-/*-fx-background-color: transparent;*/
-/*-fx-text-fill: black;*/
-/*}*/
-
-/*.table-view .column-header {*/
-/*-fx-background-color: transparent;*/
-/*}*/
-
-/*.table-view .table-cell{*/
-/*-fx-text-fill: black;*/
-/*-fx-border-color: transparent;*/
-/*}*/
-
-/*.table-row-cell{*/
-/*-fx-background-color: -fx-table-cell-border-color, #4686ba;*/
-/*-fx-border-color: transparent;*/
-/*-fx-table-cell-border-color: transparent;*/
-/*-fx-padding: 0.0em; !* 0 *!*/
-/*-fx-text-alignment: center;*/
-/*}*/
-
-/*.table-row-cell:odd{*/
-/*-fx-background-color: -fx-table-cell-border-color, #6ea3ce;*/
-/*-fx-border-color: transparent;*/
-/*-fx-table-cell-border-color: transparent;*/
-/*-fx-padding: 0.0em; !* 0 *!*/
-/*-fx-text-alignment: center;*/
-/*}*/
-
-/*.table-row-cell:selected {*/
-/*-fx-background-color: #438496;*/
-/*-fx-background-insets: 0;*/
-/*-fx-background-radius: 1;*/
-/*}*/
-
-
-/* ----------------------------------------------------------------------------------------------------------------------*/
