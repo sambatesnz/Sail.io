@@ -32,7 +32,6 @@ public class AgarRace extends Race {
 
     @Override
     public void parseCourseXML(String fileName){
-
         try {
             DataGenerator dataGenerator = new DataGenerator();
             String xmlString = dataGenerator.loadFile(fileName);
@@ -46,8 +45,9 @@ public class AgarRace extends Race {
 
     @Override
     public void checkCollisions(IServerData raceManager){
-        for (GenericBoat boat : getBoatsInRace()) {
-            BoatCollision collision = collisionDetector.checkBoatCollision(boat, boats, collisionMap);
+        List<GenericBoat> boatsInRace = getBoatsInRace();
+        for (GenericBoat boat : boatsInRace) {
+            BoatCollision collision = collisionDetector.checkBoatCollision(boat, boatsInRace, collisionMap);
             if (collision != null) {
                 BinaryMessage boatCollisionEventMessage = new YachtEventMessage(
                         boat.getSourceId(), YachtIncidentEvent.BOATCOLLISION
@@ -57,17 +57,12 @@ public class AgarRace extends Race {
                     GenericBoat winner = collision.getWinner();
                     GenericBoat loser = collision.getOther(winner);
 
-                    System.out.println("Collision Occurred!");
-                    System.out.println("Winner: " + winner + " Loser: " + loser);
-                    System.out.println("Winners old size: " + winner.getAgarSize());
-
-                    winner.setAgarSize(winner.getAgarSize() + loser.getAgarSize());
-                    winner.setBaseSpeed();
-                    collision.setReactedToCollision(true);
-                    killBoat(loser);
-
-                    System.out.println("Winners new size: " + winner.getAgarSize());
-
+                    if (winner != null) {
+                        winner.setAgarSize(winner.getAgarSize() + loser.getAgarSize());
+                        winner.setBaseSpeed();
+                        collision.setReactedToCollision(true);
+                        killBoat(loser);
+                    }
                 }
 
                 raceManager.addMessage(boatCollisionEventMessage.createMessage());
@@ -117,6 +112,21 @@ public class AgarRace extends Race {
         double newArea = Math.PI * newRadius * newRadius;
         return (int)Math.floor(newArea);
     }
+    @Override
+    public short retrieveWindSpeed() {
+        return (short) (FORTY_KNOTS * 3);
+    }
+    @Override
+    public short updateWindDirection() {
+        int rng1  = (int)(Math.random() * 30);
+        if(rng1 == 7){
+            short rng2 = (short)(Math.random() * 359);
+            this.windHeading = rng2;
+            windHeadingChanged = true;
+            return (short) ((this.windHeading * 65536) / 360);
+        }
+        return (short) ((this.windHeading * 65536) / 360);
+    }
 
     @Override
     public GenericBoat addBoat(int clientSocketSourceID) throws Exception {
@@ -126,6 +136,7 @@ public class AgarRace extends Race {
             boats.add(boat);
             LocationSpawner.generateSpawnPoints(boats, super.boundaries, collisionDetector, super.collisionMap);
             boat.setBaseSpeed();
+            boat.setSpeed(0);
             return boat;
         } else {
             throw new Exception("cannot create boat");

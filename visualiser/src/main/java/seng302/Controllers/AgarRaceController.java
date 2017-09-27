@@ -34,6 +34,7 @@ import seng302.Visualiser.Arrow;
 import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -123,6 +124,8 @@ public class AgarRaceController implements IRaceController {
     private ImageView imageOne;
     private ImageView imageTwo;
     private ImageView imageThree;
+    private List<ImageView> images;
+
     private ImageView windArrow;
 
 
@@ -175,6 +178,7 @@ public class AgarRaceController implements IRaceController {
             initialiseSpectatorZoom();
         }
         drawLives();
+        images = Arrays.asList(imageOne, imageTwo, imageThree);
 
         startRaceListener();
     }
@@ -328,7 +332,6 @@ public class AgarRaceController implements IRaceController {
     private void updateBoatLives() {
         GenericBoat boat =  race.getClientBoat();
         final int MAX_BOAT_LIVES = 3;
-        List<ImageView> images = Arrays.asList(imageOne, imageTwo, imageThree);
 
         int lives = boat.getLives();
         for (int i = 0; i < MAX_BOAT_LIVES; i++) {
@@ -372,10 +375,8 @@ public class AgarRaceController implements IRaceController {
                     boatImage.setRotate(race.getBoats().get(i).getHeading());
 
 
-                    // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
-                    if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
-                        updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), currentBoat.getBoat().getAgarSize());
-                    }
+                    // Temporary (turns out it's permanent) hard coding to differentiate bet                if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
+                    updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), boats.get(i).getBoat().getAgarSize());
 
                     //Boats wake
                     currentBoat.getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
@@ -766,7 +767,6 @@ public class AgarRaceController implements IRaceController {
         } catch (Exception e) {
         }
 
-
         if(Coordinate.getWindowHeightY() != windowHeight || Coordinate.getWindowWidthX() != windowWidth) {
             viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
             viewAnchorPane.setMaxHeight(Coordinate.getWindowHeightY());
@@ -1030,26 +1030,16 @@ public class AgarRaceController implements IRaceController {
      * @param areaPercent area % of the base area that the boat should be drawn at.
      */
     private void updateNodeScale(Node nodeToScale, int areaPercent) {
-        double extraArea = ((double) areaPercent) / 100 - 1;
-        double extraRadius = 0;
-        if(extraArea < 0) {
-            extraRadius = -sqrt(abs(extraArea / Math.PI));
-        }else if (extraArea > 0) {
-            extraRadius = sqrt(abs(extraArea / Math.PI));
-        }
-        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()) ) * (extraRadius/2 + 1));
-        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()) )* (extraRadius/2 + 1));
+        double areaScale = ((double) areaPercent) / 100;
+        double radiusScale = sqrt(areaScale);
+        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()) ) * (radiusScale));
+        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()) )* (radiusScale));
     }
 
     private double getScale(int areaPercent){
-        double extraArea = ((double) areaPercent) / 100 - 1;
-        double extraRadius = 0;
-        if(extraArea < 0) {
-            extraRadius = -sqrt(abs(extraArea / Math.PI));
-        }else if (extraArea > 0) {
-            extraRadius = sqrt(abs(extraArea / Math.PI));
-        }
-        return (1/(1+Coordinate.getZoom()) ) * (extraRadius/2 + 1);
+        double areaScale = ((double) areaPercent) / 100;
+        double radiusScale = sqrt(areaScale);
+        return ((1/(1+Coordinate.getZoom()) ) * (radiusScale));
     }
 
     /**

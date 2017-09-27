@@ -9,6 +9,8 @@ import javafx.scene.paint.Color;
  */
 public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
 
+    private double size;
+
     public abstract void setSpeed(int speed);
 
     public abstract void loseLife();
@@ -140,4 +142,6 @@ public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
     public abstract void resetAgarSize();
 
     public abstract void haltBoat();
+
+    public abstract void setSize(double size);
 }

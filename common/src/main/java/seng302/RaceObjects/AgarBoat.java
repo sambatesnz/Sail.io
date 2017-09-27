@@ -12,18 +12,28 @@ public class AgarBoat extends BoatDecorator{
     private long lastAgarSizeDecreaseTime;
 
     private static final int BASE_AGAR_SIZE = 100;
+    final int BASE_BOAT_SIZE = 32;
 
     public AgarBoat(GenericBoat boat) {
         super(boat);
         lives = 3;
         agarSize = BASE_AGAR_SIZE;
     }
-    public void setAgarSize(int size){
+
+    public void setAgarSize(int size) {
         this.agarSize = size;
+        updateBoatCollisionSize();
+        setBaseSpeed();
+    }
+
+    public void updateBoatCollisionSize() {
+        double size = BASE_BOAT_SIZE * Math.sqrt((double) agarSize / 100);
+        boat.setSize(size);
     }
 
     public void setSpeed(int speed) {
         int totalSpeed = speed + baseSpeed;
+        if (lives < 1) super.setSpeed(0);
         super.setSpeed(totalSpeed);
     }
 
@@ -35,9 +45,11 @@ public class AgarBoat extends BoatDecorator{
         }
     }
 
-
     public void resetAgarSize() {
         agarSize = BASE_AGAR_SIZE;
+        updateBoatCollisionSize();
+        setBaseSpeed();
+        setSpeed(0);
     }
 
     public int getAgarSize() {
@@ -50,14 +62,15 @@ public class AgarBoat extends BoatDecorator{
 
     private void setEliminated() {
         eliminated = true;
-    }
+        baseSpeed = 0;
+}
 
     public boolean isEliminated() {
         return eliminated;
     }
 
     public double getCollisionFactor(){
-        return getAgarSize() * getSpeed();
+        return getAgarSize() * (getSpeed() / 4);
     }
 
     public long getLastAgarSizeDecreaseTime() {
@@ -69,7 +82,7 @@ public class AgarBoat extends BoatDecorator{
     }
 
     public void setBaseSpeed() {
-        baseSpeed = calculateBaseSpeed(agarSize);
+        if (lives > 0) baseSpeed = calculateBaseSpeed(agarSize);
     }
 
     private static int calculateBaseSpeed(int boatSize) {

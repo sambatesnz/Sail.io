@@ -41,7 +41,7 @@ public class BoatSprite {
         this.boatObject = boat;
         initialiseWake();
         text = new Text();
-        tc = new Circle(2);
+        tc = new Circle(0);
         tc.setCenterX(0);
         tc.setCenterY(0);
         initialiseSail();
@@ -99,10 +99,14 @@ public class BoatSprite {
             controlCircle = new Circle(10);
             controlCircle.setCenterX(0);
             controlCircle.setCenterY(0);
-            controlCircle.setStroke(Color.INDIANRED);
+            controlCircle.setStroke(Color.GREEN);
             controlCircle.setFill(Color.TRANSPARENT);
         } else {
-            controlCircle = new Circle(0);
+            controlCircle = new Circle(10);
+            controlCircle.setCenterX(0);
+            controlCircle.setCenterY(0);
+            controlCircle.setStroke(Color.RED);
+            controlCircle.setFill(Color.TRANSPARENT);
         }
         stack.getChildren().add(controlCircle);
     }

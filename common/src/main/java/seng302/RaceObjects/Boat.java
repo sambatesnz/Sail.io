@@ -75,7 +75,7 @@ public class Boat extends GenericBoat {
         this.headingChanged = false;
         this.finished = false;
         this.connected = true;
-        this.size = 18;
+        this.size = 32;
     }
 
     /**
@@ -230,6 +230,7 @@ public class Boat extends GenericBoat {
     @Override
     public void haltBoat() {
         speed = 0;
+        size = 0;
     }
 
     @Override

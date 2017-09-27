@@ -343,4 +343,9 @@ public class BoatDecorator extends GenericBoat {
         boat.haltBoat();
     }
 
+    @Override
+    public void setSize(double size) {
+        boat.setSize(size);
+    }
+
 }
