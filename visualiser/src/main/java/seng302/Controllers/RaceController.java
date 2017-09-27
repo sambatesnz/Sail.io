@@ -505,8 +505,9 @@ public class RaceController implements IRaceController {
                 double distX = abs(markX1 - arrowX);
                 double distY = abs(markY1 - arrowY);
 
-                double offsetX = 100;
-                double offsetY = 100;
+                double offsetX = 15*getNodeScale();
+                double offsetY = 15*getNodeScale();
+                System.out.println(getNodeScale());
                 if (markX1 > playerX) {
                     offsetX *= -1;
                 }
