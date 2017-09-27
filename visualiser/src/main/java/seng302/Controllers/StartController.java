@@ -81,7 +81,8 @@ public class StartController {
         switch (raceMode){
             case AGAR: {
 //                String ip = "http://132.181.16.12"; //Turn me on for production
-                String ip = "http://127.0.0.1";
+//                String ip = "http://127.0.0.1";
+                String ip = "http://132.181.12.107";
 //                String ip = "http://132.181.12.107";
                 int port = raceMode.getPort();
                 connectLobby(ip, port, raceMode);

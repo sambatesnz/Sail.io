@@ -1,5 +1,7 @@
 package seng302.RaceObjects;
 
+import static java.lang.Math.pow;
+
 /**
  * Boat to use for Agar mode, which has lives, size, and a base speed.
  */
@@ -83,7 +85,7 @@ public class AgarBoat extends BoatDecorator{
     }
 
     public double getCollisionFactor(){
-        return getAgarSize() * (getSpeed() / 4);
+        return getAgarSize() * ((pow(getSpeed(), 2) / 2));
     }
 
     public long getLastAgarSizeDecreaseTime() {
