@@ -130,11 +130,12 @@ public class AgarRace extends Race {
     public short updateWindDirection() {
         int rng1  = (int)(Math.random() * 30);
         if(rng1 == 7){
-            short rng2 = (short)(Math.random() * 65535);
+            short rng2 = (short)(Math.random() * 359);
             this.windHeading = rng2;
-            return rng2;
+            windHeadingChanged = true;
+            return (short) ((this.windHeading * 65536) / 360);
         }
-        return this.windHeading;
+        return (short) ((this.windHeading * 65536) / 360);
     }
 
     @Override

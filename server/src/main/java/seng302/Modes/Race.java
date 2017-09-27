@@ -39,7 +39,7 @@ public class Race {
     short windHeading;
     private short startingWindSpeed;
     private int windSpeed;
-    private Boolean windHeadingChanged = false;
+    Boolean windHeadingChanged = false;
     private Boolean windSpeedChanged = false;
     private boolean practiceRace = false;
     private int raceID;
