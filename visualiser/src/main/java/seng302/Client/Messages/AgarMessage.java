@@ -38,7 +38,6 @@ public class AgarMessage extends ClientSideMessageParser {
             while (boat.getLives() > boatLives) {
                 boat.loseLife();
             }
-            boat.setLives(boatLives);
             boat.setAgarSize(boatSize);
             if (boat.isEliminated()) {
                 boat.setSpeed(0); //Cant move because its eliminated

@@ -25,6 +25,10 @@ public class BoatSprite {
     private Circle tc;
     private Circle controlCircle;
     private ImageView sail;
+    private Image sailIn;
+    private Image sailOut;
+
+
     public static final int CONTROL_CIRCLE = 0;
     public static final int IMAGE = 1;
     public static final int WAKE = 2;
@@ -37,7 +41,7 @@ public class BoatSprite {
         this.boatObject = boat;
         initialiseWake();
         text = new Text();
-        tc = new Circle(2);
+        tc = new Circle(0);
         tc.setCenterX(0);
         tc.setCenterY(0);
         initialiseSail();
@@ -95,48 +99,39 @@ public class BoatSprite {
             controlCircle = new Circle(10);
             controlCircle.setCenterX(0);
             controlCircle.setCenterY(0);
-            controlCircle.setStroke(Color.INDIANRED);
+            controlCircle.setStroke(Color.GREEN);
             controlCircle.setFill(Color.TRANSPARENT);
         } else {
-            controlCircle = new Circle(0);
+            controlCircle = new Circle(10);
+            controlCircle.setCenterX(0);
+            controlCircle.setCenterY(0);
+            controlCircle.setStroke(Color.RED);
+            controlCircle.setFill(Color.TRANSPARENT);
         }
         stack.getChildren().add(controlCircle);
     }
 
     private void initialiseSail(){
+        sailOut = new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("sail2.png"));
+        sailIn = new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("sailIn.png"));
 
-        Image img = new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("sail1.png"));
-
-        sail = new ImageView(img);
-        sail.setTranslateX(-img.getWidth()/2);
-        sail.setTranslateY(-img.getHeight()/2);
-
-
-//        sail = new Polyline();
-//        sail.setStroke(Color.RED);
-//        for(int i=0; i<360; i++){
-//            sail.getPoints().addAll(Math.sin(Math.toRadians(i)*2), i/22.5);
-//        }
+        sail = new ImageView(sailOut);
+        sail.setTranslateX(-sailOut.getWidth()/2);
+        sail.setTranslateY(-sailOut.getHeight()/2);
     }
 
     /**
      * Redraws the sail to be luffing
      */
     public void sailIn(){
-//        for(int i=0; i<720; i += 2){
-//            sail.getPoints().set(i, Math.log(i+1)*0.25*Math.sin(Math.toRadians((System.currentTimeMillis()+i)/1.0d)));
-//            sail.getPoints().set(i + 1, i/45d);
-//        }
+        sail.setImage(sailIn);
     }
 
     /**
      * Redraws the sail to be powered
      */
     public void sailOut() {
-//        for (int i = 0; i < 720; i += 2) {
-//            sail.getPoints().set(i, 0d);
-//            sail.getPoints().set(i + 1, i/45d);
-//        }
+        sail.setImage(sailOut);
     }
 
     /**

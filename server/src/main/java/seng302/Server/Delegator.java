@@ -27,11 +27,13 @@ public class Delegator {
             case SAILS_IN: {
                 GenericBoat boat = race.getBoatByID(boatID);
                 boat.setSailsOut(false);
+                race.setBoatAtBaseSpeed(boat);
                 break;
             }
             case SAILS_OUT:{
                 GenericBoat boat = race.getBoatByID(boatID);
                 boat.setSailsOut(true);
+                race.updateBoatSpeed(boat);
                 break;
             }
             case TACK_OR_GYBE:
