@@ -36,6 +36,12 @@
     -fx-opacity: 0.9;
 }
 
+#connectBtn:disabled {
+    -fx-background-color: rgba(40, 109, 168, 0.9);
+    -fx-text-fill: white;
+    -fx-opacity: 0.5;
+}
+
 .jfx-toggle-button {
     -jfx-toggle-color: transparent;
     -jfx-untoggle-color: transparent;
