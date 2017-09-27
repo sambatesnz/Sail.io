@@ -86,9 +86,7 @@ public class Race {
         finishTime = 0;
 
         ObservableList<GenericBoat> b = FXCollections.observableArrayList();
-        b.addListener((ListChangeListener<GenericBoat>) c -> {
-            initCollisions();
-        });
+        b.addListener((ListChangeListener<GenericBoat>) c -> initCollisions());
         boats = b;
 
         clientIDs = new HashMap<>();
@@ -384,6 +382,7 @@ public class Race {
         TimeZone tz = TimeZone.getTimeZone("NZST");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); // Quoted "Z" to indicate UTC, no timezone offset
         df.setTimeZone(tz);
+        System.out.println(startingTime + ", " + df);
         return df.format(startingTime);
     }
 

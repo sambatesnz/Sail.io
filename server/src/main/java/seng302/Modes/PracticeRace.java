@@ -27,7 +27,7 @@ public class PracticeRace extends Race {
                 startingTime = getNewStartTime();
             } else if (startingTime.getTime() < new Date().getTime()) {
                 raceStatus = RaceStatus.STARTED;
-            } else if (startingTime.getTime() < new Date().getTime() + super.ONE_MINUTE_IN_MILLIS) {
+            } else if (startingTime.getTime() < new Date().getTime() + ONE_MINUTE_IN_MILLIS) {
                 raceStatus = RaceStatus.PREP;
             } else {
                 raceStatus = RaceStatus.WARNING;

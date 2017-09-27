@@ -26,6 +26,7 @@ public class RaceXMLCreator implements XMLCreator {
 
 
     public RaceXMLCreator(Race race) throws IOException {
+        this.race = race;
         this.xml = createDocument(race);
     }
 
