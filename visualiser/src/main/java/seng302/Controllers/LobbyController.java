@@ -64,6 +64,7 @@ public class LobbyController {
         contestantTable.setRoot(tableRoot);
         contestantTable.getColumns().setAll(teamColumn, clientColumn);
         contestantTable.setShowRoot(false);
+        contestantTable.setFocusTraversable(false);
         forceStartBtn.setFocusTraversable(true);
         //contestantTable.setItems(race.boatsObs);
         forceStartBtn.setVisible(false);  //Temporarily removed Force Start button for demonstration
@@ -114,8 +115,14 @@ public class LobbyController {
     public void forceStart() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
 
+        if (primaryStage.getWidth() == 1200) {
+            primaryStage.setWidth(1199);
+            primaryStage.setHeight(800);
+        } else {
+            primaryStage.setWidth(1200);
+            primaryStage.setHeight(800);
+        }
         primaryStage.setWidth(1200);
-        primaryStage.setHeight(800);
         IRaceController raceController = null;
         switch (race.getRaceMode()) {
             case RACE:

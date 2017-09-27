@@ -135,10 +135,19 @@ public class AgarRace extends Race {
 
     @Override
     public boolean areAllContestantsFinished() {
-        boolean isFinished = false;
-        if (boats.size() - boatManager.getEliminatedBoats().size() <= 1) {
-            isFinished = true;
+        boolean allFinished = false;
+        int competingBoats = boats.size() - boatManager.getEliminatedBoats().size();
+        if (competingBoats <= 1) {
+            allFinished = true;
         }
-        return isFinished;
+        return allFinished;
+    }
+
+    @Override
+    public void setBoatAsDisconnected(int clientSocketSourceID) {
+        super.setBoatAsDisconnected(clientSocketSourceID);
+        int sourceId = clientIDs.get(clientSocketSourceID);
+        GenericBoat boat = getBoatByID(sourceId);
+        boatManager.addEliminatedBoat(boat);
     }
 }

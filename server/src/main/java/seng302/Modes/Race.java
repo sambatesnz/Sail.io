@@ -57,7 +57,7 @@ public class Race {
     static int MAX_NUMBER_OF_BOATS = 20;
 
     BoatGenerator boatGenerator;
-    protected BoatManager boatManager;
+    BoatManager boatManager;
     private long finishTime;
     CollisionDetector collisionDetector;
 
@@ -425,7 +425,7 @@ public class Race {
 
         //System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS
         if(areAllContestantsFinished()){
-                setFinishTime(ONE_MINUTE_IN_MILLIS/6);
+            setFinishTime(ONE_MINUTE_IN_MILLIS/6);
         }
         if (isFinishTimerExpired() && raceStatus != RaceStatus.FINISHED) {
             raceStatus = RaceStatus.FINISHED;

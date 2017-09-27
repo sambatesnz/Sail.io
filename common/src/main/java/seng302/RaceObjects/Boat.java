@@ -642,6 +642,7 @@ public class Boat extends GenericBoat {
      * Puts a boat into a disconnected state
      */
     public void disconnect() {
+        System.out.println("disconnecting a normal boat");
         this.connected = false;
         this.sailsOut = false;
     }

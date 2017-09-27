@@ -5,7 +5,7 @@ package seng302.RaceObjects;
  */
 public class AgarBoat extends BoatDecorator{
 
-    private boolean eliminated = false;
+    private boolean eliminated;
     private int lives;
     private int agarSize;
     private int baseSpeed;
@@ -17,6 +17,7 @@ public class AgarBoat extends BoatDecorator{
         super(boat);
         lives = 3;
         agarSize = BASE_AGAR_SIZE;
+        eliminated = false;
     }
     public void setAgarSize(int size){
         this.agarSize = size;
@@ -27,10 +28,26 @@ public class AgarBoat extends BoatDecorator{
         super.setSpeed(totalSpeed);
     }
 
+    public void disconnect(){
+        System.out.println("Actually I am an agar boat! disconnect myself here");
+        boat.disconnect();
+        boat.haltBoat();
+        setEliminated();
+        while (!isEliminated()) {
+            loseLife();
+        }
+        setLives(0);
+        boat.setLives(0); //its unclear where one should be setting lives
+        lives = 0;
+
+        System.out.println(boat.getSourceId() + " elimination status - " + isEliminated());
+    }
+
     public void loseLife() {
         lives = lives - 1;
         resetAgarSize();
         if (lives < 1) {
+            System.out.println(boat.getSourceId() + " <- I have been eliminated");
             setEliminated();
         }
     }

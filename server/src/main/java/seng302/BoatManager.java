@@ -37,16 +37,20 @@ public class BoatManager {
 
     /**
      * Adds an eliminated boat
-     * @param boat boat you wish to eliminate
+     * @param boat boat you wish to add
+     * @return whether the boat has been added
      */
     public boolean addEliminatedBoat(GenericBoat boat) {
-        boolean eliminatedBoatsHasChanged = false;
+        boolean hasChanged = false;
         if (boat.isEliminated()) {
-            eliminatedBoatsHasChanged = eliminatedBoats.add(boat);
+            hasChanged = eliminatedBoats.add(boat);
         }
-        return eliminatedBoatsHasChanged;
+        return hasChanged;
     }
 
+    public Set<GenericBoat> getEliminatedBoats() {
+        return eliminatedBoats;
+    }
 
     public boolean hasABoatFinished() {
         return boatsToSend.size() > 0;
@@ -54,9 +58,5 @@ public class BoatManager {
 
     public GenericBoat getFinishedBoat() {
         return boatsToSend.remove(0);
-    }
-
-    public Set<GenericBoat> getEliminatedBoats() {
-        return eliminatedBoats;
     }
 }
