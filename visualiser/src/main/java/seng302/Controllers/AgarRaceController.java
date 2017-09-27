@@ -334,8 +334,19 @@ public class AgarRaceController implements IRaceController {
         viewAnchorPane.getChildren().add(imageThree);
     }
 
+    private GenericBoat getMyBoat() {
+        GenericBoat boatToReturn = null;
+        for (GenericBoat raceBoat: race.getBoats()) {
+            if (raceBoat.getSourceId() == race.getClientSourceId()) {
+                boatToReturn = raceBoat;
+            }
+        }
+        return boatToReturn;
+    }
+
     private void updateBoatLives() {
-        GenericBoat boat =  race.getClientBoat();
+        GenericBoat boat =  getMyBoat();
+        System.out.println("I am boat: " + boat.getSourceId() + " and I think I have lives: " + boat.getLives());
         final int MAX_BOAT_LIVES = 3;
         List<ImageView> images = Arrays.asList(imageOne, imageTwo, imageThree);
 
@@ -377,7 +388,7 @@ public class AgarRaceController implements IRaceController {
                     //Position of boat, wake and annotations.
                     currentBoat.getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
                     currentBoat.getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
-                    System.out.println("agarsize: " + currentBoat.getBoat().getAgarSize());
+//                    System.out.println("agarsize: " + raceBoat.getAgarSize());
                     updateNodeScale(boat, raceBoat.getAgarSize());
                     currentBoat.getStack().getChildren().get(BoatSprite.BOAT).setRotate(raceBoat.getHeading());
 
