@@ -358,41 +358,42 @@ public class AgarRaceController implements IRaceController {
 
 
         for (int i = 0; i < boats.size(); i++) {
+            GenericBoat raceBoat = race.getBoats().get(i);
             BoatSprite currentBoat = boats.get(i);
-            if (currentBoat.getBoat().isEliminated()) {
+            if (raceBoat.isEliminated()) {
                 currentBoat.getStack().setVisible(false);
             } else {
                 Node boat = currentBoat.getStack().getChildren().get(BoatSprite.BOAT);
-                if (race.getBoats().get(i).isKnowsBoatLocation()) {
-                    double boatSpeed = race.getBoats().get(i).getSpeed() / 1000;
+                if (raceBoat.isKnowsBoatLocation()) {
+                    double boatSpeed = raceBoat.getSpeed() / 1000;
                     String speed = "";
                     String name = "";
                     if (showSpeed) {
                         speed = String.valueOf(race.getBoats().get(i).getSpeedInKnots()) + " knots";
                     }
                     if (showName) {
-                        name = race.getBoats().get(i).getShortName();
+                        name = raceBoat.getShortName();
                     }
                     //Position of boat, wake and annotations.
                     currentBoat.getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
                     currentBoat.getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
                     System.out.println("agarsize: " + currentBoat.getBoat().getAgarSize());
-                    updateNodeScale(boat, currentBoat.getBoat().getAgarSize());
-                    currentBoat.getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
+                    updateNodeScale(boat, raceBoat.getAgarSize());
+                    currentBoat.getStack().getChildren().get(BoatSprite.BOAT).setRotate(raceBoat.getHeading());
 
                     // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
-                    if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
-                        updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), currentBoat.getBoat().getAgarSize());
+                    if (raceBoat.getSourceId() == race.getClientSourceId()) {
+                        updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), raceBoat.getAgarSize());
                     }
 
                     //Boats wake
                     currentBoat.getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
-                    updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.WAKE), currentBoat.getBoat().getAgarSize());
-                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setRotate(race.getBoats().get(i).getHeading());
-                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * getScale(currentBoat.getBoat().getAgarSize()))
-                            * Math.sin(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                    updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.WAKE), raceBoat.getAgarSize());
+                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setRotate(raceBoat.getHeading());
+                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + boatSpeed) * getScale(raceBoat.getAgarSize()))
+                            * Math.sin(-Math.toRadians(raceBoat.getHeading())));
                     currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
-                            * getScale(currentBoat.getBoat().getAgarSize())) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
+                            * getScale(raceBoat.getAgarSize())) * cos(-Math.toRadians(raceBoat.getHeading())));
 
                     //Boat annotations (name and speed)
                     currentBoat.getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
@@ -401,9 +402,9 @@ public class AgarRaceController implements IRaceController {
 
                     //Sails
                     Node sail = currentBoat.getStack().getChildren().get(BoatSprite.SAIL);
-                    updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.SAIL), currentBoat.getBoat().getAgarSize());
-                    double headingDif = (360 + currentBoat.getBoat().getHeading() - race.getWindHeading()) % 360;
-                    if (race.getBoats().get(i).isSailsOut()) {
+                    updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.SAIL), raceBoat.getAgarSize());
+                    double headingDif = (360 + raceBoat.getHeading() - race.getWindHeading()) % 360;
+                    if (raceBoat.isSailsOut()) {
                         currentBoat.sailOut();
                         sail.getTransforms().clear();
                         if (headingDif < 180) {
@@ -418,7 +419,7 @@ public class AgarRaceController implements IRaceController {
 
                     }
                     double sailLength = 720d / 45d;
-                    sail.setLayoutY(getScale(currentBoat.getBoat().getAgarSize()) * (sailLength) / 2 - SAIL_OFFSET);
+                    sail.setLayoutY(getScale(raceBoat.getAgarSize()) * (sailLength) / 2 - SAIL_OFFSET);
                 }
             }
         }
