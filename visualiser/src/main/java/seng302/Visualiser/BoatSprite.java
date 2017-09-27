@@ -55,11 +55,11 @@ public class BoatSprite {
         try {
             BufferedImage bi = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("boat.png"));
             Color colour = boatObject.getColour();
-            bi = (new ImageColourChanger(bi)).colouredImage(new int[] {
-                    (int) colour.getRed()*255,
-                    (int) colour.getGreen()*255,
-                    (int) colour.getBlue()*255,
-                    255});
+            System.out.println(colour);
+            int red = (int) (colour.getRed()*255);
+            int green = (int) (colour.getGreen()*255);
+            int blue = (int) (colour.getBlue()*255);
+            bi = (new ImageColourChanger(bi)).colouredImage(new int[] { red, green, blue, 255 });
 
             ImageView iv = new ImageView();
             iv.setImage(SwingFXUtils.toFXImage(bi, null));

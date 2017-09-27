@@ -152,18 +152,20 @@ public class RaceManager implements IServerData {
     class BoatPosSender extends TimerTask {
         @Override
         public void run() {
-            for (GenericBoat boat : race.getBoats()) {
-                BinaryMessage boatLocationMessage = new BoatLocationMessage(
-                        1, System.currentTimeMillis(), boat.getSourceId(),
-                        1, 1,
-                        boat.getLatitude(), boat.getLongitude(), 0,
-                        (short) boat.getHeading(), 0, 0,0,
-                        (short) 100, boat.getSpeed(),
-                        (short) 200, (short) 200,
-                        (short) 100, (short) 100, (short) 100,
-                        (short) (boat.isSailsOut() ? 1 : 0), (short) 100, (short) 100
-                );
-                broadcastMessageQueue.add(boatLocationMessage.createMessage());
+            synchronized (race.getBoats()) {
+                for (GenericBoat boat : race.getBoats()) {
+                    BinaryMessage boatLocationMessage = new BoatLocationMessage(
+                            1, System.currentTimeMillis(), boat.getSourceId(),
+                            1, 1,
+                            boat.getLatitude(), boat.getLongitude(), 0,
+                            (short) boat.getHeading(), 0, 0, 0,
+                            (short) 100, boat.getSpeed(),
+                            (short) 200, (short) 200,
+                            (short) 100, (short) 100, (short) 100,
+                            (short) (boat.isSailsOut() ? 1 : 0), (short) 100, (short) 100
+                    );
+                    broadcastMessageQueue.add(boatLocationMessage.createMessage());
+                }
             }
         }
     }
