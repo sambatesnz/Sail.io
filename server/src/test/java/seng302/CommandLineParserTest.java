@@ -3,7 +3,7 @@ package seng302;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * For testing command line paramters

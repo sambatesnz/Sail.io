@@ -7,7 +7,10 @@ import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
 import seng302.PacketParsing.XMLParser;
-import seng302.RaceObjects.*;
+import seng302.RaceObjects.AgarBoat;
+import seng302.RaceObjects.BoatCollision;
+import seng302.RaceObjects.BoatDecorator;
+import seng302.RaceObjects.GenericBoat;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ import org.junit.Test;
 import seng302.PacketGeneration.AgarPackets.ServerAgarMessage;
 import seng302.PacketGeneration.BinaryMessage;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for agar message parsing

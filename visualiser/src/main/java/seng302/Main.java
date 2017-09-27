@@ -8,10 +8,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import seng302.Controllers.Coordinate;
 import seng302.Controllers.StartController;
-import seng302.UserInput.KeyBindingUtility;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Runs the javafx program

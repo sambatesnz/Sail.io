@@ -5,13 +5,7 @@ import seng302.Client.Messages.RaceRegistrationType;
 import seng302.ClientConnections.Client;
 import seng302.PacketGeneration.BinaryMessage;
 
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.Socket;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.Arrays;
+import java.io.IOException;
 
 /**
  *

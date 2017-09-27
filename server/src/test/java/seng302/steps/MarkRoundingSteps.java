@@ -5,8 +5,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import seng302.DataGeneration.IServerData;
-import seng302.Modes.RaceManager;
 import seng302.Modes.Race;
+import seng302.Modes.RaceManager;
 import seng302.RaceObjects.GenericBoat;
 
 public class MarkRoundingSteps {
