@@ -33,6 +33,7 @@ public class AgarBoat extends BoatDecorator{
 
     public void setSpeed(int speed) {
         int totalSpeed = speed + baseSpeed;
+        if (lives < 1) super.setSpeed(0);
         super.setSpeed(totalSpeed);
     }
 
@@ -61,7 +62,8 @@ public class AgarBoat extends BoatDecorator{
 
     private void setEliminated() {
         eliminated = true;
-    }
+        baseSpeed = 0;
+}
 
     public boolean isEliminated() {
         return eliminated;
@@ -80,7 +82,7 @@ public class AgarBoat extends BoatDecorator{
     }
 
     public void setBaseSpeed() {
-        baseSpeed = calculateBaseSpeed(agarSize);
+        if (lives > 0) baseSpeed = calculateBaseSpeed(agarSize);
     }
 
     private static int calculateBaseSpeed(int boatSize) {
