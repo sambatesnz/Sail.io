@@ -26,7 +26,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import seng302.RaceObjects.*;
@@ -324,18 +323,22 @@ public class RaceController implements IRaceController {
                 if (showName) {
                     name = race.getBoats().get(i).getShortName();
                 }
-                //Position of boat, wake and annotations.
+                //  Position of boat, wake and annotations.
                 boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
                 boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
-                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.BOAT));
-                boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
-                // Temporary hard coding to differentiate between the boat in user control
+                Node boatImage = boats.get(i).getStack().getChildren().get(BoatSprite.IMAGE);
+                updateNodeScale(boatImage);
+                boatImage.setScaleX(boatImage.getScaleX()*0.0645);
+                boatImage.setScaleY(boatImage.getScaleY()*0.0645);
+                boatImage.setRotate(race.getBoats().get(i).getHeading());
+
+                //  Temporary hard coding to differentiate between the boat in user control
                 if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
                     updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
                 }
 
-                //Boats wake
+                //  Boats wake
                 boats.get(i).getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
                 updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.WAKE));
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setRotate(race.getBoats().get(i).getHeading());
@@ -344,33 +347,27 @@ public class RaceController implements IRaceController {
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
                         * (1 / (1 + Coordinate.getZoom()))) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
 
-                //Boat annotations (name and speed)
+                //  Boat annotations (name and speed)
                 boats.get(i).getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
                 boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateX(10);
                 boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateY(0);
 
-                //Sails
+                //  Sails
                 Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
-                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.SAIL));
-                double headingDif = (360 + boats.get(i).getBoat().getHeading() - race.getWindHeading()) % 360;
-                if (race.getBoats().get(i).isSailsOut()){
-                    boats.get(i).sailOut();
-                    sail.getTransforms().clear();
-                    if (headingDif < 180 ) {
 
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 30, 0, 0));
-                    }
-                    else {
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 30, 0, 0));
-                    }
+                sail.setScaleY(0.09*getNodeScale());
+
+                double boatHeading = race.getBoats().get(i).getHeading();
+                double relativeHeading = (360 + boatHeading - race.getWindHeading()) % 360;
+                double value = boatHeading - relativeHeading / 2;
+
+                if (relativeHeading >= 0 && relativeHeading < 180) {
+                    sail.setScaleX(-0.1*getNodeScale());
+                    sail.setRotate(value + 180);
                 } else {
-                    boats.get(i).sailIn();
-                    sail.getTransforms().clear();
-                    sail.getTransforms().add(new Rotate(race.getWindHeading(), 0,0));
-
+                    sail.setScaleX(0.1*getNodeScale());
+                    sail.setRotate(value);
                 }
-                double sailLength = 720d / 45d;
-                sail.setLayoutY((1/(1 + Coordinate.getZoom())) * (sailLength)/2 - SAIL_OFFSET);
             }
         }
     }
@@ -515,8 +512,8 @@ public class RaceController implements IRaceController {
                 double distX = abs(markX1 - playerX);
                 double distY = abs(markY1 - playerY);
 
-                double offsetX = 120;
-                double offsetY = 120;
+                double offsetX = 15*getNodeScale();
+                double offsetY = 15*getNodeScale();
                 if (markX1 > playerX) {
                     offsetX *= -1;
                 }
@@ -1025,6 +1022,10 @@ public class RaceController implements IRaceController {
     private void updateNodeScale(Node nodeToScale) {
         nodeToScale.setScaleX(1/(1+Coordinate.getZoom()));
         nodeToScale.setScaleY(1/(1+Coordinate.getZoom()));
+    }
+
+    private double getNodeScale( ) {
+        return (1/(1+Coordinate.getZoom()));
     }
 
     public void setAddr(String ip, int port) {
