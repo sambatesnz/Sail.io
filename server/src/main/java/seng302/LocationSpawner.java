@@ -49,7 +49,6 @@ public class LocationSpawner {
             }
         }
         Mark newMark = new Mark(getRandomDouble(maxLat, minLat), getRandomDouble(maxLong, minLong));
-        System.out.println(newMark.getLatitude() + " ++++++++++++++  " + newMark.getLongitude());
         boat.setMark(newMark);
         boat.setHeading(getRandomDouble(359, 0));
     }

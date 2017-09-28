@@ -93,7 +93,8 @@ public class StartController {
                 connectPractice(ip, port, raceMode);
                 break;
             } case RACE: {
-                String ip = getIp();
+//                String ip = getIp();
+                String ip = "http://127.0.0.1";
                 int port = raceMode.getPort();
                 connectLobby(ip, port, raceMode);
                 break;
