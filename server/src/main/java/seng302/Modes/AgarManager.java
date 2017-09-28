@@ -38,8 +38,8 @@ public class AgarManager implements IServerData{
 
     public AgarManager(){
         this.race = new AgarRace();
-        race.parseCourseXML("Race.xml");
-        race.parseRaceXML("Race.xml");
+        race.parseCourseXML("AgarRace.xml");
+        race.parseRaceXML("AgarRace.xml");
         race.setUp();
         boatManager = race.getBoatManager();
         broadcastMessageQueue = new LinkedBlockingQueue<>();
