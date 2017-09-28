@@ -25,7 +25,7 @@ public class LocationSpawnerTest {
         CollisionDetector detector = new CollisionDetector();
         XMLParser parser = new XMLParser(getRaceXml());
 
-        LocationSpawner.generateSpawnPoints(boats, parser.getCourseLimits(), detector, null);
+        LocationSpawner.generateSpawnPoints(boats, parser.getCourseLimits(), parser.getCourseLimits(), detector, null);
         boolean actualCollision = detector.hasCollision(boat, parser.getCourseLimits(), boats, null);
         assertEquals(expectedCollision, actualCollision);
     }
