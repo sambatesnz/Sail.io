@@ -100,6 +100,7 @@ public class StartController {
                 connectLobby(ip, port, raceMode);
                 break;
             }case CUSTOM: {
+                raceMode = RaceMode.AGAR;
                 String ip = getIp();
                 int port = getPort();
                 if (port == 4942) raceMode = RaceMode.AGAR;
