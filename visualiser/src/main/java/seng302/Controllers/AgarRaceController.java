@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.*;
+import static javafx.scene.input.KeyCode.S;
 import static javafx.scene.input.KeyCode.Z;
 
 /**
@@ -61,7 +62,8 @@ public class AgarRaceController implements IRaceController {
     @FXML private JFXTreeTableColumn<GenericBoat, String> positionCol;
     @FXML private JFXTreeTableColumn<GenericBoat, String> nameCol;
     @FXML private JFXTreeTableColumn<GenericBoat, String> speedCol;
-    @FXML private JFXTreeTableColumn<GenericBoat, String> legCol;
+//    @FXML private JFXTreeTableColumn<GenericBoat, String> legCol;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> lifeCol;
     @FXML private Label fpsLabel;
     @FXML private JFXButton annotationBtn;
     @FXML private JFXButton fpsBtn;
@@ -167,7 +169,7 @@ public class AgarRaceController implements IRaceController {
 
         initialiseZoomFollowing();
         initialisePositionsTable();
-        legCol.setVisible(false);
+//        legCol.setVisible(false);
         enableScrolling();
         toggleFinishersBtn.setVisible(false);
         toggleFinishersBtn.setText("Hide Finishers");
@@ -228,19 +230,21 @@ public class AgarRaceController implements IRaceController {
     }
 
     private void initialisePositionsTable() {
-        legCol = new JFXTreeTableColumn<>("Leg");
+//        legCol = new JFXTreeTableColumn<>("Leg");
         nameCol = new JFXTreeTableColumn<>("Name");
         speedCol = new JFXTreeTableColumn<>("Speed");
+        lifeCol = new JFXTreeTableColumn<>("Lives");
 
         nameCol.setSortable(true);
         speedCol.setSortable(true);
-
-        legCol.setCellValueFactory(p -> {
-            String leg = String.valueOf(p.getValue().getValue().getCurrentLegIndex());
-            return new ReadOnlyObjectWrapper<>(leg);
-        });
-
-        legCol.setSortType(TreeTableColumn.SortType.ASCENDING);
+        lifeCol.setSortable(true);
+//
+//        legCol.setCellValueFactory(p -> {
+//            String leg = String.valueOf(p.getValue().getValue().getCurrentLegIndex());
+//            return new ReadOnlyObjectWrapper<>(leg);
+//        });
+//
+//        legCol.setSortType(TreeTableColumn.SortType.ASCENDING);
 
         nameCol.setCellValueFactory(param -> param.getValue().getValue().getBoatName());
 
@@ -249,9 +253,17 @@ public class AgarRaceController implements IRaceController {
             return new ReadOnlyObjectWrapper<>(speed);
         });
 
+        lifeCol.setCellValueFactory(p -> {
+            String lives = String.valueOf(p.getValue().getValue().getLives());
+            return new ReadOnlyObjectWrapper<>(lives);
+        });
+
+        lifeCol.setMaxWidth(1500);
+        speedCol.setMaxWidth(2000);
+
         TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<>(race.boatsObs, RecursiveTreeObject::getChildren);
         positionTable.setRoot(tableRoot);
-        positionTable.getColumns().setAll(legCol, nameCol, speedCol);
+        positionTable.getColumns().setAll(nameCol, speedCol, lifeCol);
         positionTable.setShowRoot(false);
     }
 
