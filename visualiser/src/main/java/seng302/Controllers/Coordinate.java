@@ -28,6 +28,8 @@ public class Coordinate {
     private static Mark center;
 
     private static boolean trackingBoat = false;
+    private static double boatScale;
+    private static double pixelsPerMeter;
 
     private Coordinate(){}
 
@@ -183,6 +185,20 @@ public class Coordinate {
      */
     public static double getWindowHeightY() {
         return windowHeightY;
+    }
+
+
+    public static void updatePPM(){
+        double pixels = getRelativeX(viewMin.getX()) - getRelativeX(viewMax.getX());
+        double meters = viewMin.getX() - viewMax.getX();
+        pixelsPerMeter = pixels/meters;
+    }
+
+
+    public static double getBoatScale(){
+        //3 is magic number, the size just works well for the hex map particular map in agar mode.
+        //Note: if you change this then you will need to change the collision size to control circle radius * magic number
+        return pixelsPerMeter * 2;
     }
 
 }

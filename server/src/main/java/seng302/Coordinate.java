@@ -17,6 +17,8 @@ public class Coordinate {
     private static double BorderConstant = 0;
     private static int sidePaneWidth = 248;
 
+    private static double boatScale = 1;
+
     private static Position viewMin;
     private static Position viewMax;
 
@@ -77,8 +79,10 @@ public class Coordinate {
 
         if((windowX / sizeX) > windowY / sizeY ) {
             BorderX = BorderConstant + (windowX - windowY / sizeY * sizeX) / 2;
+            boatScale = sizeY / 1000 * windowY /1000;
         }else if((windowX / sizeX) < windowY / sizeY ) {
             BorderY = BorderConstant + (windowY - windowX / sizeX * sizeY) / 2;
+            boatScale = sizeX / 1000 * windowX /1000;
         }
     }
 
@@ -100,5 +104,9 @@ public class Coordinate {
     public static double getRelativeX(double standardX){
         return (windowX - 2 * BorderX) * (standardX - viewMin.getX()) /
                 (viewMax.getX() - viewMin.getX()) + BorderX;
+    }
+
+    public static double getBoatScale(){
+        return boatScale;
     }
 }

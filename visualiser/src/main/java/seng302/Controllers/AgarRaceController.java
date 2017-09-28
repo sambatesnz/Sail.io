@@ -826,6 +826,7 @@ public class AgarRaceController implements IRaceController {
         try {
             if(race.isViewReady() && viewInitialised){
                 Coordinate.updateBorder();
+                Coordinate.updatePPM();
                 Coordinate.setOffset(calculateOffset());
                 Coordinate.updateViewCoordinates();
             }
@@ -1099,14 +1100,16 @@ public class AgarRaceController implements IRaceController {
     private void updateNodeScale(Node nodeToScale, int areaPercent) {
         double areaScale = ((double) areaPercent) / 100;
         double radiusScale = sqrt(areaScale);
-        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()) ) * (radiusScale));
-        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()) )* (radiusScale));
+//        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()) ) * (radiusScale)* Coordinate.getBoatScale());
+//        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()) )* (radiusScale)* Coordinate.getBoatScale());
+        nodeToScale.setScaleX((radiusScale)* Coordinate.getBoatScale());
+        nodeToScale.setScaleY((radiusScale)* Coordinate.getBoatScale());
     }
 
     private double getScale(int areaPercent){
         double areaScale = ((double) areaPercent) / 100;
         double radiusScale = sqrt(areaScale);
-        return ((1/(1+Coordinate.getZoom()) ) * (radiusScale));
+        return ((radiusScale) * Coordinate.getBoatScale());
     }
 
     /**

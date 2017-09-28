@@ -15,7 +15,7 @@ public class AgarBoat extends BoatDecorator{
     private long lastAgarSizeDecreaseTime;
 
     private static final int BASE_AGAR_SIZE = 100;
-    final int BASE_BOAT_SIZE = 32;
+    final int BASE_BOAT_SIZE = 20;
 
     public AgarBoat(GenericBoat boat) {
         super(boat);
