@@ -188,7 +188,7 @@ public class AgarManager implements IServerData{
         public void run() {
             if(race.getRaceStatus() != RaceStatus.WARNING && race.getRaceStatus() != RaceStatus.START_TIME_NOT_SET && race.getRaceStatus() != RaceStatus.PREP) {
                 race.updateBoats();
-                 
+                race.checkCollisions(parent);
             }
             race.updateRaceInfo();
         }
