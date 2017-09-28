@@ -312,7 +312,7 @@ public class AgarRaceController implements IRaceController {
     private void drawLives() {
         double totalVert = 100;
         imageOne = new ImageView();
-        imageOne.setImage(new Image("2000px-Love_Heart_symbol.svg.png"));
+        imageOne.setImage(new Image("heart.png"));
         imageOne.setFitHeight(40.0);
         imageOne.setFitWidth(40.0);
         imageOne.setX(20);
@@ -320,7 +320,7 @@ public class AgarRaceController implements IRaceController {
         totalVert += imageOne.getFitHeight();
 
         imageTwo = new ImageView();
-        imageTwo.setImage(new Image("2000px-Love_Heart_symbol.svg.png"));
+        imageTwo.setImage(new Image("heart.png"));
         imageTwo.setFitHeight(40.0);
         imageTwo.setFitWidth(40.0);
         imageTwo.setX(20);
@@ -328,7 +328,7 @@ public class AgarRaceController implements IRaceController {
         totalVert += imageTwo.getFitHeight();
 
         imageThree = new ImageView();
-        imageThree.setImage(new Image("2000px-Love_Heart_symbol.svg.png"));
+        imageThree.setImage(new Image("heart.png"));
         imageThree.setFitHeight(40.0);
         imageThree.setFitWidth(40.0);
         imageThree.setX(20);
