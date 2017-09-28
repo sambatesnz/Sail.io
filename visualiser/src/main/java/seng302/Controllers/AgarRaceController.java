@@ -414,9 +414,8 @@ public class AgarRaceController implements IRaceController {
 
 
                     // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
-                    if (raceBoat.getSourceId() == race.getClientSourceId()) {
-                        updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), raceBoat.getAgarSize());
-                    }
+                    updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), raceBoat.getAgarSize());
+
 
                     //Boats wake
                     currentBoat.getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
