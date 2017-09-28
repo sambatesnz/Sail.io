@@ -107,6 +107,20 @@ public class AgarBoat extends BoatDecorator{
         return (int) baseSpeed;
     }
 
+    /**
+     * Increments or decrements the boat heading by a set amount (currently 3 degrees but default)
+     * towards or away from the current wind direction based on the command upwind, or downwind.
+     * @param windDirection The current direction that the wind is coming from
+     * @param upwind Whether to increment the heading towards (true) or away
+     *               from (false) the current wind direction
+     */
+    public void updateHeading(int windDirection, boolean upwind) {
+        updateStopTurnThread();
+        if (upwind) setHeading((getHeading() + 3)%360);
+        if (!upwind) setHeading((getHeading() -3)%360);
+        setHeadingChanged(true);
+    }
+
     public int getBaseSpeed() {
         return baseSpeed;
     }

@@ -14,6 +14,8 @@ public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
 
     private char boatStatus;
 
+    public boolean headingChanged;
+
     public abstract void setSpeed(int speed);
 
     public abstract void loseLife();
@@ -149,4 +151,8 @@ public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
     public abstract void setStatus(BoatStatus boatStatus);
 
     public abstract BoatStatus getStatus();
+
+    public abstract void updateStopTurnThread();
+
+    public abstract void setHeadingChanged(boolean headingChanged);
 }

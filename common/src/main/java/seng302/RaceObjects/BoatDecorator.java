@@ -351,8 +351,16 @@ public class BoatDecorator extends GenericBoat {
     }
 
     @Override
+    public void updateStopTurnThread() {
+        boat.updateStopTurnThread();
+    }
+
+    @Override
     public void setSize(double size) {
         boat.setSize(size);
     }
 
+    public void setHeadingChanged(boolean headingChanged) {
+        boat.setHeadingChanged(headingChanged);
+    }
 }
