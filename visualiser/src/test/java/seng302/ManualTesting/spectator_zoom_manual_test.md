@@ -25,16 +25,18 @@ Test whether or not spectators can zoom and follow racing boats.
 ####Testing log:
 
 #####Test:
-   
-- Date: 13/9/2017
-- Current Commit of branch: b933c6c
-- Performed By: Oliver Robb, Tim Garrod
-- Result: **Pass**
+       
+    - Date: 13/9/2017
+    - Current Commit of branch: b933c6c
+    - Performed By: Oliver Robb, Tim Garrod
+    - Result: **Pass**
 
-- Date: 14/9/2017
-- Current Commit of branch: 60606ff
-- Performed By: Tim Garrod, Oliver, sha162
-- Result: **Pass**
+#####Test:
+    
+    - Date: 14/9/2017
+    - Current Commit of branch: 60606ff
+    - Performed By: Tim Garrod, Oliver, sha162
+    - Result: **Pass**
 
 
     

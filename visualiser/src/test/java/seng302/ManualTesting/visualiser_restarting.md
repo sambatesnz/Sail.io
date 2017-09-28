@@ -21,15 +21,15 @@
 
 #####Test:
    
-- Date  20/09/17
-- Current Commit of branch:  854c334
-- Performed By: osr13
-- Result **Pass**
+    - Date  20/09/17
+    - Current Commit of branch:  854c334
+    - Performed By: osr13
+    - Result **Pass**
 
 #####Test:
    
-- Date  20/09/17
-- Current Commit of branch:  854c334
-- Performed By: osr13, jtr44
-- Result **Pass**
+    - Date  20/09/17
+    - Current Commit of branch:  854c334
+    - Performed By: osr13, jtr44
+    - Result **Pass**
 

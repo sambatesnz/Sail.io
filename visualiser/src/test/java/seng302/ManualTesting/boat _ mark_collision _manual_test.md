@@ -3,12 +3,12 @@
 ##### Boat Collision Test
 #####Context:
     Testing that when the boats collide, the appropriate signals on each boat are displayed 
-    To set up the test, run two client side applications and connect them to the server. When the application moves to 
+    To set up the test, run two client side applications and connect them to a race server. When the application moves to 
     the stage in which boats can begin to move, direct one or both of the boats to meet and collide. 
     
 #####Expected Results:
     When the boats collide, each client application will display a red fill in the control circle of the boat under that
-    clients control for a short period of time before dissappearing. If the boats are still colliding, it will ne filled
+    clients control for a short period of time before dissappearing. If the boats are still colliding, it will be filled
     with the red colour after a moment.
     
 
@@ -16,15 +16,24 @@
 
 #####Test:
    
-- Date: 10/09/2017
-- Current Commit of branch: a7b04f759b0ab7014fc88ce36d45c60b5568ef5b
-- Performed By: Matt Simpson
-- Result: **Pass**
+    - Date: 10/09/2017
+    - Current Commit of branch: a7b04f759b0ab7014fc88ce36d45c60b5568ef5b
+    - Performed By: Matt Simpson
+    - Result: **Pass**
 
-- Date: 12/09/2017
-- Current Commit of branch: ca4993f
-- Performed By: Ollie Robb, Matt Simpson
-- Result: **Pass**
+#####Test:
+
+    - Date: 12/09/2017
+    - Current Commit of branch: ca4993f
+    - Performed By: Ollie Robb, Matt Simpson
+    - Result: **Pass**
+    
+#####Test:
+
+    - Date: 28/09/2017
+    - Current Commit of branch: 6b53f48b37c2ec43363ea4e1d80922d8db7d7c12
+    - Performed By: Matt Simpson
+    - Result: **Pass**
 
 
 ##### Mark Collision Test
@@ -42,16 +51,25 @@
 ####Testing log:
 
 #####Test:
-   
-- Date: 10/09/2017
-- Current Commit of branch: a7b04f759b0ab7014fc88ce36d45c60b5568ef5b
-- Performed By: Matt Simpson
-- Result: **Pass**
+       
+    - Date: 10/09/2017
+    - Current Commit of branch: a7b04f759b0ab7014fc88ce36d45c60b5568ef5b
+    - Performed By: Matt Simpson
+    - Result: **Pass**
 
-- Date: 12/09/2017
-- Current Commit of branch: ca4993f
-- Performed By: Ollie Robb, Matt Simpson
-- Result: **Pass**
+#####Test:
+
+    - Date: 12/09/2017
+    - Current Commit of branch: ca4993f
+    - Performed By: Ollie Robb, Matt Simpson
+    - Result: **Pass**
+    
+#####Test:
+
+    - Date: 28/09/2017
+    - Current Commit of branch: 6b53f48b37c2ec43363ea4e1d80922d8db7d7c12
+    - Performed By: Matt Simpson
+    - Result: **Pass**
 
 ##### Boundary Collision Test
 #####Context:
@@ -68,16 +86,25 @@
 ####Testing log:
 
 #####Test:
-   
-- Date: 11/09/2017
-- Current Commit of branch: 77a7d291c46af317fab4daaba5995545899a1411
-- Performed By: Matt Simpson, Jono Travaille
-- Result: **Pass** 
+       
+    - Date: 11/09/2017
+    - Current Commit of branch: 77a7d291c46af317fab4daaba5995545899a1411
+    - Performed By: Matt Simpson, Jono Travaille
+    - Result: **Pass** 
+
+#####Test:
   
-- Date: 12/09/2017
-- Current Commit of branch: ca4993f
-- Performed By: Ollie Robb, Matt Simpson
-- Result: **Pass**
+    - Date: 12/09/2017
+    - Current Commit of branch: ca4993f
+    - Performed By: Ollie Robb, Matt Simpson
+    - Result: **Pass**
+    
+#####Test:
+
+    - Date: 28/09/2017
+    - Current Commit of branch: 6b53f48b37c2ec43363ea4e1d80922d8db7d7c12
+    - Performed By: Matt Simpson
+    - Result: **Pass**
     
 
     

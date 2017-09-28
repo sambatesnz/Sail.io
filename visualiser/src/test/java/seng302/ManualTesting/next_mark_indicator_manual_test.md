@@ -14,10 +14,10 @@
 ####Testing log:
 
 #####Test:
-- Date: 12/09/2017
-- Current Commit of branch: 56ef2af
-- Performed By: Abel Svoboda, Ollie Robb        
-- Result: **Pass**
+    - Date: 12/09/2017
+    - Current Commit of branch: 56ef2af
+    - Performed By: Abel Svoboda, Ollie Robb        
+    - Result: **Pass**
 
 ##### Next Mark Indicator Test 2
 #####Context:
@@ -31,7 +31,7 @@
 ####Testing log:
 
 #####Test:
-- Date: 25/09/2017
-- Current Commit of branch: 8479c1a
-- Performed By: Abel Svoboda, Sam Bates
-- Result: **Pass**
+    - Date: 25/09/2017
+    - Current Commit of branch: 8479c1a
+    - Performed By: Abel Svoboda, Sam Bates
+    - Result: **Pass**

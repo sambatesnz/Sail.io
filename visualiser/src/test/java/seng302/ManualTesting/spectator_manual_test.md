@@ -16,13 +16,15 @@ Test whether or not client(s) can spectate a race in progress
 ####Testing log:
 
 #####Test:
-   
-- Date: 13/9/2017
-- Current Commit of branch: b933c6c
-- Performed By: Oliver Robb, Tim Garrod
-- Result: **Pass**
-
-- Date: 14/9/2017
-- Current Commit of branch: 60606ff
-- Performed By: Tim Garrod, Jono, sha162
-- Result: **Pass**
+       
+    - Date: 13/9/2017
+    - Current Commit of branch: b933c6c
+    - Performed By: Oliver Robb, Tim Garrod
+    - Result: **Pass**
+        
+#####Test:
+    
+    - Date: 14/9/2017
+    - Current Commit of branch: 60606ff
+    - Performed By: Tim Garrod, Jono, sha162
+    - Result: **Pass**
