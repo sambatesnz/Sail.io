@@ -134,7 +134,7 @@ public abstract class GenericBoat extends RecursiveTreeObject<GenericBoat> {
 
     public abstract void setHeadingToVMG(int windHeading);
 
-    abstract double getCollisionFactor();
+    public abstract double getCollisionFactor();
 
     public abstract long getLastAgarSizeDecreaseTime();
 

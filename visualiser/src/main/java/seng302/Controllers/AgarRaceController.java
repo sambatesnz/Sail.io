@@ -5,6 +5,7 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -61,9 +62,10 @@ public class AgarRaceController implements IRaceController {
     @FXML private JFXTreeTableView<GenericBoat> positionTable;
     @FXML private JFXTreeTableColumn<GenericBoat, String> positionCol;
     @FXML private JFXTreeTableColumn<GenericBoat, String> nameCol;
-    @FXML private JFXTreeTableColumn<GenericBoat, String> speedCol;
+//    @FXML private JFXTreeTableColumn<GenericBoat, String> speedCol;
 //    @FXML private JFXTreeTableColumn<GenericBoat, String> legCol;
     @FXML private JFXTreeTableColumn<GenericBoat, String> lifeCol;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> sizeCol;
     @FXML private Label fpsLabel;
     @FXML private JFXButton annotationBtn;
     @FXML private JFXButton fpsBtn;
@@ -234,11 +236,12 @@ public class AgarRaceController implements IRaceController {
     private void initialisePositionsTable() {
 //        legCol = new JFXTreeTableColumn<>("Leg");
         nameCol = new JFXTreeTableColumn<>("Name");
-        speedCol = new JFXTreeTableColumn<>("Speed");
+//        speedCol = new JFXTreeTableColumn<>("Speed");
         lifeCol = new JFXTreeTableColumn<>("Lives");
+        sizeCol = new JFXTreeTableColumn<>("Power");
 
         nameCol.setSortable(true);
-        speedCol.setSortable(true);
+//        speedCol.setSortable(true);
         lifeCol.setSortable(true);
 //
 //        legCol.setCellValueFactory(p -> {
@@ -248,24 +251,33 @@ public class AgarRaceController implements IRaceController {
 //
 //        legCol.setSortType(TreeTableColumn.SortType.ASCENDING);
 
-        nameCol.setCellValueFactory(param -> param.getValue().getValue().getBoatName());
-
-        speedCol.setCellValueFactory(p -> {
-            String speed = String.valueOf(p.getValue().getValue().getSpeedInKnots());
-            return new ReadOnlyObjectWrapper<>(speed);
+        nameCol.setCellValueFactory(param -> {
+            String shortName = "     " + param.getValue().getValue().getShortName();
+            return new ReadOnlyObjectWrapper<>(shortName);
         });
 
+//        speedCol.setCellValueFactory(p -> {
+//            String speed ="        " +  String.valueOf(p.getValue().getValue().getSpeedInKnots());
+//            return new ReadOnlyObjectWrapper<>(speed);
+//        });
+
         lifeCol.setCellValueFactory(p -> {
-            String lives = String.valueOf(p.getValue().getValue().getLives());
+            String lives = "         " +  String.valueOf(p.getValue().getValue().getLives());
             return new ReadOnlyObjectWrapper<>(lives);
         });
 
-        lifeCol.setMaxWidth(1500);
-        speedCol.setMaxWidth(2000);
+        sizeCol.setCellValueFactory(p -> {
+            String size = "     " + String.valueOf((int) p.getValue().getValue().getCollisionFactor() / 1000000);
+            return new ReadOnlyObjectWrapper<>(size);
+        });
+
+//        sizeCol.setMinWidth(0);
+//        speedCol.setMinWidth(0);
+//        lifeCol.setMinWidth(0);
 
         TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<>(race.boatsObs, RecursiveTreeObject::getChildren);
         positionTable.setRoot(tableRoot);
-        positionTable.getColumns().setAll(Arrays.asList(nameCol, speedCol, lifeCol));
+        positionTable.getColumns().setAll(Arrays.asList(nameCol, sizeCol, lifeCol));
         positionTable.setShowRoot(false);
     }
 
