@@ -102,6 +102,8 @@ public class StartController {
             }case CUSTOM: {
                 String ip = getIp();
                 int port = getPort();
+                if (port == 4942) raceMode = RaceMode.AGAR;
+                if (port == 4943) raceMode = RaceMode.PRACTICE;
                 connectLobby(ip, port, raceMode);
                 break;
             } default: {
@@ -342,12 +344,6 @@ public class StartController {
     public RaceMode getRaceMode() {
         ToggleButton a = (ToggleButton) modeGroup.getSelectedToggle();
         String mode = a.getText().toLowerCase().trim();
-        System.out.println(mode);
-        if(mode.equals("custom")){
-            if(portField.getText() == "4942"){
-                mode = "agar";
-            }
-        }
         return RaceMode.getRaceMode(mode);
     }
 }
