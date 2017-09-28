@@ -1,5 +1,6 @@
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import seng302.BoatGenerator;
 import seng302.RaceObjects.AgarBoat;
@@ -19,6 +20,7 @@ public class BoatBaseSpeedTest {
         b.setAgarSize(100);
     }
 
+    @Ignore //Deprecated
     @Test
     public void testBaseSpeedIncreases() throws Exception {
         double size = (double) b.getAgarSize()/800;
