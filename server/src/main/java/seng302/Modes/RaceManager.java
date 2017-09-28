@@ -154,6 +154,7 @@ public class RaceManager implements IServerData {
         public void run() {
             synchronized (race.getBoats()) {
                 for (GenericBoat boat : race.getBoats()) {
+                    boat.getSpeed();
                     BinaryMessage boatLocationMessage = new BoatLocationMessage(
                             1, System.currentTimeMillis(), boat.getSourceId(),
                             1, 1,

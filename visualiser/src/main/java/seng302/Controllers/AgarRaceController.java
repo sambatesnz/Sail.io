@@ -267,7 +267,7 @@ public class AgarRaceController implements IRaceController {
         });
 
         sizeCol.setCellValueFactory(p -> {
-            String size = "     " + String.valueOf((int) p.getValue().getValue().getCollisionFactor() / 1000000);
+            String size = "     " + String.valueOf((int) p.getValue().getValue().getCollisionFactor());
             return new ReadOnlyObjectWrapper<>(size);
         });
 
@@ -442,14 +442,13 @@ public class AgarRaceController implements IRaceController {
 
 
                     //Boats wake
-
-                    currentBoat.getStack().getChildren().set(BoatSprite.WAKE, newWake(raceBoat.getCollisionFactor()/100000000));
-                    System.out.println(raceBoat.getCollisionFactor());
+                    currentBoat.getStack().getChildren().set(BoatSprite.WAKE, newWake(raceBoat.getCollisionFactor()/75));
+//                    System.out.println(raceBoat.getCollisionFactor());
                     updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.WAKE), raceBoat.getAgarSize());
                     currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setRotate(raceBoat.getHeading());
-                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + raceBoat.getCollisionFactor()/100000000) * getScale(raceBoat.getAgarSize()))
+                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + raceBoat.getCollisionFactor()/75) * getScale(raceBoat.getAgarSize()))
                             * Math.sin(-Math.toRadians(raceBoat.getHeading())));
-                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + raceBoat.getCollisionFactor()/100000000)
+                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + raceBoat.getCollisionFactor()/75)
                             * getScale(raceBoat.getAgarSize())) * cos(-Math.toRadians(raceBoat.getHeading())));
 
                     //Boat annotations (name and speed)

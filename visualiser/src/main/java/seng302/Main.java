@@ -35,7 +35,7 @@ public class Main extends Application {
             primaryStage.setMaximized(false);
             primaryStage.getIcons().add(new Image(String.valueOf(getClass().getClassLoader().getResource("Logo/SailIOIcon.png"))));
             primaryStage.setScene(rootScene);
-            primaryStage.setTitle("Sail IO");
+            primaryStage.setTitle("Sail.io");
             primaryStage.show();
 
             Coordinate.setWindowWidthX(800);

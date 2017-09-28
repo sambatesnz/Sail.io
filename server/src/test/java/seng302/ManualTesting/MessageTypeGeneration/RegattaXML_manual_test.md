@@ -17,8 +17,13 @@ As a user I want to see the correct UTC Time set for a race
 
 #####Test:
    
-- Date 24/07/17
-- Current Commit of branch [cc4e604]
-- Performed By: sha162, tjg73
-- Result: **Pass**
+    - Date 24/07/17
+    - Current Commit of branch [cc4e604]
+    - Performed By: sha162, tjg73
+    - Result: **Pass**
+
+    - Date: 28/8/2017
+    - Current Commit of Branch: 6b53f48
+    - Performed By: Stefan hall 
+    - Result: Pass
 
