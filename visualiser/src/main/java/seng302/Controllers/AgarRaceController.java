@@ -152,6 +152,8 @@ public class AgarRaceController implements IRaceController {
         windArrow = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("windArrow.png")));
         windArrow.setFitHeight(WIND_ARROW_SIZE);
         windArrow.setFitWidth(WIND_ARROW_SIZE);
+        windArrow.setLayoutX(-1);
+        windArrow.setLayoutY(7);
         windArrow.setPreserveRatio(true);
         group.getChildren().add(windArrow);
 
@@ -263,7 +265,7 @@ public class AgarRaceController implements IRaceController {
 
         TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<>(race.boatsObs, RecursiveTreeObject::getChildren);
         positionTable.setRoot(tableRoot);
-        positionTable.getColumns().setAll(nameCol, speedCol, lifeCol);
+        positionTable.getColumns().setAll(Arrays.asList(nameCol, speedCol, lifeCol));
         positionTable.setShowRoot(false);
     }
 
@@ -328,7 +330,7 @@ public class AgarRaceController implements IRaceController {
     private void drawLives() {
         double totalVert = 100;
         imageOne = new ImageView();
-        imageOne.setImage(new Image("2000px-Love_Heart_symbol.svg.png"));
+        imageOne.setImage(new Image("heart.png"));
         imageOne.setFitHeight(40.0);
         imageOne.setFitWidth(40.0);
         imageOne.setX(20);
@@ -336,7 +338,7 @@ public class AgarRaceController implements IRaceController {
         totalVert += imageOne.getFitHeight();
 
         imageTwo = new ImageView();
-        imageTwo.setImage(new Image("2000px-Love_Heart_symbol.svg.png"));
+        imageTwo.setImage(new Image("heart.png"));
         imageTwo.setFitHeight(40.0);
         imageTwo.setFitWidth(40.0);
         imageTwo.setX(20);
@@ -344,7 +346,7 @@ public class AgarRaceController implements IRaceController {
         totalVert += imageTwo.getFitHeight();
 
         imageThree = new ImageView();
-        imageThree.setImage(new Image("2000px-Love_Heart_symbol.svg.png"));
+        imageThree.setImage(new Image("heart.png"));
         imageThree.setFitHeight(40.0);
         imageThree.setFitWidth(40.0);
         imageThree.setX(20);
@@ -397,9 +399,6 @@ public class AgarRaceController implements IRaceController {
     }
 
     private void updateBoatPositions() {
-        final int SAIL_OFFSET = 7;
-
-
         for (int i = 0; i < boats.size(); i++) {
             GenericBoat raceBoat = race.getBoats().get(i);
             BoatSprite currentBoat = boats.get(i);
@@ -427,9 +426,8 @@ public class AgarRaceController implements IRaceController {
 
 
                     // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
-                    if (raceBoat.getSourceId() == race.getClientSourceId()) {
-                        updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), raceBoat.getAgarSize());
-                    }
+                    updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), raceBoat.getAgarSize());
+
 
                     //Boats wake
                     currentBoat.getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
@@ -838,15 +836,15 @@ public class AgarRaceController implements IRaceController {
             clock.setLayoutY(20);
             clock.setLayoutX(Coordinate.getWindowWidthX() - 155);
             fpsBtn.setLayoutX(14);
-            fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 75);
+            fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 85);
             annotationBtn.setLayoutX(14);
             annotationBtn.setLayoutY(Coordinate.getWindowHeightY() - 50);
             toggleFinishersBtn.setLayoutX(14);
-            toggleFinishersBtn.setLayoutY(Coordinate.getWindowHeightY() - 100);
-            BoatNameCheckBox.setLayoutX(14);
-            BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 150);
-            BoatSpeedCheckBox.setLayoutX(14);
-            BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 125);
+            toggleFinishersBtn.setLayoutY(Coordinate.getWindowHeightY() - 120);
+            BoatNameCheckBox.setLayoutX(4);
+            BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 170);
+            BoatSpeedCheckBox.setLayoutX(4);
+            BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 145);
             localTime.setLayoutX(Coordinate.getWindowWidthX() - 110);
             localTime.setLayoutY(100);
             localTimeZone.setLayoutX(Coordinate.getWindowWidthX() - 115);
@@ -889,7 +887,7 @@ public class AgarRaceController implements IRaceController {
      * Scales the wind arrow based on the wind speed
      */
     private void scaleWindArrow() {
-        double scale = Math.pow(race.getWindSpeed(), 0.33)/8;
+        double scale = Math.pow(race.getWindSpeed(), 0.33)/12;
         windArrow.setScaleX(scale);
         windArrow.setScaleY(scale);
         windArrow.setTranslateX(WIND_ARROW_SIZE*2);//*scale/2);

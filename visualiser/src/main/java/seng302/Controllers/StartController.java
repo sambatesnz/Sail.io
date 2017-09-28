@@ -90,7 +90,7 @@ public class StartController {
             } case PRACTICE: {
                 String ip = "http://127.0.0.1";
                 int port = raceMode.getPort();
-                connectPractice(ip, port);
+                connectPractice(ip, port, raceMode);
                 break;
             } case RACE: {
                 String ip = getIp();
@@ -182,7 +182,7 @@ public class StartController {
         });
     }
 
-    private void connectPractice(String ip, int port) throws InterruptedException {
+    private void connectPractice(String ip, int port, RaceMode raceMode) throws InterruptedException {
         Platform.runLater(
                 () -> statusLbl.setText("connecting...")
         );
@@ -190,6 +190,8 @@ public class StartController {
         PracticeClientController clientController = new PracticeClientController(ip, port, primaryStage, rootScene);
         clientController.startClient();
         race = clientController.getRace();
+
+        race.setRaceMode(raceMode);
 
         race.connectedToServerProperty().addListener((observable, oldValue, isConnected) -> {
             if (isConnected.equals(0)) { // disconnectedRace
@@ -238,6 +240,7 @@ public class StartController {
     private void practiceView(Race race) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
         RaceController raceController = new RaceController(race);
+        raceController.setPrimaryStage(primaryStage);
         loader.setController(raceController);
         Parent root = loader.load();
 
