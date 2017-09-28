@@ -183,6 +183,7 @@ public class AgarRaceController implements IRaceController {
         if (race.getClientSourceId() == 0){
             initialiseSpectatorZoom();
         }
+
         drawLives();
         images = Arrays.asList(imageOne, imageTwo, imageThree);
 
@@ -277,7 +278,11 @@ public class AgarRaceController implements IRaceController {
 //                    updateCourseLayout();
                     if (race.isRaceReady() && boatLocationDataInitialised) {
                         updateBoatPositions();
-                        updateBoatLives();
+                        if (race.getClientSourceId() != 0) {
+                            updateBoatLives();
+                        } else if (spectatorBoat != null) {
+                            updateSpectatorLives(spectatorBoat);
+                        }
                         //updateBoatPaths();
                     }
                 } catch (Exception e) {
@@ -336,6 +341,10 @@ public class AgarRaceController implements IRaceController {
         viewAnchorPane.getChildren().add(imageOne);
         viewAnchorPane.getChildren().add(imageTwo);
         viewAnchorPane.getChildren().add(imageThree);
+
+        imageOne.setVisible(false);
+        imageTwo.setVisible(false);
+        imageThree.setVisible(false);
     }
 
     private GenericBoat getMyBoat() {
@@ -346,6 +355,15 @@ public class AgarRaceController implements IRaceController {
             }
         }
         return boatToReturn;
+    }
+
+    private void updateSpectatorLives(GenericBoat boat) {
+        final int MAX_BOAT_LIVES = 3;
+
+        int lives = boat.getLives();
+        for (int i = 0; i < MAX_BOAT_LIVES; i++) {
+            images.get(i).setVisible(i < lives);
+        }
     }
 
     private void updateBoatLives() {
@@ -906,6 +924,8 @@ public class AgarRaceController implements IRaceController {
         }
         boundary.setFill(Color.LIGHTBLUE);
         boundary.setOpacity(BOUNDARY_OPACITY);
+        boundary.setStroke(Color.BLACK);
+        boundary.setStrokeWidth(2.5);
         return boundary;
     }
 

@@ -160,8 +160,12 @@ public class AgarRace extends Race {
     @Override
     public void setBoatAsDisconnected(int clientSocketSourceID) {
         super.setBoatAsDisconnected(clientSocketSourceID);
-        int sourceId = clientIDs.get(clientSocketSourceID);
-        GenericBoat boat = getBoatByID(sourceId);
-        boatManager.addEliminatedBoat(boat);
+        try {
+            int sourceId = clientIDs.get(clientSocketSourceID);
+            GenericBoat boat = getBoatByID(sourceId);
+            boatManager.addEliminatedBoat(boat);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 }

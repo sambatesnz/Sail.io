@@ -55,10 +55,8 @@ public class Client {
                 Thread.sleep(1);
                 nextMessage();
                 sendMessage();
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            }  catch (IOException e) {
-                break;
             }
             Arrays.fill(dataReceived, (byte)0);
         }
