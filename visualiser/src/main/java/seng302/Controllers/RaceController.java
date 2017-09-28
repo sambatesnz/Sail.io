@@ -145,6 +145,8 @@ public class RaceController implements IRaceController {
         windArrow = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("windArrow.png")));
         windArrow.setFitHeight(WIND_ARROW_SIZE);
         windArrow.setFitWidth(WIND_ARROW_SIZE);
+        windArrow.setLayoutX(-1);
+        windArrow.setLayoutY(7);
         windArrow.setPreserveRatio(true);
         group.getChildren().add(windArrow);
 
@@ -249,7 +251,7 @@ public class RaceController implements IRaceController {
     }
 
     private void scaleWindArrow() {
-        double scale = Math.pow(race.getWindSpeed(), 0.33)/8;
+        double scale = Math.pow(race.getWindSpeed(), 0.33)/12;
         windArrow.setScaleX(scale);
         windArrow.setScaleY(scale);
         windArrow.setTranslateX(WIND_ARROW_SIZE*2);//*scale/2);
