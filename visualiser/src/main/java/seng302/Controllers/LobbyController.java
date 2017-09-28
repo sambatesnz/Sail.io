@@ -82,11 +82,11 @@ public class LobbyController {
         timeToStart.textProperty().bind(race.timeToStartProperty());
 
         timeToStart.textProperty().addListener((observable, oldValue, newValue) -> {
-            int minutesUntilStart = 0;
+            int secondsUntilStart = 0;
             if (race.getRaceMode() != RaceMode.AGAR){
-                minutesUntilStart = 0;
+                secondsUntilStart = 10;
             }
-            if (newValue.equals(String.format(" %02d:%02d:%02d", 0, minutesUntilStart, 0)) || (race.getClientSourceId() == 0 && race.isRaceReady() && !raceStarted)) {
+            if (newValue.equals(String.format(" %02d:%02d:%02d", 0, 0, secondsUntilStart)) || (race.getClientSourceId() == 0 && race.isRaceReady() && !raceStarted)) {
                 Platform.runLater(
                         () -> {
                             try {
