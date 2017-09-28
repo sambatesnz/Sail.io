@@ -22,12 +22,14 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.Math.*;
+import static seng302.LocationSpawner.getRandomDouble;
 
 /**
  * Class that simulates the racing of the boats competing in the America's Cup 35
  * This displays a text-based play by play commentary of the race as it happens
  */
 public class Race {
+    private static final double SPAWN_BOX_OFFSET = 0.00005;
     Map<BoatPair, BoatCollision> collisionMap;
     private int numFinishers = 0;
     private List<Pair<CompoundMark, Rounding>> courseRoundingInfo;
@@ -153,11 +155,28 @@ public class Race {
             GenericBoat boat = boatGenerator.generateBoat();
             clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
-            LocationSpawner.generateSpawnPoints(boats, boundaries, collisionDetector, collisionMap);
+            List<CourseLimit> spawnBox = getSpawnBox();
+            LocationSpawner.generateSpawnPoints(boats, spawnBox, collisionDetector, collisionMap);
             return boat;
         } else {
             throw new Exception("cannot create boat");
         }
+    }
+
+    private List<CourseLimit> getSpawnBox() {
+        ArrayList<Mark> startMark = compoundMarks.get(0).getMarks();
+        Mark middle;
+        if (compoundMarks.get(0).getMarks().size() > 1) {
+            middle = new Mark(((startMark.get(0).getLatitude() + startMark.get(1).getLatitude()) / 2),
+                    ((startMark.get(0).getLongitude() + startMark.get(1).getLongitude()) / 2));
+        } else {
+            middle = startMark.get(0);
+        }
+
+        CourseLimit maxCL = new CourseLimit(0, middle.getLatitude() + SPAWN_BOX_OFFSET, middle.getLongitude() + SPAWN_BOX_OFFSET);
+        CourseLimit minCL = new CourseLimit(1, middle.getLatitude() - SPAWN_BOX_OFFSET, middle.getLongitude() - SPAWN_BOX_OFFSET);
+
+        return new ArrayList<>(Arrays.asList(maxCL, minCL));
     }
 
     public boolean isPracticeRace() {

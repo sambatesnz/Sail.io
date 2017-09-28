@@ -52,7 +52,7 @@ public class LocationSpawner {
         boat.setHeading(getRandomDouble(359, 0));
     }
 
-    private static double getRandomDouble(double max, double min) {
+    public static double getRandomDouble(double max, double min) {
         Random random = new Random();
         return min + (max - min) * random.nextDouble();
     }
