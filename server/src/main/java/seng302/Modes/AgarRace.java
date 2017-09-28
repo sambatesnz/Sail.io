@@ -92,7 +92,7 @@ public class AgarRace extends Race {
         List<GenericBoat> boats = new ArrayList<>();
         boats.add(loser);
         loser.setBaseSpeed();
-        LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), collisionDetector, collisionMap);
+        LocationSpawner.generateSpawnPoints(boats, super.getBoundaries(), super.getBoundaries(), collisionDetector, collisionMap);
     }
 
     /**
@@ -138,7 +138,7 @@ public class AgarRace extends Race {
             BoatDecorator boat = new AgarBoat(boatGenerator.generateBoat());
             clientIDs.put(clientSocketSourceID, boat.getSourceId());
             boats.add(boat);
-            LocationSpawner.generateSpawnPoints(boats, super.boundaries, collisionDetector, super.collisionMap);
+            LocationSpawner.generateSpawnPoints(boats, super.boundaries, super.boundaries, collisionDetector, super.collisionMap);
             boat.setBaseSpeed();
             boat.setSpeed(0);
             return boat;
