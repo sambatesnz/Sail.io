@@ -1,10 +1,11 @@
 package seng302.DataGeneration;
 
-import seng302.RaceObjects.GenericBoat;
-import seng302.XMLCreation.XMLCreator;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import seng302.RaceObjects.GenericBoat;
+import seng302.XMLCreation.XMLCreator;
+
 import java.io.IOException;
 import java.util.List;
 

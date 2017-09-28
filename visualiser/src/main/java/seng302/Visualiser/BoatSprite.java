@@ -1,47 +1,78 @@
 package seng302.Visualiser;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Scale;
 import seng302.RaceObjects.GenericBoat;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 
 public class BoatSprite {
     private Pane stack;
     private GenericBoat boatObject;
-    private Polyline boatIcon;
     private Polyline wake;
     private Text text;
     private Circle tc;
     private Circle controlCircle;
-    private Polyline sail;
-    public static final int BOAT = 0;
-    public static final int CONTROL_CIRCLE = 1;
+    private ImageView sail;
+    private Image sailIn;
+    private Image sailOut;
+
+
+    public static final int CONTROL_CIRCLE = 0;
+    public static final int IMAGE = 1;
     public static final int WAKE = 2;
     public static final int DOT = 3;
-    public static final int TEXT = 4;
-    public static final int SAIL = 5;
+    public static final int SAIL = 4;
+    public static final int TEXT = 5;
 
 
     public BoatSprite(GenericBoat boat, int clientSourceId){
         this.boatObject = boat;
-        initialiseBoatIcon();
         initialiseWake();
         text = new Text();
-        tc = new Circle(2);
+        tc = new Circle(0);
         tc.setCenterX(0);
         tc.setCenterY(0);
         initialiseSail();
 
         stack = new Pane();
-        stack.getChildren().add(boatIcon);
         initialiseControlCircle(clientSourceId);
+        addBoatImage();
         stack.getChildren().add(wake);
         stack.getChildren().add(tc);
-        stack.getChildren().add(text);
         stack.getChildren().add(sail);
+        stack.getChildren().add(text);
+    }
+
+    private void addBoatImage() {
+        try {
+            BufferedImage bi = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("boat.png"));
+            Color colour = boatObject.getColour();
+            System.out.println(colour);
+            int red = (int) (colour.getRed()*255);
+            int green = (int) (colour.getGreen()*255);
+            int blue = (int) (colour.getBlue()*255);
+            bi = (new ImageColourChanger(bi)).colouredImage(new int[] { red, green, blue, 255 });
+
+            ImageView iv = new ImageView();
+            iv.setImage(SwingFXUtils.toFXImage(bi, null));
+            iv.setTranslateX(-bi.getWidth()/2);
+            iv.setTranslateY(-bi.getHeight()/2);
+            stack.getChildren().add(iv);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -63,59 +94,44 @@ public class BoatSprite {
         wake.setStroke(Color.CYAN);
     }
 
-    private void initialiseBoatIcon(){
-        boatIcon = new Polyline();
-        boatIcon.getPoints().addAll(0.0, 0.0,
-                0.0, -8.0,
-                0.0, 8.0,
-                -5.0, 8.0,
-                0.0, -8.0,
-                5.0, 8.0,
-                -5.0, 8.0);
-        boatIcon.setStroke(boatObject.getColour().desaturate().desaturate());
-        boatIcon.setFill(boatObject.getColour().saturate().saturate());
-    }
-
     private void initialiseControlCircle(int clientSourceId){
         if (clientSourceId == boatObject.getSourceId()) {
             controlCircle = new Circle(10);
             controlCircle.setCenterX(0);
             controlCircle.setCenterY(0);
-            controlCircle.setStroke(Color.INDIANRED);
+            controlCircle.setStroke(Color.GREEN);
             controlCircle.setFill(Color.TRANSPARENT);
         } else {
-            controlCircle = new Circle(0);
+            controlCircle = new Circle(10);
+            controlCircle.setCenterX(0);
+            controlCircle.setCenterY(0);
+            controlCircle.setStroke(Color.RED);
+            controlCircle.setFill(Color.TRANSPARENT);
         }
         stack.getChildren().add(controlCircle);
-
     }
 
     private void initialiseSail(){
-        sail = new Polyline();
-        sail.setStroke(Color.RED);
-        for(int i=0; i<360; i++){
-            sail.getPoints().addAll(Math.sin(Math.toRadians(i)*2), i/22.5);
-        }
+        sailOut = new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("sail2.png"));
+        sailIn = new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("sailIn.png"));
+
+        sail = new ImageView(sailOut);
+        sail.setTranslateX(-sailOut.getWidth()/2);
+        sail.setTranslateY(-sailOut.getHeight()/2);
     }
 
     /**
      * Redraws the sail to be luffing
      */
     public void sailIn(){
-        for(int i=0; i<720; i += 2){
-            sail.getPoints().set(i, Math.log(i+1)*0.25*Math.sin(Math.toRadians((System.currentTimeMillis()+i)/1.0d)));
-            sail.getPoints().set(i + 1, i/45d);
-        }
+        sail.setImage(sailIn);
     }
 
     /**
      * Redraws the sail to be powered
      */
     public void sailOut() {
-        for (int i = 0; i < 720; i += 2) {
-            sail.getPoints().set(i, 0d);
-            sail.getPoints().set(i + 1, i/45d);
-        }
+        sail.setImage(sailOut);
     }
 
     /**

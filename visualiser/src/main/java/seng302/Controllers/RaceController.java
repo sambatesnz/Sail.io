@@ -4,29 +4,30 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.css.CssMetaData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import seng302.RaceObjects.*;
@@ -34,6 +35,7 @@ import seng302.Rounding;
 import seng302.Visualiser.BoatSprite;
 import seng302.Visualiser.FPSCounter;
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -133,12 +135,18 @@ public class RaceController implements IRaceController {
      */
     @FXML
     public void initialize() throws IOException {
+        primaryStage.setHeight(799);
+        primaryStage.setWidth(1199);
+        primaryStage.setHeight(800);
+        primaryStage.setWidth(1200);
         mainBorderPane.setLeft(sidePanelSplit);
         mainBorderPane.setCenter(viewAnchorPane);
 
         windArrow = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("windArrow.png")));
         windArrow.setFitHeight(WIND_ARROW_SIZE);
         windArrow.setFitWidth(WIND_ARROW_SIZE);
+        windArrow.setLayoutX(-1);
+        windArrow.setLayoutY(7);
         windArrow.setPreserveRatio(true);
         group.getChildren().add(windArrow);
 
@@ -147,6 +155,12 @@ public class RaceController implements IRaceController {
         clock.setVisible(true);
 
         fpsCounter = new FPSCounter(fpsLabel);
+
+        fpsBtn.setFocusTraversable(false);
+        annotationBtn.setFocusTraversable(false);
+        toggleFinishersBtn.setFocusTraversable(false);
+        BoatNameCheckBox.setFocusTraversable(false);
+        BoatSpeedCheckBox.setFocusTraversable(false);
 
         initialiseZoomFollowing();
         initialiseRoundingArrow();
@@ -212,6 +226,10 @@ public class RaceController implements IRaceController {
         nameCol = new JFXTreeTableColumn<>("Name");
         speedCol = new JFXTreeTableColumn<>("Speed");
 
+        legCol.setSortable(true);
+        nameCol.setSortable(true);
+        speedCol.setSortable(true);
+
         legCol.setCellValueFactory(p -> {
             String leg = String.valueOf(p.getValue().getValue().getCurrentLegIndex());
             return new ReadOnlyObjectWrapper<>(leg);
@@ -219,26 +237,21 @@ public class RaceController implements IRaceController {
 
         legCol.setSortType(TreeTableColumn.SortType.ASCENDING);
 
-        nameCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<GenericBoat, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<GenericBoat, String> param) {
-                return param.getValue().getValue().getBoatName();
-            }
-        });
+        nameCol.setCellValueFactory(param -> param.getValue().getValue().getBoatName());
 
         speedCol.setCellValueFactory(p -> {
             String speed = String.valueOf(p.getValue().getValue().getSpeedInKnots());
             return new ReadOnlyObjectWrapper<>(speed);
         });
 
-        TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<GenericBoat>(race.boatsObs, RecursiveTreeObject::getChildren);
+        TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<>(race.boatsObs, RecursiveTreeObject::getChildren);
         positionTable.setRoot(tableRoot);
-        positionTable.getColumns().setAll(legCol, nameCol, speedCol);
+        positionTable.getColumns().setAll(Arrays.asList(legCol, nameCol, speedCol));
         positionTable.setShowRoot(false);
     }
 
     private void scaleWindArrow() {
-        double scale = Math.pow(race.getWindSpeed(), 0.33)/8;
+        double scale = Math.pow(race.getWindSpeed(), 0.33)/12;
         windArrow.setScaleX(scale);
         windArrow.setScaleY(scale);
         windArrow.setTranslateX(WIND_ARROW_SIZE*2);//*scale/2);
@@ -311,7 +324,6 @@ public class RaceController implements IRaceController {
     }
 
     private void updateBoatPositions() {
-        final int SAIL_OFFSET = 7;
         for (int i = 0; i < boats.size(); i++) {
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
                 double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
@@ -323,18 +335,22 @@ public class RaceController implements IRaceController {
                 if (showName) {
                     name = race.getBoats().get(i).getShortName();
                 }
-                //Position of boat, wake and annotations.
+                //  Position of boat, wake and annotations.
                 boats.get(i).getStack().setLayoutX(Coordinate.getRelativeX(race.getBoats().get(i).getX()));
                 boats.get(i).getStack().setLayoutY(Coordinate.getRelativeY(race.getBoats().get(i).getY()));
-                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.BOAT));
-                boats.get(i).getStack().getChildren().get(BoatSprite.BOAT).setRotate(race.getBoats().get(i).getHeading());
 
-                // Temporary hard coding to differentiate between the boat in user control
+                Node boatImage = boats.get(i).getStack().getChildren().get(BoatSprite.IMAGE);
+                updateNodeScale(boatImage);
+                boatImage.setScaleX(boatImage.getScaleX()*0.0645);
+                boatImage.setScaleY(boatImage.getScaleY()*0.0645);
+                boatImage.setRotate(race.getBoats().get(i).getHeading());
+
+                //  Temporary hard coding to differentiate between the boat in user control
                 if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
                     updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
                 }
 
-                //Boats wake
+                //  Boats wake
                 boats.get(i).getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
                 updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.WAKE));
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setRotate(race.getBoats().get(i).getHeading());
@@ -343,33 +359,35 @@ public class RaceController implements IRaceController {
                 boats.get(i).getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + boatSpeed)
                         * (1 / (1 + Coordinate.getZoom()))) * cos(-Math.toRadians(race.getBoats().get(i).getHeading())));
 
-                //Boat annotations (name and speed)
+                //  Boat annotations (name and speed)
                 boats.get(i).getStack().getChildren().set(BoatSprite.TEXT, new Text(name + " " + speed));
                 boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateX(10);
                 boats.get(i).getStack().getChildren().get(BoatSprite.TEXT).setTranslateY(0);
 
-                //Sails
+                //  Sails
                 Node sail = boats.get(i).getStack().getChildren().get(BoatSprite.SAIL);
-                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.SAIL));
-                double headingDif = (360 + boats.get(i).getBoat().getHeading() - race.getWindHeading()) % 360;
-                if (race.getBoats().get(i).isSailsOut()){
-                    boats.get(i).sailOut();
-                    sail.getTransforms().clear();
-                    if (headingDif < 180 ) {
 
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() + 30, 0, 0));
-                    }
-                    else {
-                        sail.getTransforms().add(new Rotate(race.getWindHeading() - 30, 0, 0));
-                    }
+                double sailScale = 0.05;
+                sail.setScaleY(sailScale*getNodeScale());
+
+                double boatHeading = race.getBoats().get(i).getHeading();
+                double relativeHeading = (360 + boatHeading - race.getWindHeading()) % 360;
+                double value = boatHeading - relativeHeading / 2;
+
+                if (relativeHeading >= 0 && relativeHeading < 180) {
+                    sail.setScaleX(-sailScale*getNodeScale());
+                    sail.setRotate(value + 180);
+                } else {
+                    sail.setScaleX(sailScale*getNodeScale());
+                    sail.setRotate(value);
+                }
+
+                if (race.getBoats().get(i).isSailsOut() && race.getBoats().get(i).getSpeedInKnots() > 0.01) {
+                    boats.get(i).sailOut();
                 } else {
                     boats.get(i).sailIn();
-                    sail.getTransforms().clear();
-                    sail.getTransforms().add(new Rotate(race.getWindHeading(), 0,0));
-
+                    sail.setRotate(race.getWindHeading() + 180);
                 }
-                double sailLength = 720d / 45d;
-                sail.setLayoutY((1/(1 + Coordinate.getZoom())) * (sailLength)/2 - SAIL_OFFSET);
             }
         }
     }
@@ -514,8 +532,8 @@ public class RaceController implements IRaceController {
                 double distX = abs(markX1 - playerX);
                 double distY = abs(markY1 - playerY);
 
-                double offsetX = 120;
-                double offsetY = 120;
+                double offsetX = 15*getNodeScale();
+                double offsetY = 15*getNodeScale();
                 if (markX1 > playerX) {
                     offsetX *= -1;
                 }
@@ -772,7 +790,6 @@ public class RaceController implements IRaceController {
         } catch (Exception e) {
         }
 
-
         if(Coordinate.getWindowHeightY() != windowHeight || Coordinate.getWindowWidthX() != windowWidth) {
             viewAnchorPane.setMinHeight(Coordinate.getWindowHeightY());
             viewAnchorPane.setMaxHeight(Coordinate.getWindowHeightY());
@@ -1027,6 +1044,10 @@ public class RaceController implements IRaceController {
         nodeToScale.setScaleY(1/(1+Coordinate.getZoom()));
     }
 
+    private double getNodeScale( ) {
+        return (1/(1+Coordinate.getZoom()));
+    }
+
     public void setAddr(String ip, int port) {
         this.ipAddr = ip;
         this.port = port;
@@ -1044,19 +1065,17 @@ public class RaceController implements IRaceController {
     }
 
     private void initFinisherObserver(){
-        race.getBoatsForScoreBoard().addListener(new ListChangeListener<GenericBoat>() {
-            @Override
-            public void onChanged(Change<? extends GenericBoat> c) {
-                for (GenericBoat boat : race.getBoatsForScoreBoard()) {
-                    if (boat.getSourceId() == race.getClientSourceId()){
-                        if(!clientFinished) {
-                            finishingPane.setVisible(true);
-                            toggleFinishersBtn.setVisible(true);
-                            isFinishersHidden = false;
-                            clientFinished = true;
-                        }
+        race.getBoatsForScoreBoard().addListener((ListChangeListener<GenericBoat>) c -> {
+            for (GenericBoat boat : race.getBoatsForScoreBoard()) {
+                if (boat.getSourceId() == race.getClientSourceId()){
+                    if(!clientFinished) {
+                        finishingPane.setVisible(true);
+                        toggleFinishersBtn.setVisible(true);
+                        isFinishersHidden = false;
+                        clientFinished = true;
                     }
                 }
+            }
 //                if (race.getBoatsMap().size() == race.getBoatsForScoreBoard().size()){
 //                    race.finishRace();
 //                }
@@ -1064,7 +1083,6 @@ public class RaceController implements IRaceController {
 //                    race.finishRace();
 //                    raceFinishTimerStarted = true;
 //                }
-            }
         });
     }
 
@@ -1081,7 +1099,7 @@ public class RaceController implements IRaceController {
         }
     }
 
-    public void loadFinishers() throws IOException {
+    private void loadFinishers() throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         AnchorPane anchorPane = fxmlLoader.load(getClass().getClassLoader().getResource("FXML/FinishingPage.fxml").openStream());
@@ -1091,6 +1109,4 @@ public class RaceController implements IRaceController {
         finishingController.initialiseTable();
         finishingPane.getChildren().setAll(anchorPane);
     }
-
-
 }

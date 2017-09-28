@@ -1,8 +1,5 @@
 package seng302.UserInputController;
 
-import seng302.Client.Messages.RaceRegistrationType;
-import seng302.RaceObjects.Boat;
-
 /**
  * Enum for Boat Actions
  */

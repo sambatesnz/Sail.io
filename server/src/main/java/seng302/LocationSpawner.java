@@ -1,8 +1,8 @@
 package seng302;
 
 import seng302.RaceObjects.BoatCollision;
-import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.CourseLimit;
+import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Mark;
 
 import java.util.List;

@@ -95,7 +95,6 @@ public class ConnectionStore {
     public synchronized void removeConnection(Socket socket) {
         synchronized (socketStreams){
             int socketId = socket.getPort();
-
             System.out.println("Removing connection to " + socket);
             socketStreams.remove(socketId);
             RaceStatus rs = race.getRace().getRaceStatus();
@@ -128,7 +127,11 @@ public class ConnectionStore {
             socketStreams.clear();
 
             for(Socket s : socketToRemove){
-                removeConnection(s);
+                try {
+                    removeConnection(s);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

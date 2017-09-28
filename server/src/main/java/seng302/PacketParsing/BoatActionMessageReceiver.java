@@ -34,7 +34,11 @@ public class BoatActionMessageReceiver extends ServerSideMessageFactory {
     @Override
     public void updateRace(IServerData race) {
         Delegator delegator = new Delegator(race.getRace());
-        delegator.processCommand(boatAction, sourceId);
+        try {
+            delegator.processCommand(boatAction, sourceId);
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
 }

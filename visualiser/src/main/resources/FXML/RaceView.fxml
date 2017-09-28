@@ -63,8 +63,8 @@
             <JFXButton fx:id="toggleFinishersBtn" layoutX="13.0" layoutY="564.0" onAction="#toggleFinishers" prefHeight="25.0" prefWidth="118.0" text="Show Finishers" />
             <JFXButton fx:id="annotationBtn" layoutX="14.0" layoutY="600.0" onAction="#annotationBtnClicked" prefHeight="25.0" prefWidth="154.0" text="Remove Annotations" />
             <JFXButton fx:id="fpsBtn" layoutX="14.0" layoutY="700.0" onAction="#fpsBtnClicked" prefHeight="25.0" prefWidth="154.0" text="Remove FPS counter" />
-            <JFXCheckBox fx:id="BoatSpeedCheckBox" layoutX="3.0" layoutY="441.0" onAction="#ToggleBoatSpeedAnnotation" text="Boat Speeds" />
-            <JFXCheckBox fx:id="BoatNameCheckBox" layoutX="3.0" layoutY="422.0" onAction="#ToggleBoatNameAnnotation" text="Boat Names" />
+            <JFXCheckBox fx:id="BoatSpeedCheckBox" layoutX="3.0" layoutY="441.0" onAction="#ToggleBoatSpeedAnnotation" selected="true" text="Boat Speeds" />
+            <JFXCheckBox fx:id="BoatNameCheckBox" layoutX="3.0" layoutY="422.0" onAction="#ToggleBoatNameAnnotation" selected="true" text="Boat Names" />
 
             </children>
        </AnchorPane>

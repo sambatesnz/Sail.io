@@ -4,7 +4,6 @@ import org.junit.Test;
 import seng302.Client.Messages.RaceRegistrationMessage;
 import seng302.Client.Messages.RaceRegistrationType;
 import seng302.PacketGeneration.BinaryMessage;
-import seng302.PacketGeneration.MessageHeaderGenerations.HeaderByteValues;
 import seng302.PacketGeneration.PacketUtils;
 
 import static org.junit.Assert.assertEquals;

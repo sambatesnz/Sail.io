@@ -36,10 +36,10 @@ public class Race {
     List<GenericBoat> boats;
     Map<Integer, Integer> clientIDs;
     List<CourseLimit> boundaries;
-    private short windHeading;
+    short windHeading;
     private short startingWindSpeed;
     private int windSpeed;
-    private Boolean windHeadingChanged = false;
+    Boolean windHeadingChanged = false;
     private Boolean windSpeedChanged = false;
     private boolean practiceRace = false;
     private int raceID;
@@ -50,14 +50,14 @@ public class Race {
     private SimpleStringProperty timeToStart;
     private boolean raceFinishing = false;
     private static final int TEN_KNOTS = 5145;
-    private static final int FORTY_KNOTS = 20577;
+    static final int FORTY_KNOTS = 20577;
     private static final int FIVE_KNOTS = 2573;
     private static final int DIRECTION_CHANGE_PROB = 25;
     final long ONE_MINUTE_IN_MILLIS = 60000;
     static int MAX_NUMBER_OF_BOATS = 20;
 
     BoatGenerator boatGenerator;
-    private BoatManager boatManager;
+    BoatManager boatManager;
     private long finishTime;
     CollisionDetector collisionDetector;
 
@@ -86,9 +86,7 @@ public class Race {
         finishTime = 0;
 
         ObservableList<GenericBoat> b = FXCollections.observableArrayList();
-        b.addListener((ListChangeListener<GenericBoat>) c -> {
-            initCollisions();
-        });
+        b.addListener((ListChangeListener<GenericBoat>) c -> initCollisions());
         boats = b;
 
         clientIDs = new HashMap<>();
@@ -395,9 +393,8 @@ public class Race {
 
         for (GenericBoat boat : getBoatsInRace()) {
             if (windHeadingChanged || boat.getHeadingChanged() || windSpeedChanged) {
-                PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
+                updateBoatSpeed(boat);
             }
-            //Increments the the distance by the speed
             //Increments the the distance by the speed
             double newX = boat.getX() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * sin(toRadians(boat.getHeading()))) * movementMultiplier;
             double newY = boat.getY() + (boat.getSpeed() / (1000 / (17.0 / 1000)) * cos(toRadians(boat.getHeading()))) * movementMultiplier;
@@ -425,7 +422,7 @@ public class Race {
 
         //System.currentTimeMillis() > firstFinishTime + ONE_MINUTE_IN_MILLIS
         if(areAllContestantsFinished()){
-                setFinishTime(ONE_MINUTE_IN_MILLIS/6);
+            setFinishTime(ONE_MINUTE_IN_MILLIS/6);
         }
         if (isFinishTimerExpired() && raceStatus != RaceStatus.FINISHED) {
             raceStatus = RaceStatus.FINISHED;
@@ -435,6 +432,10 @@ public class Race {
         windHeadingChanged = false;
         windSpeedChanged = false;
 
+    }
+
+    public void updateBoatSpeed(GenericBoat boat) {
+        PolarUtils.updateBoatSpeed(boat, windHeading, windSpeed);
     }
 
     private void setFinishTime(long msAfterCurrent) {
@@ -450,7 +451,7 @@ public class Race {
         return (finishTime > 0) && (System.currentTimeMillis() > finishTime);
     }
 
-    private boolean areAllContestantsFinished() {
+    public boolean areAllContestantsFinished() {
         for (GenericBoat boat : boats) {
             if (!(boat.isFinished() || !boat.isConnected())){
                 return false;
@@ -539,4 +540,7 @@ public class Race {
         return boats;
     }
 
+    public void setBoatAtBaseSpeed(GenericBoat boat) {
+        boat.setSpeed(0);
+    }
 }

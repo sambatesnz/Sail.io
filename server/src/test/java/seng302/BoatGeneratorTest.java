@@ -6,7 +6,7 @@ import seng302.RaceObjects.GenericBoat;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class BoatGeneratorTest {
 

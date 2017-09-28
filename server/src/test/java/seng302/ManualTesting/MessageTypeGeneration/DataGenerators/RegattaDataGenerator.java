@@ -2,10 +2,10 @@ package seng302.ManualTesting.MessageTypeGeneration.DataGenerators;
 
 import seng302.DataGeneration.IServerData;
 import seng302.DataGenerator;
+import seng302.Modes.Race;
 import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLMessage;
 import seng302.PacketGeneration.XMLMessageGeneration.XMLSubTypes;
-import seng302.Modes.Race;
 
 import java.util.NoSuchElementException;
 import java.util.Queue;

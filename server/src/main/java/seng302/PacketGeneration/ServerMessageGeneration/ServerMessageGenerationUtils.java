@@ -3,8 +3,6 @@ package seng302.PacketGeneration.ServerMessageGeneration;
 import seng302.PacketGeneration.PacketGenerationUtils;
 import seng302.PacketParsing.PacketParserUtils;
 
-import java.util.Arrays;
-
 /**
  * Utility for messages which are passed around on the SERVER ONLY
  */
