@@ -103,6 +103,7 @@ public class StartController {
                 String ip = getIp();
                 int port = getPort();
                 if (port == 4942) raceMode = RaceMode.AGAR;
+                if (port == 4941) raceMode = RaceMode.RACE;
                 if (port == 4943) raceMode = RaceMode.PRACTICE;
                 connectLobby(ip, port, raceMode);
                 break;

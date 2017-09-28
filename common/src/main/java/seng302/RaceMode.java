@@ -24,7 +24,7 @@ public enum RaceMode {
     }
 
     public static RaceMode getRaceMode(String value){
-        RaceMode raceMode = RACE;
+        RaceMode raceMode = AGAR;
         for (RaceMode rm: RaceMode.values()){
             if (rm.getRaceMode().equals(value)) {
                 raceMode = rm;
