@@ -93,7 +93,8 @@ public class StartController {
                 connectPractice(ip, port, raceMode);
                 break;
             } case RACE: {
-                String ip = getIp();
+//                String ip = getIp();
+                String ip = "http://127.0.0.1";
                 int port = raceMode.getPort();
                 connectLobby(ip, port, raceMode);
                 break;
@@ -308,7 +309,7 @@ public class StartController {
         primaryStage.setMinWidth(800);
         primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
-        primaryStage.setTitle("Sail IO");
+        primaryStage.setTitle("Sail.io");
         primaryStage.show();
 
         startController.setPrimaryStage(primaryStage);
@@ -331,7 +332,7 @@ public class StartController {
         primaryStage.setWidth(800);
         primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
-        primaryStage.setTitle("Sail IO");
+        primaryStage.setTitle("Sail.io");
         primaryStage.show();
 
         scoreScreenController.setPrimaryStage(primaryStage);

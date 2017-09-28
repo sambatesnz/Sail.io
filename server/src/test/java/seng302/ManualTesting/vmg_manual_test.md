@@ -20,10 +20,16 @@ correctly when the VMG button is pressed
 
 ####Testing log:
 #####Test:
-- Date: 8/8/17
-- Commit: 078cf84
-- Performed By: Sam Bates
-- Result: Pass
+    - Date: 8/8/17
+    - Commit: 078cf84
+    - Performed By: Sam Bates
+    - Result: Pass
+
+######Test:
+    - Date: 28/8/2017
+    - Current Commit of Branch: 6b53f48
+    - Performed By: Stefan hall 
+    - Result: Pass
 
     
 

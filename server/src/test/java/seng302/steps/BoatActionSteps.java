@@ -55,7 +55,7 @@ public class BoatActionSteps {
 
     @Then("^the boats final heading is altered to (\\d+) degrees$")
     public void the_boats_final_heading_is_altered_to_degrees(int finalHeading) throws Throwable {
-        TimeUnit.SECONDS.sleep(5); //Need to wait for tack/gybe to finish its cycle
+        TimeUnit.SECONDS.sleep(1); //Need to wait for tack/gybe to finish its cycle
         assertEquals(finalHeading, (int)race.getBoatByID(boatSourceId).getHeading(), 1); //Margin of error within +- ~10 degress
     }
 
