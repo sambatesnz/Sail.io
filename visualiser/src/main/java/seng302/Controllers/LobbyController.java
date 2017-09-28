@@ -16,6 +16,8 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import seng302.PacketGeneration.RaceStatus;
+import seng302.RaceMode;
 import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Race;
 import seng302.UserInput.KeyBindingUtility;
@@ -80,7 +82,11 @@ public class LobbyController {
         timeToStart.textProperty().bind(race.timeToStartProperty());
 
         timeToStart.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.equals(String.format(" %02d:%02d:%02d", 0, 0, 10)) || (race.getClientSourceId() == 0 && race.isRaceReady() && !raceStarted)) {
+            int minutesUntilStart = 0;
+            if (race.getRaceMode() != RaceMode.AGAR){
+                minutesUntilStart = 0;
+            }
+            if (newValue.equals(String.format(" %02d:%02d:%02d", 0, minutesUntilStart, 0)) || (race.getClientSourceId() == 0 && race.isRaceReady() && !raceStarted)) {
                 Platform.runLater(
                         () -> {
                             try {
@@ -94,9 +100,8 @@ public class LobbyController {
             }
             try {
 
-                // 99:99:99 means raceStatus is raceStartTimeNotSet so hide countdown
                 Platform.runLater(() -> {
-                    if (newValue.equals(String.format(" %02d:%02d:%02d", 99, 99, 99))) {
+                    if (race.getRaceStatus() == RaceStatus.START_TIME_NOT_SET) {
                         timeToStart.setVisible(false);
                         lobbyDescriptionText.textProperty().setValue("Waiting for more players to join.");
                     } else {

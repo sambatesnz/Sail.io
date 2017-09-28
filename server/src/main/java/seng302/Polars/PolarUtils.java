@@ -1,5 +1,6 @@
 package seng302.Polars;
 
+import seng302.RaceObjects.AgarBoat;
 import seng302.RaceObjects.GenericBoat;
 
 import java.util.HashMap;
@@ -35,7 +36,14 @@ public class PolarUtils {
                 break;
             }
         }
+
         int newSpeed = (int) (polarMap.get(closestRefAngle).getRatio() * windSpeed);
+
+        if (boat.getClass().equals(AgarBoat.class)) {
+            newSpeed *= -10;
+        }
+
+
         if (!boat.isSailsOut()) {
             newSpeed = 0;
         }

@@ -15,14 +15,15 @@ import java.util.Random;
 public class LocationSpawner {
 
     public static void generateSpawnPoints(List<GenericBoat> boats,
+                                           List<CourseLimit> spawnLimits,
                                            List<CourseLimit> courseLimits,
                                            CollisionDetector collisionDetector,
                                            Map<BoatPair, BoatCollision> collisionMap) {
 
         for (GenericBoat boat : boats) {
-            getRandomSpawnLocation(boat, courseLimits);
+            getRandomSpawnLocation(boat, spawnLimits);
             while (collisionDetector.hasCollision(boat, courseLimits, boats, collisionMap)) {
-                getRandomSpawnLocation(boat, courseLimits);
+                getRandomSpawnLocation(boat, spawnLimits);
             }
             boat.resetAgarSize();
         }

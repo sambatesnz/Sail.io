@@ -5,6 +5,7 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -42,6 +43,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.*;
+import static javafx.scene.input.KeyCode.S;
 import static javafx.scene.input.KeyCode.Z;
 
 /**
@@ -60,8 +62,10 @@ public class AgarRaceController implements IRaceController {
     @FXML private JFXTreeTableView<GenericBoat> positionTable;
     @FXML private JFXTreeTableColumn<GenericBoat, String> positionCol;
     @FXML private JFXTreeTableColumn<GenericBoat, String> nameCol;
-    @FXML private JFXTreeTableColumn<GenericBoat, String> speedCol;
-    @FXML private JFXTreeTableColumn<GenericBoat, String> legCol;
+//    @FXML private JFXTreeTableColumn<GenericBoat, String> speedCol;
+//    @FXML private JFXTreeTableColumn<GenericBoat, String> legCol;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> lifeCol;
+    @FXML private JFXTreeTableColumn<GenericBoat, String> sizeCol;
     @FXML private Label fpsLabel;
     @FXML private JFXButton annotationBtn;
     @FXML private JFXButton fpsBtn;
@@ -150,6 +154,8 @@ public class AgarRaceController implements IRaceController {
         windArrow = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("windArrow.png")));
         windArrow.setFitHeight(WIND_ARROW_SIZE);
         windArrow.setFitWidth(WIND_ARROW_SIZE);
+        windArrow.setLayoutX(-1);
+        windArrow.setLayoutY(7);
         windArrow.setPreserveRatio(true);
         group.getChildren().add(windArrow);
 
@@ -167,7 +173,7 @@ public class AgarRaceController implements IRaceController {
 
         initialiseZoomFollowing();
         initialisePositionsTable();
-        legCol.setVisible(false);
+//        legCol.setVisible(false);
         enableScrolling();
         toggleFinishersBtn.setVisible(false);
         toggleFinishersBtn.setText("Hide Finishers");
@@ -228,30 +234,50 @@ public class AgarRaceController implements IRaceController {
     }
 
     private void initialisePositionsTable() {
-        legCol = new JFXTreeTableColumn<>("Leg");
+//        legCol = new JFXTreeTableColumn<>("Leg");
         nameCol = new JFXTreeTableColumn<>("Name");
-        speedCol = new JFXTreeTableColumn<>("Speed");
+//        speedCol = new JFXTreeTableColumn<>("Speed");
+        lifeCol = new JFXTreeTableColumn<>("Lives");
+        sizeCol = new JFXTreeTableColumn<>("Power");
 
         nameCol.setSortable(true);
-        speedCol.setSortable(true);
+//        speedCol.setSortable(true);
+        lifeCol.setSortable(true);
+//
+//        legCol.setCellValueFactory(p -> {
+//            String leg = String.valueOf(p.getValue().getValue().getCurrentLegIndex());
+//            return new ReadOnlyObjectWrapper<>(leg);
+//        });
+//
+//        legCol.setSortType(TreeTableColumn.SortType.ASCENDING);
 
-        legCol.setCellValueFactory(p -> {
-            String leg = String.valueOf(p.getValue().getValue().getCurrentLegIndex());
-            return new ReadOnlyObjectWrapper<>(leg);
+        nameCol.setCellValueFactory(param -> {
+            String shortName = "     " + param.getValue().getValue().getShortName();
+            return new ReadOnlyObjectWrapper<>(shortName);
         });
 
-        legCol.setSortType(TreeTableColumn.SortType.ASCENDING);
+//        speedCol.setCellValueFactory(p -> {
+//            String speed ="        " +  String.valueOf(p.getValue().getValue().getSpeedInKnots());
+//            return new ReadOnlyObjectWrapper<>(speed);
+//        });
 
-        nameCol.setCellValueFactory(param -> param.getValue().getValue().getBoatName());
-
-        speedCol.setCellValueFactory(p -> {
-            String speed = String.valueOf(p.getValue().getValue().getSpeedInKnots());
-            return new ReadOnlyObjectWrapper<>(speed);
+        lifeCol.setCellValueFactory(p -> {
+            String lives = "         " +  String.valueOf(p.getValue().getValue().getLives());
+            return new ReadOnlyObjectWrapper<>(lives);
         });
+
+        sizeCol.setCellValueFactory(p -> {
+            String size = "     " + String.valueOf((int) p.getValue().getValue().getCollisionFactor());
+            return new ReadOnlyObjectWrapper<>(size);
+        });
+
+//        sizeCol.setMinWidth(0);
+//        speedCol.setMinWidth(0);
+//        lifeCol.setMinWidth(0);
 
         TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<>(race.boatsObs, RecursiveTreeObject::getChildren);
         positionTable.setRoot(tableRoot);
-        positionTable.getColumns().setAll(legCol, nameCol, speedCol);
+        positionTable.getColumns().setAll(Arrays.asList(nameCol, sizeCol, lifeCol));
         positionTable.setShowRoot(false);
     }
 
@@ -316,7 +342,7 @@ public class AgarRaceController implements IRaceController {
     private void drawLives() {
         double totalVert = 100;
         imageOne = new ImageView();
-        imageOne.setImage(new Image("2000px-Love_Heart_symbol.svg.png"));
+        imageOne.setImage(new Image("heart.png"));
         imageOne.setFitHeight(40.0);
         imageOne.setFitWidth(40.0);
         imageOne.setX(20);
@@ -324,7 +350,7 @@ public class AgarRaceController implements IRaceController {
         totalVert += imageOne.getFitHeight();
 
         imageTwo = new ImageView();
-        imageTwo.setImage(new Image("2000px-Love_Heart_symbol.svg.png"));
+        imageTwo.setImage(new Image("heart.png"));
         imageTwo.setFitHeight(40.0);
         imageTwo.setFitWidth(40.0);
         imageTwo.setX(20);
@@ -332,7 +358,7 @@ public class AgarRaceController implements IRaceController {
         totalVert += imageTwo.getFitHeight();
 
         imageThree = new ImageView();
-        imageThree.setImage(new Image("2000px-Love_Heart_symbol.svg.png"));
+        imageThree.setImage(new Image("heart.png"));
         imageThree.setFitHeight(40.0);
         imageThree.setFitWidth(40.0);
         imageThree.setX(20);
@@ -385,9 +411,6 @@ public class AgarRaceController implements IRaceController {
     }
 
     private void updateBoatPositions() {
-        final int SAIL_OFFSET = 7;
-
-
         for (int i = 0; i < boats.size(); i++) {
             GenericBoat raceBoat = race.getBoats().get(i);
             BoatSprite currentBoat = boats.get(i);
@@ -415,18 +438,17 @@ public class AgarRaceController implements IRaceController {
 
 
                     // Temporary (turns out it's permanent) hard coding to differentiate between the boat in user control
-                    if (raceBoat.getSourceId() == race.getClientSourceId()) {
-                        updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), raceBoat.getAgarSize());
-                    }
+                    updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE), raceBoat.getAgarSize());
+
 
                     //Boats wake
-                    int colFactor = (int) sqrt(pow(boatSpeed, 3))*raceBoat.getAgarSize()/500;
-                    currentBoat.getStack().getChildren().set(BoatSprite.WAKE, newWake(colFactor));
+                    currentBoat.getStack().getChildren().set(BoatSprite.WAKE, newWake(raceBoat.getCollisionFactor()/75));
+//                    System.out.println(raceBoat.getCollisionFactor());
                     updateNodeScale(currentBoat.getStack().getChildren().get(BoatSprite.WAKE), raceBoat.getAgarSize());
                     currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setRotate(raceBoat.getHeading());
-                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + colFactor) * getScale(raceBoat.getAgarSize()))
+                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutX(((9 + raceBoat.getCollisionFactor()/75) * getScale(raceBoat.getAgarSize()))
                             * Math.sin(-Math.toRadians(raceBoat.getHeading())));
-                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + colFactor)
+                    currentBoat.getStack().getChildren().get(BoatSprite.WAKE).setLayoutY(((9 + raceBoat.getCollisionFactor()/75)
                             * getScale(raceBoat.getAgarSize())) * cos(-Math.toRadians(raceBoat.getHeading())));
 
                     //Boat annotations (name and speed)
@@ -827,15 +849,15 @@ public class AgarRaceController implements IRaceController {
             clock.setLayoutY(20);
             clock.setLayoutX(Coordinate.getWindowWidthX() - 155);
             fpsBtn.setLayoutX(14);
-            fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 75);
+            fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 85);
             annotationBtn.setLayoutX(14);
             annotationBtn.setLayoutY(Coordinate.getWindowHeightY() - 50);
             toggleFinishersBtn.setLayoutX(14);
-            toggleFinishersBtn.setLayoutY(Coordinate.getWindowHeightY() - 100);
-            BoatNameCheckBox.setLayoutX(14);
-            BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 150);
-            BoatSpeedCheckBox.setLayoutX(14);
-            BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 125);
+            toggleFinishersBtn.setLayoutY(Coordinate.getWindowHeightY() - 120);
+            BoatNameCheckBox.setLayoutX(4);
+            BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 170);
+            BoatSpeedCheckBox.setLayoutX(4);
+            BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 145);
             localTime.setLayoutX(Coordinate.getWindowWidthX() - 110);
             localTime.setLayoutY(100);
             localTimeZone.setLayoutX(Coordinate.getWindowWidthX() - 115);
@@ -878,7 +900,7 @@ public class AgarRaceController implements IRaceController {
      * Scales the wind arrow based on the wind speed
      */
     private void scaleWindArrow() {
-        double scale = Math.pow(race.getWindSpeed(), 0.33)/8;
+        double scale = Math.pow(race.getWindSpeed(), 0.33)/12;
         windArrow.setScaleX(scale);
         windArrow.setScaleY(scale);
         windArrow.setTranslateX(WIND_ARROW_SIZE*2);//*scale/2);

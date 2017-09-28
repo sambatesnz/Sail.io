@@ -155,7 +155,7 @@ public class AgarManager implements IServerData{
                         1, 1,
                         boat.getLatitude(), boat.getLongitude(), 0,
                         (short) boat.getHeading(), 0, 0,0,
-                        (short) 100, boat.getSpeed(),
+                        (short) 100, boat.getSpeed()/150,
                         (short) 200, (short) 200,
                         (short) 100, (short) 100, (short) 100,
                         (short) (boat.isSailsOut() ? 1 : 0), (short) 100, (short) 100
@@ -186,9 +186,9 @@ public class AgarManager implements IServerData{
     class RaceRunner extends TimerTask {
         @Override
         public void run() {
-            if(race.getRaceStatus() != RaceStatus.WARNING && race.getRaceStatus() != RaceStatus.START_TIME_NOT_SET) {
+            if(race.getRaceStatus() != RaceStatus.WARNING && race.getRaceStatus() != RaceStatus.START_TIME_NOT_SET && race.getRaceStatus() != RaceStatus.PREP) {
                 race.updateBoats();
-                race.checkCollisions(parent);
+                 
             }
             race.updateRaceInfo();
         }

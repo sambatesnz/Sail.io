@@ -81,8 +81,8 @@ public class StartController {
         switch (raceMode){
             case AGAR: {
 //                String ip = "http://132.181.16.12"; //Turn me on for production
-//                String ip = "http://127.0.0.1";
-                String ip = "http://132.181.12.107";
+                String ip = "http://127.0.0.1";
+//                String ip = "http://132.181.12.107";
 //                String ip = "http://132.181.12.107";
                 int port = raceMode.getPort();
                 connectLobby(ip, port, raceMode);
@@ -90,10 +90,11 @@ public class StartController {
             } case PRACTICE: {
                 String ip = "http://127.0.0.1";
                 int port = raceMode.getPort();
-                connectPractice(ip, port);
+                connectPractice(ip, port, raceMode);
                 break;
             } case RACE: {
-                String ip = getIp();
+//                String ip = getIp();
+                String ip = "http://127.0.0.1";
                 int port = raceMode.getPort();
                 connectLobby(ip, port, raceMode);
                 break;
@@ -182,7 +183,7 @@ public class StartController {
         });
     }
 
-    private void connectPractice(String ip, int port) throws InterruptedException {
+    private void connectPractice(String ip, int port, RaceMode raceMode) throws InterruptedException {
         Platform.runLater(
                 () -> statusLbl.setText("connecting...")
         );
@@ -190,6 +191,8 @@ public class StartController {
         PracticeClientController clientController = new PracticeClientController(ip, port, primaryStage, rootScene);
         clientController.startClient();
         race = clientController.getRace();
+
+        race.setRaceMode(raceMode);
 
         race.connectedToServerProperty().addListener((observable, oldValue, isConnected) -> {
             if (isConnected.equals(0)) { // disconnectedRace
@@ -238,6 +241,7 @@ public class StartController {
     private void practiceView(Race race) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("FXML/RaceView.fxml"));
         RaceController raceController = new RaceController(race);
+        raceController.setPrimaryStage(primaryStage);
         loader.setController(raceController);
         Parent root = loader.load();
 
@@ -305,7 +309,7 @@ public class StartController {
         primaryStage.setMinWidth(800);
         primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
-        primaryStage.setTitle("Sail IO");
+        primaryStage.setTitle("Sail.io");
         primaryStage.show();
 
         startController.setPrimaryStage(primaryStage);
@@ -328,7 +332,7 @@ public class StartController {
         primaryStage.setWidth(800);
         primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
-        primaryStage.setTitle("Sail IO");
+        primaryStage.setTitle("Sail.io");
         primaryStage.show();
 
         scoreScreenController.setPrimaryStage(primaryStage);

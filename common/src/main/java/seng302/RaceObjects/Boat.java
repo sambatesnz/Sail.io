@@ -32,7 +32,7 @@ public class Boat extends GenericBoat {
     private StringProperty country;
     private int speed;               //mm/sec
     private boolean knowsBoatLocation;
-    private boolean headingChanged;
+    boolean headingChanged;
     private boolean sailsOut = false;
     private double size;
     private int agarSize;
@@ -294,12 +294,16 @@ public class Boat extends GenericBoat {
         return Double.valueOf(df.format(val));
     }
 
-    private void updateStopTurnThread(){
+    public void updateStopTurnThread(){
         stopTurnThread = turningThread != null && turningThread.isAlive();
     }
 
     public void setHeadingChangedToFalse() {
         this.headingChanged = false;
+    }
+
+    public void setHeadingChanged(boolean heading){
+        headingChanged = heading;
     }
 
     public boolean isSailsOut() {

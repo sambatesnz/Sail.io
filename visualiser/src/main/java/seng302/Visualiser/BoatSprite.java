@@ -59,7 +59,6 @@ public class BoatSprite {
         try {
             BufferedImage bi = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("boat.png"));
             Color colour = boatObject.getColour();
-            System.out.println(colour);
             int red = (int) (colour.getRed()*255);
             int green = (int) (colour.getGreen()*255);
             int blue = (int) (colour.getBlue()*255);
@@ -99,13 +98,13 @@ public class BoatSprite {
             controlCircle = new Circle(10);
             controlCircle.setCenterX(0);
             controlCircle.setCenterY(0);
-            controlCircle.setStroke(Color.GREEN);
+            controlCircle.setStroke(Color.YELLOW);
             controlCircle.setFill(Color.TRANSPARENT);
         } else {
             controlCircle = new Circle(10);
             controlCircle.setCenterX(0);
             controlCircle.setCenterY(0);
-            controlCircle.setStroke(Color.RED);
+            controlCircle.setStroke(Color.ORANGERED);
             controlCircle.setFill(Color.TRANSPARENT);
         }
         stack.getChildren().add(controlCircle);

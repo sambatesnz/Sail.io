@@ -11,7 +11,7 @@ public class RaceXMLTest {
 
     public static void main(String[] args) throws Exception {
         IServerData raceData = new RaceXmlDataGenerator();
-        new Server(4941);
+        new Server(4941, raceData);
 
     }
 }

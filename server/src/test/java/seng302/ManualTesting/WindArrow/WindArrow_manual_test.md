@@ -22,3 +22,8 @@ As a user I want to see the WindArrow update when the wind speed and or heading 
 - Performed By: sha162, tjg73
 - Result **Pass**
 
+######Test:
+    - Date: 28/8/2017
+    - Current Commit of Branch: 6b53f48
+    - Performed By: Stefan hall
+    - Result: Fail

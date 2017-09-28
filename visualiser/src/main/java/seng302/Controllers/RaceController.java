@@ -145,6 +145,8 @@ public class RaceController implements IRaceController {
         windArrow = new ImageView(new Image(Thread.currentThread().getContextClassLoader().getResourceAsStream("windArrow.png")));
         windArrow.setFitHeight(WIND_ARROW_SIZE);
         windArrow.setFitWidth(WIND_ARROW_SIZE);
+        windArrow.setLayoutX(-1);
+        windArrow.setLayoutY(7);
         windArrow.setPreserveRatio(true);
         group.getChildren().add(windArrow);
 
@@ -244,12 +246,12 @@ public class RaceController implements IRaceController {
 
         TreeItem<GenericBoat> tableRoot = new RecursiveTreeItem<>(race.boatsObs, RecursiveTreeObject::getChildren);
         positionTable.setRoot(tableRoot);
-        positionTable.getColumns().setAll(legCol, nameCol, speedCol);
+        positionTable.getColumns().setAll(Arrays.asList(legCol, nameCol, speedCol));
         positionTable.setShowRoot(false);
     }
 
     private void scaleWindArrow() {
-        double scale = Math.pow(race.getWindSpeed(), 0.33)/8;
+        double scale = Math.pow(race.getWindSpeed(), 0.33)/12;
         windArrow.setScaleX(scale);
         windArrow.setScaleY(scale);
         windArrow.setTranslateX(WIND_ARROW_SIZE*2);//*scale/2);
@@ -322,7 +324,6 @@ public class RaceController implements IRaceController {
     }
 
     private void updateBoatPositions() {
-        final int SAIL_OFFSET = 7;
         for (int i = 0; i < boats.size(); i++) {
             if(race.getBoats().get(i).isKnowsBoatLocation()) {
                 double boatSpeed = race.getBoats().get(i).getSpeed()/1000;
@@ -345,9 +346,8 @@ public class RaceController implements IRaceController {
                 boatImage.setRotate(race.getBoats().get(i).getHeading());
 
                 //  Temporary hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
-                    updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
-                }
+                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
+
 
                 //  Boats wake
                 boats.get(i).getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));
@@ -806,15 +806,15 @@ public class RaceController implements IRaceController {
             clock.setLayoutY(20);
             clock.setLayoutX(Coordinate.getWindowWidthX() - 155);
             fpsBtn.setLayoutX(14);
-            fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 75);
+            fpsBtn.setLayoutY(Coordinate.getWindowHeightY() - 85);
             annotationBtn.setLayoutX(14);
             annotationBtn.setLayoutY(Coordinate.getWindowHeightY() - 50);
             toggleFinishersBtn.setLayoutX(14);
-            toggleFinishersBtn.setLayoutY(Coordinate.getWindowHeightY() - 100);
-            BoatNameCheckBox.setLayoutX(14);
-            BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 150);
-            BoatSpeedCheckBox.setLayoutX(14);
-            BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 125);
+            toggleFinishersBtn.setLayoutY(Coordinate.getWindowHeightY() - 120);
+            BoatNameCheckBox.setLayoutX(4);
+            BoatNameCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 170);
+            BoatSpeedCheckBox.setLayoutX(4);
+            BoatSpeedCheckBox.setLayoutY(Coordinate.getWindowHeightY() - 145);
             localTime.setLayoutX(Coordinate.getWindowWidthX() - 110);
             localTime.setLayoutY(100);
             localTimeZone.setLayoutX(Coordinate.getWindowWidthX() - 115);
