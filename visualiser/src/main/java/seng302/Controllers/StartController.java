@@ -342,6 +342,12 @@ public class StartController {
     public RaceMode getRaceMode() {
         ToggleButton a = (ToggleButton) modeGroup.getSelectedToggle();
         String mode = a.getText().toLowerCase().trim();
+        System.out.println(mode);
+        if(mode.equals("custom")){
+            if(portField.getText() == "4942"){
+                mode = "agar";
+            }
+        }
         return RaceMode.getRaceMode(mode);
     }
 }
