@@ -346,9 +346,8 @@ public class RaceController implements IRaceController {
                 boatImage.setRotate(race.getBoats().get(i).getHeading());
 
                 //  Temporary hard coding to differentiate between the boat in user control
-                if (race.getBoats().get(i).getSourceId() == race.getClientSourceId()) {
-                    updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
-                }
+                updateNodeScale(boats.get(i).getStack().getChildren().get(BoatSprite.CONTROL_CIRCLE));
+
 
                 //  Boats wake
                 boats.get(i).getStack().getChildren().set(BoatSprite.WAKE, newWake(boatSpeed));

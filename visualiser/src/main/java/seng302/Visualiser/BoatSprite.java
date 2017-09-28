@@ -99,13 +99,13 @@ public class BoatSprite {
             controlCircle = new Circle(10);
             controlCircle.setCenterX(0);
             controlCircle.setCenterY(0);
-            controlCircle.setStroke(Color.GREEN);
+            controlCircle.setStroke(Color.YELLOW);
             controlCircle.setFill(Color.TRANSPARENT);
         } else {
             controlCircle = new Circle(10);
             controlCircle.setCenterX(0);
             controlCircle.setCenterY(0);
-            controlCircle.setStroke(Color.RED);
+            controlCircle.setStroke(Color.ORANGERED);
             controlCircle.setFill(Color.TRANSPARENT);
         }
         stack.getChildren().add(controlCircle);

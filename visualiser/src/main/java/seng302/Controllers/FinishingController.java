@@ -39,7 +39,7 @@ public class FinishingController {
     }
     @FXML
     public void initialize(){
-        exitToMenuBtn.setVisible(false);
+        exitToMenuBtn.setVisible(true);
     }
 
     public void initialiseTable(){
