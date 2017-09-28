@@ -186,7 +186,7 @@ public class AgarManager implements IServerData{
     class RaceRunner extends TimerTask {
         @Override
         public void run() {
-            if(race.getRaceStatus() != RaceStatus.WARNING && race.getRaceStatus() != RaceStatus.START_TIME_NOT_SET) {
+            if(race.getRaceStatus() != RaceStatus.WARNING && race.getRaceStatus() != RaceStatus.START_TIME_NOT_SET && race.getRaceStatus() != RaceStatus.PREP) {
                 race.updateBoats();
                 race.checkCollisions(parent);
             }
