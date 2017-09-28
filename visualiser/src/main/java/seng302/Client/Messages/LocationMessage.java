@@ -1,6 +1,7 @@
 package seng302.Client.Messages;
 
 import seng302.PacketParsing.PacketParserUtils;
+import seng302.RaceObjects.AgarBoat;
 import seng302.RaceObjects.GenericBoat;
 import seng302.RaceObjects.Mark;
 import seng302.RaceObjects.Race;
@@ -57,6 +58,7 @@ public class LocationMessage {
         if (boatDict != null && boatDict.containsKey(sourceID)) {
             GenericBoat boat = boatDict.get(sourceID);
             boat.setMark(new Mark(latitude, longitude));
+            if (boat.getClass() == AgarBoat.class) speedOverGround *= 150;
             boat.setSpeed(speedOverGround);
             boat.setHeading(heading);
             boat.setKnowsBoatLocation(true);

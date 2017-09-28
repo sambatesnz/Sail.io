@@ -1,5 +1,6 @@
 package seng302.Modes;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import seng302.DataGeneration.IServerData;
 import seng302.DataGenerator;
 import seng302.LocationSpawner;
@@ -7,6 +8,7 @@ import seng302.PacketGeneration.BinaryMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtEventMessage;
 import seng302.PacketGeneration.YachtEventGeneration.YachtIncidentEvent;
 import seng302.PacketParsing.XMLParser;
+import seng302.Polars.PolarUtils;
 import seng302.RaceObjects.AgarBoat;
 import seng302.RaceObjects.BoatCollision;
 import seng302.RaceObjects.BoatDecorator;
@@ -116,10 +118,12 @@ public class AgarRace extends Race {
         double newArea = Math.PI * newRadius * newRadius;
         return (int)Math.floor(newArea);
     }
+
     @Override
     public short retrieveWindSpeed() {
         return (short) (FORTY_KNOTS * 3);
     }
+
     @Override
     public short updateWindDirection() {
         int rng1  = (int)(Math.random() * 30);
@@ -167,5 +171,10 @@ public class AgarRace extends Race {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void updateBoatSpeed(GenericBoat boat) {
+        PolarUtils.updateBoatSpeed(boat, windHeading, retrieveWindSpeed());
     }
 }

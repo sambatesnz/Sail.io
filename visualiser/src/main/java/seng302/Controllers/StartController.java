@@ -309,7 +309,7 @@ public class StartController {
         primaryStage.setMinWidth(800);
         primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
-        primaryStage.setTitle("Sail IO");
+        primaryStage.setTitle("Sail.io");
         primaryStage.show();
 
         startController.setPrimaryStage(primaryStage);
@@ -332,7 +332,7 @@ public class StartController {
         primaryStage.setWidth(800);
         primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
-        primaryStage.setTitle("Sail IO");
+        primaryStage.setTitle("Sail.io");
         primaryStage.show();
 
         scoreScreenController.setPrimaryStage(primaryStage);

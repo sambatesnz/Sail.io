@@ -86,7 +86,7 @@ public class AgarBoat extends BoatDecorator{
     }
 
     public double getCollisionFactor(){
-        return getAgarSize() * (sqrt(pow(getSpeed(), 3)));
+        return getAgarSize() * pow(getSpeed(), 3/2)/10000;
     }
 
     public long getLastAgarSizeDecreaseTime() {
@@ -103,7 +103,7 @@ public class AgarBoat extends BoatDecorator{
 
     private static int calculateBaseSpeed(int boatSize) {
         double size = (double) boatSize/800;
-        double baseSpeed = Math.log(size) * -10000;
+        double baseSpeed = 1/(Math.pow(size, 0.5)) * 15000;
         return (int) baseSpeed;
     }
 
