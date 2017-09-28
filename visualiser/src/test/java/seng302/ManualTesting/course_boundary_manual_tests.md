@@ -7,7 +7,7 @@
     To set up the test, run the server and visualiser, connect to the server and wait for the race to start
     
 #####Expected Results:
-    When the race starts, the course boundary should be vsible
+    When the race starts, the course boundary should be visible
 
 ####Testing log:
 
@@ -16,11 +16,19 @@
     - Current Commit of branch  77183f4
     - Performed By: Stefan & Jono
     - Result  **Pass**
-    -
+    
+#####Test:
     - Date  23/08/2017
     - Current Commit of branch  b0c5a6e
     - Performed By: Matt Simpson
     - Result **Pass**
+    
+#####Test:
+
+    - Date: 28/09/2017
+    - Current Commit of branch: 6b53f48b37c2ec43363ea4e1d80922d8db7d7c12
+    - Performed By: Matt Simpson
+    - Result: **Pass**
 
     
     
@@ -43,7 +51,8 @@
     - Current Commit of branch  77183f4
     - Performed By: Stefan & Jono
     - Result    **Pass**
-    -
+
+#####Test
     - Date  23/08/2017
     - Current Commit of branch  b0c5a6e
     - Performed By: Matt Simpson

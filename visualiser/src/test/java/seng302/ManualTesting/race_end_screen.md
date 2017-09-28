@@ -11,9 +11,10 @@
 #####Expected Results:
     - Once a boat passes the finish line, they should be able to see the finished list pop up on their screen.
     - The user should be able to hide and show this screen.
-    - The users and other finisihers details should be correctly recorded in this list.
-    - After 10 seconds the race scene should close and be replaced with the score screen which show the same information
+    - The users and other finishers details should be correctly recorded in this list.
+    - After 60 seconds the race scene should close and be replaced with the score screen which show the same information
         as the finishing screen.
+    % Below requirement is deprecated
     - The user can click the menu button to return to the menu.
     
 
@@ -26,9 +27,18 @@
     - Performed By: Sam Bates
     - Result: **Pass**
     
+#####Test:
+
     - Date: 13/09/2017
     - Current Commit of branch: ddd627e
     - Performed By: Sam Bates | Stefan Hall
+    - Result: **Pass**
+    
+#####Test:
+
+    - Date: 28/09/2017
+    - Current Commit of branch: 6b53f48b37c2ec43363ea4e1d80922d8db7d7c12
+    - Performed By: Matt Simpson
     - Result: **Pass**
 
 ##### Race finished by server closing
@@ -56,6 +66,8 @@
     - Current Commit of branch: 7b9ba18e09d8a0500f9b88a1bff0e37c21daf364
     - Performed By: Sam Bates
     - Result: **Pass**
+    
+#####Test:
     
     - Date: 13/09/2017
     - Current Commit of branch: ddd627e

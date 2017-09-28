@@ -18,15 +18,24 @@ Test that the zooming functionality scales all the graphics correctly and follow
 
 #####Test:
    
-- Date: 2/8/2017
-- Current Commit of branch: 10c1036
-- Performed By: Abel Svoboda, Sam Bates
-- Result: Pass
+    - Date: 2/8/2017
+    - Current Commit of branch: 10c1036
+    - Performed By: Abel Svoboda, Sam Bates
+    - Result: Pass
+    
+#####Test:
+    
+    - Date: 3/8/2017
+    - Current Commit of branch: e9e071f1fb2b686db5a3c94da809200e1c8399bf
+    - Performed By: Abel Svoboda, Matt Simpson
+    - Result: Pass
+    
+#####Test:
 
-- Date: 3/8/2017
-- Current Commit of branch: e9e071f1fb2b686db5a3c94da809200e1c8399bf
-- Performed By: Abel Svoboda, Matt Simpson
-- Result: Pass
+    - Date: 28/09/2017
+    - Current Commit of branch: 6b53f48b37c2ec43363ea4e1d80922d8db7d7c12
+    - Performed By: jtr44
+    - Result: **Pass**
 
     
 

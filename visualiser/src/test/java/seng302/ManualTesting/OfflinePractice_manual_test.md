@@ -8,10 +8,10 @@
     Race view should be playable.
     
 #####Test:
-- Date: 13/09/2017
-- Current Commit of branch: a57d36c
-- Performed By: Abel Svoboda, Stefan Hall
-- Result: **Pass**
+    - Date: 13/09/2017
+    - Current Commit of branch: a57d36c
+    - Performed By: Abel Svoboda, Stefan Hall
+    - Result: **Pass**
 
 % Deprecated below
 ##### Lone PreStart Practice
@@ -35,10 +35,14 @@
     - Performed By: Matt Simpson
     - Result: **Fail**
     
+#####Test:
+    
     - Date: 16/08/2017
     - Current Commit of branch: a4fb73e46f923ae09987d13026944aed8bd6ea35
     - Performed By: Matt Simpson
     - Result: **Pass**
+    
+#####Test:
     
     - Date: 17/08/2017
     - Current Commit of branch: 723501bb056cf245dbf303752cd306b2053e9309
@@ -70,6 +74,8 @@
     - Performed By: Matt Simpson
     - Result: **Pass**
     
+#####Test:
+    
     - Date: 17/08/2017
     - Current Commit of branch: 723501bb056cf245dbf303752cd306b2053e9309
     - Performed By: Stefan Hall
@@ -98,6 +104,8 @@
     - Current Commit of branch: a4fb73e46f923ae09987d13026944aed8bd6ea35
     - Performed By: Matt Simpson
     - Result: **Pass**
+    
+#####Test:
     
     - Date: 17/08/2017
     - Current Commit of branch: 723501bb056cf245dbf303752cd306b2053e9309
