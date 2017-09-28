@@ -27,6 +27,11 @@
     - Current Commit of Branch: d2f0f81a1654c16a604ea5535e869daa2cf42475
     - Performed By: Stefan hall 
     - Result: Pass
+    
+    - Date: 28/8/2017
+    - Current Commit of Branch: 6b53f48
+    - Performed By: Stefan hall 
+    - Result: Pass
 
 
 
