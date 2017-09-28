@@ -102,7 +102,7 @@ public class Race {
     Date getNewStartTime() {
         Calendar date = Calendar.getInstance();
         long currentTime = date.getTimeInMillis();
-        return new Date(currentTime + ONE_MINUTE_IN_MILLIS / 4);
+        return new Date(currentTime + ONE_MINUTE_IN_MILLIS / 2);
     }
 
     /**
