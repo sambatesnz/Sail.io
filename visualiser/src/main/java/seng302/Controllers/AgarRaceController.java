@@ -1163,10 +1163,7 @@ public class AgarRaceController implements IRaceController {
                     allBoatsButMine.remove(boat);
                 }
             }
-            System.out.println(race.getBoatsForScoreBoard().contains(allBoatsButMine));
-            System.out.println(!race.getBoatsForScoreBoard().contains(myBoat));
-            System.out.println("++++++++");
-            if (race.getBoatsForScoreBoard().contains(allBoatsButMine) && !race.getBoatsForScoreBoard().contains(myBoat)) {
+            if (race.getBoatsForScoreBoard().containsAll(allBoatsButMine) && !race.getBoatsForScoreBoard().contains(myBoat)) {
                 if(!clientFinished) {
                     finishingPane.setVisible(true);
                     toggleFinishersBtn.setVisible(true);

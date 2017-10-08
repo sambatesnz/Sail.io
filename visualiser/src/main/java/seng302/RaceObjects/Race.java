@@ -488,7 +488,6 @@ public class Race {
         if (!boatsForScoreBoard.contains(finishedBoat)) {
             if(finished) finishedBoat.setFinished(true);
             boatsForScoreBoard.add(finishedBoat);
-            System.out.println(expectedStartTime);
             finishedBoat.setFinishTime(getCurrentTime() - getExpectedStartTime());
             finishedBoat.setPlacement(boatsForScoreBoard.size());
             hasChanged = true;
