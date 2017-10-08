@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import seng302.Controllers.Coordinate;
 import seng302.Controllers.StartController;
@@ -32,10 +33,11 @@ public class Main extends Application {
 
             primaryStage.setMinHeight(600);
             primaryStage.setMinWidth(800);
-            primaryStage.setMaximized(false);
             primaryStage.getIcons().add(new Image(String.valueOf(getClass().getClassLoader().getResource("Logo/SailIOIcon.png"))));
             primaryStage.setScene(rootScene);
+            primaryStage.setFullScreen(true);
             primaryStage.setTitle("Sail.io");
+            primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             primaryStage.show();
 
             Coordinate.setWindowWidthX(800);
