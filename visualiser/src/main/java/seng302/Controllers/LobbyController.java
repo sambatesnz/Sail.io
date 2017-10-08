@@ -152,9 +152,8 @@ public class LobbyController {
             Parent root = loader.load();
             Scene rootScene = new Scene(root);
             primaryStage.setScene(rootScene);
+            primaryStage.setFullScreen(true);
             KeyBindingUtility.setKeyBindings(rootScene, race);
         }
-
-
     }
 }
