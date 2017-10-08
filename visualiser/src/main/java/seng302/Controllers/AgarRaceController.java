@@ -334,6 +334,11 @@ public class AgarRaceController implements IRaceController {
                 }
                 if (race.isFinished()) {
                     raceListener.stop();
+                    try {
+                        raceFinished();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
@@ -399,6 +404,14 @@ public class AgarRaceController implements IRaceController {
         int lives = boat.getLives();
         for (int i = 0; i < MAX_BOAT_LIVES; i++) {
             images.get(i).setVisible(i < lives);
+        }
+
+        if (lives <= 0) {
+            try {
+                raceFinished();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -1142,14 +1155,23 @@ public class AgarRaceController implements IRaceController {
 
     private void initFinisherObserver(){
         race.getBoatsForScoreBoard().addListener((ListChangeListener<GenericBoat>) c -> {
-            for (GenericBoat boat : race.getBoatsForScoreBoard()) {
-                if (boat.getSourceId() == race.getClientSourceId()){
-                    if(!clientFinished) {
-                        finishingPane.setVisible(true);
-                        toggleFinishersBtn.setVisible(true);
-                        isFinishersHidden = false;
-                        clientFinished = true;
-                    }
+            List allBoatsButMine = race.getBoats();
+            GenericBoat myBoat = null;
+            for (GenericBoat boat : race.getBoats()) {
+                if (boat.getSourceId() == race.getClientSourceId()) {
+                    myBoat = boat;
+                    allBoatsButMine.remove(boat);
+                }
+            }
+            System.out.println(race.getBoatsForScoreBoard().contains(allBoatsButMine));
+            System.out.println(!race.getBoatsForScoreBoard().contains(myBoat));
+            System.out.println("++++++++");
+            if (race.getBoatsForScoreBoard().contains(allBoatsButMine) && !race.getBoatsForScoreBoard().contains(myBoat)) {
+                if(!clientFinished) {
+                    finishingPane.setVisible(true);
+                    toggleFinishersBtn.setVisible(true);
+                    isFinishersHidden = false;
+                    clientFinished = true;
                 }
             }
         });
