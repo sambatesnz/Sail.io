@@ -56,13 +56,21 @@ public class StartController {
 
         AgarModeButton.setSelected(true);
 
-        modeGroup.getToggles().add(RaceModeButton);
         modeGroup.getToggles().add(AgarModeButton);
-        modeGroup.getToggles().add(PracModeButton);
-        modeGroup.getToggles().add(CustModeButton);
 
-        ipField.visibleProperty().bind(CustModeButton.selectedProperty());
-        portField.visibleProperty().bind(CustModeButton.selectedProperty());
+//
+
+        //COMMENT FOR ALL MODES
+        AgarModeButton.setLayoutX(305);
+        ipField.setVisible(false);
+        portField.setVisible(false);
+
+        //UNCOMMENT FOR ALL MODES
+//        modeGroup.getToggles().add(RaceModeButton);
+//        modeGroup.getToggles().add(PracModeButton);
+//        modeGroup.getToggles().add(CustModeButton);
+//        ipField.visibleProperty().bind(CustModeButton.selectedProperty());
+//        portField.visibleProperty().bind(CustModeButton.selectedProperty());
 
         connectBtn.disableProperty().bind(modeGroup.selectedToggleProperty().isNull());
     }
