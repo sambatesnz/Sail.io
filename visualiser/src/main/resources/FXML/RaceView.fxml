@@ -31,40 +31,45 @@
     <center>
        <AnchorPane fx:id="viewAnchorPane" BorderPane.alignment="CENTER">
             <children>
-            <Group fx:id="boundaryGroup" autoSizeChildren="false" />
+                <Group fx:id="boundaryGroup" autoSizeChildren="false" />
                 <Group fx:id="group" autoSizeChildren="false" />
                 <Label fx:id="clock" layoutX="663.0" text="00:00:00" textAlignment="RIGHT" visible="false">
                     <font>
                         <Font size="30.0" />
                     </font>
                 </Label>
-            <Label fx:id="localTime" layoutX="690.0" layoutY="136.0" text="localTime" textAlignment="RIGHT" visible="false">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Label>
-            <Label fx:id="localTimeZone" layoutX="680.0" layoutY="126.0" text="NZDT" textAlignment="RIGHT" visible="false">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Label>
-                <Label fx:id="fpsLabel" layoutX="736.0" layoutY="43.0" text="0 fps" textAlignment="RIGHT">
+                <Label fx:id="spectating" alignment="CENTER" layoutX="245.0" layoutY="40.0" text="Spectating" visible="false">
                     <font>
-                        <Font size="16.0" />
+                        <Font name="Century Gothic" size="32.0" />
                     </font>
                 </Label>
-            <ListView fx:id="startersList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="200.0" prefHeight="400.0" prefWidth="275.0" visible="false" />
-            <Group fx:id="finishingGroup" layoutX="10.0" layoutY="-106.0" AnchorPane.bottomAnchor="157.0" AnchorPane.leftAnchor="235.0" AnchorPane.rightAnchor="123.0" AnchorPane.topAnchor="171.0" />
-            <Pane fx:id="finishingPane" maxHeight="9999.0" maxWidth="9999.0" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </Pane>
-            <JFXButton fx:id="toggleFinishersBtn" layoutX="13.0" layoutY="564.0" onAction="#toggleFinishers" prefHeight="25.0" prefWidth="118.0" text="Show Finishers" />
-            <JFXButton fx:id="annotationBtn" layoutX="14.0" layoutY="600.0" onAction="#annotationBtnClicked" prefHeight="25.0" prefWidth="154.0" text="Remove Annotations" />
-            <JFXButton fx:id="fpsBtn" layoutX="14.0" layoutY="700.0" onAction="#fpsBtnClicked" prefHeight="25.0" prefWidth="154.0" text="Remove FPS counter" />
-            <JFXCheckBox fx:id="BoatSpeedCheckBox" layoutX="3.0" layoutY="441.0" onAction="#ToggleBoatSpeedAnnotation" selected="true" text="Boat Speeds" />
-            <JFXCheckBox fx:id="BoatNameCheckBox" layoutX="3.0" layoutY="422.0" onAction="#ToggleBoatNameAnnotation" selected="true" text="Boat Names" />
+                <Label fx:id="localTime" layoutX="690.0" layoutY="136.0" text="localTime" textAlignment="RIGHT" visible="false">
+                   <font>
+                      <Font size="30.0" />
+                   </font>
+                </Label>
+                <Label fx:id="localTimeZone" layoutX="680.0" layoutY="126.0" text="NZDT" textAlignment="RIGHT" visible="false">
+                   <font>
+                      <Font size="30.0" />
+                   </font>
+                </Label>
+                    <Label fx:id="fpsLabel" layoutX="736.0" layoutY="43.0" text="0 fps" textAlignment="RIGHT">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                    </Label>
+                <ListView fx:id="startersList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="200.0" prefHeight="400.0" prefWidth="275.0" visible="false" />
+                <Group fx:id="finishingGroup" layoutX="10.0" layoutY="-106.0" AnchorPane.bottomAnchor="157.0" AnchorPane.leftAnchor="235.0" AnchorPane.rightAnchor="123.0" AnchorPane.topAnchor="171.0" />
+                <Pane fx:id="finishingPane" maxHeight="9999.0" maxWidth="9999.0" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
+                   <padding>
+                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                   </padding>
+                </Pane>
+                <JFXButton fx:id="toggleFinishersBtn" layoutX="13.0" layoutY="564.0" onAction="#toggleFinishers" prefHeight="25.0" prefWidth="118.0" text="Show Finishers" />
+                <JFXButton fx:id="annotationBtn" layoutX="14.0" layoutY="600.0" onAction="#annotationBtnClicked" prefHeight="25.0" prefWidth="154.0" text="Remove Annotations" />
+                <JFXButton fx:id="fpsBtn" layoutX="14.0" layoutY="700.0" onAction="#fpsBtnClicked" prefHeight="25.0" prefWidth="154.0" text="Remove FPS counter" />
+                <JFXCheckBox fx:id="BoatSpeedCheckBox" layoutX="3.0" layoutY="441.0" onAction="#ToggleBoatSpeedAnnotation" selected="true" text="Boat Speeds" />
+                <JFXCheckBox fx:id="BoatNameCheckBox" layoutX="3.0" layoutY="422.0" onAction="#ToggleBoatNameAnnotation" selected="true" text="Boat Names" />
 
             </children>
        </AnchorPane>
