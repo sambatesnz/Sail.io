@@ -87,13 +87,13 @@ public class StartController {
         RaceMode raceMode = getRaceMode();
 
         switch (raceMode){
-            case PLAY: {
+            case AGAR: {
                 String ip = "http://132.181.16.12"; //Turn me on for production
 //                String ip = "http://127.0.0.1";
 //                String ip = "http://132.181.12.107";
 //                String ip = "http://132.181.12.107";
                 int port = raceMode.getPort();
-                connectLobby(ip, port, RaceMode.PLAY);
+                connectLobby(ip, port, RaceMode.AGAR);
                 System.out.println("MEME");
                 break;
             } case PRACTICE: {
@@ -110,10 +110,10 @@ public class StartController {
                 connectLobby("localhost", 4942, RaceMode.RACE); //HACKITY HACK FORCING AGAR
                 break;
             }case CUSTOM: {
-                raceMode = RaceMode.PLAY;
+                raceMode = RaceMode.AGAR;
                 String ip = getIp();
                 int port = getPort();
-                if (port == 4942) raceMode = RaceMode.PLAY;
+                if (port == 4942) raceMode = RaceMode.AGAR;
                 if (port == 4941) raceMode = RaceMode.RACE;
                 if (port == 4943) raceMode = RaceMode.PRACTICE;
                 connectLobby(ip, port, raceMode);
