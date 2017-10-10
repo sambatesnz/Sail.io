@@ -7,3 +7,7 @@ generate_artifacts:
   stage: deploy
   script:
     - mvn -B clean site package
+  artifacts:
+    paths:
+      - server/target/*.jar
+      - client/target/*.jar
