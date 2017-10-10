@@ -44,6 +44,9 @@ public class BoatManager {
         boolean hasChanged = false;
         if (boat.isEliminated()) {
             hasChanged = eliminatedBoats.add(boat);
+            if (hasChanged) {
+                boatsToSend.add(boat);
+            }
         }
         return hasChanged;
     }

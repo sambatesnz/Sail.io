@@ -281,7 +281,7 @@ public class XMLParser {
 
                         GenericBoat boat = new Boat(boatName, shortName, srcId, country);
 
-                        if (mode == RaceMode.AGAR) {
+                        if (mode == RaceMode.PLAY) {
                             boat = new AgarBoat(boat);
                         }
                         boats.put(srcId, boat);

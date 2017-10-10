@@ -143,7 +143,7 @@ public class Client {
 
     public void connect() {
         try {
-            System.out.println("Attempting to connect...");
+            System.out.println("Attempting to connect on " + host + " : " + port);
             clientSocket = new Socket(host, port);
             System.out.println("Connected.");
             streamInput = new BufferedInputStream(clientSocket.getInputStream());

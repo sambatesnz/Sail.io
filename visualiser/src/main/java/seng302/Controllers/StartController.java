@@ -56,13 +56,21 @@ public class StartController {
 
         AgarModeButton.setSelected(true);
 
-        modeGroup.getToggles().add(RaceModeButton);
         modeGroup.getToggles().add(AgarModeButton);
-        modeGroup.getToggles().add(PracModeButton);
-        modeGroup.getToggles().add(CustModeButton);
 
-        ipField.visibleProperty().bind(CustModeButton.selectedProperty());
-        portField.visibleProperty().bind(CustModeButton.selectedProperty());
+//
+
+        //COMMENT FOR ALL MODES
+        AgarModeButton.setLayoutX(305);
+        ipField.setVisible(false);
+        portField.setVisible(false);
+
+        //UNCOMMENT FOR ALL MODES
+//        modeGroup.getToggles().add(RaceModeButton);
+//        modeGroup.getToggles().add(PracModeButton);
+//        modeGroup.getToggles().add(CustModeButton);
+//        ipField.visibleProperty().bind(CustModeButton.selectedProperty());
+//        portField.visibleProperty().bind(CustModeButton.selectedProperty());
 
         connectBtn.disableProperty().bind(modeGroup.selectedToggleProperty().isNull());
     }
@@ -79,13 +87,14 @@ public class StartController {
         RaceMode raceMode = getRaceMode();
 
         switch (raceMode){
-            case AGAR: {
-//                String ip = "http://132.181.16.12"; //Turn me on for production
+            case PLAY: {
+                String ip = "http://132.181.16.12"; //Turn me on for production
 //                String ip = "http://127.0.0.1";
-                String ip = "http://132.181.12.107";
+//                String ip = "http://132.181.12.107";
 //                String ip = "http://132.181.12.107";
                 int port = raceMode.getPort();
-                connectLobby(ip, port, raceMode);
+                connectLobby(ip, port, RaceMode.PLAY);
+                System.out.println("MEME");
                 break;
             } case PRACTICE: {
                 String ip = "http://127.0.0.1";
@@ -97,11 +106,16 @@ public class StartController {
                 String ip = "http://132.181.16.12";
 //                String ip = "http://127.0.0.1";
                 int port = raceMode.getPort();
-                connectLobby(ip, port, raceMode);
+//                connectLobby(ip, port, raceMode);
+                connectLobby("localhost", 4942, RaceMode.RACE); //HACKITY HACK FORCING AGAR
                 break;
             }case CUSTOM: {
+                raceMode = RaceMode.PLAY;
                 String ip = getIp();
                 int port = getPort();
+                if (port == 4942) raceMode = RaceMode.PLAY;
+                if (port == 4941) raceMode = RaceMode.RACE;
+                if (port == 4943) raceMode = RaceMode.PRACTICE;
                 connectLobby(ip, port, raceMode);
                 break;
             } default: {
@@ -247,7 +261,9 @@ public class StartController {
         Parent root = loader.load();
 
         Scene rootScene = new Scene(root);
+
         primaryStage.setScene(rootScene);
+        primaryStage.setFullScreen(true);
 
         KeyBindingUtility.setKeyBindings(rootScene, race);
     }
@@ -262,6 +278,7 @@ public class StartController {
 
         Scene rootScene = new Scene(root);
         primaryStage.setScene(rootScene);
+        primaryStage.setFullScreen(true);
         KeyBindingUtility.setKeyBindings(rootScene, race);
 
         lobbyController.initialiseTable();
@@ -308,8 +325,8 @@ public class StartController {
         startController.setStatus(message);
         primaryStage.setMinHeight(600);
         primaryStage.setMinWidth(800);
-        primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
+        primaryStage.setFullScreen(true);
         primaryStage.setTitle("Sail.io");
         primaryStage.show();
 
@@ -331,8 +348,8 @@ public class StartController {
         primaryStage.setMinWidth(800);
         primaryStage.setHeight(600);
         primaryStage.setWidth(800);
-        primaryStage.setMaximized(false);
         primaryStage.setScene(rootScene);
+        primaryStage.setFullScreen(true);
         primaryStage.setTitle("Sail.io");
         primaryStage.show();
 
@@ -342,6 +359,7 @@ public class StartController {
     public RaceMode getRaceMode() {
         ToggleButton a = (ToggleButton) modeGroup.getSelectedToggle();
         String mode = a.getText().toLowerCase().trim();
+        System.out.println(mode);
         return RaceMode.getRaceMode(mode);
     }
 }

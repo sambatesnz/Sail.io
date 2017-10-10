@@ -58,6 +58,7 @@ public class AgarRaceController implements IRaceController {
     @FXML private Label clock;
     @FXML private Label localTimeZone;
     @FXML private Label localTime;
+    @FXML private Label spectating;
     @FXML private ListView<String> finishedListView;
     @FXML private JFXTreeTableView<GenericBoat> positionTable;
     @FXML private JFXTreeTableColumn<GenericBoat, String> positionCol;
@@ -188,6 +189,7 @@ public class AgarRaceController implements IRaceController {
         initFinisherObserver();
         if (race.getClientSourceId() == 0){
             initialiseSpectatorZoom();
+            spectating.setVisible(true);
         }
 
         drawLives();
@@ -334,6 +336,11 @@ public class AgarRaceController implements IRaceController {
                 }
                 if (race.isFinished()) {
                     raceListener.stop();
+                    try {
+                        raceFinished();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
@@ -399,6 +406,14 @@ public class AgarRaceController implements IRaceController {
         int lives = boat.getLives();
         for (int i = 0; i < MAX_BOAT_LIVES; i++) {
             images.get(i).setVisible(i < lives);
+        }
+
+        if (lives <= 0) {
+            try {
+                raceFinished();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -826,6 +841,7 @@ public class AgarRaceController implements IRaceController {
         try {
             if(race.isViewReady() && viewInitialised){
                 Coordinate.updateBorder();
+                Coordinate.updatePPM();
                 Coordinate.setOffset(calculateOffset());
                 Coordinate.updateViewCoordinates();
             }
@@ -844,6 +860,11 @@ public class AgarRaceController implements IRaceController {
             finishingPane.setLayoutX(Coordinate.getWindowWidthX()/2 - 300);
             finishingPane.setLayoutY(Coordinate.getWindowHeightY()/2 - 200);
 
+            if (race.getClientSourceId() == 0){
+                spectating.setLayoutX(Coordinate.getWindowWidthX()/2 - 150);
+                spectating.setLayoutY(20);
+
+            }
             fpsLabel.setLayoutX(Coordinate.getWindowWidthX() - 90);
             fpsLabel.setLayoutY(60);
             clock.setLayoutY(20);
@@ -1099,14 +1120,16 @@ public class AgarRaceController implements IRaceController {
     private void updateNodeScale(Node nodeToScale, int areaPercent) {
         double areaScale = ((double) areaPercent) / 100;
         double radiusScale = sqrt(areaScale);
-        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()) ) * (radiusScale));
-        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()) )* (radiusScale));
+//        nodeToScale.setScaleX((1/(1+Coordinate.getZoom()) ) * (radiusScale)* Coordinate.getBoatScale());
+//        nodeToScale.setScaleY((1/(1+Coordinate.getZoom()) )* (radiusScale)* Coordinate.getBoatScale());
+        nodeToScale.setScaleX((radiusScale)* Coordinate.getBoatScale());
+        nodeToScale.setScaleY((radiusScale)* Coordinate.getBoatScale());
     }
 
     private double getScale(int areaPercent){
         double areaScale = ((double) areaPercent) / 100;
         double radiusScale = sqrt(areaScale);
-        return ((1/(1+Coordinate.getZoom()) ) * (radiusScale));
+        return ((radiusScale) * Coordinate.getBoatScale());
     }
 
     /**
@@ -1139,14 +1162,20 @@ public class AgarRaceController implements IRaceController {
 
     private void initFinisherObserver(){
         race.getBoatsForScoreBoard().addListener((ListChangeListener<GenericBoat>) c -> {
-            for (GenericBoat boat : race.getBoatsForScoreBoard()) {
-                if (boat.getSourceId() == race.getClientSourceId()){
-                    if(!clientFinished) {
-                        finishingPane.setVisible(true);
-                        toggleFinishersBtn.setVisible(true);
-                        isFinishersHidden = false;
-                        clientFinished = true;
-                    }
+            List allBoatsButMine = race.getBoats();
+            GenericBoat myBoat = null;
+            for (GenericBoat boat : race.getBoats()) {
+                if (boat.getSourceId() == race.getClientSourceId()) {
+                    myBoat = boat;
+                    allBoatsButMine.remove(boat);
+                }
+            }
+            if (race.getBoatsForScoreBoard().containsAll(allBoatsButMine) && !race.getBoatsForScoreBoard().contains(myBoat)) {
+                if(!clientFinished) {
+                    finishingPane.setVisible(true);
+                    toggleFinishersBtn.setVisible(true);
+                    isFinishersHidden = false;
+                    clientFinished = true;
                 }
             }
         });

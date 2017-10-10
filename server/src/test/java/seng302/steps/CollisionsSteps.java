@@ -33,7 +33,7 @@ public class CollisionsSteps {
     public void the_boats_are_not_within_the_collision_range() throws Throwable {
         boat1.getMark().setX(100);
         boat1.getMark().setY(100);
-        boat2.getMark().setX(150);
+        boat2.getMark().setX(200);
         boat2.getMark().setY(100);
     }
 

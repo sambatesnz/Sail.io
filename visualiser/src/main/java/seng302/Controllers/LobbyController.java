@@ -83,7 +83,7 @@ public class LobbyController {
 
         timeToStart.textProperty().addListener((observable, oldValue, newValue) -> {
             int secondsUntilStart = 0;
-            if (race.getRaceMode() != RaceMode.AGAR){
+            if (race.getRaceMode() != RaceMode.PLAY){
                 secondsUntilStart = 10;
             }
             if (newValue.equals(String.format(" %02d:%02d:%02d", 0, 0, secondsUntilStart)) || (race.getClientSourceId() == 0 && race.isRaceReady() && !raceStarted)) {
@@ -141,7 +141,7 @@ public class LobbyController {
             case PRACTICE:
                 raceController = new RaceController(race);
                 break;
-            case AGAR:
+            case PLAY:
                 raceController = new AgarRaceController(race);
                 break;
         }
@@ -152,9 +152,8 @@ public class LobbyController {
             Parent root = loader.load();
             Scene rootScene = new Scene(root);
             primaryStage.setScene(rootScene);
+            primaryStage.setFullScreen(true);
             KeyBindingUtility.setKeyBindings(rootScene, race);
         }
-
-
     }
 }

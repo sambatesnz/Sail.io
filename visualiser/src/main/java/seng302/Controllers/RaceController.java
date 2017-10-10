@@ -57,6 +57,7 @@ public class RaceController implements IRaceController {
     @FXML private Label clock;
     @FXML private Label localTimeZone;
     @FXML private Label localTime;
+    @FXML private Label spectating;
     @FXML private ListView<String> finishedListView;
     @FXML private JFXTreeTableView<GenericBoat> positionTable;
     @FXML private JFXTreeTableColumn<GenericBoat, String> positionCol;
@@ -180,6 +181,7 @@ public class RaceController implements IRaceController {
         initFinisherObserver();
         if (race.getClientSourceId() == 0){
             initialiseSpectatorZoom();
+            spectating.setVisible(true);
         }
 
         startRaceListener();
@@ -801,6 +803,11 @@ public class RaceController implements IRaceController {
             finishingPane.setLayoutX(Coordinate.getWindowWidthX()/2 - 300);
             finishingPane.setLayoutY(Coordinate.getWindowHeightY()/2 - 200);
 
+            if (race.getClientSourceId() == 0){
+                spectating.setLayoutX(Coordinate.getWindowWidthX()/2 - 150);
+                spectating.setLayoutY(20);
+
+            }
             fpsLabel.setLayoutX(Coordinate.getWindowWidthX() - 90);
             fpsLabel.setLayoutY(60);
             clock.setLayoutY(20);

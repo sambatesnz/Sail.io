@@ -5,9 +5,9 @@ package seng302;
  */
 public enum RaceMode {
     RACE("race", 4941),
-    AGAR("agar", 4942),
+    PLAY("play", 4942),
     PRACTICE("practice", 4943),
-    CUSTOM("custom race", 4941);
+    CUSTOM("custom", 4941);
 
     private String value;
     private int port;
