@@ -87,13 +87,14 @@ public class StartController {
         RaceMode raceMode = getRaceMode();
 
         switch (raceMode){
-            case AGAR: {
+            case PLAY: {
                 String ip = "http://132.181.16.12"; //Turn me on for production
 //                String ip = "http://127.0.0.1";
 //                String ip = "http://132.181.12.107";
 //                String ip = "http://132.181.12.107";
                 int port = raceMode.getPort();
-                connectLobby(ip, port, RaceMode.AGAR);
+                connectLobby(ip, port, RaceMode.PLAY);
+                System.out.println("MEME");
                 break;
             } case PRACTICE: {
                 String ip = "http://127.0.0.1";
@@ -106,13 +107,13 @@ public class StartController {
 //                String ip = "http://127.0.0.1";
                 int port = raceMode.getPort();
 //                connectLobby(ip, port, raceMode);
-                connectLobby("localhost", 4942, RaceMode.AGAR); //HACKITY HACK FORCING AGAR
+                connectLobby("localhost", 4942, RaceMode.RACE); //HACKITY HACK FORCING AGAR
                 break;
             }case CUSTOM: {
-                raceMode = RaceMode.AGAR;
+                raceMode = RaceMode.PLAY;
                 String ip = getIp();
                 int port = getPort();
-                if (port == 4942) raceMode = RaceMode.AGAR;
+                if (port == 4942) raceMode = RaceMode.PLAY;
                 if (port == 4941) raceMode = RaceMode.RACE;
                 if (port == 4943) raceMode = RaceMode.PRACTICE;
                 connectLobby(ip, port, raceMode);
@@ -358,6 +359,7 @@ public class StartController {
     public RaceMode getRaceMode() {
         ToggleButton a = (ToggleButton) modeGroup.getSelectedToggle();
         String mode = a.getText().toLowerCase().trim();
+        System.out.println(mode);
         return RaceMode.getRaceMode(mode);
     }
 }

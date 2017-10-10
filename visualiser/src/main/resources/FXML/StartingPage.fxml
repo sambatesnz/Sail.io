@@ -24,7 +24,7 @@
                         <JFXTextField fx:id="ipField" focusColor="WHITE" labelFloat="true" layoutX="273.0" layoutY="400.0" prefHeight="36.0" prefWidth="144.0" promptText="IP" unFocusColor="#464646" />
                         <JFXTextField fx:id="portField" focusColor="WHITE" labelFloat="true" layoutX="427.0" layoutY="400.0" prefHeight="36.0" prefWidth="87.0" promptText="Port" unFocusColor="#464646" />
                         <!--<JFXToggleButton fx:id="RaceModeButton" alignment="CENTER_LEFT" layoutX="60.0" layoutY="320.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="170.0" text="  Race" />-->
-                        <JFXToggleButton fx:id="AgarModeButton" alignment="CENTER_LEFT" layoutX="230.0" layoutY="320.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="170.0" text="  Sail" />
+                        <JFXToggleButton fx:id="AgarModeButton" alignment="CENTER_LEFT" layoutX="230.0" layoutY="320.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="170.0" text="  Play" />
                         <!--<JFXToggleButton fx:id="PracModeButton" alignment="CENTER_LEFT" layoutX="400.0" layoutY="320.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="170.0" text="Practice" />-->
                         <!--<JFXToggleButton fx:id="CustModeButton" alignment="CENTER_LEFT" layoutX="570.0" layoutY="320.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="170.0" text=" Custom" />-->
                     </children>
