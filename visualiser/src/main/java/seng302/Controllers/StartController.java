@@ -93,7 +93,7 @@ public class StartController {
 //                String ip = "http://132.181.12.107";
 //                String ip = "http://132.181.12.107";
                 int port = raceMode.getPort();
-                connectLobby(ip, port, raceMode);
+                connectLobby(ip, port, RaceMode.AGAR);
                 break;
             } case PRACTICE: {
                 String ip = "http://127.0.0.1";
@@ -105,7 +105,8 @@ public class StartController {
                 String ip = "http://132.181.16.12";
 //                String ip = "http://127.0.0.1";
                 int port = raceMode.getPort();
-                connectLobby(ip, port, raceMode);
+//                connectLobby(ip, port, raceMode);
+                connectLobby("localhost", 4942, RaceMode.AGAR); //HACKITY HACK FORCING AGAR
                 break;
             }case CUSTOM: {
                 raceMode = RaceMode.AGAR;
