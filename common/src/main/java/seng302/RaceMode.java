@@ -5,7 +5,7 @@ package seng302;
  */
 public enum RaceMode {
     RACE("race", 4941),
-    PLAY("play", 4942),
+    AGAR("play", 4942),
     PRACTICE("practice", 4943),
     CUSTOM("custom", 4941);
 
