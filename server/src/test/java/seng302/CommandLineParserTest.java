@@ -42,19 +42,19 @@ public class CommandLineParserTest {
         assertEquals(expectedMode, getRaceMode());
     }
 
-//    @Test
-//    public void raceModeWithCapitals() throws Exception {
-//        expectedMode = RaceMode.AGAR;
-//        setArg("-mode=Agar");
-//        assertEquals(expectedMode, getRaceMode());
-//    }
+    @Test
+    public void raceModeWithCapitals() throws Exception {
+        expectedMode = RaceMode.AGAR;
+        setArg("-mode=Agar");
+        assertEquals(expectedMode, getRaceMode());
+    }
 
-//    @Test
-//    public void agarMode() throws Exception {
-//        expectedMode = RaceMode.AGAR;
-//        setArg("-mode=agar");
-//        assertEquals(expectedMode, getRaceMode());
-//    }
+    @Test
+    public void agarMode() throws Exception {
+        expectedMode = RaceMode.AGAR;
+        setArg("-mode=agar");
+        assertEquals(expectedMode, getRaceMode());
+    }
 
     @Test
     public void practiceMode() throws Exception {
