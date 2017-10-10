@@ -94,7 +94,7 @@ public class StartController {
 //                String ip = "http://132.181.12.107";
 //                String ip = "http://132.181.12.107";
                 int port = raceMode.getPort();
-                connectLobby(ip, port, RaceMode.AGAR);
+                connectLobby(ip, 4941, RaceMode.AGAR);
                 System.out.println("MEME");
                 break;
             } case PRACTICE: {
