@@ -45,14 +45,14 @@ public class CommandLineParserTest {
     @Test
     public void raceModeWithCapitals() throws Exception {
         expectedMode = RaceMode.AGAR;
-        setArg("-mode=Agar");
+        setArg("-mode=Play");
         assertEquals(expectedMode, getRaceMode());
     }
 
     @Test
     public void agarMode() throws Exception {
         expectedMode = RaceMode.AGAR;
-        setArg("-mode=agar");
+        setArg("-mode=play");
         assertEquals(expectedMode, getRaceMode());
     }
 
