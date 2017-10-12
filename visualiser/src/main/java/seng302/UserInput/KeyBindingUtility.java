@@ -51,10 +51,10 @@ public class KeyBindingUtility {
                     case ENTER:
                         boatActionMessage = new BoatActionMessage(BoatAction.TACK_OR_GYBE, sourceId);
                         break;
-                    case LEFT:
+                    case RIGHT:
                         boatActionMessage = new BoatActionMessage(BoatAction.UPWIND, sourceId);
                         break;
-                    case RIGHT:
+                    case LEFT:
                         boatActionMessage = new BoatActionMessage(BoatAction.DOWNWIND, sourceId);
                         break;
                     default:
