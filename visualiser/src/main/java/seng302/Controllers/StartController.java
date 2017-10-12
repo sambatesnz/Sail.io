@@ -20,6 +20,7 @@ import seng302.RaceObjects.ViewScreenType;
 import seng302.UserInput.KeyBindingUtility;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class StartController {
 
@@ -89,7 +90,8 @@ public class StartController {
         switch (raceMode){
             case AGAR: {
 //                String ip = "http://132.181.16.12"; //Turn me on for production
-                String ip = "http://132.181.14.37";
+//                String ip = "http://132.181.14.37";
+                String ip = (new Scanner(Thread.currentThread().getContextClassLoader().getResourceAsStream("IP.txt")).nextLine());
 //                String ip = "http://127.0.0.1";
 //                String ip = "http://132.181.12.107";
 //                String ip = "http://132.181.12.107";
