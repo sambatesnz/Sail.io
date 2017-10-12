@@ -89,12 +89,12 @@ public class StartController {
         switch (raceMode){
             case AGAR: {
 //                String ip = "http://132.181.16.12"; //Turn me on for production
-                String ip = "http://132.181.14.37";
+                String ip = "http://132.181.15.13";
 //                String ip = "http://127.0.0.1";
 //                String ip = "http://132.181.12.107";
 //                String ip = "http://132.181.12.107";
                 int port = raceMode.getPort();
-                connectLobby(ip, 4941, RaceMode.RACE);
+                connectLobby(ip, port, raceMode);
                 System.out.println("MEME");
                 break;
             } case PRACTICE: {
@@ -105,7 +105,7 @@ public class StartController {
             } case RACE: {
 //                String ip = getIp();
 //                String ip = "http://132.181.16.12";
-                String ip = "http://132.181.14.37";
+                String ip = "http://132.181.15.13";
 //                String ip = "http://127.0.0.1";
                 int port = raceMode.getPort();
                 connectLobby(ip, port, raceMode);
